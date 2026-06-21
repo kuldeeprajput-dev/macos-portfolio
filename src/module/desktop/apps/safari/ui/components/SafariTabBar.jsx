@@ -84,19 +84,19 @@ const SafariTabBar = ({
             </div>
           );
         })}
-
-        {/* Plus Button - Now inside the scroll container, beside the last tab */}
-        <button
-          onClick={onNewTab}
-          disabled={isMaxTabsReached}
-          className={`p-1 mb-1.5 ml-2 rounded text-gray-600 transition-colors flex-shrink-0 ${
-            isMaxTabsReached ? "opacity-30 cursor-not-allowed" : "hover:bg-black/5 cursor-pointer"
-          }`}
-          title={isMaxTabsReached ? "Tab limit reached (Max 10)" : "Open a new tab"}
-        >
-          <Plus size={14} />
-        </button>
       </div>
+
+      {/* Plus Button - Outside the scroll container so it's always visible */}
+      <button
+        onClick={onNewTab}
+        disabled={isMaxTabsReached}
+        className={`flex-shrink-0 p-1 mb-1.5 ml-1 rounded text-gray-600 transition-colors ${
+          isMaxTabsReached ? "opacity-30 cursor-not-allowed" : "hover:bg-black/10 cursor-pointer"
+        }`}
+        title={isMaxTabsReached ? "Tab limit reached (Max 10)" : "Open a new tab"}
+      >
+        <Plus size={14} />
+      </button>
     </div>
   );
 };
