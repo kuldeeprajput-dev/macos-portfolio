@@ -70,16 +70,16 @@ const SafariDesktopToolbar = ({
         {/* Left Side: Window Controls & Sidebar toggle */}
         <div className="flex items-center gap-3">
           <WindowControls target="safari" />
-          <button
-            onClick={onToggleSidebar}
-            className={`hidden @lg:block p-1 rounded hover:bg-black/5 transition-colors ${
-              showSidebar ? "bg-black/8" : ""
-            }`}
-            onMouseDown={(e) => e.stopPropagation()}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            <PanelLeft size={16} className="text-gray-600" />
-          </button>
+          {onToggleSidebar && (
+            <button
+              onClick={onToggleSidebar}
+              className="hidden @lg:block p-1 rounded hover:bg-black/5 transition-colors border-none outline-none focus:outline-none shadow-none"
+              onMouseDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
+            >
+              <PanelLeft size={16} className="text-gray-600" />
+            </button>
+          )}
         </div>
 
         {/* Navigation Arrows */}

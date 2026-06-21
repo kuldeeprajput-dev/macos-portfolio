@@ -307,7 +307,7 @@ const SafariContentView = ({
                   <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
                     Favorites
                   </h2>
-                  <div className="grid grid-cols-3 @sm:grid-cols-4 @md:grid-cols-5 @lg:grid-cols-6 @xl:grid-cols-8 gap-6 justify-items-center">
+                  <div className="flex flex-wrap gap-6">
                     {bookmarks.map((fav) => (
                       <div
                         key={fav.id}
@@ -336,7 +336,8 @@ const SafariContentView = ({
                           )}
                         </div>
                         <span
-                          className={`text-[10px] font-semibold truncate max-w-full text-center ${isLightBg ? "text-gray-600" : "text-white/90"} group-hover:underline`}
+                          className={`text-[10px] font-semibold text-center ${isLightBg ? "text-gray-600" : "text-white/90"} group-hover:underline`}
+                          style={{ maxWidth: "72px" }}
                         >
                           {fav.title}
                         </span>
@@ -382,7 +383,7 @@ const SafariContentView = ({
                 <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
                   Featured Projects
                 </h2>
-                <div className="grid grid-cols-1 @lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 @2xl:grid-cols-2 gap-6">
                   {projects.map((project) => (
                     <div
                       key={project.id}

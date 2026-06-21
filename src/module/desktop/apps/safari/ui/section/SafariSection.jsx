@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { projects, socials } from "@constants";
 import { Globe } from "lucide-react";
 import useSafari from "../../hooks/useSafari";
@@ -9,15 +9,37 @@ import SafariContentView from "../components/SafariContentView";
 import SafariSettingsModal from "../components/SafariSettingsModal";
 import SafariAboutModal from "../components/SafariAboutModal";
 
+const SIDEBAR_HIDE_THRESHOLD = 600; // auto-hide sidebar below this width
+
 const SafariSection = () => {
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const safari = useSafari();
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const [canShowSidebar, setCanShowSidebar] = useState(true);
+
+  // Auto-hide sidebar when Safari window is resized narrow & disable toggle
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || isMobile) return;
+
+    const ro = new ResizeObserver((entries) => {
+      const width = entries[0].contentRect.width;
+      const tooNarrow = width < SIDEBAR_HIDE_THRESHOLD;
+      setCanShowSidebar(!tooNarrow);
+      if (tooNarrow && safari.showSidebar) {
+        safari.setShowSidebar(false);
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isMobile, safari.showSidebar]);
 
   if (isMobile) {
     return (
@@ -70,11 +92,11 @@ const SafariSection = () => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full @container bg-white select-none overflow-hidden rounded-xl relative">
+    <div ref={containerRef} className="flex flex-col h-full w-full @container bg-white select-none overflow-hidden rounded-xl relative">
       {/* 1. Main Unified Toolbar */}
       <SafariDesktopToolbar
         showSidebar={safari.showSidebar}
-        onToggleSidebar={() => safari.setShowSidebar(!safari.showSidebar)}
+        onToggleSidebar={canShowSidebar ? () => safari.setShowSidebar(!safari.showSidebar) : null}
         activeTab={safari.activeTab}
         addressInput={safari.addressInput}
         setAddressInput={safari.setAddressInput}
