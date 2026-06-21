@@ -21,8 +21,8 @@ export const projects = [
   },
   {
     id: 2,
-    title: "Free Course Finder",
-    description: "An AI-powered learning platform to discover free courses from multiple sources.",
+    title: "Insta Things Download",
+    description: "Download photos, videos, and reels from Instagram easily with a fast, user-friendly web app.",
     image: "/projects/snsta.png",
     link: PROJECT_2_URL,
     github: PROJECT_2_GITHUB,

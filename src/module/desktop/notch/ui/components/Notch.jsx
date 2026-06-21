@@ -398,10 +398,12 @@ const Notch = () => {
     if (
       query.includes("open snsta") ||
       query.includes("open free course finder") ||
-      query.includes("open course finder")
+      query.includes("open course finder") ||
+      query.includes("open insta things download") ||
+      query.includes("open instagram downloader")
     ) {
       openWindow("safari", { url: "https://snsta.vercel.app/" });
-      return "Opening Free Course Finder project in Safari.";
+      return "Opening Insta Things Download project in Safari.";
     }
     if (
       query.includes("open resume ats") ||
