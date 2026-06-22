@@ -472,8 +472,8 @@ const SafariContentView = ({
 
         {redirectProject && (
           <div className="absolute inset-0 bg-black/30 backdrop-blur-xs flex items-center justify-center z-[100] animate-in fade-in duration-150">
-            <div className="bg-white border border-[#c8cbd0]/80 p-5 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150">
-              <div className="w-11 h-11 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto shadow-inner">
+            <div className="bg-white/95 border border-zinc-200/50 p-6 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150 backdrop-blur-md text-gray-800">
+              <div className="w-12 h-12 bg-neutral-100 text-blue-600 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
                 <Globe className="w-5 h-5 animate-pulse" />
               </div>
               <div className="space-y-1">
@@ -486,7 +486,7 @@ const SafariContentView = ({
               <div className="flex gap-2">
                 <button
                   onClick={() => setRedirectProject(null)}
-                  className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                  className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer border border-zinc-200"
                 >
                   Cancel
                 </button>
