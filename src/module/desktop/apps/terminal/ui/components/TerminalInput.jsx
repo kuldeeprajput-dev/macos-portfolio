@@ -14,6 +14,8 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
     let term = null;
     let fitAddon = null;
     let isOpened = false;
+    let bannerShown = false;
+    let printBanner = null;
 
     const setupHandlers = (t) => {
       const prompt = () => {
@@ -56,10 +58,18 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
         "██║  ██╗╚██████╔╝███████╗██████╔╝███████╗███████╗██║     ",
         "╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═════╝ ╚══════╝╚══════╝╚═╝     ",
       ];
-      hulkLines.forEach((line) => t.writeln(gradientLine(line)));
+      printBanner = (terminal) => {
+        if (terminal.cols >= 62) {
+          hulkLines.forEach((line) => terminal.writeln(gradientLine(line)));
+          bannerShown = true;
+        } else {
+          bannerShown = false;
+        }
+        terminal.write("Last login: " + new Date().toLocaleString() + " / help?");
+        prompt();
+      };
 
-      t.write("Last login: " + new Date().toLocaleString() + " / help?");
-      prompt();
+      printBanner(t);
 
       t.onData((data) => {
         const code = data.charCodeAt(0);
@@ -227,6 +237,7 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
 
     tryInit();
 
+    let resizeTimer = null;
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         const { width, height } = entry.contentRect;
@@ -240,6 +251,18 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
         } catch {
           /* empty */
         }
+
+        // Debounced banner toggle on resize
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (!term || !printBanner) return;
+          const shouldShow = term.cols >= 62;
+          if (shouldShow !== bannerShown) {
+            term.reset();
+            commandRef.current = "";
+            printBanner(term);
+          }
+        }, 200);
       }
     });
 
