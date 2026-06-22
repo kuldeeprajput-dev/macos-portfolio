@@ -49,10 +49,34 @@ const SidebarNavigation = ({
 }) => (
   <aside
     className={`
-      ${isCompact ? "absolute" : "relative"} inset-y-0 left-0 w-48 bg-gray-50/90 backdrop-blur-md border-r border-gray-300/40 p-4 space-y-6 flex flex-col z-30 transition-transform duration-300 h-full
+      appletv-sidebar-aside ${isCompact ? "absolute" : "relative"} inset-y-0 left-0 w-48 bg-gray-50/90 backdrop-blur-md border-r border-gray-300/40 p-4 gap-6 flex flex-col z-30 transition-transform duration-300 h-full
       ${isSidebarOpen || !isCompact ? "translate-x-0" : "-translate-x-full"}
     `}
   >
+    <style>{`
+      .appletv-sidebar-scroll::-webkit-scrollbar {
+        width: 5px;
+      }
+      .appletv-sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .appletv-sidebar-scroll::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.22);
+        border-radius: 99px;
+      }
+      .appletv-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.35);
+      }
+      @container (max-height: 480px) {
+        .appletv-profile-switcher {
+          display: none !important;
+        }
+        .appletv-sidebar-aside {
+          padding-bottom: 8px !important;
+          gap: 12px !important;
+        }
+      }
+    `}</style>
     {/* macOS Search bar styling */}
     <div className="relative flex items-center bg-gray-200/50 border border-gray-300/20 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-blue-500/40 focus-within:bg-white transition-all shadow-inner">
       <Search className="w-3.5 h-3.5 text-gray-400 mr-2 shrink-0" />
@@ -65,7 +89,7 @@ const SidebarNavigation = ({
       />
     </div>
 
-    <div className="space-y-5 flex-1">
+    <div className="space-y-5 flex-1 overflow-y-auto select-none pr-1 appletv-sidebar-scroll">
       <NavigationGroup
         title="Apple TV"
         items={appleTvItems}
@@ -83,7 +107,7 @@ const SidebarNavigation = ({
     {/* Profile switcher at the bottom */}
     <div
       onClick={onProfileClick}
-      className="mt-auto pt-4 border-t border-[#d4d4d8]/40 flex items-center gap-2.5 px-1 select-none cursor-pointer group/profile hover:bg-[#e5e5eb]/40 p-1.5 rounded-xl transition-all active:scale-95"
+      className="appletv-profile-switcher mt-auto pt-4 border-t border-[#d4d4d8]/40 flex items-center gap-2.5 px-1 select-none cursor-pointer group/profile hover:bg-[#e5e5eb]/40 p-1.5 rounded-xl transition-all active:scale-95"
     >
       <div className="w-7 h-7 rounded-full overflow-hidden bg-transparent flex items-center justify-center text-zinc-600 text-[10px] font-black shrink-0 border border-[#d4d4d8]/40">
         {githubProfile?.avatar_url ? (

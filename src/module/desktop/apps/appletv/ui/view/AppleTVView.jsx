@@ -167,6 +167,7 @@ const AppleTVView = () => {
     <div
       ref={containerRef}
       className="flex flex-col h-full w-full bg-white rounded-xl overflow-hidden shadow-2xl border border-black/10 select-none text-gray-800 relative"
+      style={{ containerType: "size" }}
     >
       <PlayerOverlay
         activeVideo={activeVideo}
