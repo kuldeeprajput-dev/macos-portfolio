@@ -1,5 +1,6 @@
 import { ChevronLeft } from "lucide-react";
 import { Settings as SettingsIcon } from "lucide-react";
+import WindowControls from "@components/WindowControls";
 import SettingsWiFiSection from "../section/SettingsWiFiSection";
 import SettingsGeneralSection from "../section/SettingsGeneralSection";
 import SettingsAppearanceSection from "../section/SettingsAppearanceSection";

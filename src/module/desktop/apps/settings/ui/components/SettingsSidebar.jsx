@@ -11,6 +11,10 @@ const SettingsSidebar = ({
   isMobile,
   mobileView,
   setMobileView,
+  isSidebarOpen = true,
+  onCloseSidebar,
+  isNarrow = false,
+  hideHeader = false,
 }) => {
   if (isMobile) {
     return (
@@ -79,62 +83,79 @@ const SettingsSidebar = ({
   }
 
   return (
-    <div className="hidden @md:flex w-[240px] h-full shrink-0 bg-[#e8e8e8]/50 border-r border-black/10 flex-col">
-      <div className="window-header h-[52px] shrink-0 flex items-center px-4 cursor-default">
-        <WindowControls target="settings" />
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-4 thin-scrollbar">
+    <>
+      {isNarrow && isSidebarOpen && (
         <div
-          className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-colors border border-transparent ${activeTab === "Apple ID" ? "bg-black/5 border-black/5" : "hover:bg-black/5"}`}
-          onClick={() => setActiveTab("Apple ID")}
-        >
-          {isLoading ? (
-            <>
-              <div className="w-[42px] h-[42px] rounded-full bg-gray-300 animate-pulse shrink-0"></div>
-              <div className="flex-1 flex flex-col gap-1.5 justify-center">
-                <div className="h-3 w-20 bg-gray-300 animate-pulse rounded"></div>
-                <div className="h-2 w-28 bg-gray-300 animate-pulse rounded"></div>
-              </div>
-            </>
-          ) : githubData ? (
-            <>
-              <img
-                src={githubData.profile.avatar_url}
-                alt="Avatar"
-                className="w-[42px] h-[42px] rounded-full border border-gray-300 shadow-sm shrink-0"
-                draggable="false"
-              />
-              <div className="flex-1 overflow-hidden">
-                <h3 className="font-semibold text-[13px] text-gray-900 truncate leading-tight">
-                  {githubData.profile.name || githubData.profile.login}
-                </h3>
-                <p className="text-[11px] text-gray-500 truncate leading-tight mt-0.5">
-                  Apple ID, iCloud, Media
-                </p>
-              </div>
-            </>
-          ) : null}
-        </div>
+          onClick={onCloseSidebar}
+          className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-20"
+        />
+      )}
+      <div
+        className={`inset-y-0 left-0 z-30 shrink-0 h-full bg-gray-50 flex-col transition-all duration-300 ease-in-out ${
+          isNarrow ? "absolute bg-gray-50 shadow-lg border-r border-gray-200" : "relative border-r border-gray-200"
+        } ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} flex overflow-hidden`}
+        style={{ width: isNarrow ? "240px" : (isSidebarOpen ? "240px" : "0px") }}
+      >
+        <div className="w-[240px] h-full flex flex-col shrink-0">
+          {!hideHeader && (
+            <div className="window-header h-[52px] shrink-0 flex items-center px-4 cursor-default">
+              <WindowControls target="settings" />
+            </div>
+          )}
 
-        <div className="space-y-4">
-          {SIDEBAR_GROUPS.map((group, i) => (
-            <div key={i} className="space-y-[2px]">
-              {group.map((item) => (
-                <SidebarItem
-                  key={item.id}
-                  icon={item.icon}
-                  label={item.id}
-                  color={item.color}
-                  active={activeTab === item.id}
-                  onClick={() => setActiveTab(item.id)}
-                />
+          <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-4 thin-scrollbar">
+            <div
+              className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-colors border border-transparent ${activeTab === "Apple ID" ? "bg-black/5 border-black/5" : "hover:bg-black/5"}`}
+              onClick={() => setActiveTab("Apple ID")}
+            >
+              {isLoading ? (
+                <>
+                  <div className="w-[42px] h-[42px] rounded-full bg-gray-300 animate-pulse shrink-0"></div>
+                  <div className="flex-1 flex flex-col gap-1.5 justify-center">
+                    <div className="h-3 w-20 bg-gray-300 animate-pulse rounded"></div>
+                    <div className="h-2 w-28 bg-gray-300 animate-pulse rounded"></div>
+                  </div>
+                </>
+              ) : githubData ? (
+                <>
+                  <img
+                    src={githubData.profile.avatar_url}
+                    alt="Avatar"
+                    className="w-[42px] h-[42px] rounded-full border border-gray-300 shadow-sm shrink-0"
+                    draggable="false"
+                  />
+                  <div className="flex-1 overflow-hidden">
+                    <h3 className="font-semibold text-[13px] text-gray-900 truncate leading-tight">
+                      {githubData.profile.name || githubData.profile.login}
+                    </h3>
+                    <p className="text-[11px] text-gray-500 truncate leading-tight mt-0.5">
+                      Apple ID, iCloud, Media
+                    </p>
+                  </div>
+                </>
+              ) : null}
+            </div>
+
+            <div className="space-y-4">
+              {SIDEBAR_GROUPS.map((group, i) => (
+                <div key={i} className="space-y-[2px]">
+                  {group.map((item) => (
+                    <SidebarItem
+                      key={item.id}
+                      icon={item.icon}
+                      label={item.id}
+                      color={item.color}
+                      active={activeTab === item.id}
+                      onClick={() => setActiveTab(item.id)}
+                    />
+                  ))}
+                </div>
               ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
