@@ -11,6 +11,7 @@ const AppStoreSidebarSection = ({
   onProfileClick,
   isNarrow,
   isFirstLayout,
+  containerHeight,
 }) => (
   <>
     {isNarrow && isSidebarOpen && (
@@ -35,6 +36,7 @@ const AppStoreSidebarSection = ({
         githubProfile={githubProfile}
         onProfileClick={onProfileClick}
         isNarrow={isNarrow}
+        containerHeight={containerHeight}
       />
     </div>
   </>

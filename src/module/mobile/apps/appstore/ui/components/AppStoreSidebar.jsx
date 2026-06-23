@@ -25,7 +25,7 @@ const AppStoreSidebar = ({
   return (
     <aside
       className={`
-        absolute sm:relative inset-y-0 left-0 w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col z-30 transition-transform duration-300 h-full
+        absolute sm:relative inset-y-0 left-0 w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col z-30 transition-transform duration-300 h-full overflow-y-auto thin-scrollbar
       `}
     >
       <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0">

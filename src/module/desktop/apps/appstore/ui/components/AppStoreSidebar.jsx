@@ -22,9 +22,10 @@ const AppStoreSidebar = ({
   githubProfile,
   onProfileClick,
   isNarrow,
+  containerHeight = 620,
 }) => {
   return (
-    <aside className="w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col h-full shrink-0">
+    <aside className="w-52 bg-gray-50 border-r border-[#d1d1d1] p-4 space-y-6 flex flex-col h-full shrink-0 overflow-y-auto thin-scrollbar">
       <div className="relative flex items-center bg-gray-200/60 border border-gray-300/40 rounded-lg px-2.5 py-1.5 shrink-0">
         <Search className="w-4 h-4 text-gray-400 mr-2 shrink-0" />
         <input
@@ -60,30 +61,32 @@ const AppStoreSidebar = ({
       </div>
 
       {/* Profile switcher at the bottom */}
-      <button
-        onClick={onProfileClick}
-        className="mt-auto flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-left transition-colors cursor-pointer text-gray-600 hover:bg-gray-200/60 hover:text-gray-900 w-full select-none"
-      >
-        <div className="w-7 h-7 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-black shrink-0">
-          {githubProfile?.avatar_url ? (
-            <img
-              src={githubProfile.avatar_url}
-              alt={githubProfile.name || "Kunal"}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            "K"
-          )}
-        </div>
-        <div className="min-w-0">
-          <p className="text-[11px] font-bold text-gray-800 leading-none truncate">
-            {githubProfile?.name || "Kuldeep Rajput"}
-          </p>
-          <span className="text-[9px] font-medium text-gray-400 block mt-0.5">
-            @{githubProfile?.login || "kuldeeprajput-dev"}
-          </span>
-        </div>
-      </button>
+      {containerHeight >= 500 && (
+        <button
+          onClick={onProfileClick}
+          className="mt-auto flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold text-left transition-colors cursor-pointer text-gray-600 hover:bg-gray-200/60 hover:text-gray-900 w-full select-none"
+        >
+          <div className="w-7 h-7 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-black shrink-0">
+            {githubProfile?.avatar_url ? (
+              <img
+                src={githubProfile.avatar_url}
+                alt={githubProfile.name || "Kunal"}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              "K"
+            )}
+          </div>
+          <div className="min-w-0">
+            <p className="text-[11px] font-bold text-gray-800 leading-none truncate">
+              {githubProfile?.name || "Kuldeep Rajput"}
+            </p>
+            <span className="text-[9px] font-medium text-gray-400 block mt-0.5">
+              @{githubProfile?.login || "kuldeeprajput-dev"}
+            </span>
+          </div>
+        </button>
+      )}
     </aside>
   );
 };

@@ -13,6 +13,7 @@ const AppStoreSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(800);
+  const [containerHeight, setContainerHeight] = useState(620);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
   const [githubProfile, setGithubProfile] = useState(null);
@@ -21,8 +22,10 @@ const AppStoreSection = () => {
   useEffect(() => {
     if (typeof window === "undefined" || !containerRef.current) return;
 
-    const initialWidth = containerRef.current.getBoundingClientRect().width;
+    const rect = containerRef.current.getBoundingClientRect();
+    const initialWidth = rect.width;
     setContainerWidth(initialWidth);
+    setContainerHeight(rect.height);
     if (initialWidth < 800) {
       setIsSidebarOpen(false);
     } else {
@@ -32,6 +35,7 @@ const AppStoreSection = () => {
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         setContainerWidth(entry.contentRect.width);
+        setContainerHeight(entry.contentRect.height);
         setIsFirstLayout(false);
       }
     });
@@ -187,6 +191,7 @@ const AppStoreSection = () => {
           onProfileClick={() => setShowProfile(true)}
           isNarrow={isNarrow}
           isFirstLayout={isFirstLayout}
+          containerHeight={containerHeight}
         />
 
         <AppStoreContentSection
