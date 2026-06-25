@@ -40,7 +40,7 @@ const SafariTabBar = ({
       onPointerDown={(e) => e.stopPropagation()}
     >
       {/* Tabs — fill available space, shrink like a real browser */}
-      <div className="flex items-end min-w-0 flex-1">
+      <div className="flex items-end min-w-0 flex-1 h-full">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTabId;
           const isStartPage = tab.url === "safari://start";
@@ -104,23 +104,23 @@ const SafariTabBar = ({
             </div>
           );
         })}
-      </div>
 
-      {/* + button — aligned to bottom like tabs */}
-      <button
-        onClick={onNewTab}
-        disabled={isMaxTabsReached}
-        className={`flex-shrink-0 h-8 flex items-center justify-center px-1.5 ml-0.5 rounded-t-lg text-gray-600 transition-colors ${
-          isMaxTabsReached
-            ? "opacity-30 cursor-not-allowed"
-            : "hover:bg-black/10 cursor-pointer"
-        }`}
-        title={
-          isMaxTabsReached ? "Tab limit reached (Max 10)" : "Open a new tab"
-        }
-      >
-        <Plus size={14} />
-      </button>
+        {/* + button — aligned right beside the last tab */}
+        <button
+          onClick={onNewTab}
+          disabled={isMaxTabsReached}
+          className={`flex-shrink-0 h-7 w-7 mb-[2px] flex items-center justify-center ml-1.5 rounded-md text-gray-600 transition-colors ${
+            isMaxTabsReached
+              ? "opacity-30 cursor-not-allowed"
+              : "hover:bg-black/10 cursor-pointer"
+          }`}
+          title={
+            isMaxTabsReached ? "Tab limit reached (Max 10)" : "Open a new tab"
+          }
+        >
+          <Plus size={14} />
+        </button>
+      </div>
     </div>
   );
 };
