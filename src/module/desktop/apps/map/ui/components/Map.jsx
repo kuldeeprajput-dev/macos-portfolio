@@ -53,7 +53,7 @@ const Map = () => {
       >
         <div
           id="window-header"
-          className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 h-[52px] flex items-center justify-between text-xs text-gray-600 relative z-40 select-none cursor-default"
+          className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600 relative z-40 select-none cursor-default"
         >
           <div className="flex items-center gap-2">
             <WindowControls target="map" />

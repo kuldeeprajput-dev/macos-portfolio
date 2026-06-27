@@ -13,7 +13,7 @@ const WeatherHeader = ({
   return (
     <div
       id="window-header"
-      className="window-header shrink-0 flex items-center justify-between !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-0.5 z-20"
+      className="window-header shrink-0 flex items-center justify-between bg-gray-50 border-b border-[#d1d1d1] px-4 h-[44px] relative z-40 select-none cursor-default"
     >
       <div className="flex items-center gap-2">
         <WindowControls target="weather" />
