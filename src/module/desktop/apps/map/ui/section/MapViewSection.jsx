@@ -1,5 +1,4 @@
 import { forwardRef } from "react";
-import MapControls from "../components/MapControls";
 import MapCanvas from "../components/MapCanvas";
 
 const MapViewSection = forwardRef(
@@ -23,7 +22,6 @@ const MapViewSection = forwardRef(
       className="flex-1 flex flex-col min-w-0 bg-zinc-200 relative"
       onClick={onMapClick}
     >
-      <MapControls handleZoom={handleZoom} />
       <MapCanvas currentCity={currentCity} mapStyle={mapStyle} iframeSrc={iframeSrc} />
     </div>
   ),
