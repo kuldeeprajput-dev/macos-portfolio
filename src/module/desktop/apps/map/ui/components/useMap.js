@@ -10,7 +10,7 @@ const useMap = () => {
   const [activeTab, setActiveTab] = useState("explore");
   const [activeKey, setActiveKey] = useState("mumbai");
   const [searchQuery, setSearchQuery] = useState("");
-  const [zoomLevel, setZoomLevel] = useState(1);
+  const [zoomLevel, setZoomLevel] = useState(13);
   const [mapStyle, setMapStyle] = useState("standard");
   const [customPlace, setCustomPlace] = useState(null);
 
@@ -21,9 +21,9 @@ const useMap = () => {
 
   const handleZoom = (direction) => {
     if (direction === "in") {
-      setZoomLevel((prev) => Math.max(0.1, prev - 0.15));
+      setZoomLevel((prev) => Math.min(20, prev + 1));
     } else {
-      setZoomLevel((prev) => Math.min(4, prev + 0.15));
+      setZoomLevel((prev) => Math.max(1, prev - 1));
     }
   };
 
@@ -61,7 +61,7 @@ const useMap = () => {
 
         setCustomPlace(newPlace);
         setActiveKey("custom");
-        setZoomLevel(1);
+        setZoomLevel(13);
       } else {
         alert("Location not found. Try another search.");
       }
@@ -71,13 +71,8 @@ const useMap = () => {
     }
   };
 
-  const bboxWidth = currentCity.bboxWidth * zoomLevel;
-  const minLon = currentCity.lon - bboxWidth;
-  const maxLon = currentCity.lon + bboxWidth;
-  const minLat = currentCity.lat - bboxWidth * 0.6;
-  const maxLat = currentCity.lat + bboxWidth * 0.6;
-
-  const iframeSrc = `${openStreetMapBase}/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${currentCity.lat}%2C${currentCity.lon}`;
+  const mapType = mapStyle === "satellite" ? "k" : "m";
+  const iframeSrc = `https://maps.google.com/maps?q=${currentCity.lat},${currentCity.lon}&t=${mapType}&z=${zoomLevel}&ie=UTF8&iwloc=&output=embed`;
 
   const filteredKeys = Object.keys(PRESET_PLACES).filter((key) => {
     const city = PRESET_PLACES[key];

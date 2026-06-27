@@ -13,22 +13,22 @@ const Map = () => {
   const props = useMap();
 
   const containerRef = useRef(null);
-  const [containerWidth, setContainerWidth] = useState(800);
+  const [isNarrow, setIsNarrow] = useState(false);
+  const [isVeryNarrow, setIsVeryNarrow] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
     if (typeof window === "undefined" || !containerRef.current) return;
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        setContainerWidth(entry.contentRect.width);
+        const width = entry.contentRect.width;
+        setIsNarrow(width < 680);
+        setIsVeryNarrow(width < 500);
       }
     });
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
-
-  const isNarrow = containerWidth < 680;
-  const isVeryNarrow = containerWidth < 500;
 
   useEffect(() => {
     if (isNarrow) {
@@ -53,7 +53,7 @@ const Map = () => {
       >
         <div
           id="window-header"
-          className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600"
+          className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 h-[52px] flex items-center justify-between text-xs text-gray-600 relative z-40 select-none cursor-default"
         >
           <div className="flex items-center gap-2">
             <WindowControls target="map" />
