@@ -71,6 +71,69 @@ const useMap = () => {
     }
   };
 
+  const handleLocateMe = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await fetch(
+            `${nominatimApiBase}/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          
+          let name = "Current Location";
+          if (data && data.address) {
+            name = data.address.city || data.address.town || data.address.village || data.address.county || name;
+          }
+          
+          const newPlace = {
+            name: name,
+            region: data?.address?.state || "Local",
+            desc: data?.display_name || "Your precise location.",
+            lat: latitude,
+            lon: longitude,
+            bboxWidth: 0.1,
+            weather: `${Math.floor(Math.random() * 15) + 15}°C • Current Location`,
+            landmarks: ["Your Location", "Device GPS"],
+            steps: [
+              `Coordinates: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}.`,
+              "You are here."
+            ],
+          };
+
+          setCustomPlace(newPlace);
+          setActiveKey("custom");
+          setZoomLevel(15);
+        } catch (err) {
+          console.error(err);
+          // Fallback if reverse geocoding fails
+          setCustomPlace({
+            name: "Current Location",
+            region: "Unknown",
+            desc: "Your precise location.",
+            lat: latitude,
+            lon: longitude,
+            bboxWidth: 0.1,
+            weather: `20°C • Current Location`,
+            landmarks: ["Device GPS"],
+            steps: ["You are here."],
+          });
+          setActiveKey("custom");
+          setZoomLevel(15);
+        }
+      },
+      (error) => {
+        console.error(error);
+        alert("Unable to retrieve your location. Please check browser permissions.");
+      }
+    );
+  };
+
   const mapType = mapStyle === "satellite" ? "k" : "m";
   const iframeSrc = `https://maps.google.com/maps?q=${currentCity.lat},${currentCity.lon}&t=${mapType}&z=${zoomLevel}&ie=UTF8&iwloc=&output=embed`;
 
@@ -101,6 +164,7 @@ const useMap = () => {
     setCustomPlace,
     handleZoom,
     handleSearch,
+    handleLocateMe,
   };
 };
 

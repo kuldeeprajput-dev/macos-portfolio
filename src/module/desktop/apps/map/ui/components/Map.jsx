@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import { Compass, PanelLeft } from "lucide-react";
+import { Compass, PanelLeft, MapPin } from "lucide-react";
 import useMap from "./useMap";
 import MapSection from "../section/MapSection";
 import MapAboutModal from "./MapAboutModal";
@@ -73,6 +73,15 @@ const Map = () => {
               </div>
             )}
           </div>
+
+          <button
+            onClick={() => props.handleLocateMe()}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-zinc-200/60 transition-colors cursor-pointer"
+            title="Find My Location"
+          >
+            <MapPin size={14} className="text-red-500 shrink-0 fill-red-500/20" />
+            <span className="font-bold text-gray-700 text-xs">{props.currentCity?.name || "Current Location"}</span>
+          </button>
 
           <div className="w-16 flex justify-end">
             <span className="text-[10px] bg-blue-500 text-white px-2 py-0.5 rounded font-bold">
