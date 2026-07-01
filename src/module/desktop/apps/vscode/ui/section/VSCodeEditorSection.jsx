@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Globe, RefreshCw, X } from "lucide-react";
 import VSCodeTabs from "../components/VSCodeTabs";
 import VSCodeEditor from "../components/VSCodeEditor";
+import VSCodeTerminalSection from "./VSCodeTerminalSection";
 
 const VSCodeEditorSection = ({
   openFiles,
@@ -14,6 +15,13 @@ const VSCodeEditorSection = ({
   isNarrow,
   showPreview,
   setShowPreview,
+  isTerminalOpen,
+  onToggleTerminal,
+  terminalHistory,
+  terminalInput,
+  setTerminalInput,
+  terminalBottomRef,
+  runCommand,
 }) => {
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -35,7 +43,7 @@ const VSCodeEditorSection = ({
       />
 
       <div className="flex-1 flex min-h-0 relative divide-x divide-[#e5e5e5]">
-        {/* Code Editor */}
+        {/* Code Editor & Terminal Drawer */}
         <div className="flex-1 flex flex-col min-h-0 h-full relative">
           <VSCodeEditor
             files={files}
@@ -43,6 +51,16 @@ const VSCodeEditorSection = ({
             openTabs={openFiles}
             modifiedFiles={modifiedFiles}
             onContentChange={onContentChange}
+            isNarrow={isNarrow}
+          />
+          <VSCodeTerminalSection
+            isTerminalOpen={isTerminalOpen}
+            onToggleTerminal={onToggleTerminal}
+            terminalHistory={terminalHistory}
+            terminalInput={terminalInput}
+            setTerminalInput={setTerminalInput}
+            terminalBottomRef={terminalBottomRef}
+            runCommand={runCommand}
             isNarrow={isNarrow}
           />
         </div>

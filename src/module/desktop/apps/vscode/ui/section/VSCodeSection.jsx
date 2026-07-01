@@ -1,7 +1,6 @@
 import VSCodeActivityBarSection from "./VSCodeActivityBarSection";
 import VSCodeSidebarSection from "./VSCodeSidebarSection";
 import VSCodeEditorSection from "./VSCodeEditorSection";
-import VSCodeTerminalSection from "./VSCodeTerminalSection";
 import VSCodeStatusBarSection from "./VSCodeStatusBarSection";
 
 const languageMap = {
@@ -113,20 +112,16 @@ const VSCodeSection = ({
             isNarrow={isNarrow}
             showPreview={showPreview}
             setShowPreview={setShowPreview}
+            isTerminalOpen={isTerminalOpen}
+            onToggleTerminal={onToggleTerminal}
+            terminalHistory={terminalHistory}
+            terminalInput={terminalInput}
+            setTerminalInput={setTerminalInput}
+            terminalBottomRef={terminalBottomRef}
+            runCommand={runCommand}
           />
         </div>
       </div>
-
-      <VSCodeTerminalSection
-        isTerminalOpen={isTerminalOpen}
-        onToggleTerminal={onToggleTerminal}
-        terminalHistory={terminalHistory}
-        terminalInput={terminalInput}
-        setTerminalInput={setTerminalInput}
-        terminalBottomRef={terminalBottomRef}
-        runCommand={runCommand}
-        isNarrow={isNarrow}
-      />
 
       <VSCodeStatusBarSection
         activeFile={activeFile}
