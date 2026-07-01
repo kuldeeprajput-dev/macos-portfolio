@@ -121,6 +121,18 @@ const useWindowsStore = create(
         win.zIndex = INITIAL_Z_INDEX;
         win.data = null;
       }),
+    closeAllWindows: () =>
+      set((state) => {
+        Object.keys(state.windows).forEach((key) => {
+          const win = state.windows[key];
+          if (win) {
+            win.isOpen = false;
+            win.isMinimized = false;
+            win.zIndex = INITIAL_Z_INDEX;
+            win.data = null;
+          }
+        });
+      }),
     setWindowData: (windowKey, data) =>
       set((state) => {
         const win = state.windows[windowKey];

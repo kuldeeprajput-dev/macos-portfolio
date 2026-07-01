@@ -15,26 +15,26 @@
 }
 
 @media (max-width: 767px) {
-  #finder,
-  #safari,
-  #terminal,
-  #contact,
-  #photos,
-  #resume,
-  #txtfile,
-  #imgfile,
-  #settings,
-  #notes,
-  #messages,
-  #appletv,
-  #call,
-  #appstore,
-  #calendar,
-  #chrome,
-  #vscode,
-  #postman,
-  #telegram,
-  #music {
+  #finder.window-visible,
+  #safari.window-visible,
+  #terminal.window-visible,
+  #contact.window-visible,
+  #photos.window-visible,
+  #resume.window-visible,
+  #txtfile.window-visible,
+  #imgfile.window-visible,
+  #settings.window-visible,
+  #notes.window-visible,
+  #messages.window-visible,
+  #appletv.window-visible,
+  #call.window-visible,
+  #appstore.window-visible,
+  #calendar.window-visible,
+  #chrome.window-visible,
+  #vscode.window-visible,
+  #postman.window-visible,
+  #telegram.window-visible,
+  #music.window-visible {
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;

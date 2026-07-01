@@ -6,6 +6,7 @@ import Desktop from "@module/desktop";
 import Mobile from "@module/mobile";
 import gsap from "gsap";
 import { useState, useEffect } from "react";
+import useWindowsStore from "@store/window";
 
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
@@ -49,6 +50,8 @@ export default function Page() {
     return false;
   });
 
+  const closeAllWindows = useWindowsStore((state) => state.closeAllWindows);
+
   useEffect(() => {
     setIsMounted(true);
     const checkMobile = () => {
@@ -58,6 +61,12 @@ export default function Page() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      closeAllWindows();
+    }
+  }, [isMobile, closeAllWindows, isMounted]);
 
   if (!isMounted) {
     return <div className="fixed inset-0 bg-black z-99999" suppressHydrationWarning={true} />;

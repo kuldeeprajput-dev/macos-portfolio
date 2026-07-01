@@ -47,7 +47,7 @@ const windowWrapper = (Component, windowKey) => {
     const zIndex = baseZIndex;
     const ref = useRef(null);
     const prevOpenRef = useRef(false);
-    const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(() => (typeof window !== "undefined" ? window.innerWidth < 768 : false));
 
     useEffect(() => {
       const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -93,6 +93,19 @@ const windowWrapper = (Component, windowKey) => {
         setShouldRender(true);
       }
       checkDockCollision();
+    }, [isOpen, isMinimized, isMobile]);
+
+    useEffect(() => {
+      if (!isMobile) return;
+      const isActive = isOpen && !isMinimized;
+      if (isActive) {
+        setShouldRender(true);
+      } else {
+        const timer = setTimeout(() => {
+          setShouldRender(false);
+        }, 450);
+        return () => clearTimeout(timer);
+      }
     }, [isOpen, isMinimized, isMobile]);
 
     useGSAP(() => {
@@ -205,7 +218,7 @@ const windowWrapper = (Component, windowKey) => {
       background: "transparent",
       flexDirection: "column",
       overflow: "hidden",
-      display: "flex",
+      display: shouldRender ? "flex" : "none",
       opacity: isOpen ? 1 : 0,
       pointerEvents: isOpen ? "auto" : "none",
       transform: isOpen ? "translateY(0)" : "translateY(100%)",
@@ -345,7 +358,7 @@ const windowWrapper = (Component, windowKey) => {
         id={windowKey}
         ref={ref}
         style={isMobile ? mobileStyles : desktopStyles}
-        className={`${isMobile ? "" : "absolute"} ${windows[windowKey]?.isMaximized ? "maximized" : ""}`}
+        className={`${isMobile ? "" : "absolute"} ${windows[windowKey]?.isMaximized ? "maximized" : ""} ${shouldRender ? "window-visible" : "window-hidden"}`}
         onPointerDown={() => {
           if (!isMobile) focusWindow(windowKey);
         }}
