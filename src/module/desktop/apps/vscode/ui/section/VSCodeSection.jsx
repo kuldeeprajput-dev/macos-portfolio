@@ -47,6 +47,8 @@ const VSCodeSection = ({
   showNotification,
   isNarrow,
   containerWidth,
+  showPreview,
+  setShowPreview,
 }) => {
   const ext = activeFile?.split(".").pop();
   const language = languageMap[ext] || "Plain Text";
@@ -109,6 +111,8 @@ const VSCodeSection = ({
             modifiedFiles={modifiedFiles}
             onContentChange={handleContentChange}
             isNarrow={isNarrow}
+            showPreview={showPreview}
+            setShowPreview={setShowPreview}
           />
         </div>
       </div>

@@ -1,67 +1,169 @@
 export const INITIAL_FILES = {
   "src/App.jsx": `import React from 'react';
-import Header from './components/Header';
-import Card from './components/Card';
+import Hero from './components/Hero';
+import Projects from './components/Projects';
+import AboutMe from './components/AboutMe';
 
-export default function App() {
+export default function Portfolio() {
   return (
-    <div className="portfolio min-h-screen bg-[#1e1e1e] text-white">
-      <Header title="Kuldeep Rajput" />
-      <main className="max-w-4xl mx-auto p-8 grid gap-6">
-        <Card title="Projects" desc="Interactive macOS Portfolio & web apps" />
-        <Card title="Skills" desc="React, Next.js, Tailwind CSS, Node.js" />
+    <div className="portfolio min-h-screen bg-[#0a0a0a] text-zinc-100 font-sans selection:bg-blue-500/30">
+      {/* Navigation Header */}
+      <header className="sticky top-0 z-50 w-full py-4 border-b border-zinc-900 bg-[#0a0a0a]/80 backdrop-blur-md px-8 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" />
+          <span className="font-bold text-sm tracking-tight text-white uppercase">Kuldeep Rajput</span>
+        </div>
+        <nav className="flex gap-6 text-xs font-semibold text-zinc-400">
+          <a href="#projects" className="hover:text-white transition-colors">Projects</a>
+          <a href="#about" className="hover:text-white transition-colors">About</a>
+          <a href="#contact" className="hover:text-white transition-colors">Collaborate</a>
+        </nav>
+      </header>
+
+      {/* Main Body */}
+      <main className="max-w-5xl mx-auto px-6 py-12 space-y-24">
+        <Hero />
+        <Projects />
+        <AboutMe />
       </main>
+
+      {/* Footer */}
+      <footer className="py-8 border-t border-zinc-900 text-center text-xs text-zinc-500">
+        <p>© 2026 Kuldeep Rajput. Built with Next.js, React & Tailwind CSS.</p>
+      </footer>
     </div>
   );
 }`,
-  "src/components/Header.jsx": `import React from 'react';
+  "src/components/Hero.jsx": `import React from 'react';
 
-export default function Header({ title }) {
+export default function Hero() {
   return (
-    <header className="w-full py-6 border-b border-zinc-800 bg-black/20 backdrop-blur-md px-8 flex justify-between items-center">
-      <h1 className="text-xl font-bold tracking-tight text-white">{title}</h1>
-      <nav className="flex gap-4 text-xs font-semibold text-zinc-400">
-        <a href="#projects" className="hover:text-white transition-colors">Projects</a>
-        <a href="#about" className="hover:text-white transition-colors">About</a>
-      </nav>
-    </header>
+    <section className="py-12 space-y-6">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider">
+        🚀 Software Engineer
+      </div>
+      <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
+        I build modern, scalable web applications
+      </h1>
+      <p className="text-base text-zinc-400 leading-relaxed max-w-2xl">
+        I am <span className="text-white font-medium">Kuldeep Rajput</span>. I design high-performance full-stack architectures and robust AI integrations using Next.js, React, and Tailwind CSS.
+      </p>
+      <div className="flex flex-wrap gap-4 pt-2">
+        <a 
+          href="https://cal.com/kuldeep-kd6ity" 
+          target="_blank" 
+          className="px-5 py-2.5 bg-white text-black hover:bg-zinc-200 rounded-xl text-xs font-bold transition-all shadow-lg active:scale-95"
+        >
+          Schedule Call
+        </a>
+        <a 
+          href="mailto:contact.kuldeeprajput@gmail.com" 
+          className="px-5 py-2.5 bg-zinc-900 text-white hover:bg-zinc-800 border border-zinc-800 rounded-xl text-xs font-bold transition-all active:scale-95"
+        >
+          Send Email
+        </a>
+      </div>
+    </section>
   );
 }`,
-  "src/components/Card.jsx": `import React from 'react';
+  "src/components/Projects.jsx": `import React from 'react';
 
-export default function Card({ title, desc }) {
+const SELECTED_PROJECTS = [
+  {
+    title: "NEWTUBE",
+    desc: "A modern, full-stack video sharing platform built with Next.js 15, Mux, and tRPC.",
+    tech: ["Next.js 15", "Mux", "tRPC", "PostgreSQL"],
+    rating: "4.9"
+  },
+  {
+    title: "DOCS EDITOR",
+    desc: "A powerful, real-time collaborative document editor built with modern web technologies.",
+    tech: ["React", "Liveblocks", "TipTap Editor", "Next.js"],
+    rating: "4.8"
+  },
+  {
+    title: "RESUME ANALYZER",
+    desc: "AI-powered tool that evaluates resumes against ATS systems and provides actionable feedback.",
+    tech: ["Gemini AI", "Next.js", "Tailwind CSS", "PDF Parser"],
+    rating: "4.9"
+  },
+  {
+    title: "FREE COURSE",
+    desc: "AI-powered learning discovery platform that finds free courses across the web.",
+    tech: ["Next.js", "AI Search Engine", "Tailwind CSS"],
+    rating: "4.7"
+  }
+];
+
+export default function Projects() {
   return (
-    <div className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-blue-500 transition-colors shadow-lg">
-      <h3 className="text-base font-bold text-white mb-2">{title}</h3>
-      <p className="text-sm text-zinc-400 leading-relaxed">{desc}</p>
-    </div>
+    <section id="projects" className="space-y-8">
+      <div>
+        <h2 className="text-xl font-bold tracking-tight text-white">Selected Projects</h2>
+        <p className="text-xs text-zinc-500 mt-1">Digital creations focusing on speed, performance, and user experience.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {SELECTED_PROJECTS.map((p, i) => (
+          <div key={i} className="p-6 bg-zinc-950 border border-zinc-900 rounded-2xl hover:border-zinc-700 transition-colors duration-300 space-y-4">
+            <div className="flex justify-between items-start">
+              <h3 className="text-sm font-extrabold text-white tracking-widest uppercase">{p.title}</h3>
+              <span className="text-[10px] bg-zinc-900 border border-zinc-800 text-zinc-400 px-2 py-0.5 rounded font-semibold">★ {p.rating}</span>
+            </div>
+            <p className="text-xs text-zinc-400 leading-relaxed min-h-[40px]">{p.desc}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {p.tech.map((t, idx) => (
+                <span key={idx} className="text-[9px] bg-zinc-900 text-zinc-500 px-2 py-0.5 rounded border border-zinc-800/50">{t}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }`,
-  "src/hooks/useWeather.js": `import { useState, useEffect } from 'react';
+  "src/components/AboutMe.jsx": `import React from 'react';
 
-export default function useWeather(city = 'Delhi') {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function AboutMe() {
+  return (
+    <section id="about" className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t border-zinc-900">
+      <div className="space-y-3">
+        <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Education</h3>
+        <h4 className="text-sm font-bold text-white uppercase">Bachelor of Computer Applications</h4>
+        <p className="text-xs text-zinc-400 leading-relaxed">
+          Specialized in software engineering and modern web architectures, focusing on scalable product development.
+        </p>
+      </div>
 
-  useEffect(() => {
-    // Simulated fetch call
-    const timer = setTimeout(() => {
-      setData({
-        temp: 36,
-        humidity: 62,
-        wind: 12,
-        condition: 'Haze'
-      });
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [city]);
+      <div className="space-y-3">
+        <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Focus & Vision</h3>
+        <h4 className="text-sm font-bold text-white uppercase">Clean Architecture & AI</h4>
+        <p className="text-xs text-zinc-400 leading-relaxed">
+          Prioritizing performance, clean architecture, and exploring the intersection of AI integration with web interactivity.
+        </p>
+      </div>
 
-  return { data, loading };
+      <div className="space-y-3" id="contact">
+        <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Social Channels</h3>
+        <h4 className="text-sm font-bold text-white uppercase">Let's Connect</h4>
+        <div className="flex flex-col gap-2 pt-1">
+          <a href="https://github.com/kuldeeprajput-dev" target="_blank" className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5">
+            📁 GitHub /kuldeeprajput-dev
+          </a>
+          <a href="https://www.linkedin.com/in/kuldeepdotcom/" target="_blank" className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5">
+            💼 LinkedIn /in/kuldeepdotcom
+          </a>
+          <a href="https://x.com/kuldeepdotcom" target="_blank" className="text-xs text-zinc-400 hover:text-white flex items-center gap-1.5">
+            🐦 Twitter @kuldeepdotcom
+          </a>
+        </div>
+      </div>
+    </section>
+  );
 }`,
   "src/index.css": `:root {
   --primary: #007acc;
-  --background: #1e1e1e;
+  --background: #0a0a0a;
 }
 
 body {
@@ -83,12 +185,12 @@ module.exports = {
   plugins: [],
 }`,
   "package.json": `{
-  "name": "macos-portfolio",
+  "name": "kuldeep-portfolio-v2",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "next",
+    "dev": "next dev",
     "build": "next build"
   },
   "dependencies": {
@@ -103,27 +205,32 @@ module.exports = {
     "module": "commonjs",
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"],
-      "@hooks/*": ["hooks/*"]
+      "@components/*": ["components/*"]
     }
   }
 }`,
   ".env": `NEXT_PUBLIC_GROQ_API_KEY=gsk_mock_key_12345
 PORT=3000
 NODE_ENV=development`,
-  "README.md": `# macOS Portfolio Simulation
+  "README.md": `# Kuldeep Rajput - Portfolio
 
-This is an interactive macOS desktop portfolio simulation built with React, Vite, Tailwind CSS, and GSAP.
+This is my personal developer portfolio built with React, Next.js, and Tailwind CSS. It highlights my full-stack web applications, tech stack, and digital writing.
 
-## Features
-- Safari browser with interactive search and bookmark tabs
-- Fully draggable and resizable windows
-- Integrated VS Code editor (you are here!)
+## Tech Stack
+- **Frontend Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS (Vanilla styling)
+- **AI Integrations:** Gemini & OpenAI SDKs
+- **Deployment:** Vercel
 
-## Get Started
-Run the dev server:
+## Run Project Locally
+Install dependencies:
 \`\`\`bash
-bun run dev
+npm install
+\`\`\`
+
+Run local dev server:
+\`\`\`bash
+npm run dev
 \`\`\`
 `,
 };

@@ -5,6 +5,7 @@ const useVSCode = () => {
   const [files, setFiles] = useState(INITIAL_FILES);
   const [activeFile, setActiveFile] = useState("src/App.jsx");
   const [openTabs, setOpenTabs] = useState(["src/App.jsx"]);
+  const [showPreview, setShowPreview] = useState(true);
   const [activeSidebarTab, setActiveSidebarTab] = useState("explorer");
   const [explorerExpanded, setExplorerExpanded] = useState({
     src: true,
@@ -367,6 +368,8 @@ const useVSCode = () => {
     setFiles,
     activeFile,
     openTabs,
+    showPreview,
+    setShowPreview,
     activeSidebarTab,
     setActiveSidebarTab,
     explorerExpanded,
