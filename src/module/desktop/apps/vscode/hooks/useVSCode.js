@@ -201,7 +201,7 @@ const useVSCode = () => {
           output = [args.join(" ") || ""];
           break;
         case "pwd":
-          output = ["/Users/kuldeep/workspace/macos-portfolio"];
+          output = ["/Users/kuldeep/workspace/portfolio"];
           break;
         case "whoami":
           output = ["kuldeep"];
@@ -224,7 +224,7 @@ const useVSCode = () => {
             output = ["10.9.2"];
           } else if (args[0] === "run" && args[1] === "dev") {
             output = [
-              "> macos-portfolio@1.0.0 dev",
+              "> portfolio@1.0.0 dev",
               "> next dev",
               "",
               "  ▲ Next.js 16.2.6",

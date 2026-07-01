@@ -99,7 +99,7 @@ const VSCodeExplorerPanel = ({
     <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
       <div className="flex items-center gap-1.5 py-1.5 px-2 text-[11px] font-bold text-[#424242] shrink-0">
         <ChevronDown size={12} />
-        <span>MACOS-PORTFOLIO</span>
+        <span>PORTFOLIO</span>
       </div>
       <FileTree
         files={files}
