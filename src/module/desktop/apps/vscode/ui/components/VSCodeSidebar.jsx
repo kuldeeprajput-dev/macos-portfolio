@@ -257,12 +257,13 @@ const VSCodeSidebar = ({
   onCommit,
   onToggleExtension,
   containerWidth,
+  sidebarWidth,
 }) => {
   if (!activeSidebarTab) return null;
 
   return (
     <div
-      style={{ width: containerWidth && containerWidth < 500 ? "160px" : "224px" }}
+      style={{ width: `${sidebarWidth}px`, maxWidth: "50%" }}
       className="bg-[#f3f3f3] border-r border-[#e5e5e5] flex flex-col shrink-0 min-w-0"
     >
       {activeSidebarTab === "explorer" && (

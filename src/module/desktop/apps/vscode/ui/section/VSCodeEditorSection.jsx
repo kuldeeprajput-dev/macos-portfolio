@@ -22,6 +22,10 @@ const VSCodeEditorSection = ({
   setTerminalInput,
   terminalBottomRef,
   runCommand,
+  previewWidth,
+  setPreviewWidth,
+  terminalHeight,
+  setTerminalHeight,
 }) => {
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -53,6 +57,33 @@ const VSCodeEditorSection = ({
             onContentChange={onContentChange}
             isNarrow={isNarrow}
           />
+
+          {/* Draggable Horizontal Divider for Terminal */}
+          {isTerminalOpen && (
+            <div
+              className="h-[4px] hover:h-[6px] bg-transparent hover:bg-[#007acc]/30 active:bg-[#007acc] cursor-row-resize transition-all shrink-0 select-none z-20 -my-[2px]"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                const startY = e.clientY;
+                const startHeight = terminalHeight;
+
+                const handleMouseMove = (moveEvent) => {
+                  const deltaY = moveEvent.clientY - startY;
+                  const newHeight = Math.max(80, Math.min(350, startHeight - deltaY));
+                  setTerminalHeight(newHeight);
+                };
+
+                const handleMouseUp = () => {
+                  window.removeEventListener("mousemove", handleMouseMove);
+                  window.removeEventListener("mouseup", handleMouseUp);
+                };
+
+                window.addEventListener("mousemove", handleMouseMove);
+                window.addEventListener("mouseup", handleMouseUp);
+              }}
+            />
+          )}
+
           <VSCodeTerminalSection
             isTerminalOpen={isTerminalOpen}
             onToggleTerminal={onToggleTerminal}
@@ -62,12 +93,42 @@ const VSCodeEditorSection = ({
             terminalBottomRef={terminalBottomRef}
             runCommand={runCommand}
             isNarrow={isNarrow}
+            terminalHeight={terminalHeight}
           />
         </div>
 
+        {/* Draggable Vertical Divider for Live Preview */}
+        {showSplitPreview && (
+          <div
+            className="w-[4px] hover:w-[6px] bg-transparent hover:bg-[#007acc]/30 active:bg-[#007acc] cursor-col-resize transition-all shrink-0 select-none z-20 -mx-[2px]"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              const startX = e.clientX;
+              const startWidth = previewWidth;
+
+              const handleMouseMove = (moveEvent) => {
+                const deltaX = moveEvent.clientX - startX;
+                const newWidth = Math.max(200, Math.min(750, startWidth - deltaX));
+                setPreviewWidth(newWidth);
+              };
+
+              const handleMouseUp = () => {
+                window.removeEventListener("mousemove", handleMouseMove);
+                window.removeEventListener("mouseup", handleMouseUp);
+              };
+
+              window.addEventListener("mousemove", handleMouseMove);
+              window.addEventListener("mouseup", handleMouseUp);
+            }}
+          />
+        )}
+
         {/* Live Preview Panel */}
         {showSplitPreview && (
-          <div className="w-[360px] md:w-[420px] lg:w-[480px] xl:w-[540px] flex flex-col shrink-0 bg-[#f8f8f8] h-full">
+          <div
+            style={{ width: `${previewWidth}px`, maxWidth: "60%" }}
+            className="flex flex-col shrink-0 bg-[#f8f8f8] h-full"
+          >
             {/* Toolbar / Address Bar Header */}
             <div className="h-[34px] bg-[#f3f3f3] border-b border-[#e5e5e5] px-3 flex items-center justify-between shrink-0 select-none">
               <div className="flex items-center gap-2">

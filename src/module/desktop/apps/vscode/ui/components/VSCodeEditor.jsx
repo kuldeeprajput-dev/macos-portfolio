@@ -1,10 +1,17 @@
-import { useRef, useEffect, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { FileText, ChevronRight } from "lucide-react";
 import VSCodeFileIcon from "./VSCodeFileIcon";
+
+// Syntax highlighter cache to prevent re-highlighting identical lines
+const highlightCache = new Map();
 
 // Syntax highlighter for JS/JSX/CSS/HTML (Light Theme)
 const highlight = (code) => {
   if (!code) return " ";
+
+  if (highlightCache.has(code)) {
+    return highlightCache.get(code);
+  }
 
   // Escape HTML tags to prevent execution/parsing bugs
   let html = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -24,6 +31,7 @@ const highlight = (code) => {
     return match;
   });
 
+  highlightCache.set(code, html);
   return html;
 };
 
@@ -89,6 +97,24 @@ const VSCodeEditor = ({
   const textareaRef = useRef(null);
   const preRef = useRef(null);
 
+  // Local state for fast typing
+  const [localVal, setLocalVal] = useState("");
+
+  // Sync local content when active file changes or files changes from parent
+  useEffect(() => {
+    setLocalVal(files[activeFile] || "");
+  }, [activeFile, files]);
+
+  // Debounced propagation to parent files state to reduce global re-renders
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localVal !== (files[activeFile] || "")) {
+        onContentChange(localVal);
+      }
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [localVal, activeFile, onContentChange, files]);
+
   // Sync scroll between textarea overlay and pre block underneath
   const handleScroll = () => {
     if (textareaRef.current && preRef.current) {
@@ -126,8 +152,7 @@ const VSCodeEditor = ({
     );
   }
 
-  const fileContent = files[activeFile] || "";
-  const lines = fileContent.split("\n");
+  const lines = localVal.split("\n");
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
@@ -163,8 +188,8 @@ const VSCodeEditor = ({
           {/* Transparent Textarea Overlay */}
           <textarea
             ref={textareaRef}
-            value={fileContent}
-            onChange={(e) => onContentChange(e.target.value)}
+            value={localVal}
+            onChange={(e) => setLocalVal(e.target.value)}
             onScroll={handleScroll}
             className="absolute inset-0 w-full h-full bg-transparent text-transparent caret-[#333333] py-3 border-none outline-none resize-none font-mono text-[12px] select-text overflow-y-auto selection:bg-[#add6ff] leading-5"
             style={{
@@ -179,7 +204,7 @@ const VSCodeEditor = ({
         </div>
 
         {/* Minimap */}
-        <Minimap content={fileContent} isNarrow={isNarrow} />
+        <Minimap content={localVal} isNarrow={isNarrow} />
 
         {/* Unsaved changes badge */}
         {modifiedFiles[activeFile] && (

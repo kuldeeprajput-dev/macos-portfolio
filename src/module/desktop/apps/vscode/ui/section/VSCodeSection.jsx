@@ -48,6 +48,12 @@ const VSCodeSection = ({
   containerWidth,
   showPreview,
   setShowPreview,
+  sidebarWidth,
+  setSidebarWidth,
+  previewWidth,
+  setPreviewWidth,
+  terminalHeight,
+  setTerminalHeight,
 }) => {
   const ext = activeFile?.split(".").pop();
   const language = languageMap[ext] || "Plain Text";
@@ -98,7 +104,34 @@ const VSCodeSection = ({
           }}
           isNarrow={isNarrow}
           containerWidth={containerWidth}
+          sidebarWidth={sidebarWidth}
         />
+
+        {/* Draggable Vertical Divider for Sidebar */}
+        {activeSidebarTab && !isNarrow && (
+          <div
+            className="w-[4px] hover:w-[6px] bg-transparent hover:bg-[#007acc]/30 active:bg-[#007acc] cursor-col-resize transition-all shrink-0 select-none z-20 -mx-[2px]"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              const startX = e.clientX;
+              const startWidth = sidebarWidth;
+
+              const handleMouseMove = (moveEvent) => {
+                const deltaX = moveEvent.clientX - startX;
+                const newWidth = Math.max(140, Math.min(400, startWidth + deltaX));
+                setSidebarWidth(newWidth);
+              };
+
+              const handleMouseUp = () => {
+                window.removeEventListener("mousemove", handleMouseMove);
+                window.removeEventListener("mouseup", handleMouseUp);
+              };
+
+              window.addEventListener("mousemove", handleMouseMove);
+              window.addEventListener("mouseup", handleMouseUp);
+            }}
+          />
+        )}
 
         <div className="flex-1 flex flex-col min-w-0 bg-white">
           <VSCodeEditorSection
@@ -119,6 +152,10 @@ const VSCodeSection = ({
             setTerminalInput={setTerminalInput}
             terminalBottomRef={terminalBottomRef}
             runCommand={runCommand}
+            previewWidth={previewWidth}
+            setPreviewWidth={setPreviewWidth}
+            terminalHeight={terminalHeight}
+            setTerminalHeight={setTerminalHeight}
           />
         </div>
       </div>

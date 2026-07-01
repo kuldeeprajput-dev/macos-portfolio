@@ -18,6 +18,7 @@ const VSCodeSidebarSection = ({
   onToggleExtension,
   isNarrow,
   containerWidth,
+  sidebarWidth,
 }) => (
   <VSCodeSidebar
     activeSidebarTab={activeSidebar}
@@ -36,6 +37,7 @@ const VSCodeSidebarSection = ({
     onCommit={onCommit}
     onToggleExtension={onToggleExtension}
     containerWidth={containerWidth}
+    sidebarWidth={sidebarWidth}
   />
 );
 

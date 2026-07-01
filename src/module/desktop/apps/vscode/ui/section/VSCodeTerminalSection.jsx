@@ -9,11 +9,15 @@ const VSCodeTerminalSection = ({
   terminalBottomRef,
   runCommand,
   isNarrow,
+  terminalHeight,
 }) => {
   if (!isTerminalOpen) return null;
 
   return (
-    <div className="h-44 bg-[#ffffff] border-t border-[#e5e5e5] flex flex-col shrink-0 select-none">
+    <div
+      style={{ height: `${terminalHeight}px` }}
+      className="bg-[#ffffff] border-t border-[#e5e5e5] flex flex-col shrink-0 select-none"
+    >
       <div className="bg-[#f3f3f3] px-4 py-1.5 border-b border-[#e5e5e5] flex items-center justify-between text-[11px] text-[#333333]">
         <div className="flex items-center gap-4 font-semibold">
           {!isNarrow && (

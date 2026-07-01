@@ -6,6 +6,9 @@ const useVSCode = () => {
   const [activeFile, setActiveFile] = useState("src/App.jsx");
   const [openTabs, setOpenTabs] = useState(["src/App.jsx"]);
   const [showPreview, setShowPreview] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(224);
+  const [previewWidth, setPreviewWidth] = useState(480);
+  const [terminalHeight, setTerminalHeight] = useState(176);
   const [activeSidebarTab, setActiveSidebarTab] = useState("explorer");
   const [explorerExpanded, setExplorerExpanded] = useState({
     src: true,
@@ -370,6 +373,12 @@ const useVSCode = () => {
     openTabs,
     showPreview,
     setShowPreview,
+    sidebarWidth,
+    setSidebarWidth,
+    previewWidth,
+    setPreviewWidth,
+    terminalHeight,
+    setTerminalHeight,
     activeSidebarTab,
     setActiveSidebarTab,
     explorerExpanded,
