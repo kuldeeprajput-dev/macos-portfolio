@@ -43,7 +43,9 @@ export const PhotosCollectionsMobile = ({
       count: gallery.filter((p) => p.category === "People").length,
       img: getCoverImage("People"),
     },
-    { name: "Favorites", count: favorites.length, img: getFavoritesCover() },
+    ...(favorites.length > 0
+      ? [{ name: "Favorites", count: favorites.length, img: getFavoritesCover() }]
+      : []),
   ];
 
   const peoplePhotos = gallery.filter((p) => p.category === "People");
