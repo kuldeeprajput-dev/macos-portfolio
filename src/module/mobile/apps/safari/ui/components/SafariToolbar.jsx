@@ -333,12 +333,12 @@ const SafariMobileHeader = ({ socials, projects }) => {
 
       {/* Main Content Area */}
       <div
-        className={`flex-1 overflow-y-auto hide-scrollbar ${currentUrl === "safari://start" ? "pb-40" : "pb-24"} min-h-0 relative bg-[#f2f2f7]`}
+        className="flex-1 overflow-y-auto hide-scrollbar min-h-0 relative bg-[#f2f2f7]"
         style={{ fontSize: `${textSize}%` }}
       >
         {/* Render Start Page */}
         {currentUrl === "safari://start" && (
-          <div className="px-5 py-6 space-y-6 bg-[#f2f2f7] min-h-full">
+          <div className="px-5 py-6 pb-40 space-y-6 bg-[#f2f2f7] min-h-full">
             {/* Central Search Bar */}
             <div className="max-w-md mx-auto">
               <div className="flex items-center gap-2.5 bg-white border border-zinc-200 shadow-sm rounded-2xl px-4 py-3 focus-within:ring-2 focus-within:ring-[#007aff]/30">
@@ -456,7 +456,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
 
         {/* Render Privacy Report Page */}
         {currentUrl === "safari://privacy-report" && (
-          <div className="px-5 py-6 space-y-6 bg-[#f2f2f7] min-h-full">
+          <div className="px-5 py-6 pb-24 space-y-6 bg-[#f2f2f7] min-h-full">
             <div className="flex items-center gap-2.5">
               <ShieldHalf size={26} className="text-blue-600" />
               <div>
@@ -512,7 +512,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
 
         {/* Render Search Results Mockup */}
         {currentUrl.includes("google.com/search") && (
-          <div className="px-5 py-5 space-y-5 bg-white min-h-full select-text">
+          <div className="px-5 py-5 pb-24 space-y-5 bg-white min-h-full select-text">
             <div className="flex items-center gap-3 border-b pb-3 border-zinc-100">
               <span
                 onClick={() => navigateTo("safari://start")}
@@ -643,10 +643,10 @@ const SafariMobileHeader = ({ socials, projects }) => {
       </div>
 
       {/* iOS 17 Bottom Unified Section (URL + Nav) */}
-      <div className={`absolute bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-zinc-200/80 z-30 flex flex-col ${currentUrl === "safari://start" ? "gap-3 pb-8 pt-3 px-4" : "gap-1 pb-5 pt-2.5 px-4"} shadow-lg shrink-0`}>
+      <div className={`absolute bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-zinc-200/80 z-30 flex flex-col ${currentUrl === "safari://start" ? "gap-2.5 pb-7 pt-2 px-4" : "gap-1 pb-5 pt-2.5 px-4"} shadow-lg shrink-0`}>
         {/* Floating URL Address Bar */}
         {currentUrl === "safari://start" && (
-          <div className="w-full h-11 bg-zinc-100 border border-zinc-200/40 rounded-2xl flex items-center justify-between px-3.5 shadow-inner relative overflow-hidden">
+          <div className="w-full h-[38px] bg-zinc-100 border border-zinc-200/40 rounded-2xl flex items-center justify-between px-3 shadow-inner relative overflow-hidden">
             <style>{`
               @keyframes safariLoad {
                 0% { width: 0%; }
@@ -663,12 +663,12 @@ const SafariMobileHeader = ({ socials, projects }) => {
             )}
             <button
               onClick={() => setShowFormatMenu(!showFormatMenu)}
-              className="text-xs font-bold text-zinc-600 hover:text-zinc-900 select-none tracking-wide bg-transparent border-none outline-none cursor-pointer p-1"
+              className="text-[11px] font-bold text-zinc-600 hover:text-zinc-900 select-none tracking-wide bg-transparent border-none outline-none cursor-pointer p-1"
             >
               aA
             </button>
-            <div className="flex items-center gap-1.5 max-w-[60%]">
-              <Lock size={11} className="text-[#30d158] fill-[#30d158]/10 shrink-0" />
+            <div className="flex items-center gap-1 max-w-[60%]">
+              <Lock size={10} className="text-black shrink-0" />
               <input
                 type="text"
                 value={inputValue}
@@ -679,14 +679,14 @@ const SafariMobileHeader = ({ socials, projects }) => {
                     handleSearchSubmit(inputValue);
                   }
                 }}
-                className="text-[13px] font-bold text-zinc-700 bg-transparent border-none outline-none w-full text-center"
+                className="text-[11.5px] font-bold text-zinc-700 bg-transparent border-none outline-none w-full text-center"
               />
             </div>
             <button
               onClick={() => handleSearchSubmit(currentUrl)}
               className="p-1 hover:bg-zinc-200/60 rounded-full transition-colors text-zinc-500 border-none outline-none bg-transparent cursor-pointer"
             >
-              <RotateCw size={13} strokeWidth={2.4} />
+              <RotateCw size={12} strokeWidth={2.4} />
             </button>
           </div>
         )}
@@ -699,7 +699,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
           >
             <ChevronLeft
               size={24}
-              className={historyIndex > 0 ? "text-[#007aff]" : "text-zinc-300"}
+              className={historyIndex > 0 ? "text-black" : "text-zinc-300"}
             />
           </button>
           <button
@@ -708,29 +708,29 @@ const SafariMobileHeader = ({ socials, projects }) => {
           >
             <ChevronRight
               size={24}
-              className={historyIndex < history.length - 1 ? "text-[#007aff]" : "text-zinc-300"}
+              className={historyIndex < history.length - 1 ? "text-black" : "text-zinc-300"}
             />
           </button>
           <button
             onClick={() => setShowShareSheet(!showShareSheet)}
             className="border-none bg-transparent cursor-pointer p-2 active:scale-90 transition-transform"
           >
-            <Share size={21} className="text-[#007aff]" />
+            <Share size={21} className="text-black" />
           </button>
           <button
             onClick={() => navigateTo("safari://start")}
             className="border-none bg-transparent cursor-pointer p-2 active:scale-90 transition-transform"
           >
-            <Home size={21} className="text-[#007aff]" />
+            <Home size={21} className="text-black" />
           </button>
           <button onClick={handleNewTab} className="border-none bg-transparent cursor-pointer p-1">
-            <Plus size={21} className="text-[#007aff] active:scale-90 transition-transform" />
+            <Plus size={21} className="text-black active:scale-90 transition-transform" />
           </button>
           <button
             onClick={() => setShowTabsOverview(!showTabsOverview)}
             className="border-none bg-transparent cursor-pointer p-2 active:scale-90 transition-transform"
           >
-            <Layout size={21} className="text-[#007aff]" />
+            <Layout size={21} className="text-black" />
           </button>
         </div>
       </div>
