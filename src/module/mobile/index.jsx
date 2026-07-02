@@ -28,35 +28,93 @@ const Terminal = dynamic(() => import("@module/mobile/apps/terminal/ui/view/Term
 import Text from "@module/mobile/apps/text/ui/view/TextView";
 import Weather from "@module/mobile/apps/weather/ui/view/WeatherView";
 import AssistiveTouch from "./apps/mobile-os/ui/components/AssistiveTouch";
+import useWindowsStore from "@store/window";
 
-const Mobile = () => (
-  <main className="mobile-os">
-    <MobileOS />
-    <Terminal />
-    <Safari />
-    <Resume />
-    <Finder />
-    <Text />
-    <Image />
-    <Contact />
-    <Photos />
-    <Settings />
-    <Calculator />
-    <Notes />
-    <Messages />
-    <AppleTV />
-    <Call />
-    <AppStore />
-    <Calendar />
-    <Weather />
-    <Chrome />
-    <Map />
-    <FontBook />
-    <Telegram />
-    <Music />
-    <Launchpad />
-    <AssistiveTouch />
-  </main>
-);
+const Mobile = () => {
+  const githubRedirect = useWindowsStore((state) => state.githubRedirect);
+  const setGithubRedirect = useWindowsStore((state) => state.setGithubRedirect);
+
+  return (
+    <main className="mobile-os">
+      <MobileOS />
+      <Terminal />
+      <Safari />
+      <Resume />
+      <Finder />
+      <Text />
+      <Image />
+      <Contact />
+      <Photos />
+      <Settings />
+      <Calculator />
+      <Notes />
+      <Messages />
+      <AppleTV />
+      <Call />
+      <AppStore />
+      <Calendar />
+      <Weather />
+      <Chrome />
+      <Map />
+      <FontBook />
+      <Telegram />
+      <Music />
+      <Launchpad />
+      <AssistiveTouch />
+
+      {/* Global Redirection Popup */}
+      {githubRedirect && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backdropFilter: "blur(4px)",
+            zIndex: 10000,
+          }}
+          className="animate-in fade-in duration-150 flex items-center justify-center"
+          onClick={() => setGithubRedirect(null)}
+        >
+          <div
+            className="bg-white/95 border border-zinc-200/50 p-6 rounded-2xl shadow-2xl max-w-[280px] w-full mx-4 text-center space-y-4 transform animate-in zoom-in-95 duration-150 backdrop-blur-md"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
+              <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
+              <p className="text-[11px] text-gray-500 leading-relaxed">
+                Do you want to open the GitHub repository for{" "}
+                <span className="font-semibold text-gray-700">{githubRedirect.name}</span> in a new
+                tab?
+              </p>
+            </div>
+            <div className="flex gap-2 pt-1">
+              <button
+                onClick={() => setGithubRedirect(null)}
+                className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer border border-zinc-200"
+              >
+                Cancel
+              </button>
+              <a
+                href={githubRedirect.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setGithubRedirect(null)}
+                className="flex-1 py-2 bg-[#24292e] hover:bg-[#1f2327] active:bg-[#1a1e21] text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+              >
+                Open Link
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
+  );
+};
 
 export default Mobile;

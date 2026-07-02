@@ -12,7 +12,7 @@ import FinderFileList from "./FinderFileList";
 import FinderSection from "../section/FinderSection";
 
 const Finder = () => {
-  const { openWindow } = useWindowsStore();
+  const { openWindow, setGithubRedirect } = useWindowsStore();
   const { activeLocation, setActiveLocation } = useLocationStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [navStack, setNavStack] = useState([]);
@@ -52,7 +52,11 @@ const Finder = () => {
       }
       return setActiveLocation(item);
     }
-    if (["fig", "url"].includes(item.fileType) && item.href) {
+    if ((item.fileType === "fig" || item.name?.toLowerCase().includes("github")) && item.href) {
+      setGithubRedirect({ href: item.href, name: item.name });
+      return;
+    }
+    if (item.fileType === "url" && item.href) {
       return openWindow("safari", { url: item.href });
     }
     openWindow(`${item.fileType}${item.kind}`, item);
