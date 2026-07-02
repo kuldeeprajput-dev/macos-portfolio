@@ -1,6 +1,7 @@
 import WindowControls from "@components/WindowControls";
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
+import { DEFAULT_BOOKMARKS } from "@module/desktop/apps/safari/data/bookmarks";
 import {
   ChevronLeft,
   ChevronRight,
@@ -347,32 +348,29 @@ const SafariMobileHeader = ({ socials, projects }) => {
               </div>
             </div>
 
-            {/* Favorites */}
+            {/* Bookmarks / Favorites */}
             <div>
               <h2 className="text-[20px] font-extrabold text-zinc-900 tracking-tight mb-3.5">
                 Favorites
               </h2>
               <div className="grid grid-cols-4 gap-4">
-                {socials.map((fav) => (
+                {DEFAULT_BOOKMARKS.filter(
+                  (fav) =>
+                    !fav.title.toLowerCase().includes("wikipedia") &&
+                    !fav.title.toLowerCase().includes("openstreetmap")
+                ).map((fav) => (
                   <button
                     key={fav.id}
                     onClick={() => {
-                      const link = fav.id === 2 ? "https://www.youtube.com" : fav.link;
-                      navigateTo(link);
+                      navigateTo(fav.url);
                     }}
                     className="flex flex-col items-center gap-1.5 transition-all active:scale-95 group text-decoration-none bg-transparent border-none outline-none cursor-pointer"
                   >
                     <div className="w-13 h-13 rounded-2xl bg-white border border-zinc-200/50 shadow-sm flex items-center justify-center transition-all group-hover:shadow-md">
-                      <img src={fav.img} alt={fav.text} className="w-7 h-7 object-contain" />
+                      <img src={fav.img} alt={fav.title} className="w-7 h-7 object-contain" />
                     </div>
                     <span className="text-[10px] font-bold text-zinc-600 truncate max-w-full">
-                      {fav.id === 1
-                        ? "GitHub"
-                        : fav.id === 2
-                          ? "YouTube"
-                          : fav.id === 3
-                            ? "Twitter/X"
-                            : "LinkedIn"}
+                      {fav.title}
                     </span>
                   </button>
                 ))}
