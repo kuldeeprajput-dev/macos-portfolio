@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, Video, Phone, Info, X, Search, Grid, Users } from "lucide-react";
+import { Link, Video, Phone, Info, X, Search, Grid, Users, ChevronLeft } from "lucide-react";
 import CallInProgress from "../components/CallInProgress";
 import CallContactList from "../components/CallContactList";
 import CallDialPad from "../components/CallDialPad";
 import { CONTACTS } from "../components/callData";
 import WindowControls from "@components/WindowControls";
+import useWindowsStore from "@store/window";
 
 const CallSection = ({
   sidebarTab,
@@ -29,6 +30,7 @@ const CallSection = ({
   endCall,
   formatTimer,
 }) => {
+  const { closeWindow } = useWindowsStore();
   const [showNewFaceTimeDrawer, setShowNewFaceTimeDrawer] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [toastTimeoutId, setToastTimeoutId] = useState(null);
@@ -78,13 +80,33 @@ const CallSection = ({
 
   return (
     <div className="flex flex-col h-full w-full bg-zinc-50 rounded-xl overflow-hidden shadow-2xl border border-black/5 select-none text-zinc-950 relative">
-      {/* Terminal style window header */}
-      <div
-        id="window-header"
-        className="shrink-0 bg-[#e8e8e8]/50 border-b border-black/10 px-4 py-3 flex items-center"
-      >
-        <WindowControls target="call" />
-        <h2 className="flex-1 text-center text-[13px] font-semibold text-gray-700">FaceTime</h2>
+      {/* iOS style Top Header */}
+      <div className="shrink-0 bg-white/80 backdrop-blur-md border-b border-zinc-200/50 px-4 py-2 flex items-center justify-between z-20 relative">
+        <button
+          onClick={() => closeWindow("call")}
+          style={{
+            border: "none",
+            background: "none",
+            color: "#27272a",
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            fontSize: 12,
+            fontWeight: 500,
+            padding: "0",
+            cursor: "pointer",
+          }}
+        >
+          <ChevronLeft size={14} />
+          <span>Back</span>
+        </button>
+
+        <h2 className="text-xs font-bold text-zinc-800 absolute left-1/2 -translate-x-1/2 pointer-events-none">
+          FaceTime
+        </h2>
+
+        {/* Spacer to keep title centered */}
+        <div className="w-[60px]" />
       </div>
 
       {/* iOS-Style Toast Popup Notification */}
