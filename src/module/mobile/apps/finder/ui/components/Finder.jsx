@@ -70,7 +70,7 @@ const Finder = () => {
     return (
       <div className="flex flex-col h-full bg-[#f2f2f7] select-none text-black relative">
         {/* iOS style Top Header */}
-        <div className="flex items-center justify-between px-4 py-3 bg-[#f2f2f7] border-b border-[#e5e5ea] min-h-[50px]">
+        <div className="flex items-center justify-between px-4 py-2 bg-[#f2f2f7] border-b border-[#e5e5ea] relative shrink-0">
           {isRoot ? (
             <WindowControls target="finder" />
           ) : (
@@ -83,18 +83,18 @@ const Finder = () => {
                 display: "flex",
                 alignItems: "center",
                 gap: 2,
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: 500,
-                padding: "4px 0",
+                padding: "0",
                 cursor: "pointer",
               }}
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={14} />
               <span>Back</span>
             </button>
           )}
 
-          <h2 className="text-[17px] font-semibold text-black absolute left-1/2 -translate-x-1/2">
+          <h2 className="text-xs font-bold text-black absolute left-1/2 -translate-x-1/2">
             {!isRoot ? activeLocation?.name : "Browse"}
           </h2>
 
@@ -103,7 +103,7 @@ const Finder = () => {
             {isRoot && (
               <button
                 onClick={() => openWindow("finder")}
-                className="text-[#007aff] text-[16px] font-semibold active:opacity-60"
+                className="text-[#007aff] text-[12px] font-bold active:opacity-60"
               >
                 Done
               </button>
