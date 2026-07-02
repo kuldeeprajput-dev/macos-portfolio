@@ -67,7 +67,7 @@
   #finder .finder-main,
   #photos .photos-main,
   #terminal .techstack,
-  #contact > div:last-child {
+  #contact .overflow-y-auto {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     flex: 1;
@@ -194,5 +194,45 @@
   #safari .blog-post .content {
     width: 100% !important;
     max-width: 100% !important;
+  }
+
+  /* Contact App Mobile Optimizations */
+  #contact #window-header {
+    padding: 10px 16px !important;
+    min-height: 42px !important;
+    background: rgba(242, 242, 247, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid #e5e5ea !important;
+    gap: 10px !important;
+  }
+
+  #contact #window-header h2 {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+  }
+
+  #contact #window-header button {
+    color: #000 !important;
+    padding: 4px 0 !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+  }
+
+  #contact #window-header button svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  #contact .overflow-y-auto,
+  #contact > div:last-child {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  #contact .overflow-y-auto::-webkit-scrollbar,
+  #contact > div:last-child::-webkit-scrollbar {
+    display: none !important;
   }
 }
