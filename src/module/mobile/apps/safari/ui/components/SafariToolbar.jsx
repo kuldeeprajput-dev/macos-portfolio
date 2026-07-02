@@ -77,11 +77,16 @@ const SafariMobileHeader = ({ socials, projects }) => {
   const [showFormatMenu, setShowFormatMenu] = useState(false);
   const [textSize, setTextSize] = useState(100);
   const [toastMessage, setToastMessage] = useState("");
+  const [iframeLoading, setIframeLoading] = useState(true);
 
   const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
   const currentUrl = activeTab.url;
   const history = activeTab.history;
   const historyIndex = activeTab.historyIndex;
+
+  useEffect(() => {
+    setIframeLoading(true);
+  }, [currentUrl]);
 
   useEffect(() => {
     setInputValue(currentUrl === "safari://start" ? "" : currentUrl);
@@ -93,14 +98,53 @@ const SafariMobileHeader = ({ socials, projects }) => {
   };
 
   const navigateTo = (url) => {
+    let targetUrl = url.trim();
+    if (!targetUrl) return;
+
+    const lowerQuery = targetUrl.toLowerCase();
+    let isRedirected = false;
+
+    if (lowerQuery.includes("youtube") || lowerQuery.includes("newtube")) {
+      targetUrl = "https://newtube-ruddy.vercel.app/";
+      isRedirected = true;
+    } else if (lowerQuery.includes("insta") || lowerQuery.includes("snsta")) {
+      targetUrl = "https://snsta.vercel.app/";
+      isRedirected = true;
+    } else if (lowerQuery.includes("resume")) {
+      targetUrl = "https://resume-ats-omega.vercel.app/";
+      isRedirected = true;
+    } else if (lowerQuery.includes("docs-editor") || lowerQuery.includes("docs")) {
+      targetUrl = "https://docs-editor-ashen.vercel.app/";
+      isRedirected = true;
+    } else if (lowerQuery.includes("portfolio")) {
+      targetUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+      isRedirected = true;
+    } else if (lowerQuery.includes("wikipedia")) {
+      targetUrl = "https://en.wikipedia.org";
+      isRedirected = true;
+    } else if (lowerQuery.includes("map")) {
+      targetUrl = "https://openstreetmap.org";
+      isRedirected = true;
+    }
+
+    if (!isRedirected && !targetUrl.startsWith("safari://")) {
+      if (!/^https?:\/\//i.test(targetUrl)) {
+        if (targetUrl.includes(".") && !targetUrl.includes(" ")) {
+          targetUrl = "https://" + targetUrl;
+        } else {
+          targetUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
+        }
+      }
+    }
+
     setTabs((prev) =>
       prev.map((t) => {
         if (t.id === activeTabId) {
           const newHistory = t.history.slice(0, t.historyIndex + 1);
-          newHistory.push(url);
+          newHistory.push(targetUrl);
           return {
             ...t,
-            url: url,
+            url: targetUrl,
             history: newHistory,
             historyIndex: newHistory.length - 1,
           };
@@ -190,7 +234,18 @@ const SafariMobileHeader = ({ socials, projects }) => {
     } catch {
       /* empty */
     }
-    const compatible = ["openstreetmap.org", "wttr.in", "example.com", "example.org", "map"];
+    const compatible = [
+      "openstreetmap.org",
+      "wttr.in",
+      "example.com",
+      "example.org",
+      "map",
+      "newtube-ruddy.vercel.app",
+      "snsta.vercel.app",
+      "resume-ats-omega.vercel.app",
+      "docs-editor-ashen.vercel.app",
+      "wikipedia.org",
+    ];
     return compatible.some((site) => urlLower.includes(site));
   };
 
@@ -505,16 +560,36 @@ const SafariMobileHeader = ({ socials, projects }) => {
         {!currentUrl.startsWith("safari://") &&
           !currentUrl.includes("google.com/search") &&
           isIframeable(currentUrl) && (
-            <iframe
-              src={
-                currentUrl.toLowerCase().includes("openstreetmap.org")
-                  ? "https://www.openstreetmap.org/export/embed.html"
-                  : currentUrl
-              }
-              title="Safari Iframe Browser"
-              className="w-full h-full border-none bg-white relative z-0"
-              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-            />
+            <div className="w-full h-full relative flex flex-col bg-white">
+              {iframeLoading && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-white z-10 select-none">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="w-8 h-8 border-[3px] border-zinc-200 border-t-[#007aff] rounded-full animate-spin" />
+                    <div className="flex flex-col items-center gap-1">
+                      <span className="text-xs font-bold text-zinc-700">
+                        Loading...
+                      </span>
+                      <span className="text-[10px] text-zinc-400 truncate max-w-[200px]">
+                        {currentUrl}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <iframe
+                src={
+                  currentUrl.toLowerCase().includes("openstreetmap.org")
+                    ? "https://www.openstreetmap.org/export/embed.html"
+                    : currentUrl
+                }
+                title="Safari Iframe Browser"
+                className={`w-full h-full border-none bg-white relative z-0 transition-opacity duration-300 ${
+                  iframeLoading ? "opacity-0" : "opacity-100"
+                }`}
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                onLoad={() => setIframeLoading(false)}
+              />
+            </div>
           )}
 
         {/* Fallback Sandboxed Page Warning */}
@@ -563,7 +638,21 @@ const SafariMobileHeader = ({ socials, projects }) => {
       {/* iOS 17 Bottom Unified Section (URL + Nav) */}
       <div className="absolute bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-zinc-200/80 z-30 flex flex-col gap-3 pb-8 pt-3 px-4 shadow-lg shrink-0">
         {/* Floating URL Address Bar */}
-        <div className="w-full h-11 bg-zinc-100 border border-zinc-200/40 rounded-2xl flex items-center justify-between px-3.5 shadow-inner">
+        <div className="w-full h-11 bg-zinc-100 border border-zinc-200/40 rounded-2xl flex items-center justify-between px-3.5 shadow-inner relative overflow-hidden">
+          <style>{`
+            @keyframes safariLoad {
+              0% { width: 0%; }
+              30% { width: 45%; }
+              70% { width: 75%; }
+              100% { width: 90%; }
+            }
+            .animate-safari-load {
+              animation: safariLoad 2.5s cubic-bezier(0.1, 0.85, 0.45, 1) forwards;
+            }
+          `}</style>
+          {iframeLoading && !currentUrl.startsWith("safari://") && !currentUrl.includes("google.com/search") && (
+            <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#007aff] animate-safari-load transition-all" />
+          )}
           <button
             onClick={() => setShowFormatMenu(!showFormatMenu)}
             className="text-xs font-bold text-zinc-600 hover:text-zinc-900 select-none tracking-wide bg-transparent border-none outline-none cursor-pointer p-1"

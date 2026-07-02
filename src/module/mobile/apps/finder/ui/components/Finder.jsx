@@ -52,8 +52,9 @@ const Finder = () => {
       }
       return setActiveLocation(item);
     }
-    if (["fig", "url"].includes(item.fileType) && item.href)
-      return window.open(item.href, "_blank");
+    if (["fig", "url"].includes(item.fileType) && item.href) {
+      return openWindow("safari", { url: item.href });
+    }
     openWindow(`${item.fileType}${item.kind}`, item);
   };
 
