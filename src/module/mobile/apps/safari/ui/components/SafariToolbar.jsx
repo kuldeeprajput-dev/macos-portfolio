@@ -843,21 +843,30 @@ const SafariMobileHeader = ({ socials, projects }) => {
 
       {/* iOS 17 Premium Tabs Grid Overview Screen */}
       {showTabsOverview && (
-        <div className="absolute inset-0 bg-zinc-900/96 backdrop-blur-xl z-50 flex flex-col justify-between p-4 text-white">
+        <div className="absolute inset-0 bg-zinc-100/96 backdrop-blur-xl z-50 flex flex-col justify-between p-4 text-zinc-900">
           <div className="flex items-center justify-between shrink-0 py-2">
-            <span className="text-sm font-extrabold tracking-wide uppercase text-zinc-400">
+            <span className="text-sm font-extrabold tracking-wide uppercase text-zinc-550">
               {tabs.length} {tabs.length === 1 ? "Tab" : "Tabs"}
             </span>
             <button
               onClick={() => setShowTabsOverview(false)}
-              className="text-sm font-bold text-[#007aff] bg-transparent border-none outline-none cursor-pointer"
+              className="text-sm font-bold text-black bg-transparent border-none outline-none cursor-pointer hover:text-zinc-700"
             >
               Done
             </button>
           </div>
 
           {/* Grid of Tabs */}
-          <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-4 my-4 content-start pb-24">
+          <style>{`
+            .hide-scrollbar::-webkit-scrollbar {
+              display: none !important;
+            }
+            .hide-scrollbar {
+              -ms-overflow-style: none !important;
+              scrollbar-width: none !important;
+            }
+          `}</style>
+          <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-4 my-4 content-start pb-24 hide-scrollbar">
             {tabs.map((tab) => {
               const isTabActive = tab.id === activeTabId;
               const tabDomain = getCleanDomain(tab.url);
@@ -868,34 +877,34 @@ const SafariMobileHeader = ({ socials, projects }) => {
                     setActiveTabId(tab.id);
                     setShowTabsOverview(false);
                   }}
-                  className={`relative h-44 rounded-2xl overflow-hidden bg-zinc-800 border-2 transition-all cursor-pointer flex flex-col justify-between p-3.5 ${
+                  className={`relative h-44 rounded-2xl overflow-hidden bg-white border transition-all cursor-pointer flex flex-col justify-between p-3.5 ${
                     isTabActive
-                      ? "border-[#007aff] ring-4 ring-[#007aff]/35"
-                      : "border-zinc-700/60 hover:border-zinc-550"
+                      ? "border-[#007aff] ring-4 ring-[#007aff]/20"
+                      : "border-zinc-200 hover:border-zinc-300 shadow-sm"
                   }`}
                 >
                   <div className="flex items-start justify-between">
-                    <span className="text-xs font-bold text-white truncate max-w-[80%]">
+                    <span className="text-xs font-bold text-zinc-800 truncate max-w-[80%]">
                       {tabDomain}
                     </span>
                     <button
                       onClick={(e) => handleCloseTab(tab.id, e)}
-                      className="w-5 h-5 rounded-full bg-zinc-700 flex items-center justify-center text-white/90 hover:bg-zinc-650 hover:text-white border-none outline-none cursor-pointer"
+                      className="w-5 h-5 rounded-full bg-zinc-200 flex items-center justify-center text-zinc-600 hover:bg-zinc-300 hover:text-zinc-900 border-none outline-none cursor-pointer"
                     >
                       <X size={10} />
                     </button>
                   </div>
 
                   {/* Tab Mock content preview */}
-                  <div className="flex-1 flex items-center justify-center mt-2 bg-zinc-900/50 rounded-xl border border-zinc-800 shadow-inner overflow-hidden select-none">
+                  <div className="flex-1 flex items-center justify-center mt-2 bg-zinc-50 rounded-xl border border-zinc-200/50 shadow-inner overflow-hidden select-none">
                     {tab.url === "safari://start" ? (
-                      <span className="text-[9px] uppercase tracking-wider font-extrabold text-zinc-600">
+                      <span className="text-[9px] uppercase tracking-wider font-extrabold text-zinc-400">
                         Start Page
                       </span>
                     ) : tab.url === "safari://privacy-report" ? (
-                      <ShieldHalf className="text-zinc-600 w-5 h-5" />
+                      <ShieldHalf className="text-zinc-400 w-5 h-5" />
                     ) : (
-                      <Globe className="text-zinc-650 w-5 h-5" />
+                      <Globe className="text-zinc-400 w-5 h-5" />
                     )}
                   </div>
                 </div>
@@ -907,9 +916,9 @@ const SafariMobileHeader = ({ socials, projects }) => {
           <div className="absolute bottom-6 left-0 right-0 flex justify-center shrink-0">
             <button
               onClick={handleNewTab}
-              className="w-13 h-13 rounded-full bg-white text-zinc-950 flex items-center justify-center shadow-lg active:scale-95 transition-transform border-none outline-none cursor-pointer"
+              className="w-13 h-13 rounded-full bg-black text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform border-none outline-none cursor-pointer"
             >
-              <Plus size={24} strokeWidth={2.5} className="text-zinc-900" />
+              <Plus size={24} strokeWidth={2.5} className="text-white" />
             </button>
           </div>
         </div>
