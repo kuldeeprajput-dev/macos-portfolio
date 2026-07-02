@@ -671,10 +671,13 @@ const MobileNotch = () => {
         />
 
         <div
-          onClick={() => setNotchState("ACTIVE_MUSIC")}
+          onClick={() => {
+            openWindow("music");
+            setNotchState(music.isPlaying ? "ACTIVE_MUSIC" : "IDLE");
+          }}
           className="relative z-[90] mx-auto mt-2.5 w-[92%] h-[142px] rounded-[24px] bg-[#0c0c0d]/95 backdrop-blur-[35px] border border-white/12 shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-3.5 flex flex-col justify-between cursor-pointer transition-all duration-300 ease-out"
         >
-          <div className="flex items-center gap-3 w-full" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center gap-3 w-full">
             <div
               className={`w-11 h-11 rounded-lg flex-shrink-0 bg-gradient-to-tr ${music.activeTrack?.coverColor || "from-pink-500 to-indigo-500"} flex items-center justify-center text-[22px] shadow-md relative overflow-hidden`}
             >
@@ -746,7 +749,10 @@ const MobileNotch = () => {
           </div>
 
           {/* Media Control row */}
-          <div className="flex items-center justify-center gap-8 w-full pb-0.5">
+          <div 
+            className="flex items-center justify-center gap-8 w-full pb-0.5"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={handlePrev}
               className="text-white/70 hover:text-white active:scale-90 transition-transform"
