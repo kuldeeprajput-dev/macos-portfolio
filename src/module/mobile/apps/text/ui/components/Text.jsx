@@ -9,15 +9,20 @@ const Text = () => {
   const { name = "Document", image = "", subtitle = "", description = [] } = data || {};
 
   return (
-    <div className="flex flex-col h-full w-full @container bg-white rounded-xl overflow-hidden">
+    <div className="flex flex-col h-full w-full bg-[#f2f2f7] overflow-hidden">
       <div
         id="window-header"
-        className="shrink-0 !bg-gray-50 !border-b-[#d1d1d1] !px-4 !py-2 flex items-center justify-between"
+        className="shrink-0 bg-white/80 backdrop-blur-md border-b border-zinc-200/50 px-4 py-2 flex items-center justify-between z-20 relative"
       >
         <WindowControls target={"txtfile"} />
-        <h2 className="flex-1 text-center font-bold text-gray-500">{name}</h2>
+        <h2 className="text-xs font-bold text-zinc-800 absolute left-1/2 -translate-x-1/2 pointer-events-none">
+          {name}
+        </h2>
+        <div className="w-[60px]" />
       </div>
-      <TextEditor image={image} name={name} subtitle={subtitle} description={description} />
+      <div className="flex-1 overflow-y-auto">
+        <TextEditor image={image} name={name} subtitle={subtitle} description={description} />
+      </div>
     </div>
   );
 };

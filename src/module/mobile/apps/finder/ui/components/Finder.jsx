@@ -74,7 +74,7 @@ const Finder = () => {
     return (
       <div className="flex flex-col h-full bg-[#f2f2f7] select-none text-black relative">
         {/* iOS style Top Header */}
-        <div className="flex items-center justify-between px-4 py-2 bg-[#f2f2f7] border-b border-[#e5e5ea] relative shrink-0">
+        <div className="shrink-0 bg-white/80 backdrop-blur-md border-b border-zinc-200/50 px-4 py-2 flex items-center justify-between z-20 relative">
           {isRoot ? (
             <WindowControls target="finder" />
           ) : (
@@ -83,7 +83,7 @@ const Finder = () => {
               style={{
                 border: "none",
                 background: "none",
-                color: "#000",
+                color: "#27272a",
                 display: "flex",
                 alignItems: "center",
                 gap: 2,
@@ -98,7 +98,7 @@ const Finder = () => {
             </button>
           )}
 
-          <h2 className="text-xs font-bold text-black absolute left-1/2 -translate-x-1/2">
+          <h2 className="text-xs font-bold text-zinc-800 absolute left-1/2 -translate-x-1/2 pointer-events-none">
             {!isRoot ? activeLocation?.name : "Browse"}
           </h2>
 

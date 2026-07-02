@@ -9,9 +9,10 @@ const Image = () => {
   const { windows } = useWindowsStore();
   const data = windows.imgfile?.data;
   const { name = "Image", imageMobUrl = "", imageUrl = "", id } = data || {};
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -22,33 +23,13 @@ const Image = () => {
       <>
         <div
           id="window-header"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            padding: "10px 16px",
-            background: "#f2f2f7",
-            borderBottom: "1px solid #e5e5ea",
-            minHeight: 52,
-            gap: 10,
-            flexShrink: 0,
-          }}
+          className="shrink-0 bg-white/80 backdrop-blur-md border-b border-zinc-200/50 px-4 py-2 flex items-center justify-between z-20 relative"
         >
           <WindowControls target="imgfile" />
-          <p
-            style={{
-              fontSize: 17,
-              fontWeight: 600,
-              color: "#000",
-              flex: 1,
-              textAlign: "center",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
+          <p className="text-xs font-bold text-zinc-800 absolute left-1/2 -translate-x-1/2 overflow-hidden text-ellipsis whitespace-nowrap pointer-events-none">
             {name}
           </p>
-          <div style={{ width: 60 }} />
+          <div className="w-[60px]" />
         </div>
         <ImageViewer
           imageUrl={imageUrl}

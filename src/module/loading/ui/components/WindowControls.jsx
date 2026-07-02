@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 
 const WindowControls = ({ target, onBack }) => {
   const { closeWindow, toggleMaximize, minimizeWindow } = useWindowsStore();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -26,17 +27,20 @@ const WindowControls = ({ target, onBack }) => {
         style={{
           border: "none",
           background: "none",
-          color: "#000",
+          color: "#27272a",
           display: "flex",
           alignItems: "center",
           gap: 2,
-          fontSize: 14,
+          fontSize: 12,
           fontWeight: 500,
-          padding: "4px 0",
+          padding: "0",
           cursor: "pointer",
+          position: "relative",
+          zIndex: 30,
+          pointerEvents: "auto",
         }}
       >
-        <ChevronLeft size={16} />
+        <ChevronLeft size={14} />
         <span>Back</span>
       </button>
     );
