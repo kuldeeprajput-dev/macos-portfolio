@@ -23,6 +23,21 @@ const PhotosSection = ({
   const scrollContainerRef = useRef(null);
   const searchInputRef = useRef(null);
   const collectionsRef = useRef(null);
+  
+  const [showHeader, setShowHeader] = useState(true);
+  const lastScrollY = useRef(0);
+
+  const handleScroll = (e) => {
+    const currentScrollY = e.target.scrollTop;
+    if (currentScrollY <= 10) {
+      setShowHeader(true);
+    } else if (currentScrollY > lastScrollY.current + 5) {
+      setShowHeader(false);
+    } else if (currentScrollY < lastScrollY.current - 5) {
+      setShowHeader(true);
+    }
+    lastScrollY.current = currentScrollY;
+  };
 
   const _handleScrollToCollections = () => {
     if (collectionsRef.current) {
@@ -70,20 +85,26 @@ const PhotosSection = ({
           overflow: "hidden",
         }}
       >
-        {/* iOS style Top Header */}
         <div
           id="window-header"
           style={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
             padding: "10px 16px",
             background: "rgba(242, 242, 247, 0.96)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
             borderBottom: "1px solid #e5e5ea",
             gap: 10,
-            minHeight: 52,
+            minHeight: 42,
             zIndex: 100,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            transform: showHeader ? "translateY(0)" : "translateY(-100%)",
+            transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
           <button
@@ -104,7 +125,7 @@ const PhotosSection = ({
               display: "flex",
               alignItems: "center",
               gap: 2,
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: 500,
               padding: "4px 0",
               cursor: "pointer",
@@ -117,13 +138,12 @@ const PhotosSection = ({
           {showSearchInput ? (
             <div
               style={{
-                flex: 1,
+                width: "180px",
                 display: "flex",
                 alignItems: "center",
                 background: "#e5e5ea",
-                borderRadius: 10,
+                borderRadius: 8,
                 padding: "4px 8px",
-                marginLeft: 8,
               }}
             >
               <input
@@ -131,12 +151,12 @@ const PhotosSection = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search photos, categories..."
+                placeholder="Search"
                 style={{
                   border: "none",
                   background: "transparent",
                   outline: "none",
-                  fontSize: 14,
+                  fontSize: 12,
                   width: "100%",
                   color: "#000",
                 }}
@@ -144,16 +164,16 @@ const PhotosSection = ({
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  style={{ border: "none", background: "none", padding: 4 }}
+                  style={{ border: "none", background: "none", padding: 2 }}
                 >
-                  <X size={14} style={{ color: "#8e8e93" }} />
+                  <X size={12} style={{ color: "#8e8e93" }} />
                 </button>
               )}
             </div>
           ) : (
             <h1
               style={{
-                fontSize: 17,
+                fontSize: 13,
                 fontWeight: 600,
                 color: "#000",
                 flex: 1,
@@ -193,6 +213,7 @@ const PhotosSection = ({
         {/* Unified Scrollable Container */}
         <div
           ref={scrollContainerRef}
+          onScroll={handleScroll}
           className="photos-main"
           style={{
             flex: 1,
@@ -202,6 +223,7 @@ const PhotosSection = ({
             display: "flex",
             flexDirection: "column",
             minHeight: 0,
+            paddingTop: 42,
             paddingBottom: 80, // space for floating navigation pill
           }}
         >
