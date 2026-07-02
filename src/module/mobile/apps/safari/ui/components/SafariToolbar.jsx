@@ -299,6 +299,15 @@ const SafariMobileHeader = ({ socials, projects }) => {
 
   return (
     <div className="flex flex-col h-full w-full bg-[#f2f2f7] select-none text-zinc-950 relative overflow-hidden">
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none !important;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
+        }
+      `}</style>
       {/* iOS 17 Minimal Top Bar */}
       <div className="shrink-0 bg-white/80 backdrop-blur-md border-b border-zinc-200/50 px-4 py-3 flex items-center justify-between z-20 relative">
         <div className="flex items-center gap-1">
@@ -324,7 +333,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
 
       {/* Main Content Area */}
       <div
-        className="flex-1 overflow-y-auto pb-40 min-h-0 relative bg-white"
+        className={`flex-1 overflow-y-auto hide-scrollbar ${currentUrl === "safari://start" ? "pb-40" : "pb-24"} min-h-0 relative bg-[#f2f2f7]`}
         style={{ fontSize: `${textSize}%` }}
       >
         {/* Render Start Page */}
@@ -457,7 +466,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
                 </p>
               </div>
             </div>
-            <div className="bg-white border border-zinc-200/60 rounded-xl p-4 shadow-sm space-y-3">
+            <div className="bg-white border border-zinc-200/25 rounded-xl p-4 shadow-sm space-y-3">
               <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
                 Blocked Trackers (Past 7 Days)
               </h3>
@@ -477,9 +486,9 @@ const SafariMobileHeader = ({ socials, projects }) => {
                 ))}
               </div>
             </div>
-            <div className="bg-white border border-zinc-200/60 rounded-xl p-4 shadow-sm">
+            <div className="bg-white border border-zinc-200/25 rounded-xl p-4 shadow-sm">
               <h2 className="text-xs font-bold text-zinc-800 mb-3">Prevented Trackers</h2>
-              <div className="divide-y divide-zinc-150">
+              <div className="divide-y divide-zinc-100/60">
                 {[
                   { name: "doubleclick.net", cat: "Advertising", count: 4 },
                   { name: "google-analytics.com", cat: "Analytics", count: 3 },
@@ -634,51 +643,53 @@ const SafariMobileHeader = ({ socials, projects }) => {
       </div>
 
       {/* iOS 17 Bottom Unified Section (URL + Nav) */}
-      <div className="absolute bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-zinc-200/80 z-30 flex flex-col gap-3 pb-8 pt-3 px-4 shadow-lg shrink-0">
+      <div className={`absolute bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-zinc-200/80 z-30 flex flex-col ${currentUrl === "safari://start" ? "gap-3 pb-8 pt-3 px-4" : "gap-1 pb-5 pt-2.5 px-4"} shadow-lg shrink-0`}>
         {/* Floating URL Address Bar */}
-        <div className="w-full h-11 bg-zinc-100 border border-zinc-200/40 rounded-2xl flex items-center justify-between px-3.5 shadow-inner relative overflow-hidden">
-          <style>{`
-            @keyframes safariLoad {
-              0% { width: 0%; }
-              30% { width: 45%; }
-              70% { width: 75%; }
-              100% { width: 90%; }
-            }
-            .animate-safari-load {
-              animation: safariLoad 2.5s cubic-bezier(0.1, 0.85, 0.45, 1) forwards;
-            }
-          `}</style>
-          {iframeLoading && !currentUrl.startsWith("safari://") && !currentUrl.includes("google.com/search") && (
-            <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#007aff] animate-safari-load transition-all" />
-          )}
-          <button
-            onClick={() => setShowFormatMenu(!showFormatMenu)}
-            className="text-xs font-bold text-zinc-600 hover:text-zinc-900 select-none tracking-wide bg-transparent border-none outline-none cursor-pointer p-1"
-          >
-            aA
-          </button>
-          <div className="flex items-center gap-1.5 max-w-[60%]">
-            <Lock size={11} className="text-[#30d158] fill-[#30d158]/10 shrink-0" />
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Search or enter website"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearchSubmit(inputValue);
-                }
-              }}
-              className="text-[13px] font-bold text-zinc-700 bg-transparent border-none outline-none w-full text-center"
-            />
+        {currentUrl === "safari://start" && (
+          <div className="w-full h-11 bg-zinc-100 border border-zinc-200/40 rounded-2xl flex items-center justify-between px-3.5 shadow-inner relative overflow-hidden">
+            <style>{`
+              @keyframes safariLoad {
+                0% { width: 0%; }
+                30% { width: 45%; }
+                70% { width: 75%; }
+                100% { width: 90%; }
+              }
+              .animate-safari-load {
+                animation: safariLoad 2.5s cubic-bezier(0.1, 0.85, 0.45, 1) forwards;
+              }
+            `}</style>
+            {iframeLoading && !currentUrl.startsWith("safari://") && !currentUrl.includes("google.com/search") && (
+              <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#007aff] animate-safari-load transition-all" />
+            )}
+            <button
+              onClick={() => setShowFormatMenu(!showFormatMenu)}
+              className="text-xs font-bold text-zinc-600 hover:text-zinc-900 select-none tracking-wide bg-transparent border-none outline-none cursor-pointer p-1"
+            >
+              aA
+            </button>
+            <div className="flex items-center gap-1.5 max-w-[60%]">
+              <Lock size={11} className="text-[#30d158] fill-[#30d158]/10 shrink-0" />
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Search or enter website"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearchSubmit(inputValue);
+                  }
+                }}
+                className="text-[13px] font-bold text-zinc-700 bg-transparent border-none outline-none w-full text-center"
+              />
+            </div>
+            <button
+              onClick={() => handleSearchSubmit(currentUrl)}
+              className="p-1 hover:bg-zinc-200/60 rounded-full transition-colors text-zinc-500 border-none outline-none bg-transparent cursor-pointer"
+            >
+              <RotateCw size={13} strokeWidth={2.4} />
+            </button>
           </div>
-          <button
-            onClick={() => handleSearchSubmit(currentUrl)}
-            className="p-1 hover:bg-zinc-200/60 rounded-full transition-colors text-zinc-500 border-none outline-none bg-transparent cursor-pointer"
-          >
-            <RotateCw size={13} strokeWidth={2.4} />
-          </button>
-        </div>
+        )}
 
         {/* Bottom Toolbar Icons */}
         <div className="flex justify-around items-center w-full px-2 mt-0.5">
