@@ -196,7 +196,6 @@
     max-width: 100% !important;
   }
 
-  /* Contact & Terminal App Mobile Optimizations */
   #contact #window-header,
   #terminal #window-header {
     padding: 10px 16px !important;
@@ -207,6 +206,19 @@
     border-bottom: 1px solid #e5e5ea !important;
     gap: 10px !important;
   }
+
+  /* Messages App Mobile Optimizations */
+  #messages #window-header {
+    padding: 8px 16px !important;
+    min-height: auto !important;
+    height: auto !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1) !important;
+    gap: 10px !important;
+  }
+
 
   #contact #window-header h2,
   #terminal #window-header h2 {
