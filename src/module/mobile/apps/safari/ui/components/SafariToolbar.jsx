@@ -877,7 +877,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
                     setActiveTabId(tab.id);
                     setShowTabsOverview(false);
                   }}
-                  className={`relative h-44 rounded-2xl overflow-hidden bg-white border transition-all cursor-pointer flex flex-col justify-between p-3.5 ${
+                  className={`relative h-44 rounded-2xl overflow-hidden bg-white border transition-all duration-200 active:scale-[0.97] hover:scale-[1.03] cursor-pointer flex flex-col justify-between p-3.5 ${
                     isTabActive
                       ? "border-[#007aff] ring-4 ring-[#007aff]/20"
                       : "border-zinc-200 hover:border-zinc-300 shadow-sm"
@@ -896,16 +896,61 @@ const SafariMobileHeader = ({ socials, projects }) => {
                   </div>
 
                   {/* Tab Mock content preview */}
-                  <div className="flex-1 flex items-center justify-center mt-2 bg-zinc-50 rounded-xl border border-zinc-200/50 shadow-inner overflow-hidden select-none">
-                    {tab.url === "safari://start" ? (
-                      <span className="text-[9px] uppercase tracking-wider font-extrabold text-zinc-400">
-                        Start Page
-                      </span>
-                    ) : tab.url === "safari://privacy-report" ? (
-                      <ShieldHalf className="text-zinc-400 w-5 h-5" />
-                    ) : (
-                      <Globe className="text-zinc-400 w-5 h-5" />
-                    )}
+                  <div className="flex-1 flex items-center justify-center mt-2 bg-zinc-50 rounded-xl border border-zinc-200/50 shadow-inner overflow-hidden select-none relative">
+                    {(() => {
+                      const urlLower = tab.url.toLowerCase();
+                      if (urlLower.includes("newtube") || urlLower.includes("youtube")) {
+                        return <img src="/projects/newtube.png" alt="NewTube" className="w-full h-full object-cover object-top" />;
+                      }
+                      if (urlLower.includes("insta") || urlLower.includes("snsta")) {
+                        return <img src="/projects/snsta.png" alt="Insta Downloader" className="w-full h-full object-cover object-top" />;
+                      }
+                      if (urlLower.includes("resume")) {
+                        return <img src="/projects/resume-ats.png" alt="Resume ATS" className="w-full h-full object-cover object-top" />;
+                      }
+                      if (urlLower.includes("docs")) {
+                        return <img src="/projects/docs-editor.png" alt="Docs Editor" className="w-full h-full object-cover object-top" />;
+                      }
+                      if (urlLower.includes("openstreetmap") || urlLower.includes("map")) {
+                        return <img src="/images/openstreetmap.png" alt="Map" className="w-full h-full object-cover" />;
+                      }
+                      if (urlLower.includes("wikipedia")) {
+                        return (
+                          <div className="flex flex-col items-center gap-1.5 transform scale-[1.35]">
+                            <span className="text-3xl font-serif text-zinc-400">W</span>
+                            <span className="text-[7px] font-bold text-zinc-400">WIKIPEDIA</span>
+                          </div>
+                        );
+                      }
+                      if (urlLower.includes("google.com")) {
+                        return (
+                          <div className="flex flex-col items-center gap-1 transform scale-[1.35]">
+                            <span className="text-base font-bold tracking-tight text-blue-600">Google</span>
+                          </div>
+                        );
+                      }
+                      if (tab.url === "safari://start") {
+                        return (
+                          <div className="flex flex-col items-center gap-1.5 transform scale-[1.35]">
+                            <img src="/images/safari.png" alt="Safari" className="w-10 h-10 object-contain" />
+                            <span className="text-[7.5px] uppercase tracking-wider font-extrabold text-zinc-400">
+                              Start Page
+                            </span>
+                          </div>
+                        );
+                      }
+                      if (tab.url === "safari://privacy-report") {
+                        return (
+                          <div className="flex flex-col items-center gap-1.5 transform scale-[1.35]">
+                            <ShieldHalf className="text-[#007aff] w-8 h-8" />
+                            <span className="text-[7.5px] uppercase tracking-wider font-extrabold text-zinc-400">
+                              Privacy Report
+                            </span>
+                          </div>
+                        );
+                      }
+                      return <Globe className="text-zinc-300 w-10 h-10 transform scale-[1.35]" />;
+                    })()}
                   </div>
                 </div>
               );
@@ -916,9 +961,9 @@ const SafariMobileHeader = ({ socials, projects }) => {
           <div className="absolute bottom-6 left-0 right-0 flex justify-center shrink-0">
             <button
               onClick={handleNewTab}
-              className="w-13 h-13 rounded-full bg-black text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform border-none outline-none cursor-pointer"
+              className="w-13 h-13 rounded-full bg-white text-zinc-950 flex items-center justify-center shadow-lg active:scale-95 transition-transform border border-zinc-200/85 outline-none cursor-pointer"
             >
-              <Plus size={24} strokeWidth={2.5} className="text-white" />
+              <Plus size={24} strokeWidth={2.5} className="text-zinc-950" />
             </button>
           </div>
         </div>
