@@ -309,7 +309,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
         }
       `}</style>
       {/* iOS 17 Minimal Top Bar */}
-      <div className="shrink-0 bg-white/80 backdrop-blur-md border-b border-zinc-200/50 px-4 py-3 flex items-center justify-between z-20 relative">
+      <div className="shrink-0 bg-white/80 backdrop-blur-md border-b border-zinc-200/50 px-4 py-2 flex items-center justify-between z-20 relative">
         <div className="flex items-center gap-1">
           <button
             onClick={() => {
@@ -319,9 +319,9 @@ const SafariMobileHeader = ({ socials, projects }) => {
                 closeWindow("safari");
               }
             }}
-            className="flex items-center gap-0.5 text-zinc-800 font-medium text-sm bg-transparent border-none outline-none cursor-pointer p-0 active:opacity-60 transition-opacity"
+            className="flex items-center gap-0.5 text-zinc-800 font-medium text-[12px] bg-transparent border-none outline-none cursor-pointer p-0 active:opacity-60 transition-opacity"
           >
-            <ChevronLeft size={16} />
+            <ChevronLeft size={14} />
             <span>Back</span>
           </button>
         </div>
