@@ -20,7 +20,7 @@ const Calculator = () => {
 
   return (
     <div className="flex flex-col h-full w-full bg-black rounded-xl overflow-hidden shadow-2xl select-none">
-      <div id="window-header" className="shrink-0 pt-3 px-4 pb-1 flex items-center relative z-10">
+      <div id="window-header" className="shrink-0 flex items-center justify-between relative z-10">
         <WindowControls target="calculator" />
       </div>
       <div className="flex-1 flex flex-col justify-end p-4 pt-2 relative">

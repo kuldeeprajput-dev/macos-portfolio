@@ -207,9 +207,10 @@
     gap: 10px !important;
   }
 
-  /* Messages & Music App Mobile Optimizations */
+  /* Messages, Music & Calculator App Mobile Optimizations */
   #messages #window-header,
-  #music #window-header {
+  #music #window-header,
+  #calculator #window-header {
     padding: 8px 16px !important;
     min-height: auto !important;
     height: auto !important;
@@ -219,6 +220,7 @@
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.1) !important;
     gap: 10px !important;
   }
+
 
 
 
