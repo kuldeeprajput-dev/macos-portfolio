@@ -601,7 +601,7 @@ const MobileNotch = () => {
       <div className="fixed top-0 left-0 right-0 bottom-0 z-[89] flex flex-col">
         {/* Siri backdrop overlay */}
         <div
-          className="absolute inset-0 bg-black/60 backdrop-blur-[40px]"
+          className="absolute inset-0 bg-transparent"
           onClick={handleCloseSiri}
         />
 
@@ -629,7 +629,7 @@ const MobileNotch = () => {
             />
           </button>
           <div className="flex-1 min-w-0 flex flex-col gap-1">
-            <p className="text-[13.5px] font-bold text-white leading-snug line-clamp-2">
+            <p className="text-[11.5px] font-bold text-white leading-snug line-clamp-2">
               {siriResponse}
             </p>
             <div className="flex items-center justify-between">
@@ -653,80 +653,7 @@ const MobileNotch = () => {
           </div>
         </div>
 
-        {/* Chat area + text input */}
-        <div className="relative z-[90] flex-1 flex flex-col w-[92%] mx-auto mt-2 mb-4 overflow-hidden">
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-1 space-y-2 pb-2 scrollbar-none">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`max-w-[85%] px-3.5 py-2.5 rounded-[18px] text-[13px] leading-relaxed ${
-                  msg.role === "user"
-                    ? "ml-auto bg-[#0a84ff] text-white rounded-br-[6px]"
-                    : "mr-auto bg-[#1c1c1e]/90 text-white/90 border border-white/[0.06] rounded-bl-[6px]"
-                }`}
-              >
-                {msg.content}
-              </div>
-            ))}
-            {siriStatus === "THINKING" && (
-              <div className="mr-auto bg-[#1c1c1e]/90 border border-white/[0.06] rounded-[18px] rounded-bl-[6px] px-4 py-3 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-zinc-400 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-1.5 h-1.5 bg-zinc-400 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-1.5 h-1.5 bg-zinc-400 rounded-full animate-bounce" />
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
 
-          {/* Input bar */}
-          <div className="flex items-center gap-2 pt-2">
-            {/* Mic button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isListening && !isSpeaking) {
-                  startRecording();
-                } else if (isListening) {
-                  stopRecording();
-                  setSiriStatus("IDLE");
-                }
-              }}
-              className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all active:scale-90 ${
-                isListening
-                  ? "bg-red-500/90 shadow-[0_0_12px_rgba(239,68,68,0.5)]"
-                  : "bg-white/12 border border-white/10"
-              }`}
-            >
-              <Mic size={16} className="text-white" />
-            </button>
-
-            {/* Text input */}
-            <form
-              className="flex-1 flex items-center bg-white/[0.08] border border-white/[0.08] rounded-full px-4 h-10"
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleTextSend();
-              }}
-            >
-              <input
-                type="text"
-                className="flex-1 bg-transparent text-white text-[13px] placeholder-white/30 outline-none"
-                placeholder={isListening ? "Listening..." : "Ask Siri anything..."}
-                value={inputVal}
-                onChange={(e) => setInputVal(e.target.value)}
-                disabled={isListening}
-              />
-              <button
-                type="submit"
-                disabled={isListening || !inputVal.trim()}
-                className="text-[#0a84ff] disabled:text-white/20 transition-colors ml-2"
-              >
-                <Send size={16} />
-              </button>
-            </form>
-          </div>
-        </div>
       </div>
     );
   }
