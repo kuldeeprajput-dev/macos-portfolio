@@ -55,12 +55,12 @@ const MusicSection = (props) => {
       {/* iOS style Top Header / Status bar spacer with Window Exit Controls */}
       <div
         id="window-header"
-        className="shrink-0 flex items-center justify-between bg-zinc-50/90 backdrop-blur-md px-4 pt-12 pb-2.5 border-b border-zinc-200/50 z-40"
+        className="shrink-0 flex items-center justify-between bg-zinc-50/90 backdrop-blur-md px-4 py-2 border-b border-zinc-200/50 z-40 relative"
       >
         <div className="flex items-center gap-2">
           <WindowControls target="music" />
         </div>
-        <span className="text-[13px] font-bold text-gray-800 absolute left-1/2 -translate-x-1/2">
+        <span className="text-[13px] font-bold text-gray-800 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
           Music
         </span>
         <div className="w-10" />
