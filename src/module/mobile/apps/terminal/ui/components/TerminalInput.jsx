@@ -112,9 +112,81 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
   useEffect(() => {
     if (!isOpen || !terminalRef.current) return;
 
+    const terminalEl = terminalRef.current;
     let term = null;
     let fitAddon = null;
     let isOpened = false;
+
+    let touchStartY = 0;
+    let lastTouchY = 0;
+    let touchStartScrollTop = 0;
+    let lastTouchTime = 0;
+    let velocityY = 0;
+    let animationFrameId = null;
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length === 1) {
+        touchStartY = e.touches[0].clientY;
+        lastTouchY = touchStartY;
+        lastTouchTime = performance.now();
+        velocityY = 0;
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+        const viewport = terminalEl.querySelector(".xterm-viewport");
+        if (viewport) {
+          touchStartScrollTop = viewport.scrollTop;
+        }
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length === 1) {
+        const currentY = e.touches[0].clientY;
+        const currentTime = performance.now();
+        const deltaY = currentY - touchStartY;
+        
+        const viewport = terminalEl.querySelector(".xterm-viewport");
+        if (viewport) {
+          viewport.scrollTop = touchStartScrollTop - deltaY;
+          
+          const timeDiff = currentTime - lastTouchTime;
+          if (timeDiff > 0) {
+            velocityY = (currentY - lastTouchY) / timeDiff;
+          }
+          
+          lastTouchY = currentY;
+          lastTouchTime = currentTime;
+          e.preventDefault();
+        }
+      }
+    };
+
+    const handleTouchEnd = () => {
+      const viewport = terminalEl.querySelector(".xterm-viewport");
+      if (!viewport || Math.abs(velocityY) < 0.1) return;
+
+      let currentVelocity = velocityY;
+      const friction = 0.95;
+
+      const step = () => {
+        if (Math.abs(currentVelocity) < 0.05) {
+          animationFrameId = null;
+          return;
+        }
+        
+        viewport.scrollTop -= currentVelocity * 16;
+        currentVelocity *= friction;
+        animationFrameId = requestAnimationFrame(step);
+      };
+
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    terminalEl.addEventListener("touchstart", handleTouchStart, { passive: false });
+    terminalEl.addEventListener("touchmove", handleTouchMove, { passive: false });
+    terminalEl.addEventListener("touchend", handleTouchEnd, { passive: true });
 
     const setupHandlers = (t) => {
       const prompt = () => {
@@ -306,6 +378,12 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
       if (term) {
         term.dispose();
       }
+      terminalEl.removeEventListener("touchstart", handleTouchStart);
+      terminalEl.removeEventListener("touchmove", handleTouchMove);
+      terminalEl.removeEventListener("touchend", handleTouchEnd);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
       xtermRef.current = null;
       fitAddonRef.current = null;
       setActiveTerm(null);
@@ -314,13 +392,24 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
 
   return (
     <div
-      className="flex-1 w-full bg-white flex flex-col min-h-0 p-4 pb-2"
+      className="flex-1 w-full bg-white flex flex-col min-h-0 p-4 pb-5"
       style={{ overflow: "hidden" }}
     >
       <style>{`
         .xterm-viewport {
-          scroll-behavior: smooth !important;
+          scroll-behavior: auto !important;
           -webkit-overflow-scrolling: touch !important;
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+        }
+        .xterm-viewport::-webkit-scrollbar {
+          display: none !important;
+        }
+        .xterm,
+        .xterm-viewport,
+        .xterm-screen,
+        .xterm-rows {
+          touch-action: pan-y !important;
         }
       `}</style>
       <div className="flex-1 w-full min-h-0" style={{ overflow: "hidden" }}>
@@ -333,7 +422,7 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
           display: "flex",
           gap: 6,
           overflowX: "auto",
-          padding: "12px 0 4px",
+          padding: "12px 0 8px",
           borderTop: "1px solid #e5e5ea",
           width: "100%",
           flexShrink: 0,

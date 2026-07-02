@@ -196,8 +196,9 @@
     max-width: 100% !important;
   }
 
-  /* Contact App Mobile Optimizations */
-  #contact #window-header {
+  /* Contact & Terminal App Mobile Optimizations */
+  #contact #window-header,
+  #terminal #window-header {
     padding: 10px 16px !important;
     min-height: 42px !important;
     background: rgba(242, 242, 247, 0.96) !important;
@@ -207,20 +208,23 @@
     gap: 10px !important;
   }
 
-  #contact #window-header h2 {
+  #contact #window-header h2,
+  #terminal #window-header h2 {
     font-size: 13px !important;
     font-weight: 600 !important;
     color: #000 !important;
   }
 
-  #contact #window-header button {
+  #contact #window-header button,
+  #terminal #window-header button {
     color: #000 !important;
     padding: 4px 0 !important;
     font-size: 12px !important;
     font-weight: 500 !important;
   }
 
-  #contact #window-header button svg {
+  #contact #window-header button svg,
+  #terminal #window-header button svg {
     width: 16px !important;
     height: 16px !important;
   }
