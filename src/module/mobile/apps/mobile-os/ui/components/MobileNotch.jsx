@@ -1,9 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
+import { executeSiriCommand, getSiriSystemPrompt } from "@module/siri/assistant";
+import useLocationStore from "@store/location";
 import useWindowsStore from "@store/window";
 import { Play, Pause, SkipForward, SkipBack, Mic, Send, X } from "lucide-react";
 
 const MobileNotch = () => {
-  const { music, setMusicState, isSiriOpen, setSiriOpen, openWindow } = useWindowsStore();
+  const {
+    music,
+    setMusicState,
+    isSiriOpen,
+    setSiriOpen,
+    openWindow,
+    closeWindow,
+    closeAllWindows,
+    minimizeWindow,
+    unminimizeWindow,
+    focusWindow,
+    toggleMaximize,
+    updateSystemSetting,
+    systemSettings,
+    setAboutPortfolioOpen,
+  } = useWindowsStore();
+  const { setActiveLocation } = useLocationStore();
   const [notchState, setNotchState] = useState("IDLE"); // IDLE, ACTIVE_MUSIC, EXPANDED_MUSIC, SIRI
 
   // Siri states – matching desktop implementation
@@ -139,7 +157,15 @@ const MobileNotch = () => {
         return;
       }
 
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      const recorderMimeType = MediaRecorder.isTypeSupported?.("audio/webm;codecs=opus")
+        ? "audio/webm;codecs=opus"
+        : MediaRecorder.isTypeSupported?.("audio/webm")
+          ? "audio/webm"
+          : "";
+      const mediaRecorder = new MediaRecorder(
+        stream,
+        recorderMimeType ? { mimeType: recorderMimeType } : undefined,
+      );
       mediaRecorderRef.current = mediaRecorder;
 
       mediaRecorder.ondataavailable = (event) => {
@@ -150,8 +176,10 @@ const MobileNotch = () => {
 
       mediaRecorder.onstop = async () => {
         if (!isSiriOpenRef.current) return;
-        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        if (audioBlob.size > 1000) {
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: recorderMimeType || "audio/webm",
+        });
+        if (audioBlob.size > 450) {
           transcribeAudio(audioBlob);
         } else {
           setIsListening(false);
@@ -170,7 +198,9 @@ const MobileNotch = () => {
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
 
-      let lastLoudTime = new Date().getTime();
+      const listenStartedAt = new Date().getTime();
+      let heardSpeech = false;
+      let lastVoiceTime = listenStartedAt;
       setIsListening(true);
       setSiriStatus("LISTENING");
 
@@ -183,12 +213,18 @@ const MobileNotch = () => {
           sum += dataArray[i];
         }
         const averageVolume = sum / bufferLength;
+        const now = new Date().getTime();
 
-        if (averageVolume > 20) {
-          lastLoudTime = new Date().getTime();
+        if (averageVolume > 10) {
+          heardSpeech = true;
+          lastVoiceTime = now;
         }
 
-        if (new Date().getTime() - lastLoudTime > 2500) {
+        const initialGraceElapsed = now - listenStartedAt > 5500;
+        const userStoppedSpeaking = heardSpeech && now - lastVoiceTime > 1200;
+        const maxListenReached = now - listenStartedAt > 12000;
+
+        if ((initialGraceElapsed && !heardSpeech) || userStoppedSpeaking || maxListenReached) {
           stopRecording();
         } else {
           requestAnimationFrame(checkSilence);
@@ -381,122 +417,37 @@ const MobileNotch = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSiriOpen]);
 
-  // ─── System commands (same as desktop) ───
-
-  const parseSystemCommands = (text) => {
-    const query = text.toLowerCase();
-
-    if (
-      query.includes("open settings") ||
-      query.includes("open system settings") ||
-      query.includes("open preference")
-    ) {
-      openWindow("settings");
-      return "Opening Settings.";
-    }
-    if (query.includes("open finder")) {
-      openWindow("finder");
-      return "Opening Finder.";
-    }
-    if (query.includes("open weather")) {
-      openWindow("weather");
-      return "Opening Weather.";
-    }
-    if (
-      query.includes("open safari") ||
-      query.includes("open internet") ||
-      query.includes("open browser")
-    ) {
-      openWindow("safari");
-      return "Opening Safari.";
-    }
-    if (
-      query.includes("open terminal") ||
-      query.includes("open bash") ||
-      query.includes("open shell")
-    ) {
-      openWindow("terminal");
-      return "Opening Terminal.";
-    }
-    if (query.includes("open resume") || query.includes("view resume")) {
-      openWindow("resume");
-      return "Opening Resume.";
-    }
-    if (query.includes("open music") || query.includes("open jiosaavn")) {
-      openWindow("music");
-      return "Opening Music app.";
-    }
-    if (
-      query.includes("play music") ||
-      query.includes("resume song") ||
-      query.includes("play song")
-    ) {
-      setMusicState({ isPlaying: true });
-      return "Playing music.";
-    }
-    if (
-      query.includes("pause music") ||
-      query.includes("stop music") ||
-      query.includes("pause song")
-    ) {
-      setMusicState({ isPlaying: false });
-      return "Pausing playback.";
-    }
-    if (query.includes("open chrome")) {
-      openWindow("chrome");
-      return "Opening Google Chrome.";
-    }
-    if (
-      query.includes("open code") ||
-      query.includes("open vscode") ||
-      query.includes("open editor")
-    ) {
-      openWindow("vscode");
-      return "Opening Visual Studio Code.";
-    }
-    if (query.includes("open calculator")) {
-      openWindow("calculator");
-      return "Opening Calculator.";
-    }
-    if (query.includes("open map")) {
-      openWindow("map");
-      return "Opening Maps.";
-    }
-    if (query.includes("open messages")) {
-      openWindow("messages");
-      return "Opening Messages.";
-    }
-    if (query.includes("open notes")) {
-      openWindow("notes");
-      return "Opening Notes.";
-    }
-    if (query.includes("open telegram") || query.includes("open chat")) {
-      openWindow("telegram");
-      return "Opening Telegram.";
-    }
-    if (
-      query.includes("close siri") ||
-      query.includes("bye siri") ||
-      query.includes("goodbye siri")
-    ) {
-      setTimeout(() => setSiriOpen(false), 1500);
-      return "Goodbye!";
-    }
-
-    return null;
-  };
+  const parseSystemCommands = (text) =>
+    executeSiriCommand(text, {
+      platform: "mobile",
+      music,
+      systemSettings,
+      setMusicState,
+      setSiriOpen,
+      openWindow,
+      closeWindow,
+      closeAllWindows,
+      minimizeWindow,
+      unminimizeWindow,
+      focusWindow,
+      toggleMaximize,
+      updateSystemSetting,
+      setAboutPortfolioOpen,
+      setActiveLocation,
+    });
 
   // ─── Groq LLM chat (same as desktop) ───
 
   const handleSendToGroq = async (text) => {
     setMessages((prev) => [...prev, { role: "user", content: text }]);
 
-    const systemResponse = parseSystemCommands(text);
-    if (systemResponse) {
+    const systemCommand = parseSystemCommands(text);
+    if (systemCommand) {
+      const systemResponse = systemCommand.response;
       setSiriResponse(systemResponse);
       setMessages((prev) => [...prev, { role: "assistant", content: systemResponse }]);
       setSiriStatus("SPEAKING");
-      speakText(systemResponse, false);
+      speakText(systemResponse, systemCommand.listenAfter);
       return;
     }
 
@@ -507,11 +458,12 @@ const MobileNotch = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          max_tokens: 90,
+          temperature: 0.35,
           messages: [
             {
               role: "system",
-              content:
-                "You are Siri on Kuldeep Rajput's macOS Portfolio. You must respond strictly in English. Never use Hinglish, Hindi, Urdu, or any other language. Keep answers conversational, witty, concise, and under 3 sentences. Project details: 1) Newtube is a YouTube clone. 2) Snsta is an Instagram downloader. 3) Resume ATS Scanner analyzes resumes. 4) Docs Editor is a real-time collaborative document editor. Explain these projects if the user asks.",
+              content: getSiriSystemPrompt(),
             },
             ...messages.slice(-4),
             { role: "user", content: text },
@@ -567,6 +519,21 @@ const MobileNotch = () => {
         setSiriStatus("IDLE");
       }
     }
+  };
+
+  const handleSiriOrbClick = (e) => {
+    e.stopPropagation();
+
+    if (siriStatus === "THINKING" || siriStatus === "TRANSCRIBING") return;
+
+    if (isListening) {
+      stopRecording();
+      return;
+    }
+
+    setUserQuestion("");
+    setSiriStatus("LISTENING");
+    startRecording();
   };
 
   const handleCloseSiri = (e) => {
@@ -644,13 +611,23 @@ const MobileNotch = () => {
           className="relative z-[91] mx-auto mt-2.5 w-[92%] rounded-[28px] bg-[#0c0c0d]/95 backdrop-blur-[35px] border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.7)] px-4 pt-3.5 pb-3 flex items-center gap-3.5 select-none cursor-pointer transition-all duration-300 ease-out"
         >
           {/* Siri orb */}
-          <div className="w-[54px] h-[54px] rounded-full overflow-hidden flex-shrink-0 border border-white/10 shadow-[0_0_20px_rgba(168,85,247,0.35)] relative bg-[#040404] flex items-center justify-center">
+          <button
+            type="button"
+            onClick={handleSiriOrbClick}
+            className={`w-[54px] h-[54px] rounded-full overflow-hidden flex-shrink-0 border border-white/10 relative bg-[#040404] flex items-center justify-center transition-all active:scale-95 ${
+              isListening
+                ? "shadow-[0_0_26px_rgba(239,68,68,0.65)] ring-2 ring-red-400/70"
+                : "shadow-[0_0_20px_rgba(168,85,247,0.35)]"
+            }`}
+            title={isListening ? "Stop listening" : "Start listening"}
+            aria-label={isListening ? "Stop Siri listening" : "Start Siri listening"}
+          >
             <img
               src="/images/siri.gif"
               alt="Siri"
               className="w-full h-full object-cover scale-[1.5]"
             />
-          </div>
+          </button>
           <div className="flex-1 min-w-0 flex flex-col gap-1">
             <p className="text-[13.5px] font-bold text-white leading-snug line-clamp-2">
               {siriResponse}

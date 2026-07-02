@@ -60,7 +60,8 @@ const SafariDesktopToolbar = ({ showSidebar, onToggleSidebar }) => {
 };
 
 const SafariMobileHeader = ({ socials, projects }) => {
-  const { closeWindow } = useWindowsStore();
+  const { closeWindow, setWindowData } = useWindowsStore();
+  const safariWindowData = useWindowsStore((state) => state.windows.safari?.data);
   const [tabs, setTabs] = useState([
     {
       id: 1,
@@ -108,6 +109,15 @@ const SafariMobileHeader = ({ socials, projects }) => {
       }),
     );
   };
+
+  useEffect(() => {
+    if (!safariWindowData) return;
+    if (safariWindowData.url) {
+      navigateTo(safariWindowData.url);
+    }
+    setWindowData("safari", null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [safariWindowData, setWindowData]);
 
   const handleBack = () => {
     if (historyIndex > 0) {

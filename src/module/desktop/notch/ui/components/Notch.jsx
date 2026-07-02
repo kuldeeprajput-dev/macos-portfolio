@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
+import { executeSiriCommand, getSiriSystemPrompt } from "@module/siri/assistant";
+import useLocationStore from "@store/location";
 import useWindowsStore from "@store/window";
 import {
   Play,
@@ -18,7 +20,23 @@ import {
 } from "lucide-react";
 
 const Notch = () => {
-  const { music, setMusicState, isSiriOpen, setSiriOpen, openWindow } = useWindowsStore();
+  const {
+    music,
+    setMusicState,
+    isSiriOpen,
+    setSiriOpen,
+    openWindow,
+    closeWindow,
+    closeAllWindows,
+    minimizeWindow,
+    unminimizeWindow,
+    focusWindow,
+    toggleMaximize,
+    updateSystemSetting,
+    systemSettings,
+    setAboutPortfolioOpen,
+  } = useWindowsStore();
+  const { setActiveLocation } = useLocationStore();
   const { activeTrack, isPlaying, _volume, _isMuted } = music;
 
   const [_dragProgress, setDragProgress] = useState(0);
@@ -132,7 +150,15 @@ const Notch = () => {
         return;
       }
 
-      const mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      const recorderMimeType = MediaRecorder.isTypeSupported?.("audio/webm;codecs=opus")
+        ? "audio/webm;codecs=opus"
+        : MediaRecorder.isTypeSupported?.("audio/webm")
+          ? "audio/webm"
+          : "";
+      const mediaRecorder = new MediaRecorder(
+        stream,
+        recorderMimeType ? { mimeType: recorderMimeType } : undefined,
+      );
       mediaRecorderRef.current = mediaRecorder;
 
       mediaRecorder.ondataavailable = (event) => {
@@ -143,8 +169,10 @@ const Notch = () => {
 
       mediaRecorder.onstop = async () => {
         if (!isSiriOpenRef.current) return;
-        const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        if (audioBlob.size > 1000) {
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: recorderMimeType || "audio/webm",
+        });
+        if (audioBlob.size > 450) {
           transcribeAudio(audioBlob);
         } else {
           setIsListening(false);
@@ -163,7 +191,9 @@ const Notch = () => {
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
 
-      let lastLoudTime = new Date().getTime();
+      const listenStartedAt = new Date().getTime();
+      let heardSpeech = false;
+      let lastVoiceTime = listenStartedAt;
       setIsListening(true);
       setSiriStatus("LISTENING");
 
@@ -176,12 +206,18 @@ const Notch = () => {
           sum += dataArray[i];
         }
         const averageVolume = sum / bufferLength;
+        const now = new Date().getTime();
 
-        if (averageVolume > 20) {
-          lastLoudTime = new Date().getTime();
+        if (averageVolume > 10) {
+          heardSpeech = true;
+          lastVoiceTime = now;
         }
 
-        if (new Date().getTime() - lastLoudTime > 2500) {
+        const initialGraceElapsed = now - listenStartedAt > 5500;
+        const userStoppedSpeaking = heardSpeech && now - lastVoiceTime > 1200;
+        const maxListenReached = now - listenStartedAt > 12000;
+
+        if ((initialGraceElapsed && !heardSpeech) || userStoppedSpeaking || maxListenReached) {
           stopRecording();
         } else {
           requestAnimationFrame(checkSilence);
@@ -388,165 +424,35 @@ const Notch = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSiriOpen]);
 
-  const parseSystemCommands = (text) => {
-    const query = text.toLowerCase();
-
-    if (query.includes("open newtube")) {
-      openWindow("safari", { url: "https://newtube-ruddy.vercel.app/" });
-      return "Opening NewTube project in Safari.";
-    }
-    if (
-      query.includes("open snsta") ||
-      query.includes("open free course finder") ||
-      query.includes("open course finder") ||
-      query.includes("open insta things download") ||
-      query.includes("open instagram downloader")
-    ) {
-      openWindow("safari", { url: "https://snsta.vercel.app/" });
-      return "Opening Insta Things Download project in Safari.";
-    }
-    if (
-      query.includes("open resume ats") ||
-      query.includes("open ats scanner") ||
-      query.includes("open resume scanner")
-    ) {
-      openWindow("safari", { url: "https://resume-ats-omega.vercel.app/" });
-      return "Opening Resume ATS Scanner project in Safari.";
-    }
-    if (
-      query.includes("open docs editor") ||
-      query.includes("open document editor") ||
-      query.includes("open collaborative editor")
-    ) {
-      openWindow("safari", { url: "https://docs-editor-ashen.vercel.app/" });
-      return "Opening Docs Editor project in Safari.";
-    }
-    if (query.includes("open my github") || query.includes("open github")) {
-      openWindow("safari", { url: "https://github.com/kuldeeprajput-dev" });
-      return "Opening GitHub profile in Safari.";
-    }
-    if (query.includes("open my linkedin") || query.includes("open linkedin")) {
-      openWindow("safari", { url: "https://www.linkedin.com/in/kuldeepdotcom/" });
-      return "Opening LinkedIn profile in Safari.";
-    }
-    if (
-      query.includes("open my twitter") ||
-      query.includes("open twitter") ||
-      query.includes("open my x") ||
-      query.includes("open x")
-    ) {
-      openWindow("safari", { url: "https://x.com/kuldeepdotcom" });
-      return "Opening Twitter profile in Safari.";
-    }
-
-    if (
-      query.includes("open settings") ||
-      query.includes("open system settings") ||
-      query.includes("open preference")
-    ) {
-      openWindow("settings");
-      return "Opening Settings.";
-    }
-    if (query.includes("open finder")) {
-      openWindow("finder");
-      return "Opening Finder.";
-    }
-    if (query.includes("open weather")) {
-      openWindow("weather");
-      return "Opening Weather.";
-    }
-    if (
-      query.includes("open safari") ||
-      query.includes("open internet") ||
-      query.includes("open browser")
-    ) {
-      openWindow("safari");
-      return "Opening Safari.";
-    }
-    if (
-      query.includes("open terminal") ||
-      query.includes("open bash") ||
-      query.includes("open shell")
-    ) {
-      openWindow("terminal");
-      return "Opening Terminal.";
-    }
-    if (query.includes("open resume") || query.includes("view resume")) {
-      openWindow("resume");
-      return "Opening Resume.";
-    }
-    if (query.includes("open music") || query.includes("open jiosaavn")) {
-      openWindow("music");
-      return "Opening Music app.";
-    }
-    if (
-      query.includes("play music") ||
-      query.includes("resume song") ||
-      query.includes("play song")
-    ) {
-      setMusicState({ isPlaying: true });
-      return "Playing music.";
-    }
-    if (
-      query.includes("pause music") ||
-      query.includes("stop music") ||
-      query.includes("pause song")
-    ) {
-      setMusicState({ isPlaying: false });
-      return "Pausing playback.";
-    }
-    if (query.includes("open chrome")) {
-      openWindow("safari");
-      return "Google Chrome is not installed, opening Safari browser instead.";
-    }
-    if (
-      query.includes("open code") ||
-      query.includes("open vscode") ||
-      query.includes("open editor")
-    ) {
-      openWindow("vscode");
-      return "Opening Visual Studio Code.";
-    }
-    if (query.includes("open calculator")) {
-      openWindow("calculator");
-      return "Opening Calculator.";
-    }
-    if (query.includes("open map")) {
-      openWindow("map");
-      return "Opening Maps.";
-    }
-    if (query.includes("open messages")) {
-      openWindow("messages");
-      return "Opening Messages.";
-    }
-    if (query.includes("open notes")) {
-      openWindow("notes");
-      return "Opening Notes.";
-    }
-    if (query.includes("open launchpad")) {
-      openWindow("launchpad");
-      return "Opening Launchpad.";
-    }
-    if (
-      query.includes("close siri") ||
-      query.includes("bye siri") ||
-      query.includes("goodbye siri")
-    ) {
-      setTimeout(() => setSiriOpen(false), 1500);
-      return "Goodbye!";
-    }
-    return null;
-  };
+  const parseSystemCommands = (text) =>
+    executeSiriCommand(text, {
+      platform: "desktop",
+      music,
+      systemSettings,
+      setMusicState,
+      setSiriOpen,
+      openWindow,
+      closeWindow,
+      closeAllWindows,
+      minimizeWindow,
+      unminimizeWindow,
+      focusWindow,
+      toggleMaximize,
+      updateSystemSetting,
+      setAboutPortfolioOpen,
+      setActiveLocation,
+    });
 
   const handleSendToGroq = async (text) => {
     setMessages((prev) => [...prev, { role: "user", content: text }]);
 
-    const systemResponse = parseSystemCommands(text);
-    if (systemResponse) {
+    const systemCommand = parseSystemCommands(text);
+    if (systemCommand) {
+      const systemResponse = systemCommand.response;
       setSiriResponse(systemResponse);
       setMessages((prev) => [...prev, { role: "assistant", content: systemResponse }]);
       setSiriStatus("SPEAKING");
-      speakText(systemResponse, false); // Do not start listening again for system commands
+      speakText(systemResponse, systemCommand.listenAfter);
       return;
     }
 
@@ -559,11 +465,12 @@ const Notch = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          max_tokens: 90,
+          temperature: 0.35,
           messages: [
             {
               role: "system",
-              content:
-                "You are Siri on Kuldeep Rajput's macOS Portfolio. You must respond strictly in English. Never use Hinglish, Hindi, Urdu, or any other language. Keep answers conversational, witty, concise, and under 3 sentences. Project details: 1) Newtube is a YouTube clone. 2) Snsta is an Instagram downloader. 3) Resume ATS Scanner analyzes resumes. 4) Docs Editor is a real-time collaborative document editor. Explain these projects if the user asks.",
+              content: getSiriSystemPrompt(),
             },
             ...messages.slice(-4),
             { role: "user", content: text },
@@ -792,6 +699,21 @@ const Notch = () => {
       setIsMusicExpanded(true);
       setSiriOpen(false);
     }
+  };
+
+  const handleSiriOrbClick = (e) => {
+    e.stopPropagation();
+
+    if (siriStatus === "THINKING" || siriStatus === "TRANSCRIBING") return;
+
+    if (isListening) {
+      stopRecording();
+      return;
+    }
+
+    setUserQuestion("");
+    setSiriStatus("LISTENING");
+    startRecording();
   };
 
   return (
@@ -1108,9 +1030,15 @@ const Notch = () => {
         {/* Siri Active Dropdown State */}
         {notchClass === "macos-notch siri-active" && (
           <>
-            <div className="notch-siri-gif-container">
+            <button
+              type="button"
+              className={`notch-siri-gif-container ${isListening ? "is-listening" : ""}`}
+              onClick={handleSiriOrbClick}
+              title={isListening ? "Stop listening" : "Start listening"}
+              aria-label={isListening ? "Stop Siri listening" : "Start Siri listening"}
+            >
               <img src="/images/siri.gif" alt="Siri" className="notch-siri-gif" />
-            </div>
+            </button>
             <div className="notch-siri-content">
               <div className="notch-siri-text">
                 {userQuestion && <div className="notch-siri-user-question">{userQuestion}</div>}
