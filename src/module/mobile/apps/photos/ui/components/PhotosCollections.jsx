@@ -52,7 +52,7 @@ export const PhotosCollectionsMobile = ({
   const peopleNames = ["John", "Sarah", "Mom", "Alex", "Emma", "David"];
 
   return (
-    <div style={{ padding: "0 16px 40px", display: "flex", flexDirection: "column", gap: 32 }}>
+    <div style={{ padding: "0 10px 40px", display: "flex", flexDirection: "column", gap: 32 }}>
       {/* Recent Days Section */}
       <div>
         <div

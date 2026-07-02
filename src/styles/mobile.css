@@ -77,6 +77,14 @@
     background: #f2f2f7;
   }
 
+  #photos .photos-main::-webkit-scrollbar {
+    display: none !important;
+  }
+  #photos .photos-main {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
   #resume .resume-main {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -123,7 +131,7 @@
 
   #imgfile #window-header,
   #photos #window-header {
-    padding: 8px 16px !important;
+    padding: 8px 10px !important;
     min-height: 42px !important;
   }
 

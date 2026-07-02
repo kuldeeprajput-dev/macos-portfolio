@@ -15,7 +15,7 @@ const PhotoGrid = ({ photos = [], onPhotoClick }) => (
 const PhotoGridMobile = ({ photos = [], onPhotoClick, activeTab }) => {
   return (
     <div style={{ position: "relative", display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: "16px 16px 6px" }}>
+      <div style={{ padding: "16px 10px 6px" }}>
         <p style={{ fontSize: 22, fontWeight: 700, color: "#000" }}>{activeTab}</p>
         <p style={{ fontSize: 13, color: "#8e8e93", marginTop: 2 }}>{photos.length} Photos</p>
       </div>
