@@ -63,6 +63,12 @@ const SafariDesktopToolbar = ({ showSidebar, onToggleSidebar }) => {
 const SafariMobileHeader = ({ socials, projects }) => {
   const { closeWindow, setWindowData } = useWindowsStore();
   const safariWindowData = useWindowsStore((state) => state.windows.safari?.data);
+  const mobileBookmarks = DEFAULT_BOOKMARKS.map((fav) => {
+    if (fav.title.toLowerCase().includes("portfolio")) {
+      return { ...fav, url: "https://kuldeep-rajput.vercel.app/" };
+    }
+    return fav;
+  });
   const [tabs, setTabs] = useState([
     {
       id: 1,
@@ -118,7 +124,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
       targetUrl = "https://docs-editor-ashen.vercel.app/";
       isRedirected = true;
     } else if (lowerQuery.includes("portfolio")) {
-      targetUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+      targetUrl = "https://kuldeep-rajput.vercel.app/";
       isRedirected = true;
     } else if (lowerQuery.includes("wikipedia")) {
       targetUrl = "https://en.wikipedia.org";
@@ -246,6 +252,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
       "resume-ats-omega.vercel.app",
       "docs-editor-ashen.vercel.app",
       "wikipedia.org",
+      "kuldeep-rajput.vercel.app",
     ];
     return compatible.some((site) => urlLower.includes(site));
   };
@@ -363,7 +370,7 @@ const SafariMobileHeader = ({ socials, projects }) => {
                 Favorites
               </h2>
               <div className="grid grid-cols-4 gap-4">
-                {DEFAULT_BOOKMARKS.filter(
+                {mobileBookmarks.filter(
                   (fav) =>
                     !fav.title.toLowerCase().includes("wikipedia") &&
                     !fav.title.toLowerCase().includes("openstreetmap")
