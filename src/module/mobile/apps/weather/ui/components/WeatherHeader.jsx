@@ -7,7 +7,7 @@ const WeatherHeader = ({ _activeCity, unitMode, setUnitMode, viewMode, setViewMo
   return (
     <div
       id="window-header"
-      className="window-header shrink-0 flex items-center justify-between px-4 pt-12 pb-2.5 z-20 bg-[#f2f2f7] border-b border-[#d1d1d1] text-gray-800"
+      className="shrink-0 flex items-center justify-between relative z-20"
     >
       <div className="flex items-center">
         <WindowControls target="weather" />
