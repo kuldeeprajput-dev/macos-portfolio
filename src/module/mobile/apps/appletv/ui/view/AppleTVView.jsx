@@ -133,6 +133,16 @@ const AppleTVView = () => {
     if (tab !== "search") setSearchQuery("");
   };
 
+  const [showHeader, setShowHeader] = useState(true);
+
+  const handleScrollDirection = (direction) => {
+    if (direction === "down") {
+      setShowHeader(false);
+    } else {
+      setShowHeader(true);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full w-full bg-[#f5f5f7] rounded-xl overflow-hidden select-none relative">
       <PlayerOverlay
@@ -157,7 +167,11 @@ const AppleTVView = () => {
         onChangeEpisode={changeEpisode}
       />
       <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} />
-      <AppleTVHeaderSection onProfileClick={() => setShowProfile(true)} profileUrl={profileUrl} />
+      <AppleTVHeaderSection
+        onProfileClick={() => setShowProfile(true)}
+        profileUrl={profileUrl}
+        showHeader={showHeader}
+      />
       <AppleTVSection
         activeTab={activeTab}
         searchQuery={searchQuery}
@@ -168,6 +182,7 @@ const AppleTVView = () => {
         onPlayFeatured={playFeatured}
         onPlayMovie={playMovie}
         onToggleUpNext={toggleUpNext}
+        onScrollDirection={handleScrollDirection}
       />
     </div>
   );

@@ -207,11 +207,12 @@
     gap: 10px !important;
   }
 
-  /* Messages, Music, Calculator & Notes App Mobile Optimizations */
+  /* Messages, Music, Calculator, Notes & Apple TV App Mobile Optimizations */
   #messages #window-header,
   #music #window-header,
   #calculator #window-header,
-  #notes #window-header {
+  #notes #window-header,
+  #appletv #window-header {
     padding: 8px 16px !important;
     min-height: auto !important;
     height: auto !important;

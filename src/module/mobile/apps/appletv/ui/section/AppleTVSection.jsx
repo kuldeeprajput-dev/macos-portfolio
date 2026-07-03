@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import FavoritesSection from "./FavoritesSection";
 import LibrarySection from "./LibrarySection";
 import StoreSection from "./StoreSection";
@@ -24,7 +24,9 @@ const AppleTVSection = ({
   onPlayFeatured,
   onPlayMovie,
   onToggleUpNext,
+  onScrollDirection,
 }) => {
+  const lastScrollTopRef = useRef(0);
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -123,6 +125,19 @@ const AppleTVSection = ({
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
+    
+    // Detect scroll direction and notify parent
+    if (onScrollDirection) {
+      if (scrollTop <= 10) {
+        onScrollDirection("up");
+      } else if (scrollTop > lastScrollTopRef.current) {
+        onScrollDirection("down");
+      } else if (scrollTop < lastScrollTopRef.current) {
+        onScrollDirection("up");
+      }
+    }
+    lastScrollTopRef.current = scrollTop;
+
     if (scrollHeight - scrollTop - clientHeight < 150) {
       if (searchQuery.trim()) {
         if (!isLoading && hasMore) setPage((prev) => prev + 1);
@@ -139,7 +154,7 @@ const AppleTVSection = ({
       {/* Scrollable content area */}
       <main
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto px-4 pt-2 pb-4 space-y-5 min-h-0"
+        className="flex-1 overflow-y-auto px-4 pt-[44px] pb-4 space-y-5 min-h-0"
         style={{ scrollbarWidth: "none" }}
       >
         {/* Search Tab */}
