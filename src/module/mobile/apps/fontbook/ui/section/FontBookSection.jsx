@@ -85,7 +85,7 @@ const FontBookSection = ({
               <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider pl-1">
                 Collections
               </span>
-              <div className="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)] divide-y divide-zinc-150/50">
+              <div className="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)] divide-y divide-zinc-100">
                 {CATEGORIES.map((cat) => {
                   const count =
                     cat === "All Fonts"
@@ -208,7 +208,7 @@ const FontBookSection = ({
 
           {/* Fonts List Container */}
           <div className="flex-1 overflow-y-auto px-5 pt-2 pb-24">
-            <div className="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)] divide-y divide-zinc-150/50">
+            <div className="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)] divide-y divide-zinc-100">
               {filteredFonts.map((font) => (
                 <div
                   key={font.name}
@@ -255,8 +255,8 @@ const FontBookSection = ({
             <div className="w-12" /> {/* spacer */}
           </div>
 
-          {/* Styling Toolbar Controls */}
-          <div className="p-4 border-b border-zinc-150 flex flex-col gap-3.5 bg-gray-50/50 shrink-0">
+           {/* Styling Toolbar Controls */}
+          <div className="p-4 border-b border-zinc-100 flex flex-col gap-3.5 bg-gray-50/50 shrink-0">
             <div className="flex items-center justify-between gap-4 text-xs font-semibold text-zinc-700">
               <div className="flex bg-zinc-200 p-0.5 rounded-xl">
                 <button
