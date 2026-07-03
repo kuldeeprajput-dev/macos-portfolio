@@ -33,9 +33,13 @@ const GithubIcon = ({ size = 16, className = "" }) => (
 
 const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
   const [profile, setProfile] = useState(null);
+  const [showRedirectPrompt, setShowRedirectPrompt] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      setShowRedirectPrompt(false);
+      return;
+    }
 
     fetch("https://api.github.com/users/kuldeeprajput-dev")
       .then((res) => res.json())
@@ -60,7 +64,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
       <div className="absolute inset-0 -z-10" onClick={onClose} />
 
       {/* Bottom Sheet */}
-      <div className="w-full max-h-[85%] bg-white rounded-t-3xl shadow-2xl border-t border-zinc-200 flex flex-col overflow-hidden animate-slide-up">
+      <div className="w-full max-h-[85%] bg-white rounded-t-3xl shadow-2xl border-t border-zinc-200 flex flex-col overflow-hidden animate-slide-up relative">
         {/* Drag indicator / Header bar */}
         <div className="w-full flex justify-between items-center px-5 pt-5 pb-3 bg-zinc-50 border-b border-zinc-100">
           <h2 className="text-[17px] font-bold text-gray-900">Account</h2>
@@ -137,11 +141,10 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
               Manage Account
             </h4>
             <div className="bg-white border border-zinc-100 rounded-2xl overflow-hidden divide-y divide-zinc-100">
-              <a
-                href={profile?.html_url || "https://github.com/kuldeeprajput-dev"}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors"
+              <button
+                type="button"
+                onClick={() => setShowRedirectPrompt(true)}
+                className="w-full flex items-center justify-between p-3.5 hover:bg-zinc-50 transition-colors text-left border-none outline-none focus:outline-none"
               >
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-gray-100 text-gray-800 rounded-xl">
@@ -150,7 +153,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                   <span className="text-xs font-semibold text-gray-800">GitHub Profile</span>
                 </div>
                 <span className="text-[11px] text-gray-400">View →</span>
-              </a>
+              </button>
 
               {appName === "appstore" ? (
                 <>
@@ -266,6 +269,45 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
             </div>
           </div>
         </div>
+
+        {/* Finder-style Redirection Popup */}
+        {showRedirectPrompt && (
+          <div className="absolute inset-0 bg-white/95 backdrop-blur-md flex items-center justify-center z-[100] p-6 text-center animate-in fade-in duration-150 rounded-t-3xl">
+            <div className="space-y-4 max-w-xs transform animate-in zoom-in-95 duration-150">
+              <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
+                <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>
+                <p className="text-[11px] text-gray-500 leading-relaxed">
+                  Do you want to open the GitHub profile for{" "}
+                  <span className="font-semibold text-gray-700">
+                    @{profile?.login || "kuldeeprajput-dev"}
+                  </span>{" "}
+                  in a new tab?
+                </p>
+              </div>
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={() => setShowRedirectPrompt(false)}
+                  className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer border border-zinc-200"
+                >
+                  Cancel
+                </button>
+                <a
+                  href={profile?.html_url || "https://github.com/kuldeeprajput-dev"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setShowRedirectPrompt(false)}
+                  className="flex-1 py-2.5 bg-[#24292e] hover:bg-[#1f2327] active:bg-[#1a1e21] text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center cursor-pointer text-center"
+                  style={{ textDecoration: "none" }}
+                >
+                  Open Link
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -13,6 +13,10 @@ const AppleTVHeaderSection = ({ onProfileClick, profileUrl, showHeader = true })
       <WindowControls target="appletv" />
     </div>
 
+    <span className="text-[15px] font-bold text-gray-900 absolute left-1/2 -translate-x-1/2 select-none pointer-events-none">
+      Apple TV
+    </span>
+
     <button
       onClick={onProfileClick}
       className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center border border-zinc-200 shadow-sm active:scale-95 transition-transform cursor-pointer relative z-50"
