@@ -69,3 +69,10 @@ body::before {
 .animate-modal-pop {
   animation: modalScaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* contentEditable empty state placeholder support */
+[contentEditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #a1a1aa;
+  cursor: text;
+}

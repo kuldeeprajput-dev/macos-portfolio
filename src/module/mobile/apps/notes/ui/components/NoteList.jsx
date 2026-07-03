@@ -34,8 +34,7 @@ const NoteList = ({
       ) : (
         notes.map((note) => {
           const isSelected = activeNoteId === note.id;
-          const lines = note.body.split("\n");
-          const preview = lines.slice(1).join(" ").trim() || "No additional text";
+          const preview = note.preview || "No additional text";
 
           return (
             <div

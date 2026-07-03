@@ -107,13 +107,8 @@ const NotesSection = ({
   return (
     <div className="flex flex-col h-full w-full bg-[#f2f2f7] select-none text-zinc-900 font-sans relative overflow-hidden">
       {/* Window Header (For OS Shell integrity) */}
-      <div
-        id="window-header"
-        className="shrink-0 flex items-center justify-between bg-[#f2f2f7] border-b border-zinc-200/50 px-4 py-2"
-      >
+      <div id="window-header" className="shrink-0 flex items-center justify-between relative z-10">
         <WindowControls target="notes" />
-        <span className="text-xs font-bold text-gray-400">Notes</span>
-        <div className="w-12" /> {/* spacer */}
       </div>
 
       {isSidebarOpen ? (
@@ -146,9 +141,8 @@ const NotesSection = ({
             ) : (
               <div className="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)] divide-y divide-zinc-100">
                 {filteredNotes.map((note) => {
-                  const lines = note.body.split("\n");
-                  const title = lines[0] || "New Note";
-                  const preview = lines.slice(1).join(" ").trim() || "No additional text";
+                  const title = note.title || "New Note";
+                  const preview = note.preview || "No additional text";
                   return (
                     <div
                       key={note.id}
