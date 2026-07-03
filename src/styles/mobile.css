@@ -212,7 +212,8 @@
   #music #window-header,
   #calculator #window-header,
   #notes #window-header,
-  #appletv #window-header {
+  #appletv #window-header,
+  #appstore #window-header {
     padding: 8px 16px !important;
     min-height: auto !important;
     height: auto !important;

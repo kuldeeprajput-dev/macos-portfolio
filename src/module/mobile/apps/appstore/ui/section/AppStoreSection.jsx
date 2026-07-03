@@ -23,6 +23,7 @@ const AppStoreSection = () => {
   const [selectedApp, setSelectedApp] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
   const [profileUrl, setProfileUrl] = useState("/images/profile.jpg");
+  const [showHeader, setShowHeader] = useState(true);
 
   const [installStates, setInstallStates] = useState(() => {
     const initial = {};
@@ -176,12 +177,24 @@ const AppStoreSection = () => {
     }
   };
 
+  const handleScrollDirection = (direction) => {
+    if (direction === "down") {
+      setShowHeader(false);
+    } else {
+      setShowHeader(true);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full w-full bg-[#f2f2f7] rounded-xl overflow-hidden select-none text-gray-800 relative font-sans">
-      {/* iOS style Top Header / Status bar spacer with Window Exit Controls */}
+      {/* iOS style Top Header with Window Exit Controls */}
       <div
         id="window-header"
-        className="shrink-0 flex items-center justify-between bg-zinc-50/90 backdrop-blur-md px-4 pt-12 pb-2.5 border-b border-zinc-200/50 z-40 relative"
+        className={`absolute top-0 left-0 right-0 flex items-center justify-between z-40 transition-all duration-300 ease-in-out ${
+          showHeader
+            ? "transform translate-y-0 opacity-100"
+            : "transform -translate-y-full opacity-0 pointer-events-none"
+        }`}
       >
         <div className="flex items-center gap-2">
           <WindowControls target="appstore" />
@@ -222,6 +235,7 @@ const AppStoreSection = () => {
           updateProgresses={updateProgresses}
           updatingAll={updatingAll}
           onSelectApp={(app) => setSelectedApp(app)}
+          onScrollDirection={handleScrollDirection}
         />
       </div>
 
@@ -233,6 +247,7 @@ const AppStoreSection = () => {
             onClick={() => {
               setActiveTab(tab.id);
               if (tab.id !== "search") setSearchQuery("");
+              setShowHeader(true);
             }}
             className={`flex flex-col items-center gap-1 text-[9px] font-bold transition-all w-16 cursor-pointer ${
               activeTab === tab.id ? "text-blue-500 scale-102" : "text-gray-400 hover:text-gray-600"

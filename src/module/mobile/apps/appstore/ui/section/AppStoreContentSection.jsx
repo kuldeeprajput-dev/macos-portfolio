@@ -1,7 +1,7 @@
 import { RefreshCw, Search as SearchIcon, ArrowRight, Sparkles, Trophy, Star } from "lucide-react";
 import { STORE_APPS, FEATURED_APPS } from "../components/appStoreData";
 import { AppStoreCard, UpdateItem } from "../components/AppStoreCard";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const UPDATES_LIST = [
   {
@@ -39,7 +39,23 @@ const AppStoreContentSection = ({
   updateProgresses,
   updatingAll,
   onSelectApp,
+  onScrollDirection,
 }) => {
+  const lastScrollTopRef = useRef(0);
+
+  const handleScroll = (e) => {
+    const { scrollTop } = e.target;
+    if (onScrollDirection) {
+      if (scrollTop <= 10) {
+        onScrollDirection("up");
+      } else if (scrollTop > lastScrollTopRef.current) {
+        onScrollDirection("down");
+      } else if (scrollTop < lastScrollTopRef.current) {
+        onScrollDirection("up");
+      }
+    }
+    lastScrollTopRef.current = scrollTop;
+  };
   const [trendingQueries] = useState([
     "Minecraft",
     "Figma",
@@ -64,7 +80,10 @@ const AppStoreContentSection = ({
   };
 
   return (
-    <main className="flex-1 bg-white overflow-y-auto scrollbar-none select-none text-gray-800 h-full min-h-0">
+    <main
+      onScroll={handleScroll}
+      className="flex-1 bg-white overflow-y-auto scrollbar-none select-none text-gray-800 h-full min-h-0 pt-[44px]"
+    >
       {/* 1. TODAY TAB */}
       {activeTab === "today" && (
         <div className="p-5 space-y-6">
