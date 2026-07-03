@@ -34,7 +34,11 @@
   #vscode.window-visible,
   #postman.window-visible,
   #telegram.window-visible,
-  #music.window-visible {
+  #music.window-visible,
+  #calculator.window-visible,
+  #weather.window-visible,
+  #font.window-visible,
+  #map.window-visible {
     border-radius: 0 !important;
     box-shadow: none !important;
     max-width: none !important;
@@ -214,7 +218,9 @@
   #notes #window-header,
   #appletv #window-header,
   #appstore #window-header,
-  #weather #window-header {
+  #weather #window-header,
+  #font #window-header,
+  #map #window-header {
     padding: 8px 16px !important;
     min-height: auto !important;
     height: auto !important;
@@ -258,5 +264,9 @@
   #contact .overflow-y-auto::-webkit-scrollbar,
   #contact > div:last-child::-webkit-scrollbar {
     display: none !important;
+  }
+
+  #font {
+    min-width: 0 !important;
   }
 }
