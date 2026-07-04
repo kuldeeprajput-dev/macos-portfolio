@@ -1,5 +1,6 @@
-import { dockApps } from "@constants";
+import { dockApps, locations } from "@constants";
 import useWindowsStore from "@store/window";
+import useLocationStore from "@store/location";
 import { Fragment, useMemo, useState } from "react";
 import DockIcon from "./DockIcon";
 import useDock from "../../hooks/useDock";
@@ -15,6 +16,7 @@ const Dock = () => {
     reorderDockApps,
     setDockDragging,
   } = useWindowsStore();
+  const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
   const [hoveredAppId, setHoveredAppId] = useState(null);
   const [draggedIndex, setDraggedIndex] = useState(null);
   const [isDraggingActive, setIsDraggingActive] = useState(false);
@@ -35,6 +37,46 @@ const Dock = () => {
 
   const toggleApp = (app) => {
     if (!app.canOpen) return;
+
+    if (app.id === "trash") {
+      setActiveLocation(locations.trash);
+      const window = windows["finder"];
+      if (window?.isOpen) {
+        if (window.isMinimized) {
+          unminimizeWindow("finder");
+        } else {
+          const activeLocation = useLocationStore.getState().activeLocation;
+          if (activeLocation?.id === locations.trash.id) {
+            closeWindow("finder");
+          } else {
+            unminimizeWindow("finder");
+          }
+        }
+      } else {
+        openWindow("finder");
+      }
+      return;
+    }
+
+    if (app.id === "folder") {
+      setActiveLocation(locations.work);
+      const window = windows["finder"];
+      if (window?.isOpen) {
+        if (window.isMinimized) {
+          unminimizeWindow("finder");
+        } else {
+          const activeLocation = useLocationStore.getState().activeLocation;
+          if (activeLocation?.id === locations.work.id) {
+            closeWindow("finder");
+          } else {
+            unminimizeWindow("finder");
+          }
+        }
+      } else {
+        openWindow("finder");
+      }
+      return;
+    }
 
     const appId = app.id === "folder" ? "finder" : app.id;
     const window = windows[appId];

@@ -21,5 +21,5 @@ export const dockApps = [
   { id: "telegram", name: "Telegram", icon: "telegram.png", canOpen: true },
   { id: "music", name: "Music", icon: "music.png", canOpen: true },
   { id: "folder", name: "Projects Folder", icon: "folder.png", canOpen: true },
-  { id: "trash", name: "Archive", icon: "trash.png", canOpen: false },
+  { id: "trash", name: "Trash", icon: "trash.png", canOpen: true },
 ];
