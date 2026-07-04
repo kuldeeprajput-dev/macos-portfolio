@@ -32,7 +32,7 @@ body::before {
   height: 100vh;
   background: black;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9999998;
   opacity: calc((100 - var(--system-brightness, 100)) / 130);
   transition: opacity 80ms ease-out;
 }
