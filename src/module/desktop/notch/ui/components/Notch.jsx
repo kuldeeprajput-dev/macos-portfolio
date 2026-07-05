@@ -618,7 +618,8 @@ const Notch = () => {
         if (activeFilter === "grayscale") ctx.filter = "grayscale(100%)";
         else if (activeFilter === "sepia") ctx.filter = "sepia(100%)";
         else if (activeFilter === "cold") ctx.filter = "hue-rotate(180deg) saturate(140%)";
-        else if (activeFilter === "vintage") ctx.filter = "sepia(50%) contrast(120%) brightness(90%)";
+        else if (activeFilter === "vintage")
+          ctx.filter = "sepia(50%) contrast(120%) brightness(90%)";
         else if (activeFilter === "invert") ctx.filter = "invert(100%)";
         else ctx.filter = "none";
 
@@ -846,7 +847,10 @@ const Notch = () => {
 
         {/* Fully Expanded Media Player State */}
         {notchClass === "macos-notch expanded" && (
-          <div className="notch-nook-expanded w-full h-full flex flex-col justify-between relative" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="notch-nook-expanded w-full h-full flex flex-col justify-between relative"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Ambient background glow */}
             <div className="notch-ambient-glow" />
 
@@ -919,7 +923,7 @@ const Notch = () => {
                         <div className="absolute inset-0 bg-gradient-to-tr from-indigo-950 via-slate-900 to-purple-950 flex flex-col items-center justify-center overflow-hidden">
                           {/* Grid scan lines */}
                           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
-                          
+
                           {/* Animated scanning bar */}
                           <div className="absolute left-0 right-0 h-[2px] bg-green-500/30 shadow-[0_0_6px_#22c55e] animate-scan-bar pointer-events-none" />
 
@@ -933,12 +937,14 @@ const Notch = () => {
 
                           {/* Simulated Face Bracket */}
                           <div className="w-24 h-24 border border-dashed border-green-500/40 rounded-xl relative flex items-center justify-center animate-face-pulse">
-                            <span className="absolute top-1 left-1.5 text-[7px] font-bold text-green-400/80 tracking-wider">MOCK FEED</span>
+                            <span className="absolute top-1 left-1.5 text-[7px] font-bold text-green-400/80 tracking-wider">
+                              MOCK FEED
+                            </span>
                             <div className="w-2 h-2 border-t-2 border-l-2 border-green-400 absolute top-0 left-0" />
                             <div className="w-2 h-2 border-t-2 border-r-2 border-green-400 absolute top-0 right-0" />
                             <div className="w-2 h-2 border-b-2 border-l-2 border-green-400 absolute bottom-0 left-0" />
                             <div className="w-2 h-2 border-b-2 border-r-2 border-green-400 absolute bottom-0 right-0" />
-                            
+
                             {/* Mock Avatar */}
                             <div className="w-14 h-14 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center overflow-hidden">
                               <span className="text-2xl animate-bounce">👨‍💻</span>
@@ -954,15 +960,21 @@ const Notch = () => {
                           className="notch-camera-live-video"
                           style={{
                             filter:
-                              activeFilter === "grayscale" ? "grayscale(1)" :
-                              activeFilter === "sepia" ? "sepia(1)" :
-                              activeFilter === "cold" ? "hue-rotate(180deg) saturate(1.4)" :
-                              activeFilter === "vintage" ? "sepia(0.5) contrast(1.2) brightness(0.9)" :
-                              activeFilter === "invert" ? "invert(1)" : "none"
+                              activeFilter === "grayscale"
+                                ? "grayscale(1)"
+                                : activeFilter === "sepia"
+                                  ? "sepia(1)"
+                                  : activeFilter === "cold"
+                                    ? "hue-rotate(180deg) saturate(1.4)"
+                                    : activeFilter === "vintage"
+                                      ? "sepia(0.5) contrast(1.2) brightness(0.9)"
+                                      : activeFilter === "invert"
+                                        ? "invert(1)"
+                                        : "none",
                           }}
                         />
                       )}
-                      
+
                       {/* Live indicator (for real feed) */}
                       {!isDemoMode && (
                         <div className="absolute top-3 left-4 flex items-center gap-1.5">
@@ -981,7 +993,7 @@ const Notch = () => {
                           { id: "sepia", name: "Sepia" },
                           { id: "cold", name: "Cold" },
                           { id: "vintage", name: "Warm" },
-                          { id: "invert", name: "X-Ray" }
+                          { id: "invert", name: "X-Ray" },
                         ].map((f) => (
                           <button
                             key={f.id}
@@ -1016,7 +1028,9 @@ const Notch = () => {
                       >
                         <div className="w-7 h-7 rounded-full bg-white group-active:scale-95 transition-all" />
                       </button>
-                      <span className="text-[11px] text-zinc-500 w-14 text-right font-medium">Capture</span>
+                      <span className="text-[11px] text-zinc-500 w-14 text-right font-medium">
+                        Capture
+                      </span>
                     </div>
                   </>
                 )}
@@ -1027,7 +1041,10 @@ const Notch = () => {
             <div className="flex-1 w-full overflow-hidden flex flex-col justify-center mt-2.5">
               {activeTab === "nook" ? (
                 /* Nook Tab: Music | Calendar | Camera */
-                <div className="flex items-center justify-between h-full w-full select-none" style={{ gap: "0" }}>
+                <div
+                  className="flex items-center justify-between h-full w-full select-none"
+                  style={{ gap: "0" }}
+                >
                   {/* Column 1: Music */}
                   <div className="flex items-center gap-3 pr-3.5 border-r border-white/10 h-[85%] w-[33%] flex-shrink-0">
                     <div
@@ -1064,7 +1081,11 @@ const Notch = () => {
                         <button className="nook-ctrl-btn" onClick={handlePrev} title="Previous">
                           <SkipBack size={10} fill="currentColor" />
                         </button>
-                        <button className="nook-ctrl-btn" onClick={togglePlay} title={isPlaying ? "Pause" : "Play"}>
+                        <button
+                          className="nook-ctrl-btn"
+                          onClick={togglePlay}
+                          title={isPlaying ? "Pause" : "Play"}
+                        >
                           {isPlaying ? (
                             <Pause size={11} fill="currentColor" />
                           ) : (
@@ -1121,9 +1142,7 @@ const Notch = () => {
                         <Camera size={13} />
                       </div>
                     </button>
-                    <span className="nook-camera-label">
-                      Camera
-                    </span>
+                    <span className="nook-camera-label">Camera</span>
                   </div>
                 </div>
               ) : (
@@ -1147,10 +1166,7 @@ const Notch = () => {
                   ) : (
                     <div className="notch-tray-files scrollbar-none">
                       {droppedFiles.map((file, idx) => (
-                        <div
-                          key={idx}
-                          className="notch-tray-file-card group"
-                        >
+                        <div key={idx} className="notch-tray-file-card group">
                           <FileText size={16} className="text-zinc-400 mb-0.5" />
                           <span className="text-[8px] text-white truncate w-full text-center font-medium">
                             {file.name}

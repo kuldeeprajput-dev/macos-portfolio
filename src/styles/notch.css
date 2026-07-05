@@ -215,7 +215,7 @@
   .notch-wave-bar {
     width: 2px;
     height: 100%;
-    background: #1db954;
+    background: #a1a1aa;
     border-radius: 1px;
     transform-origin: bottom;
     animation: bounceVisualizer 1.2s ease-in-out infinite alternate;
