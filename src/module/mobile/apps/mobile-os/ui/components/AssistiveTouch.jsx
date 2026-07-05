@@ -92,7 +92,6 @@ const AssistiveTouch = () => {
     if (activeApp) {
       const appsWithBackListener = [
         "finder",
-        "chrome",
         "notes",
         "appstore",
         "settings",

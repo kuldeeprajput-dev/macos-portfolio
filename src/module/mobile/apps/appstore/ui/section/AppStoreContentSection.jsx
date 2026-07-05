@@ -59,7 +59,7 @@ const AppStoreContentSection = ({
   const [trendingQueries] = useState([
     "Minecraft",
     "Figma",
-    "Google Chrome",
+    "Telegram",
     "Safari",
     "FaceTime",
     "Weather",
@@ -223,13 +223,13 @@ const AppStoreContentSection = ({
               <span className="text-[9px] font-extrabold uppercase tracking-wider text-white/70">
                 Spotlight App
               </span>
-              <h3 className="text-xl font-extrabold tracking-tight">Chrome Mobile</h3>
+              <h3 className="text-xl font-extrabold tracking-tight">Safari</h3>
               <p className="text-[11px] text-white/80 max-w-xs">
-                Fast, secure, and private web browsing simulation with modern settings.
+                Browse the web with Apple's fast, secure, and energy-efficient browser.
               </p>
             </div>
             <button
-              onClick={() => onSelectApp(STORE_APPS.find((a) => a.id === "chrome"))}
+              onClick={() => onSelectApp(STORE_APPS.find((a) => a.id === "safari"))}
               className="px-5 py-2 bg-white text-blue-600 rounded-full text-xs font-bold shadow-sm active:scale-95 transition-transform"
             >
               Learn More

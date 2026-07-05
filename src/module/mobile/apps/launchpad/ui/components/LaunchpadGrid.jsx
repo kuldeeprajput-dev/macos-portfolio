@@ -39,7 +39,6 @@ const LaunchpadGrid = ({ apps, onLaunch, searchQuery }) => (
                     call: "scale-[0.71]",
                     appstore: "scale-[0.90]",
                     weather: "scale-[0.81]",
-                    chrome: "scale-[0.95]",
                     vscode: "scale-[0.95]",
                     postman: "scale-[0.95]",
                     map: "scale-[0.72]",

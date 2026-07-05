@@ -3,7 +3,6 @@ import AppStore from "@module/mobile/apps/appstore/ui/view/AppStoreView";
 import Calculator from "@module/mobile/apps/calculator/ui/view/CalculatorView";
 import Calendar from "@module/mobile/apps/calendar/ui/view/CalendarView";
 import Call from "@module/mobile/apps/call/ui/view/CallView";
-import Chrome from "@module/mobile/apps/chrome/ui/view/ChromeView";
 import Contact from "@module/mobile/apps/contact/ui/view/ContactView";
 import Finder from "@module/mobile/apps/finder/ui/view/FinderView";
 import FontBook from "@module/mobile/apps/fontbook/ui/view/FontBookView";
@@ -54,7 +53,6 @@ const Mobile = () => {
       <AppStore />
       <Calendar />
       <Weather />
-      <Chrome />
       <Map />
       <FontBook />
       <Telegram />

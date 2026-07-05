@@ -89,15 +89,7 @@ export const STORE_APPS = [
     icon: "weather.png",
     native: true,
   },
-  {
-    id: "chrome",
-    name: "Google Chrome",
-    category: "Utilities",
-    desc: "Fast, secure, and private web browsing.",
-    rating: 4.8,
-    icon: "chromee.png",
-    native: true,
-  },
+
   {
     id: "music",
     name: "Music",

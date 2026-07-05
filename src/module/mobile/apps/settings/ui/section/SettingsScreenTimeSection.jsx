@@ -43,7 +43,7 @@ const SettingsScreenTimeSection = () => {
   const appUsage = [
     { name: "VS Code", category: "Development", time: "4h 10m", percentage: 65, icon: "💻" },
     {
-      name: "Safari / Chrome",
+      name: "Safari",
       category: "Productivity",
       time: "1h 50m",
       percentage: 28,

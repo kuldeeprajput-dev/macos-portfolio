@@ -163,7 +163,7 @@ const getProjectSummary = (project) => {
 };
 
 const openWindowSafely = (actions, id, data) => {
-  const targetId = id === "chrome" && actions.platform !== "mobile" ? "safari" : id;
+  const targetId = id === "chrome" ? "safari" : id;
   actions.openWindow?.(targetId, data);
   return targetId;
 };
@@ -514,7 +514,7 @@ const handleWindowCommand = (query, actions) => {
   if (hasAny(query, OPEN_INTENTS)) {
     const openedId = openWindowSafely(actions, app.id);
     if (app.id === "chrome" && openedId === "safari") {
-      return makeResult("Google Chrome is not available on desktop, so I opened Safari instead.");
+      return makeResult("Google Chrome is not available, so I opened Safari instead.");
     }
     return makeResult(`Opening ${app.name}.`);
   }
