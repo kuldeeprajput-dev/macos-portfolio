@@ -52,6 +52,8 @@ const Notch = () => {
   const [cameraError, setCameraError] = useState("");
   const videoRef = useRef(null);
   const [cameraStream, setCameraStream] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("none");
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   const notchRef = useRef(null);
 
@@ -540,6 +542,7 @@ const Notch = () => {
   const openCamera = async (e) => {
     e.stopPropagation();
     setCameraError("");
+    setIsDemoMode(false);
     setIsCameraOpen(true);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
@@ -564,31 +567,108 @@ const Notch = () => {
       setCameraStream(null);
     }
     setIsCameraOpen(false);
+    setIsDemoMode(false);
     setCameraError("");
   };
 
   const takeSnapshot = (e) => {
     e.stopPropagation();
+    // Shutter flash animation and sound
+    setCameraFlash(true);
+    try {
+      const sound = new Audio("/sound/shutter.mp3");
+      sound.volume = 0.4;
+      sound.play().catch(() => {});
+    } catch {
+      /* silent */
+    }
+    setTimeout(() => setCameraFlash(false), 180);
+
+    if (isDemoMode) {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = 640;
+        canvas.height = 480;
+        const ctx = canvas.getContext("2d");
+
+        // Draw background gradient
+        const grad = ctx.createLinearGradient(0, 0, 640, 480);
+        grad.addColorStop(0, "#1e1b4b");
+        grad.addColorStop(1, "#311042");
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 640, 480);
+
+        // Draw Grid
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x < 640; x += 30) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, 480);
+          ctx.stroke();
+        }
+        for (let y = 0; y < 480; y += 30) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(640, y);
+          ctx.stroke();
+        }
+
+        // Apply active filter
+        if (activeFilter === "grayscale") ctx.filter = "grayscale(100%)";
+        else if (activeFilter === "sepia") ctx.filter = "sepia(100%)";
+        else if (activeFilter === "cold") ctx.filter = "hue-rotate(180deg) saturate(140%)";
+        else if (activeFilter === "vintage") ctx.filter = "sepia(50%) contrast(120%) brightness(90%)";
+        else if (activeFilter === "invert") ctx.filter = "invert(100%)";
+        else ctx.filter = "none";
+
+        // Draw Face box
+        ctx.strokeStyle = "rgba(34, 197, 94, 0.8)";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(220, 140, 200, 200);
+
+        // Draw text
+        ctx.fillStyle = "#4ade80";
+        ctx.font = "bold 14px sans-serif";
+        ctx.fillText("FACE DETECTED", 230, 165);
+
+        // Draw Simulated emoji avatar in center
+        ctx.font = "60px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("👨‍💻", 320, 240);
+
+        const link = document.createElement("a");
+        link.download = `snapshot-demo-${Date.now()}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      } catch (err) {
+        console.error("Demo Snapshot failed:", err);
+      }
+      return;
+    }
+
     if (!videoRef.current) return;
     try {
       const canvas = document.createElement("canvas");
       canvas.width = videoRef.current.videoWidth;
       canvas.height = videoRef.current.videoHeight;
-      canvas.getContext("2d").drawImage(videoRef.current, 0, 0);
+      const ctx = canvas.getContext("2d");
+
+      // Apply active filter to normal camera snapshot
+      if (activeFilter === "grayscale") ctx.filter = "grayscale(100%)";
+      else if (activeFilter === "sepia") ctx.filter = "sepia(100%)";
+      else if (activeFilter === "cold") ctx.filter = "hue-rotate(180deg) saturate(140%)";
+      else if (activeFilter === "vintage") ctx.filter = "sepia(50%) contrast(120%) brightness(90%)";
+      else if (activeFilter === "invert") ctx.filter = "invert(100%)";
+      else ctx.filter = "none";
+
+      ctx.drawImage(videoRef.current, 0, 0);
+
       const link = document.createElement("a");
       link.download = `snapshot-${Date.now()}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
-      // Flash animation
-      setCameraFlash(true);
-      try {
-        const sound = new Audio("/sound/shutter.mp3");
-        sound.volume = 0.4;
-        sound.play().catch(() => {});
-      } catch {
-        /* silent */
-      }
-      setTimeout(() => setCameraFlash(false), 180);
     } catch (err) {
       console.error("Snapshot failed:", err);
     }
@@ -716,9 +796,22 @@ const Notch = () => {
     startRecording();
   };
 
+  const getNotchStyle = () => {
+    if (isSiriOpen) {
+      return { width: "620px", height: "150px" };
+    }
+    if (isMusicExpanded) {
+      return { width: "640px", height: "190px" };
+    }
+    if (isPlaying && hasSong) {
+      return { width: "220px", height: "30px" };
+    }
+    return { width: "150px", height: "30px" };
+  };
+
   return (
     <div ref={notchRef} className="macos-notch-container" onClick={handleNotchClick}>
-      <div className={notchClass}>
+      <div className={notchClass} style={getNotchStyle()}>
         {/* Compact Default State */}
         {notchClass === "macos-notch compact" && (
           <div className="w-3 h-3 rounded-full bg-zinc-900 border border-zinc-800" />
@@ -753,24 +846,22 @@ const Notch = () => {
 
         {/* Fully Expanded Media Player State */}
         {notchClass === "macos-notch expanded" && (
-          <div className="notch-nook-expanded w-full h-full flex flex-col justify-between relative">
+          <div className="notch-nook-expanded w-full h-full flex flex-col justify-between relative" onClick={(e) => e.stopPropagation()}>
+            {/* Ambient background glow */}
             <div className="notch-ambient-glow" />
 
             {/* Header section */}
-            <div
-              className="notch-nook-header flex justify-between items-center w-full select-none"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="notch-nook-tabs flex items-center gap-4">
+            <div className="notch-nook-header">
+              <div className="notch-nook-tabs">
                 <button
-                  className={`notch-nook-tab flex items-center gap-1.5 text-xs font-semibold transition-all ${activeTab === "nook" ? "text-white active" : "text-zinc-400 hover:text-zinc-200"}`}
+                  className={`notch-nook-tab ${activeTab === "nook" ? "active" : ""}`}
                   onClick={() => setActiveTab("nook")}
                 >
                   <Star size={11} fill={activeTab === "nook" ? "currentColor" : "none"} />
                   Nook
                 </button>
                 <button
-                  className={`notch-nook-tab flex items-center gap-1.5 text-xs font-semibold transition-all ${activeTab === "tray" ? "text-white active" : "text-zinc-400 hover:text-zinc-200"}`}
+                  className={`notch-nook-tab ${activeTab === "tray" ? "active" : ""}`}
                   onClick={() => setActiveTab("tray")}
                 >
                   <Cloud size={11} />
@@ -779,7 +870,7 @@ const Notch = () => {
               </div>
 
               <button
-                className="notch-nook-settings text-zinc-400 hover:text-white transition-all"
+                className="notch-nook-settings"
                 onClick={() => {
                   openWindow("settings");
                   setIsMusicExpanded(false);
@@ -790,67 +881,142 @@ const Notch = () => {
               </button>
             </div>
 
-            {/* Divider line under header */}
-            <div className="w-full h-[1px] bg-zinc-800/60 my-1" />
-
             {/* Camera flash screen animation */}
             {cameraFlash && (
-              <div className="absolute inset-0 bg-white z-50 pointer-events-none rounded-[22px] animate-flash-shutter" />
+              <div className="absolute inset-0 bg-white z-50 pointer-events-none rounded-[28px] animate-flash-shutter" />
             )}
 
             {/* Camera Live Feed Overlay */}
             {isCameraOpen && (
-              <div
-                className="absolute inset-0 z-40 bg-zinc-950/95 backdrop-blur-sm rounded-[22px] flex flex-col overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {cameraError ? (
+              <div className="notch-camera-live-overlay">
+                {cameraError && !isDemoMode ? (
                   <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center px-6">
                     <Camera size={24} className="text-zinc-500" />
                     <p className="text-zinc-400 text-[11px]">{cameraError}</p>
-                    <button
-                      className="mt-1 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] font-semibold rounded-full transition-all"
-                      onClick={closeCamera}
-                    >
-                      Close
-                    </button>
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        className="px-4 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-white text-[11px] font-semibold rounded-full transition-all"
+                        onClick={closeCamera}
+                      >
+                        Close
+                      </button>
+                      <button
+                        className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-semibold rounded-full transition-all"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsDemoMode(true);
+                        }}
+                      >
+                        Try Demo Mode
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <>
-                    {/* Live video feed */}
-                    <div className="relative flex-1 overflow-hidden rounded-t-[24px] bg-black">
-                      <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="w-full h-full object-cover scale-x-[-1]"
-                      />
-                      {/* Green live indicator */}
-                      <div className="absolute top-2 left-3 flex items-center gap-1">
-                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                        <span className="text-[8px] text-white/70 font-medium tracking-widest">
-                          LIVE
-                        </span>
+                    {/* Live feed (either video or simulated) */}
+                    <div className="relative flex-1 overflow-hidden bg-black">
+                      {isDemoMode ? (
+                        <div className="absolute inset-0 bg-gradient-to-tr from-indigo-950 via-slate-900 to-purple-950 flex flex-col items-center justify-center overflow-hidden">
+                          {/* Grid scan lines */}
+                          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+                          
+                          {/* Animated scanning bar */}
+                          <div className="absolute left-0 right-0 h-[2px] bg-green-500/30 shadow-[0_0_6px_#22c55e] animate-scan-bar pointer-events-none" />
+
+                          {/* Pulsing indicator */}
+                          <div className="absolute top-3 left-4 flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                            <span className="text-[9px] text-green-400 font-bold tracking-widest">
+                              DEMO FEED
+                            </span>
+                          </div>
+
+                          {/* Simulated Face Bracket */}
+                          <div className="w-24 h-24 border border-dashed border-green-500/40 rounded-xl relative flex items-center justify-center animate-face-pulse">
+                            <span className="absolute top-1 left-1.5 text-[7px] font-bold text-green-400/80 tracking-wider">MOCK FEED</span>
+                            <div className="w-2 h-2 border-t-2 border-l-2 border-green-400 absolute top-0 left-0" />
+                            <div className="w-2 h-2 border-t-2 border-r-2 border-green-400 absolute top-0 right-0" />
+                            <div className="w-2 h-2 border-b-2 border-l-2 border-green-400 absolute bottom-0 left-0" />
+                            <div className="w-2 h-2 border-b-2 border-r-2 border-green-400 absolute bottom-0 right-0" />
+                            
+                            {/* Mock Avatar */}
+                            <div className="w-14 h-14 rounded-full bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center overflow-hidden">
+                              <span className="text-2xl animate-bounce">👨‍💻</span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <video
+                          ref={videoRef}
+                          autoPlay
+                          playsInline
+                          muted
+                          className="notch-camera-live-video"
+                          style={{
+                            filter:
+                              activeFilter === "grayscale" ? "grayscale(1)" :
+                              activeFilter === "sepia" ? "sepia(1)" :
+                              activeFilter === "cold" ? "hue-rotate(180deg) saturate(1.4)" :
+                              activeFilter === "vintage" ? "sepia(0.5) contrast(1.2) brightness(0.9)" :
+                              activeFilter === "invert" ? "invert(1)" : "none"
+                          }}
+                        />
+                      )}
+                      
+                      {/* Live indicator (for real feed) */}
+                      {!isDemoMode && (
+                        <div className="absolute top-3 left-4 flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                          <span className="text-[9px] text-white/80 font-bold tracking-widest">
+                            LIVE
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Floating filter switcher */}
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 z-10">
+                        {[
+                          { id: "none", name: "Normal" },
+                          { id: "grayscale", name: "Mono" },
+                          { id: "sepia", name: "Sepia" },
+                          { id: "cold", name: "Cold" },
+                          { id: "vintage", name: "Warm" },
+                          { id: "invert", name: "X-Ray" }
+                        ].map((f) => (
+                          <button
+                            key={f.id}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setActiveFilter(f.id);
+                            }}
+                            className={`px-2 py-0.5 text-[8.5px] font-bold rounded-full transition-all ${
+                              activeFilter === f.id
+                                ? "bg-white text-black"
+                                : "text-white/60 hover:text-white hover:bg-white/10"
+                            }`}
+                          >
+                            {f.name}
+                          </button>
+                        ))}
                       </div>
                     </div>
-                    {/* Controls bar */}
-                    <div className="flex items-center justify-between px-5 py-2 bg-zinc-950">
+
+                    {/* Capture control bar */}
+                    <div className="flex items-center justify-between px-5 py-2.5 bg-zinc-950/90 border-t border-white/5">
                       <button
-                        className="text-zinc-400 hover:text-white text-[10px] font-semibold tracking-wide transition-colors"
+                        className="text-zinc-400 hover:text-white text-[11px] font-semibold tracking-wide transition-colors"
                         onClick={closeCamera}
                       >
                         ✕ Close
                       </button>
-                      {/* Shutter button */}
                       <button
                         className="w-10 h-10 rounded-full border-2 border-white bg-transparent flex items-center justify-center hover:bg-white/10 active:scale-90 transition-all group"
                         onClick={takeSnapshot}
-                        title="Take snapshot"
+                        title="Take Snapshot"
                       >
-                        <div className="w-7 h-7 rounded-full bg-white group-active:scale-90 transition-transform" />
+                        <div className="w-7 h-7 rounded-full bg-white group-active:scale-95 transition-all" />
                       </button>
-                      <span className="text-[10px] text-zinc-500 w-14 text-right">Snapshot</span>
+                      <span className="text-[11px] text-zinc-500 w-14 text-right font-medium">Capture</span>
                     </div>
                   </>
                 )}
@@ -858,146 +1024,138 @@ const Notch = () => {
             )}
 
             {/* Tab content area */}
-            <div className="flex-1 w-full overflow-hidden flex flex-col justify-center">
+            <div className="flex-1 w-full overflow-hidden flex flex-col justify-center mt-2.5">
               {activeTab === "nook" ? (
                 /* Nook Tab: Music | Calendar | Camera */
-                <div className="notch-nook-grid grid grid-cols-[1.25fr_1.5fr_0.85fr] items-center h-full w-full gap-2.5">
+                <div className="flex items-center justify-between h-full w-full select-none" style={{ gap: "0" }}>
                   {/* Column 1: Music */}
-                  <div
-                    className="nook-music-section flex items-center gap-2.5 pr-2.5 border-r border-zinc-800/40 h-[80%] min-w-0"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <div className="flex items-center gap-3 pr-3.5 border-r border-white/10 h-[85%] w-[33%] flex-shrink-0">
                     <div
-                      className={`nook-album-art w-12 h-12 rounded-lg flex-shrink-0 flex items-center justify-center relative overflow-hidden bg-zinc-800 shadow-lg ${isPlaying ? "playing" : ""}`}
+                      className="nook-album-art-container flex-shrink-0 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                      onClick={() => {
+                        openWindow("music");
+                        setIsMusicExpanded(false);
+                      }}
+                      title="Open Music App"
                     >
-                      {hasSong && activeTrack.coverUrl ? (
-                        <img
-                          src={activeTrack.coverUrl}
-                          alt="album art"
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-xl">{activeTrack.coverText || "🎵"}</span>
-                      )}
+                      <div
+                        className={`nook-album-art flex items-center justify-center overflow-hidden relative ${isPlaying ? "playing" : ""}`}
+                      >
+                        {hasSong && activeTrack.coverUrl ? (
+                          <img
+                            src={activeTrack.coverUrl}
+                            alt="album art"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-2xl">{activeTrack.coverText || "🎵"}</span>
+                        )}
+                      </div>
+                      <div className="nook-album-art-glow" />
                     </div>
-                    <div className="nook-music-info flex-1 min-w-0 flex flex-col justify-center gap-0.5">
-                      <span className="text-[12.5px] text-white font-semibold truncate block">
+                    <div className="flex-1 min-w-0 flex flex-col justify-center text-left">
+                      <span className="nook-music-title truncate w-full">
                         {hasSong ? activeTrack.title : "Select a Song"}
                       </span>
-                      <span className="text-[10.5px] text-zinc-400 truncate block">
+                      <span className="nook-music-subtitle truncate w-full">
                         {hasSong ? formatTime(currentTime) : "JioSaavn"}
                       </span>
-                      <div className="flex items-center gap-3 mt-1">
-                        <button
-                          className="text-zinc-400 hover:text-white transition-all hover:scale-110 active:scale-95"
-                          onClick={handlePrev}
-                        >
-                          <SkipBack size={12} fill="currentColor" />
+                      <div className="nook-music-controls mt-1 flex items-center gap-1.5">
+                        <button className="nook-ctrl-btn" onClick={handlePrev} title="Previous">
+                          <SkipBack size={10} fill="currentColor" />
                         </button>
-                        <button
-                          className="text-zinc-400 hover:text-white transition-all hover:scale-110 active:scale-95"
-                          onClick={togglePlay}
-                        >
+                        <button className="nook-ctrl-btn" onClick={togglePlay} title={isPlaying ? "Pause" : "Play"}>
                           {isPlaying ? (
-                            <Pause size={14} fill="currentColor" />
+                            <Pause size={11} fill="currentColor" />
                           ) : (
-                            <Play size={14} fill="currentColor" />
+                            <Play size={11} fill="currentColor" />
                           )}
                         </button>
-                        <button
-                          className="text-zinc-400 hover:text-white transition-all hover:scale-110 active:scale-95"
-                          onClick={handleNext}
-                        >
-                          <SkipForward size={12} fill="currentColor" />
+                        <button className="nook-ctrl-btn" onClick={handleNext} title="Next">
+                          <SkipForward size={10} fill="currentColor" />
                         </button>
                       </div>
                     </div>
                   </div>
 
                   {/* Column 2: Calendar */}
-                  <div
-                    className="nook-calendar-section px-2.5 border-r border-zinc-800/40 h-[80%] flex flex-col justify-center select-none"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-[12px] text-white font-extrabold tracking-wide">
-                        {getMonthName()}
-                      </span>
-                      <div className="flex-1 flex justify-between text-[9px] font-extrabold text-zinc-500 tracking-wider">
-                        {getCalendarDays().map((day, idx) => (
-                          <span key={idx} className={day.isToday ? "text-[#3b82f6]" : ""}>
-                            {day.dayName}
-                          </span>
-                        ))}
-                      </div>
+                  <div className="flex flex-col justify-center px-4 border-r border-white/10 h-[85%] w-[45%] flex-shrink-0 min-w-0">
+                    <div className="nook-cal-month text-left mb-1 pl-0.5 font-bold text-[9.5px] uppercase tracking-wider text-zinc-500">
+                      {getMonthName()}
                     </div>
-                    <div className="flex justify-between items-center text-[10px] text-zinc-400 mb-1">
-                      <div className="flex-1 flex justify-between">
-                        {getCalendarDays().map((day, idx) => (
-                          <span
-                            key={idx}
-                            className={`w-[18px] h-[18px] flex items-center justify-center rounded-full font-bold ${day.isToday ? "bg-[#3b82f6] text-white shadow-md shadow-blue-500/25" : "text-zinc-300 hover:bg-white/5 transition-colors"}`}
-                          >
-                            {day.dayNum}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="nook-cal-days-row mb-1">
+                      {getCalendarDays().map((day, idx) => (
+                        <span
+                          key={idx}
+                          className="nook-cal-day-header-cell"
+                          style={{ color: day.isToday ? "#0a84ff" : "" }}
+                        >
+                          {day.dayName}
+                        </span>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-1.5 justify-center mt-1.5 text-[9px] text-zinc-500 font-semibold">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981] flex-shrink-0 animate-pulse" />
-                      <span>Nothing for today</span>
+                    <div className="nook-cal-days-row mb-1.5">
+                      {getCalendarDays().map((day, idx) => (
+                        <span
+                          key={idx}
+                          className={`nook-cal-day-cell ${day.isToday ? "today" : ""}`}
+                        >
+                          {day.dayNum}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="nook-cal-status flex items-center gap-1.5 text-[8.5px] text-zinc-500 font-semibold uppercase tracking-wider">
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                      <span>Schedule Clear</span>
                     </div>
                   </div>
 
                   {/* Column 3: Camera */}
-                  <div className="nook-camera-section flex flex-col justify-center items-center h-[80%] pl-2 gap-1.5">
+                  <div className="flex flex-col items-center justify-center gap-1.5 pl-3.5 h-[85%] w-[22%] flex-shrink-0">
                     <button
-                      className="nook-camera-button w-[42px] h-[42px] rounded-full border border-zinc-800 bg-gradient-to-b from-zinc-700 to-zinc-900 flex items-center justify-center shadow-lg transition-all hover:scale-105 hover:border-zinc-600 active:scale-95 text-zinc-400 hover:text-white"
+                      className="nook-camera-lens-btn"
                       onClick={openCamera}
-                      title="Open camera"
+                      title="Open Camera"
                     >
-                      <div className="w-[34px] h-[34px] rounded-full border border-zinc-800 bg-zinc-950 flex items-center justify-center shadow-inner">
-                        <Camera size={14} className="opacity-80" />
+                      <div className="nook-camera-lens-inner">
+                        <Camera size={13} />
                       </div>
                     </button>
-                    <span className="text-[7.5px] text-zinc-500 font-bold tracking-wider uppercase">
+                    <span className="nook-camera-label">
                       Camera
                     </span>
                   </div>
                 </div>
               ) : (
                 /* Tray Tab: Drag & Drop files storage area */
-                <div
-                  className="notch-tray-container flex flex-col h-full w-full overflow-hidden"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <div className="notch-tray-container">
                   {droppedFiles.length === 0 ? (
                     <div
-                      className={`notch-tray-dropzone flex-1 border border-dashed rounded-lg flex flex-col items-center justify-center gap-1.5 transition-all text-zinc-500 p-2 ${isDragOver ? "border-[#3b82f6] bg-[#3b82f6]/5 text-white scale-[0.98]" : "border-zinc-800/80 hover:border-zinc-700"}`}
+                      className={`notch-tray-dropzone ${isDragOver ? "dragover" : ""}`}
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}
                       onDrop={handleDrop}
                     >
                       <Cloud
-                        size={16}
-                        className={`transition-transform ${isDragOver ? "translate-y-[-2px] text-[#3b82f6]" : ""}`}
+                        size={18}
+                        className={`transition-transform ${isDragOver ? "translate-y-[-2px] text-[#0a84ff]" : ""}`}
                       />
-                      <span className="text-[10px] font-medium tracking-wide">
+                      <span className="text-[10px] font-semibold tracking-wide">
                         Drop files to store temporarily
                       </span>
                     </div>
                   ) : (
-                    <div className="notch-tray-files flex-1 overflow-x-auto flex items-center gap-3 py-1 px-2 scrollbar-none">
+                    <div className="notch-tray-files scrollbar-none">
                       {droppedFiles.map((file, idx) => (
                         <div
                           key={idx}
-                          className="notch-tray-file-card relative group flex flex-col items-center justify-center p-1.5 bg-zinc-900/60 border border-zinc-800/40 rounded-lg w-16 h-16 flex-shrink-0 select-none"
+                          className="notch-tray-file-card group"
                         >
                           <FileText size={16} className="text-zinc-400 mb-0.5" />
-                          <span className="text-[7px] text-white truncate w-full text-center font-medium">
+                          <span className="text-[8px] text-white truncate w-full text-center font-medium">
                             {file.name}
                           </span>
-                          <span className="text-[6px] text-zinc-500">{file.size}</span>
+                          <span className="text-[6.5px] text-zinc-500">{file.size}</span>
 
                           <button
                             className="absolute -top-1 -right-1 p-0.5 bg-red-500/90 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
@@ -1011,13 +1169,13 @@ const Notch = () => {
 
                       {/* Dropzone Mini to add more files if files are already dropped */}
                       <div
-                        className={`w-16 h-16 flex-shrink-0 border border-dashed rounded-lg flex flex-col items-center justify-center gap-1 transition-all text-zinc-500 cursor-pointer ${isDragOver ? "border-[#3b82f6] bg-[#3b82f6]/5 text-white" : "border-zinc-800/80 hover:border-zinc-700"}`}
+                        className={`notch-tray-add-card ${isDragOver ? "border-[#0a84ff] bg-[#0a84ff]/5 text-white" : ""}`}
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
                       >
-                        <Cloud size={10} />
-                        <span className="text-[6px] font-medium">Add Files</span>
+                        <Cloud size={12} />
+                        <span className="text-[7px] font-bold tracking-wide mt-0.5">Add Files</span>
                       </div>
                     </div>
                   )}

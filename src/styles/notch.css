@@ -244,7 +244,6 @@
     }
   }
 
-  /* Siri Active Dropdown Mode */
   .macos-notch.siri-active {
     width: 620px;
     height: 150px;
@@ -256,6 +255,7 @@
     align-items: center;
     background: radial-gradient(circle at top left, rgba(28, 20, 36, 0.95), rgba(12, 12, 18, 0.97));
     backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(50px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow:
       0 30px 60px rgba(0, 0, 0, 0.7),
@@ -405,22 +405,22 @@
   }
 
   .notch-siri-close {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 11px;
     font-weight: 600;
-    padding: 6px 16px;
-    border-radius: 20px;
+    padding: 5px 14px;
+    border-radius: 99px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    letter-spacing: 0.5px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   }
 
   .notch-siri-close:hover {
-    background: rgba(255, 255, 255, 0.16);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: scale(1.05);
   }
 
   .notch-siri-close:active {
@@ -539,7 +539,7 @@
     animation-delay: 0.4s;
   }
 
-  /* Nook & Tray Tabbed Layout styles */
+  /* Premium Nook & Tray Layout Styles */
   .notch-nook-header {
     display: flex;
     justify-content: space-between;
@@ -551,40 +551,65 @@
   .notch-nook-tabs {
     display: flex;
     align-items: center;
-    gap: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    padding: 3px;
+    gap: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
   }
 
   .notch-nook-tab {
     background: transparent;
     border: none;
     cursor: pointer;
-    position: relative;
-    padding: 2px 0;
+    border-radius: 99px;
+    padding: 5px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     outline: none;
   }
 
-  .notch-nook-tab.active::after {
-    content: "";
-    position: absolute;
-    bottom: -6px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: #ffffff;
-    border-radius: 1px;
-    animation: slideInTab 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  .notch-nook-tab.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    box-shadow: 
+      0 2px 5px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
-  @keyframes slideInTab {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
+  .notch-nook-tab:hover:not(.active) {
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.03);
   }
 
-  /* Camera shutter flash anim */
+  .notch-nook-settings {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .notch-nook-settings:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transform: rotate(45deg);
+  }
+
+  /* Camera Shutter Flash Animation */
   @keyframes flashShutter {
     0% {
       opacity: 0.85;
@@ -598,17 +623,286 @@
     animation: flashShutter 0.25s ease-out forwards;
   }
 
-  /* Album art rotate */
-  .nook-album-art {
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Music Column Layout */
+  .nook-music-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 14px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    height: 85%;
+    min-width: 0;
   }
+
+  .nook-album-art-container {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .nook-album-art {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: #18181c;
+    box-shadow: 
+      0 4px 15px rgba(0, 0, 0, 0.4),
+      0 1px 2px rgba(255, 255, 255, 0.1) inset;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .nook-album-art-glow {
+    position: absolute;
+    inset: -6px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, transparent 70%);
+    filter: blur(8px);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.4s ease;
+  }
+
+  .nook-album-art.playing + .nook-album-art-glow {
+    opacity: 1;
+  }
+
   .nook-album-art.playing {
     animation: rotateArt 12s linear infinite;
     border-radius: 50% !important;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   }
 
-  /* Custom grid columns */
+  .nook-music-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  .nook-music-subtitle {
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 1px;
+    display: block;
+  }
+
+  .nook-music-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .nook-ctrl-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+
+  .nook-ctrl-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.08);
+  }
+
+  .nook-ctrl-btn:active {
+    transform: scale(0.94);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Calendar Section Layout */
+  .nook-calendar-section {
+    padding: 0 14px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .nook-cal-month {
+    font-size: 11px;
+    font-weight: 800;
+    color: #ff453a; /* Apple calendar red */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .nook-cal-day-header-cell {
+    width: 20px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .nook-cal-days-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .nook-cal-day-cell {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .nook-cal-day-cell.today {
+    background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 
+      0 2px 6px rgba(10, 132, 255, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.15);
+  }
+
+  .nook-cal-day-cell:hover:not(.today) {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  .nook-cal-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(48, 209, 88, 0.08);
+    border: 1px solid rgba(48, 209, 88, 0.15);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-top: 8px;
+    font-size: 9px;
+    font-weight: 600;
+    color: #30d158; /* Apple green */
+    width: fit-content;
+    align-self: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .nook-cal-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #30d158;
+    box-shadow: 0 0 6px #30d158;
+    animation: pulseGreenDot 2s infinite;
+  }
+
+  @keyframes pulseGreenDot {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+  }
+
+  /* Camera Launcher Layout */
+  .nook-camera-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 85%;
+    gap: 5px;
+    padding-left: 10px;
+  }
+
+  .nook-camera-lens-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 4px 12px rgba(0, 0, 0, 0.4),
+      inset 0 1.5px 2px rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nook-camera-lens-btn::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .nook-camera-lens-inner {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 45% 45%, #2a3a5a 0%, #0a0d16 100%);
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+  }
+
+  .nook-camera-lens-btn:hover {
+    transform: scale(1.08);
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 
+      0 6px 16px rgba(0, 0, 0, 0.5),
+      inset 0 1.5px 2px rgba(255, 255, 255, 0.25);
+  }
+
+  .nook-camera-lens-btn:hover .nook-camera-lens-inner {
+    color: #ffffff;
+    background: radial-gradient(circle at 45% 45%, #354a75 0%, #0c101b 100%);
+  }
+
+  .nook-camera-lens-btn:active {
+    transform: scale(0.95);
+  }
+
+  .nook-camera-label {
+    font-size: 7.5px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Grid Layout Setup */
   .notch-nook-grid {
     display: grid;
     grid-template-cols: 1.3fr 1.6fr 0.8fr;
@@ -617,9 +911,115 @@
     height: 100%;
   }
 
-  /* Drag & Drop zone */
+  /* Camera Live Feed Overlay Styles */
+  .notch-camera-live-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 40;
+    background: rgba(10, 10, 12, 0.95);
+    backdrop-filter: blur(25px);
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .notch-camera-live-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+  }
+
+  /* Drag & Drop Temporary Storage Area */
+  .notch-tray-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
   .notch-tray-dropzone {
+    flex: 1;
+    border: 1.5px dashed rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+  }
+
+  .notch-tray-dropzone:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .notch-tray-dropzone.dragover {
+    border-color: #0a84ff;
+    background: rgba(10, 132, 255, 0.08);
+    color: #0a84ff;
+    transform: scale(0.98);
+  }
+
+  .notch-tray-files {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 4px 6px;
+    height: 100%;
+  }
+
+  .notch-tray-file-card {
+    position: relative;
+    width: 68px;
+    height: 68px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 6px;
+    transition: all 0.25s ease;
+  }
+
+  .notch-tray-file-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .notch-tray-add-card {
+    width: 68px;
+    height: 68px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px dashed rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.3);
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+
+  .notch-tray-add-card:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.75);
   }
 
   /* Scrollbar hide utility */
@@ -629,5 +1029,23 @@
   .scrollbar-none {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+
+  /* Simulated Camera animations */
+  @keyframes scanBarMove {
+    0% { top: 0%; }
+    50% { top: 100%; }
+    100% { top: 0%; }
+  }
+  .animate-scan-bar {
+    animation: scanBarMove 4s linear infinite;
+  }
+  @keyframes facePulseEffect {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.03); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+  }
+  .animate-face-pulse {
+    animation: facePulseEffect 2.5s ease-in-out infinite;
   }
 }
