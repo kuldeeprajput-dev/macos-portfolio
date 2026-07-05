@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 const SettingsGeneralPane = () => {
-  const { windows } = useWindowsStore();
+  const { windows, setWindowData } = useWindowsStore();
   const windowData = windows.settings?.data;
   const [subPage, setSubPage] = useState(() => windowData?.subPage || null);
 
@@ -43,7 +43,10 @@ const SettingsGeneralPane = () => {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
         <button
-          onClick={() => setSubPage(null)}
+          onClick={() => {
+            setSubPage(null);
+            setWindowData("settings", { ...windowData, subPage: null });
+          }}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-100"
         >
           <ArrowLeft size={13} />
@@ -88,7 +91,10 @@ const SettingsGeneralPane = () => {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
         <button
-          onClick={() => setSubPage(null)}
+          onClick={() => {
+            setSubPage(null);
+            setWindowData("settings", { ...windowData, subPage: null });
+          }}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-150"
         >
           <ArrowLeft size={13} />
@@ -142,7 +148,10 @@ const SettingsGeneralPane = () => {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
         <button
-          onClick={() => setSubPage(null)}
+          onClick={() => {
+            setSubPage(null);
+            setWindowData("settings", { ...windowData, subPage: null });
+          }}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-150"
         >
           <ArrowLeft size={13} />
@@ -203,7 +212,10 @@ const SettingsGeneralPane = () => {
     return (
       <div className="animate-in fade-in slide-in-from-left-2 duration-200">
         <button
-          onClick={() => setSubPage(null)}
+          onClick={() => {
+            setSubPage(null);
+            setWindowData("settings", { ...windowData, subPage: null });
+          }}
           className="flex items-center gap-1 text-[11px] font-bold text-gray-500 hover:text-[#007aff] transition-colors focus:outline-none mb-6 p-1 rounded hover:bg-gray-150"
         >
           <ArrowLeft size={13} />

@@ -18,12 +18,12 @@ const NavbarAppleMenu = ({
       },
     ],
     [
-      { label: "System Settings...", onClick: () => openWindow("settings") },
+      { label: "System Settings...", onClick: () => openWindow("settings", { tab: "Apple ID", subPage: null }) },
       { label: "App Store...", onClick: () => openWindow("appstore") },
     ],
     [
       { label: "Recent Items", meta: "›", disabled: true },
-      { label: "Force Quit...", meta: "⌥⌘⎋", onClick: () => openWindow("launchpad") },
+      { label: "Force Quit...", meta: "⌥⌘⎋", onClick: () => setIsAsleep(true) },
     ],
     [
       { label: "Lock Screen", meta: "⌃⌘Q", onClick: () => setIsAsleep(true) },
@@ -35,7 +35,7 @@ const NavbarAppleMenu = ({
     if (item.disabled || (!item.onClick && !item.action)) return;
     closeMenu();
     if (item.action === "about") {
-      openWindow("settings", { tab: "General" });
+      openWindow("settings", { tab: "General", subPage: "about" });
       return;
     }
     item.onClick();
