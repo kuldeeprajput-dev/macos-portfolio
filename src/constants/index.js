@@ -6,3 +6,4 @@ export { socials } from "./socials";
 export { photosLinks, gallery } from "./photos";
 export { locations } from "./locations";
 export { INITIAL_Z_INDEX, WINDOW_CONFIG } from "./window";
+export * from "./env";

@@ -9,3 +9,10 @@ export const PROJECT_4_GITHUB = process.env.NEXT_PUBLIC_PROJECT_4_GITHUB;
 export const GITHUB_PROFILE = process.env.NEXT_PUBLIC_GITHUB_PROFILE;
 export const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL;
 export const LINKEDIN_URL = process.env.NEXT_PUBLIC_LINKEDIN_URL;
+export const GITHUB_USERNAME = GITHUB_PROFILE
+  ? GITHUB_PROFILE.replace(/\/+$/, "").split("/").pop()
+  : "kuldeeprajput-dev";
+
+export const PORTFOLIO_URL = process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://kuldeeprajput.in";
+export const PORTFOLIO_ALT_URL = process.env.NEXT_PUBLIC_PORTFOLIO_ALT_URL || "https://kuldeep-rajput.vercel.app/";
+

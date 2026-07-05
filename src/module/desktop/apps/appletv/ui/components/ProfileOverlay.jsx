@@ -11,6 +11,7 @@ import {
   Gift,
   RefreshCw,
 } from "lucide-react";
+import { GITHUB_USERNAME, GITHUB_PROFILE } from "@constants";
 
 const GithubIcon = ({ size = 16, className = "" }) => (
   <svg
@@ -39,7 +40,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
       return;
     }
 
-    fetch("https://api.github.com/users/kuldeeprajput-dev")
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && !data.message) {
@@ -96,7 +97,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
 
             <h3 className="text-sm font-bold text-zinc-800 mt-2.5">{displayName}</h3>
             <p className="text-[10px] text-blue-500 font-bold">
-              @{profile?.login || "kuldeeprajput-dev"}
+              @{profile?.login || GITHUB_USERNAME}
             </p>
             <p className="text-[11px] text-zinc-500 max-w-[240px] mt-1.5 leading-relaxed">{bio}</p>
 
@@ -294,7 +295,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                 <p className="text-[11px] text-gray-500 leading-relaxed">
                   Do you want to open the GitHub profile for{" "}
                   <span className="font-semibold text-gray-700">
-                    @{profile?.login || "kuldeeprajput-dev"}
+                    @{profile?.login || GITHUB_USERNAME}
                   </span>{" "}
                   in a new tab?
                 </p>
@@ -307,7 +308,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                   Cancel
                 </button>
                 <a
-                  href={profile?.html_url || "https://github.com/kuldeeprajput-dev"}
+                  href={profile?.html_url || GITHUB_PROFILE}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setShowRedirectPrompt(false)}

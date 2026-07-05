@@ -7,6 +7,7 @@ import AppleTVAboutModal from "../components/AppleTVAboutModal";
 import { FEATURED_SHOW } from "../../data";
 import AppleTVHeaderSection from "../section/AppleTVHeaderSection";
 import AppleTVSection from "../section/AppleTVSection";
+import { GITHUB_USERNAME } from "@constants";
 
 const AppleTVView = () => {
   const { windows, setWindowData } = useWindowsStore();
@@ -36,7 +37,7 @@ const AppleTVView = () => {
   }, [windows.appletv?.data?.openAbout, windows.appletv?.data, setWindowData]);
 
   useEffect(() => {
-    fetch("https://api.github.com/users/kuldeeprajput-dev")
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && !data.message) {

@@ -1,4 +1,5 @@
 import { Film, FolderHeart, Play, Search, ShoppingBag, Tv } from "lucide-react";
+import { GITHUB_USERNAME } from "@constants";
 
 const appleTvItems = [
   { id: "watchNow", label: "Watch Now", icon: Play, color: "text-orange-500 fill-orange-500" },
@@ -125,7 +126,7 @@ const SidebarNavigation = ({
           {githubProfile?.name || "Kuldeep Rajput"}
         </p>
         <span className="text-[9px] font-bold text-zinc-400 block mt-0.5">
-          @{githubProfile?.login || "kuldeeprajput-dev"}
+          @{githubProfile?.login || GITHUB_USERNAME}
         </span>
       </div>
     </div>

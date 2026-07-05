@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { AppWindow } from "lucide-react";
 import useWindowsStore from "@store/window";
 import { STORE_APPS } from "../../data";
+import { GITHUB_USERNAME } from "@constants";
 import AppStoreNavSection from "./AppStoreNavSection";
 import AppStoreSidebarSection from "./AppStoreSidebarSection";
 import AppStoreContentSection from "./AppStoreContentSection";
@@ -58,7 +59,7 @@ const AppStoreSection = () => {
   }, [isNarrow, isFirstLayout]);
 
   useEffect(() => {
-    fetch("https://api.github.com/users/kuldeeprajput-dev")
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && !data.message) {

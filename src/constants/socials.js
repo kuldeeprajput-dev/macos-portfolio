@@ -1,4 +1,4 @@
-import { GITHUB_PROFILE, TWITTER_URL, LINKEDIN_URL } from "./env";
+import { GITHUB_PROFILE, TWITTER_URL, LINKEDIN_URL, PORTFOLIO_URL } from "./env";
 
 export const socials = [
   {
@@ -14,7 +14,7 @@ export const socials = [
     text: "Portfolio",
     icon: "/icons/atom.svg",
     bg: "#4bcb63",
-    link: "https://kuldeeprajput.in",
+    link: PORTFOLIO_URL,
     img: "/images/portfolio.png",
   },
   {
