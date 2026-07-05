@@ -1,6 +1,7 @@
 import React from "react";
 import { ExternalLink } from "lucide-react";
 import useWindowsStore from "@store/window";
+import { GITHUB_PROFILE } from "@constants";
 
 const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
   const setGithubRedirect = useWindowsStore((state) => state.setGithubRedirect);
@@ -89,8 +90,8 @@ const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
           <button
             onClick={() =>
               setGithubRedirect({
-                name: "Kuldeep (Developer) Profile",
-                href: "https://github.com/kuldeeprajput-dev",
+                name: "Developer Profile",
+                href: GITHUB_PROFILE,
               })
             }
             className={`flex items-center justify-between p-2 border rounded-md text-[11px] text-[#3390ec] transition-colors w-full font-medium cursor-pointer ${

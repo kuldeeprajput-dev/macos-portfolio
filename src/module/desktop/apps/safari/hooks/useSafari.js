@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
 import { DEFAULT_BOOKMARKS, WALLPAPERS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } from "../data";
+import { PROJECT_1_URL, PROJECT_2_URL, PROJECT_3_URL } from "@constants";
 
 const isIframeable = (url) => {
   if (url.startsWith("safari://")) return true;
@@ -168,13 +169,13 @@ const useSafari = () => {
     let isRedirected = false;
 
     if (lowerQuery.includes("youtube")) {
-      targetUrl = "https://newtube-ruddy.vercel.app/";
+      targetUrl = PROJECT_1_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("insta")) {
-      targetUrl = "https://snsta.vercel.app/";
+      targetUrl = PROJECT_2_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("resume")) {
-      targetUrl = "https://resume-ats-omega.vercel.app/";
+      targetUrl = PROJECT_3_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("portfolio")) {
       targetUrl = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
@@ -235,11 +236,11 @@ const useSafari = () => {
             newTitle = "History";
           } else if (targetUrl === "safari://bookmarks") {
             newTitle = "Bookmarks";
-          } else if (targetUrl === "https://newtube-ruddy.vercel.app/") {
+          } else if (targetUrl === PROJECT_1_URL) {
             newTitle = "NewTube";
-          } else if (targetUrl === "https://snsta.vercel.app/") {
+          } else if (targetUrl === PROJECT_2_URL) {
             newTitle = "Insta Downloader";
-          } else if (targetUrl === "https://resume-ats-omega.vercel.app/") {
+          } else if (targetUrl === PROJECT_3_URL) {
             newTitle = "Resume ATS";
           } else if (targetUrl === "https://en.wikipedia.org") {
             newTitle = "Wikipedia";
@@ -359,9 +360,9 @@ const useSafari = () => {
     if (url === "safari://privacy-report") return "Privacy Report";
     if (url === "safari://history") return "History";
     if (url === "safari://bookmarks") return "Bookmarks";
-    if (url === "https://newtube-ruddy.vercel.app/") return "NewTube";
-    if (url === "https://snsta.vercel.app/") return "Insta Downloader";
-    if (url === "https://resume-ats-omega.vercel.app/") return "Resume ATS";
+    if (url === PROJECT_1_URL) return "NewTube";
+    if (url === PROJECT_2_URL) return "Insta Downloader";
+    if (url === PROJECT_3_URL) return "Resume ATS";
     if (url === "https://en.wikipedia.org") return "Wikipedia";
     if (url === "https://openstreetmap.org") return "OpenStreetMap";
     if (url === (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000"))

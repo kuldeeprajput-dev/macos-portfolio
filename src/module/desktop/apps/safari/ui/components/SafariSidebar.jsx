@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BookOpen, Glasses, Clock, Search, Trash2, Link } from "lucide-react";
+import { GITHUB_PROFILE } from "@constants";
 
 const SafariSidebar = ({
   bookmarks,
@@ -136,7 +137,7 @@ const SafariSidebar = ({
               <div
                 key={project.id}
                 onClick={() =>
-                  navigateTabTo(project.link || "https://github.com/kuldeeprajput-dev")
+                  navigateTabTo(project.link || GITHUB_PROFILE)
                 }
                 className="p-2 rounded-lg hover:bg-black/5 cursor-pointer transition-colors flex gap-2.5 items-start"
               >

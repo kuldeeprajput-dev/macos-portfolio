@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import WindowControls from "@components/WindowControls";
+import { TWITTER_URL, LINKEDIN_URL } from "@constants";
 import {
   ChevronLeft,
   ChevronRight,
@@ -19,7 +20,7 @@ import {
 } from "lucide-react";
 
 const SafariDesktopToolbar = ({
-  showSidebar,
+  _showSidebar,
   onToggleSidebar,
   activeTab,
   addressInput,
@@ -38,7 +39,7 @@ const SafariDesktopToolbar = ({
   handleNewTab,
   openWindow,
   homepage,
-  setShowSettings,
+  _setShowSettings,
   isMaxTabsReached,
 }) => {
   const canGoBack = activeTab.historyIndex > 0;
@@ -246,7 +247,7 @@ const SafariDesktopToolbar = ({
                     onClick={(e) => {
                       e.preventDefault();
                       setShowShare(false);
-                      navigateTabTo("https://x.com/kuldeepdotcom");
+                      navigateTabTo(TWITTER_URL);
                     }}
                     className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-blue-500 hover:text-white rounded-lg text-left font-medium transition-colors border-none bg-transparent cursor-pointer text-gray-700"
                   >
@@ -259,7 +260,7 @@ const SafariDesktopToolbar = ({
                     onClick={(e) => {
                       e.preventDefault();
                       setShowShare(false);
-                      navigateTabTo("https://www.linkedin.com/in/kuldeepdotcom/");
+                      navigateTabTo(LINKEDIN_URL);
                     }}
                     className="w-full flex items-center gap-2 px-2.5 py-1.5 hover:bg-blue-500 hover:text-white rounded-lg text-left font-medium transition-colors border-none bg-transparent cursor-pointer text-gray-700"
                   >

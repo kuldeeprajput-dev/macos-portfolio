@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
 
+import { GITHUB_USERNAME } from "@constants";
+
 const useSettings = () => {
   const githubApiBase = process.env.NEXT_PUBLIC_GITHUB_API_URL || "https://api.github.com";
   const { windows } = useWindowsStore();
@@ -27,8 +29,8 @@ const useSettings = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${githubApiBase}/users/kuldeeprajput-dev`).then((res) => res.json()),
-      fetch(`${githubApiBase}/users/kuldeeprajput-dev/repos?sort=updated&per_page=3`).then((res) =>
+      fetch(`${githubApiBase}/users/${GITHUB_USERNAME}`).then((res) => res.json()),
+      fetch(`${githubApiBase}/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=3`).then((res) =>
         res.json(),
       ),
     ])
