@@ -1,6 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import MOCK_COLLECTIONS from "../data/postmanData";
-import { projects } from "@constants";
+import { projects, GITHUB_PROFILE, PORTFOLIO_URL } from "@constants";
+
+const getApiHost = () => {
+  try {
+    const cleanUrl = PORTFOLIO_URL.includes("://") ? PORTFOLIO_URL : `https://${PORTFOLIO_URL}`;
+    const parsed = new URL(cleanUrl);
+    return `${parsed.protocol}//api.${parsed.hostname}`;
+  } catch {
+    return "https://api.dev";
+  }
+};
 
 const usePostman = () => {
   const [activeTab, setActiveTab] = useState("params"); // "params" | "headers" | "body"
@@ -35,7 +45,7 @@ const usePostman = () => {
   const handleEnvironmentChange = (env) => {
     setEnvironment(env);
     let host = "https://api.dev";
-    if (env === "prod") host = "https://api.kuldeeprajput.in";
+    if (env === "prod") host = getApiHost();
     else if (env === "none") host = "https://localhost:8080";
 
     const path = url.replace(/^https?:\/\/[^/]+/, "");
@@ -54,13 +64,14 @@ const usePostman = () => {
     } else {
       setUrl(baseUrl);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParams]);
 
   const loadRequest = (req) => {
     setMethod(req.method);
     let targetUrl = req.url;
     if (environment === "prod") {
-      targetUrl = req.url.replace("https://api.dev", "https://api.kuldeeprajput.in");
+      targetUrl = req.url.replace("https://api.dev", getApiHost());
     } else if (environment === "none") {
       targetUrl = req.url.replace("https://api.dev", "https://localhost:8080");
     }
@@ -109,7 +120,7 @@ const usePostman = () => {
               name: "Kuldeep Rajput",
               role: "Full Stack Developer",
               location: "Mumbai, India",
-              github: "https://github.com/kuldeeprajput-dev",
+              github: GITHUB_PROFILE,
               skills: ["React", "Node.js", "Bun", "Tailwind CSS", "GSAP"],
               status: "active",
             };
@@ -127,7 +138,7 @@ const usePostman = () => {
                 name: parsed.name || "Kuldeep Rajput",
                 role: parsed.role || "Full Stack Developer",
                 location: parsed.location || "Mumbai, India",
-                github: "https://github.com/kuldeeprajput-dev",
+                github: GITHUB_PROFILE,
                 skills: ["React", "Node.js", "Bun", "Tailwind CSS", "GSAP"],
                 status: "active",
               },
@@ -178,7 +189,7 @@ const usePostman = () => {
           };
         } else if (cleanUrl.endsWith("/v1/stats") && method === "GET") {
           data = {
-            website: "https://kuldeeprajput.in",
+            website: PORTFOLIO_URL,
             analytics: {
               page_views: 1420,
               unique_visitors: 485,

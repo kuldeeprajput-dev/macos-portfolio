@@ -1,3 +1,5 @@
+import { PROJECT_1_URL, PROJECT_2_URL, PROJECT_3_URL } from "@constants";
+
 export const DEFAULT_BOOKMARKS = [
   {
     id: 1,
@@ -5,17 +7,22 @@ export const DEFAULT_BOOKMARKS = [
     url: typeof window !== "undefined" ? window.location.origin : "http://localhost:3000",
     img: "/images/portfolio.png",
   },
-  { id: 2, title: "NewTube", url: "https://newtube-ruddy.vercel.app/", img: "/images/youtube.png" },
+  {
+    id: 2,
+    title: "NewTube",
+    url: PROJECT_1_URL,
+    img: "/images/youtube.png",
+  },
   {
     id: 3,
     title: "Resume ATS",
-    url: "https://resume-ats-omega.vercel.app/",
+    url: PROJECT_3_URL,
     img: "/images/resume-ats.png",
   },
   {
     id: 4,
     title: "Insta Downloader",
-    url: "https://snsta.vercel.app/",
+    url: PROJECT_2_URL,
     img: "/images/insta-downloader.png",
   },
   {
