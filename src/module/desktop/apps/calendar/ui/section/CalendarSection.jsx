@@ -130,12 +130,16 @@ const CalendarSection = (props) => {
         setEventDesc={setEventDesc}
         handleAddEvent={handleAddEvent}
         setIsModalOpen={setIsModalOpen}
+        isNarrow={isNarrow}
+        isVeryNarrow={isVeryNarrow}
       />
       <CalendarDayPopover
         dayEventsPopover={dayEventsPopover}
         setDayEventsPopover={setDayEventsPopover}
         handleDeleteEvent={handleDeleteEvent}
         triggerAddEventOnDate={triggerAddEventOnDate}
+        isNarrow={isNarrow}
+        isVeryNarrow={isVeryNarrow}
       />
     </div>
   );

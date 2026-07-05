@@ -17,14 +17,16 @@ const CalendarEventModal = ({
   setEventDesc,
   handleAddEvent,
   setIsModalOpen,
+  isNarrow,
+  isVeryNarrow,
 }) => {
   if (!isModalOpen) return null;
 
   return (
-    <div className="absolute inset-0 bg-black/30 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div className={`absolute inset-0 bg-black/30 backdrop-blur-xs z-50 flex items-center justify-center ${isVeryNarrow ? "p-2" : "p-4"}`}>
       <form
         onSubmit={handleAddEvent}
-        className="w-full max-w-[380px] bg-white rounded-2xl shadow-2xl border border-black/10 flex flex-col overflow-hidden animate-fade-in"
+        className="w-full max-w-[380px] max-h-[92%] bg-white rounded-2xl shadow-2xl border border-black/10 flex flex-col overflow-hidden animate-fade-in"
       >
         <div className="bg-gray-50 border-b border-gray-200 px-4 py-3 flex items-center justify-between">
           <h3 className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
@@ -40,7 +42,7 @@ const CalendarEventModal = ({
           </button>
         </div>
 
-        <div className="bg-white p-4 space-y-3 flex-1 overflow-y-auto text-xs">
+        <div className={`bg-white flex-1 overflow-y-auto thin-scrollbar text-xs ${isVeryNarrow ? "p-3 space-y-2" : "p-4 space-y-3"}`}>
           <div className="space-y-1">
             <label className="font-bold text-gray-700">Event Title</label>
             <input
@@ -64,7 +66,7 @@ const CalendarEventModal = ({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className={`grid ${isVeryNarrow ? "grid-cols-1 gap-2" : "grid-cols-2 gap-3"}`}>
             <div className="space-y-1">
               <label className="font-bold text-gray-700 flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-gray-400" /> Start Time

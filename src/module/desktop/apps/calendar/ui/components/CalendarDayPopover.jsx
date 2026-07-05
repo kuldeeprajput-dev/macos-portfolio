@@ -6,15 +6,17 @@ const CalendarDayPopover = ({
   setDayEventsPopover,
   handleDeleteEvent,
   triggerAddEventOnDate,
+  isNarrow,
+  isVeryNarrow,
 }) => {
   if (!dayEventsPopover) return null;
 
   return (
-    <div className="absolute inset-0 bg-black/20 backdrop-blur-[0.5px] z-40 flex items-center justify-center p-4">
-      <div className="w-full max-w-[340px] bg-white rounded-2xl shadow-2xl border border-black/10 p-5 flex flex-col gap-4 animate-fade-in relative">
+    <div className={`absolute inset-0 bg-black/20 backdrop-blur-[0.5px] z-40 flex items-center justify-center ${isVeryNarrow ? "p-2" : "p-4"}`}>
+      <div className={`w-full max-w-[340px] max-h-[92%] bg-white rounded-2xl shadow-2xl border border-black/10 flex flex-col animate-fade-in relative ${isVeryNarrow ? "p-3.5 gap-2.5" : "p-5 gap-4"}`}>
         <button
           onClick={() => setDayEventsPopover(null)}
-          className="absolute top-3.5 right-3.5 text-gray-400 hover:text-gray-600 rounded p-0.5 cursor-pointer"
+          className="absolute top-3.5 right-3.5 text-gray-400 hover:text-gray-600 rounded p-0.5 cursor-pointer z-10"
         >
           <X className="w-4 h-4" />
         </button>
@@ -31,7 +33,7 @@ const CalendarDayPopover = ({
           </h3>
         </div>
 
-        <div className="max-h-[220px] overflow-y-auto thin-scrollbar space-y-2.5 divide-y divide-gray-100">
+        <div className="flex-1 min-h-[80px] max-h-[220px] overflow-y-auto thin-scrollbar space-y-2.5 divide-y divide-gray-100">
           {dayEventsPopover.events.length === 0 ? (
             <p className="text-xs text-gray-400 italic py-2">No events scheduled on this day.</p>
           ) : (

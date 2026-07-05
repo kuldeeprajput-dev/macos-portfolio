@@ -19,7 +19,7 @@ const CalendarGrid = ({
           key={day}
           className="text-center text-[10px] font-bold text-gray-400 uppercase tracking-wider"
         >
-          {day}
+          {isNarrow ? day.charAt(0) : day}
         </div>
       ))}
     </div>
