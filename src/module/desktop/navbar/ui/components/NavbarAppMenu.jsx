@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import useWindowsStore from "@store/window";
-import { GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL, PROJECT_3_URL, PROJECT_4_URL } from "@constants";
+import { GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL, PROJECT_3_URL, PROJECT_4_URL, EMAIL } from "@constants";
 
 const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleMenuOpen }) => {
   const { setAboutPortfolioOpen, setWindowData, windows } = useWindowsStore();
@@ -222,7 +222,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
           label: "Email Me Directly",
           onClick: () => {
             const mailtoLink = document.createElement("a");
-            mailtoLink.href = "mailto:rajputkuldeep23345@gmail.com";
+            mailtoLink.href = `mailto:${EMAIL}`;
             mailtoLink.click();
           },
         },

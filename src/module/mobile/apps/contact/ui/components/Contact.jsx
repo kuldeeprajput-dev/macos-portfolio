@@ -1,6 +1,7 @@
 import { useState } from "react";
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
+import { EMAIL, PHONE } from "@constants";
 import ContactCard from "./ContactCard";
 import ContactList from "./ContactList";
 
@@ -21,8 +22,8 @@ const Contact = () => {
       </div>
       <div className="p-5 space-y-5 flex-1 overflow-y-auto">
         <ContactCard
-          email="kuldeeprajput67718@gmail.com"
-          phone="+91 9765996045"
+          email={EMAIL}
+          phone={PHONE}
           copied={copied}
           onCopy={handleCopy}
         />

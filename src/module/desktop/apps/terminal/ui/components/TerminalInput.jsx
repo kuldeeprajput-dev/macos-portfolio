@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Terminal as XTerm } from "xterm";
 import "xterm/css/xterm.css";
 import { FitAddon } from "@xterm/addon-fit";
-import { techStack, projects, GITHUB_PROFILE, PORTFOLIO_URL } from "@constants";
+import { techStack, projects, GITHUB_PROFILE, PORTFOLIO_URL, EMAIL } from "@constants";
 import useWindowsStore from "@store/window";
 
 const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
@@ -135,7 +135,7 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
               );
               println("\x1b[1;38;2;16;185;129mLocation:  \x1b[38;2;75;85;99mIndia 🇮🇳\x1b[0m");
               println(
-                "\x1b[1;38;2;16;185;129mEmail:     \x1b[4;38;2;37;99;235mrajputkuldeep23345@gmail.com\x1b[0m",
+                `\x1b[1;38;2;16;185;129mEmail:     \x1b[4;38;2;37;99;235m${EMAIL}\x1b[0m`,
               );
               println(
                 `\x1b[1;38;2;16;185;129mGitHub:    \x1b[4;38;2;37;99;235m${GITHUB_PROFILE}\x1b[0m`,
