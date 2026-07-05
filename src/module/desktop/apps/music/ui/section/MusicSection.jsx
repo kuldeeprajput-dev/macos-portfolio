@@ -104,6 +104,7 @@ const MusicSection = (props) => {
           formatTime={formatTime}
           isLoading={isLoading}
           activeCategory={activeCategory}
+          isNarrow={isNarrow}
         />
       </div>
 
@@ -136,6 +137,7 @@ const MusicSection = (props) => {
           setMusicState({ volume: val, isMuted: val === 0 });
         }}
         formatTime={formatTime}
+        isNarrow={isNarrow}
       />
 
       <style>{`

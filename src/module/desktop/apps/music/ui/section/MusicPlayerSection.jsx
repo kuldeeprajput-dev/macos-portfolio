@@ -17,6 +17,7 @@ const MusicPlayerSection = ({
   onMuteToggle,
   onVolumeChange,
   formatTime,
+  isNarrow,
 }) => {
   return (
     <MusicPlayerBar
@@ -36,6 +37,7 @@ const MusicPlayerSection = ({
       onMuteToggle={onMuteToggle}
       onVolumeChange={onVolumeChange}
       formatTime={formatTime}
+      isNarrow={isNarrow}
     />
   );
 };

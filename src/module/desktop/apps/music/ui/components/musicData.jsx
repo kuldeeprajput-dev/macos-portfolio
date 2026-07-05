@@ -21,15 +21,15 @@ export const getCoverEmoji = (name) => {
 };
 
 export const TracksTable = React.memo(
-  ({ tracks, activeTrackId, isPlaying, onSelectTrack, formatTime }) => {
+  ({ tracks, activeTrackId, isPlaying, onSelectTrack, formatTime, isNarrow }) => {
     return (
-      <table className="w-full text-left border-collapse">
+      <table className="w-full text-left border-collapse table-fixed">
         <thead>
           <tr className="border-b border-zinc-100 text-[10px] font-bold text-gray-400 uppercase select-none">
             <th className="py-2.5 px-4 w-12">#</th>
             <th className="py-2.5 px-3">Title</th>
-            <th className="py-2.5 px-3">Artist</th>
-            <th className="py-2.5 px-3">Album</th>
+            {!isNarrow && <th className="py-2.5 px-3 w-1/4">Artist</th>}
+            {!isNarrow && <th className="py-2.5 px-3 w-1/4">Album</th>}
             <th className="py-2.5 px-3 w-16 text-center">
               <Clock size={12} className="inline" />
             </th>
@@ -74,11 +74,12 @@ export const TracksTable = React.memo(
                     )}
                   </div>
                 </td>
-                <td className={`py-3 px-3 truncate ${isActive ? "text-red-600" : "text-gray-900"}`}>
-                  {track.title}
+                <td className={`py-3 px-3 max-w-0 truncate ${isActive ? "text-red-600" : "text-gray-900"}`}>
+                  <div className="truncate font-semibold">{track.title}</div>
+                  {isNarrow && <div className="text-[10px] text-gray-400 truncate mt-0.5 font-normal">{track.artist}</div>}
                 </td>
-                <td className="py-3 px-3 text-gray-600 truncate">{track.artist}</td>
-                <td className="py-3 px-3 text-gray-500 truncate">{track.album}</td>
+                {!isNarrow && <td className="py-3 px-3 text-gray-600 truncate">{track.artist}</td>}
+                {!isNarrow && <td className="py-3 px-3 text-gray-500 truncate">{track.album}</td>}
                 <td className="py-3 px-3 text-gray-400 text-center font-mono">
                   {formatTime(track.duration)}
                 </td>
@@ -88,7 +89,7 @@ export const TracksTable = React.memo(
 
           {tracks.length === 0 && (
             <tr>
-              <td colSpan="5" className="text-center py-12 text-gray-400 italic">
+              <td colSpan={isNarrow ? "3" : "5"} className="text-center py-12 text-gray-400 italic">
                 No songs found in this view
               </td>
             </tr>

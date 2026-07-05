@@ -7,6 +7,7 @@ const MusicTrackList = ({
   onSelectTrack,
   formatTime,
   isLoading,
+  isNarrow,
 }) => {
   if (isLoading) {
     return (
@@ -24,6 +25,7 @@ const MusicTrackList = ({
       isPlaying={isPlaying}
       onSelectTrack={onSelectTrack}
       formatTime={formatTime}
+      isNarrow={isNarrow}
     />
   );
 };

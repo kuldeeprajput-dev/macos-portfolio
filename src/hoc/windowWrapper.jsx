@@ -266,7 +266,9 @@ const windowWrapper = (Component, windowKey) => {
                   ? 360
                   : windowKey === "calendar"
                     ? 360
-                    : 300;
+                    : windowKey === "music"
+                      ? 350
+                      : 300;
 
       const handlePointerMove = (moveEvent) => {
         const deltaX = moveEvent.clientX - startX;

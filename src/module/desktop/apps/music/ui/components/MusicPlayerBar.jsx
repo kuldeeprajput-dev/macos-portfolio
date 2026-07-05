@@ -27,10 +27,11 @@ const MusicPlayerBar = ({
   onMuteToggle,
   onVolumeChange,
   formatTime,
+  isNarrow,
 }) => {
   return (
     <div className="h-20 border-t border-zinc-200 bg-gray-50/80 backdrop-blur px-6 flex items-center justify-between shrink-0 select-none">
-      <div className="w-1/3 flex items-center gap-3 min-w-0">
+      <div className={`${isNarrow ? "flex-1" : "w-1/3"} flex items-center gap-3 min-w-0`}>
         {activeTrack.coverUrl ? (
           <img
             src={activeTrack.coverUrl}
@@ -53,8 +54,8 @@ const MusicPlayerBar = ({
         </div>
       </div>
 
-      <div className="w-1/3 flex flex-col items-center gap-1.5">
-        <div className="flex items-center gap-4">
+      <div className={`${isNarrow ? "w-[240px] shrink-0 mx-2" : "w-1/3"} flex flex-col items-center gap-1.5`}>
+        <div className={`flex items-center ${isNarrow ? "gap-2" : "gap-4"}`}>
           <button
             onClick={onShuffleToggle}
             className={`p-1 transition-colors ${isShuffle ? "text-red-500" : "text-gray-400 hover:text-gray-600"}`}
@@ -106,7 +107,7 @@ const MusicPlayerBar = ({
         </div>
       </div>
 
-      <div className="w-1/3 flex items-center justify-end gap-2.5 text-gray-500">
+      <div className={`${isNarrow ? "w-[32px] shrink-0" : "w-1/3"} flex items-center justify-end gap-2 text-gray-500`}>
         <button
           onClick={onMuteToggle}
           className="hover:text-gray-700 transition-colors"
@@ -114,14 +115,16 @@ const MusicPlayerBar = ({
         >
           {isMuted ? <VolumeX size={15} className="text-red-500" /> : <Volume2 size={15} />}
         </button>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={isMuted ? 0 : volume}
-          onChange={onVolumeChange}
-          className="w-20 h-1 bg-zinc-200 accent-red-500 rounded-lg cursor-pointer outline-none"
-        />
+        {!isNarrow && (
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={isMuted ? 0 : volume}
+            onChange={onVolumeChange}
+            className="w-20 h-1 bg-zinc-200 accent-red-500 rounded-lg cursor-pointer outline-none"
+          />
+        )}
       </div>
     </div>
   );

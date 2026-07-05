@@ -9,6 +9,7 @@ const MusicTrackSection = ({
   formatTime,
   isLoading,
   activeCategory,
+  isNarrow,
 }) => {
   return (
     <div className="flex-1 flex flex-col bg-white min-w-0">
@@ -29,6 +30,7 @@ const MusicTrackSection = ({
           onSelectTrack={onSelectTrack}
           formatTime={formatTime}
           isLoading={isLoading}
+          isNarrow={isNarrow}
         />
       </div>
     </div>
