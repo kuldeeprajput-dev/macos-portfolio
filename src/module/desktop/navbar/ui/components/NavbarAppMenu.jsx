@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import useWindowsStore from "@store/window";
+import { GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL, PROJECT_3_URL, PROJECT_4_URL } from "@constants";
 
 const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleMenuOpen }) => {
   const { setAboutPortfolioOpen, setWindowData, windows } = useWindowsStore();
@@ -193,7 +194,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
       [
         {
           label: "View Featured Project",
-          onClick: () => openWindow("safari", { url: "https://docs-editor-ashen.vercel.app/" }),
+          onClick: () => openWindow("safari", { url: PROJECT_4_URL }),
         },
         {
           label: "Launchpad Overview",
@@ -204,7 +205,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
       [
         {
           label: "GitHub Repositories",
-          onClick: () => openWindow("safari", { url: "https://github.com/kuldeeprajput-dev" }),
+          onClick: () => openWindow("safari", { url: GITHUB_PROFILE }),
         },
       ],
     ],
@@ -230,11 +231,11 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
         {
           label: "Connect on LinkedIn",
           onClick: () =>
-            openWindow("safari", { url: "https://www.linkedin.com/in/kuldeepdotcom/" }),
+            openWindow("safari", { url: LINKEDIN_URL }),
         },
         {
           label: "Follow on Twitter / X",
-          onClick: () => openWindow("safari", { url: "https://x.com/kuldeepdotcom" }),
+          onClick: () => openWindow("safari", { url: TWITTER_URL }),
         },
       ],
     ],
@@ -260,7 +261,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
       [
         {
           label: "Interactive ATS System",
-          onClick: () => openWindow("safari", { url: "https://resume-ats-omega.vercel.app/" }),
+          onClick: () => openWindow("safari", { url: PROJECT_3_URL }),
         },
       ],
     ],

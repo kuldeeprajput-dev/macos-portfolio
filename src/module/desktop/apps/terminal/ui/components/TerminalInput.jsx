@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Terminal as XTerm } from "xterm";
 import "xterm/css/xterm.css";
 import { FitAddon } from "@xterm/addon-fit";
-import { techStack, projects } from "@constants";
+import { techStack, projects, GITHUB_PROFILE, PORTFOLIO_URL } from "@constants";
 import useWindowsStore from "@store/window";
 
 const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
@@ -138,10 +138,10 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
                 "\x1b[1;38;2;16;185;129mEmail:     \x1b[4;38;2;37;99;235mrajputkuldeep23345@gmail.com\x1b[0m",
               );
               println(
-                "\x1b[1;38;2;16;185;129mGitHub:    \x1b[4;38;2;37;99;235mhttps://github.com/kuldeeprajput-dev\x1b[0m",
+                `\x1b[1;38;2;16;185;129mGitHub:    \x1b[4;38;2;37;99;235m${GITHUB_PROFILE}\x1b[0m`,
               );
               println(
-                "\x1b[1;38;2;16;185;129mPortfolio: \x1b[4;38;2;37;99;235mhttps://kuldeeprajput.in\x1b[0m",
+                `\x1b[1;38;2;16;185;129mPortfolio: \x1b[4;38;2;37;99;235m${PORTFOLIO_URL}\x1b[0m`,
               );
               println("\x1b[1;38;2;6;182;212m\r\nBio:\x1b[0m");
               println(

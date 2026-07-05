@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Globe, RefreshCw, X } from "lucide-react";
+import { PORTFOLIO_ALT_URL } from "@constants";
 import VSCodeTabs from "../components/VSCodeTabs";
 import VSCodeEditor from "../components/VSCodeEditor";
 import VSCodeTerminalSection from "./VSCodeTerminalSection";
@@ -164,7 +165,7 @@ const VSCodeEditorSection = ({
               <div className="flex-1 bg-[#f3f3f3] rounded border border-[#e5e5e5] px-2.5 py-0.5 text-[10px] text-[#616161] font-mono select-all flex items-center justify-between">
                 <span>http://localhost:3000/</span>
                 <a
-                  href="https://kuldeep-rajput.vercel.app/"
+                  href={PORTFOLIO_ALT_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="text-[#007acc] hover:underline"
@@ -178,7 +179,7 @@ const VSCodeEditorSection = ({
             <div className="flex-1 bg-white relative">
               <iframe
                 key={reloadKey}
-                src="https://kuldeep-rajput.vercel.app/"
+                src={PORTFOLIO_ALT_URL}
                 title="Portfolio Live Preview"
                 className="w-full h-full border-none"
                 style={{ background: "#ffffff" }}

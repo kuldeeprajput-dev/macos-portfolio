@@ -1,4 +1,4 @@
-import { navIcons } from "@constants/index";
+import { navIcons, GITHUB_USERNAME, GITHUB_PROFILE } from "@constants";
 import NavbarBatteryMenu from "../components/NavbarBatteryMenu";
 import NavbarDateTime from "../components/NavbarDateTime";
 import NavbarControlCenter from "../components/NavbarControlCenter";
@@ -43,8 +43,8 @@ const NavbarControlCenterSection = ({
   const [profile, setProfile] = useState({
     name: "Kuldeep Rajput",
     avatar_url: null,
-    login: "kuldeeprajput-dev",
-    email: "kuldeeprajput-dev@users.noreply.github.com",
+    login: GITHUB_USERNAME,
+    email: `${GITHUB_USERNAME}@users.noreply.github.com`,
     bio: "Full Stack Developer",
     location: "India",
     public_repos: 15,
@@ -56,7 +56,7 @@ const NavbarControlCenterSection = ({
 
   useEffect(() => {
     setMounted(true);
-    fetch("https://api.github.com/users/kuldeeprajput-dev")
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.login) {
@@ -723,7 +723,7 @@ const NavbarControlCenterSection = ({
                           type="button"
                           className="bg-[#007aff] hover:bg-[#007aff]/80 active:bg-[#007aff]/60 text-white rounded-lg py-1 px-3 text-[10px] font-semibold transition-all cursor-pointer"
                           onClick={() =>
-                            window.open(`https://github.com/sponsors/kuldeeprajput-dev`, "_blank")
+                            window.open(`https://github.com/sponsors/${GITHUB_USERNAME}`, "_blank")
                           }
                         >
                           💖 Sponsor
