@@ -2,6 +2,7 @@ import WindowControls from "@components/WindowControls";
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
 import { DEFAULT_BOOKMARKS } from "@module/desktop/apps/safari/data/bookmarks";
+import { PROJECT_1_URL, PROJECT_2_URL, PROJECT_3_URL, PROJECT_4_URL, PORTFOLIO_ALT_URL } from "@constants";
 import {
   ChevronLeft,
   ChevronRight,
@@ -60,12 +61,12 @@ const SafariDesktopToolbar = ({ showSidebar, onToggleSidebar }) => {
   );
 };
 
-const SafariMobileHeader = ({ socials, projects }) => {
+const SafariMobileHeader = ({ _socials, projects }) => {
   const { closeWindow, setWindowData } = useWindowsStore();
   const safariWindowData = useWindowsStore((state) => state.windows.safari?.data);
   const mobileBookmarks = DEFAULT_BOOKMARKS.map((fav) => {
     if (fav.title.toLowerCase().includes("portfolio")) {
-      return { ...fav, url: "https://kuldeep-rajput.vercel.app/" };
+      return { ...fav, url: PORTFOLIO_ALT_URL };
     }
     return fav;
   });
@@ -112,19 +113,19 @@ const SafariMobileHeader = ({ socials, projects }) => {
     let isRedirected = false;
 
     if (lowerQuery.includes("youtube") || lowerQuery.includes("newtube")) {
-      targetUrl = "https://newtube-ruddy.vercel.app/";
+      targetUrl = PROJECT_1_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("insta") || lowerQuery.includes("snsta")) {
-      targetUrl = "https://snsta.vercel.app/";
+      targetUrl = PROJECT_2_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("resume")) {
-      targetUrl = "https://resume-ats-omega.vercel.app/";
+      targetUrl = PROJECT_3_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("docs-editor") || lowerQuery.includes("docs")) {
-      targetUrl = "https://docs-editor-ashen.vercel.app/";
+      targetUrl = PROJECT_4_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("portfolio")) {
-      targetUrl = "https://kuldeep-rajput.vercel.app/";
+      targetUrl = PORTFOLIO_ALT_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("wikipedia")) {
       targetUrl = "https://en.wikipedia.org";
@@ -241,19 +242,28 @@ const SafariMobileHeader = ({ socials, projects }) => {
     } catch {
       /* empty */
     }
+    const getDomain = (urlStr) => {
+      if (!urlStr) return "";
+      try {
+        const parsed = new URL(urlStr);
+        return parsed.hostname;
+      } catch {
+        return "";
+      }
+    };
     const compatible = [
       "openstreetmap.org",
       "wttr.in",
       "example.com",
       "example.org",
       "map",
-      "newtube-ruddy.vercel.app",
-      "snsta.vercel.app",
-      "resume-ats-omega.vercel.app",
-      "docs-editor-ashen.vercel.app",
+      getDomain(PROJECT_1_URL),
+      getDomain(PROJECT_2_URL),
+      getDomain(PROJECT_3_URL),
+      getDomain(PROJECT_4_URL),
       "wikipedia.org",
-      "kuldeep-rajput.vercel.app",
-    ];
+      getDomain(PORTFOLIO_ALT_URL),
+    ].filter(Boolean);
     return compatible.some((site) => urlLower.includes(site));
   };
 

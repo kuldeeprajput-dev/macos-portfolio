@@ -1,19 +1,19 @@
-import { dockApps, locations, projects, socials } from "@constants";
+import { dockApps, locations, projects, socials, PROJECT_1_URL, PROJECT_2_URL, PROJECT_3_URL, PROJECT_4_URL, GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL, PORTFOLIO_URL } from "@constants";
 
 const OWNER_NAME = "Kuldeep Rajput";
 
 const FALLBACK_PROJECT_LINKS = {
-  newtube: "https://newtube-ruddy.vercel.app/",
-  insta: "https://snsta.vercel.app/",
-  resume: "https://resume-ats-omega.vercel.app/",
-  docs: "https://docs-editor-ashen.vercel.app/",
+  newtube: PROJECT_1_URL,
+  insta: PROJECT_2_URL,
+  resume: PROJECT_3_URL,
+  docs: PROJECT_4_URL,
 };
 
 const FALLBACK_SOCIAL_LINKS = {
-  github: "https://github.com/kuldeeprajput-dev",
-  linkedin: "https://www.linkedin.com/in/kuldeepdotcom/",
-  twitter: "https://x.com/kuldeepdotcom",
-  portfolio: "https://kuldeeprajput.in",
+  github: GITHUB_PROFILE,
+  linkedin: LINKEDIN_URL,
+  twitter: TWITTER_URL,
+  portfolio: PORTFOLIO_URL,
 };
 
 const PROJECT_META = {

@@ -1,5 +1,6 @@
 import React from "react";
 import { ExternalLink } from "lucide-react";
+import { GITHUB_PROFILE } from "@constants";
 
 const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
   return (
@@ -76,7 +77,7 @@ const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
         </span>
         <div className="space-y-1.5">
           <a
-            href="https://github.com/kuldeeprajput-dev"
+            href={GITHUB_PROFILE}
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center justify-between p-2 border rounded-md text-[11px] text-[#3390ec] transition-colors w-full font-medium ${
