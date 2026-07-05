@@ -5,6 +5,7 @@ import ProfileOverlay from "../components/ProfileOverlay";
 import { FEATURED_SHOW } from "../components/appleTvCatalog";
 import AppleTVHeaderSection from "../section/AppleTVHeaderSection";
 import AppleTVSection from "../section/AppleTVSection";
+import { GITHUB_USERNAME } from "@constants";
 
 const AppleTVView = () => {
   const [activeTab, setActiveTab] = useState("watchNow");
@@ -25,7 +26,7 @@ const AppleTVView = () => {
 
   useEffect(() => {
     // Fetch GitHub avatar dynamically
-    fetch("https://api.github.com/users/kuldeeprajput-dev")
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.avatar_url) {

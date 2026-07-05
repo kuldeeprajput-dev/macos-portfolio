@@ -1,7 +1,7 @@
 import { useState } from "react";
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
-import { projects } from "@constants";
+import { projects, GITHUB_PROFILE } from "@constants";
 import PostmanSection from "../section/PostmanSection";
 
 const Postman = () => {
@@ -40,7 +40,7 @@ const Postman = () => {
             name: "Kuldeep Rajput",
             role: "Full Stack Developer",
             location: "Mumbai, India",
-            github: "https://github.com/kuldeeprajput-dev",
+            github: GITHUB_PROFILE,
             skills: ["React", "Node.js", "Bun", "Tailwind CSS", "GSAP"],
           };
         } else if (cleanUrl.endsWith("/v1/login") && method === "POST") {

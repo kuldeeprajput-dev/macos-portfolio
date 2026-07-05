@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import useWindowsStore from "@store/window";
 import { STORE_APPS } from "../components/appStoreData";
+import { GITHUB_USERNAME } from "@constants";
 import AppStoreContentSection from "./AppStoreContentSection";
 import AppDetailsModal from "../components/AppDetailsModal";
 import ProfileOverlay from "../../../appletv/ui/components/ProfileOverlay";
@@ -39,7 +40,7 @@ const AppStoreSection = () => {
 
   useEffect(() => {
     // Fetch GitHub avatar dynamically
-    fetch("https://api.github.com/users/kuldeeprajput-dev")
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.avatar_url) {

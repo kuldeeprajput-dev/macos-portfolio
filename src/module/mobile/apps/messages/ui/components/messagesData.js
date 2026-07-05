@@ -1,3 +1,5 @@
+import { GITHUB_PROFILE } from "@constants";
+
 export const INITIAL_CONVERSATIONS = [
   {
     id: "kuldeep",
@@ -7,7 +9,7 @@ export const INITIAL_CONVERSATIONS = [
     avatar: "/images/profile.jpg",
     unread: true,
     email: "kuldeeprajput.dev@gmail.com",
-    github: "https://github.com/kuldeeprajput-dev",
+    github: GITHUB_PROFILE,
     messages: [
       {
         id: 1,

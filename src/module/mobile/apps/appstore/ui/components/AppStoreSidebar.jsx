@@ -5,6 +5,7 @@ import {
   Terminal as TerminalIcon,
   ArrowDownCircle,
 } from "lucide-react";
+import { GITHUB_USERNAME } from "@constants";
 
 const NAV_ITEMS = [
   { id: "discover", label: "Discover", icon: Sparkles },
@@ -81,7 +82,7 @@ const AppStoreSidebar = ({
             {githubProfile?.name || "Kuldeep Rajput"}
           </p>
           <span className="text-[9px] font-medium text-gray-400 block mt-0.5">
-            @{githubProfile?.login || "kuldeeprajput-dev"}
+            @{githubProfile?.login || GITHUB_USERNAME}
           </span>
         </div>
       </button>
