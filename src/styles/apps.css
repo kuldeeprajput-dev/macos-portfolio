@@ -142,18 +142,14 @@
   }
 
   /* ─── xterm scrollbar ─────────────────────────────── */
+  #terminal .xterm-viewport {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
   #terminal .xterm-viewport::-webkit-scrollbar {
-    width: 6px;
-  }
-  #terminal .xterm-viewport::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  #terminal .xterm-viewport::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.18);
-    border-radius: 99px;
-  }
-  #terminal .xterm-viewport::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.32);
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 
   #contact {
