@@ -1,5 +1,5 @@
 import { X, Info, Trash2 } from "lucide-react";
-import { CATEGORIES } from "./calendarData";
+import { CATEGORIES } from "../../data";
 
 const CalendarDayPopover = ({
   dayEventsPopover,

@@ -1,6 +1,6 @@
 import WindowControls from "@components/WindowControls";
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
-import { MONTHS } from "../components/calendarData";
+import { MONTHS } from "../../data";
 
 const CalendarHeaderSection = ({ month, year, onPrevMonth, onNextMonth, onToday, onAddEvent }) => (
   <div

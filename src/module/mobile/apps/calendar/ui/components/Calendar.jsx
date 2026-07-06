@@ -1,6 +1,6 @@
 import React from "react";
 import windowWrapper from "@hoc/windowWrapper";
-import useCalendar from "./useCalendar";
+import useCalendar from "../../hooks/useCalendar";
 import CalendarSection from "../section/CalendarSection";
 
 const Calendar = () => {

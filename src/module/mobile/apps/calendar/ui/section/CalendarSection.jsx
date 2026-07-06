@@ -2,7 +2,7 @@ import CalendarHeaderSection from "./CalendarHeaderSection";
 import CalendarGridSection from "./CalendarGridSection";
 import CalendarEventModal from "../components/CalendarEventModal";
 import CalendarDayPopover from "../components/CalendarDayPopover";
-import { CATEGORIES } from "../components/calendarData";
+import { CATEGORIES } from "../../data";
 import { Trash2, CalendarDays, Plus, Clock } from "lucide-react";
 
 const CalendarSection = (props) => {

@@ -1,5 +1,5 @@
 import { Calendar as CalendarIcon, X, Clock, Tag, AlignLeft } from "lucide-react";
-import { CATEGORIES } from "./calendarData";
+import { CATEGORIES } from "../../data";
 
 const CalendarEventModal = ({
   isModalOpen,

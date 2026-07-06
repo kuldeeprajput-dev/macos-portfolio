@@ -1,4 +1,4 @@
-import { CATEGORIES, DAYS_SHORT } from "./calendarData";
+import { CATEGORIES, DAYS_SHORT } from "../../data";
 
 const CalendarGrid = ({
   gridCells,
