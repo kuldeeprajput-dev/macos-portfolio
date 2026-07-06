@@ -300,9 +300,9 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
               </button>
             </div>
           ) : (
-            /* macOS Alert Panel (Desktop) - Authentic Ventura/Sonoma Dialog Box */
+            /* macOS Alert Panel (Desktop) - Authentic Ventura/Sonoma Dialog Box (Light Theme) */
             <div
-              className="bg-[#ececec]/95 dark:bg-[#2c2c2c]/90 backdrop-blur-2xl border border-neutral-300/40 dark:border-zinc-700/50 p-5 rounded-[12px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] w-[465px] transform scale-100 transition-transform duration-200 select-none flex gap-4 text-left"
+              className="bg-[#ececec]/95 backdrop-blur-2xl p-5 rounded-[12px] shadow-[0_20px_50px_rgba(0,0,0,0.18)] w-[465px] transform scale-100 transition-transform duration-200 select-none flex gap-4 text-left"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Left Column: Apple Logo */}
@@ -310,17 +310,17 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
                 <img
                   src="/icons/appleLogo.svg"
                   alt="System Logo"
-                  className="w-12 h-12 invert dark:invert-0 opacity-95"
+                  className="w-12 h-12 invert opacity-85"
                 />
               </div>
 
               {/* Right Column: Title, Subtitle, Checkbox, Actions */}
               <div className="flex-1 space-y-4">
                 <div className="space-y-1.5">
-                  <h3 className="text-[13px] font-bold text-neutral-900 dark:text-neutral-50 tracking-tight leading-tight">
+                  <h3 className="text-[13px] font-bold text-neutral-900 tracking-tight leading-tight">
                     Are you sure you want to shut down or restart your computer now?
                   </h3>
-                  <p className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-normal">
+                  <p className="text-[11px] text-neutral-500 leading-normal">
                     If you do nothing, the system will continue running. You can also choose to put
                     the system to sleep.
                   </p>
@@ -332,11 +332,11 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
                     type="checkbox"
                     id="reopen-windows"
                     defaultChecked
-                    className="accent-blue-500 w-3 h-3 rounded border-gray-300 dark:border-zinc-750 text-blue-600 focus:ring-0 cursor-pointer"
+                    className="accent-blue-500 w-3 h-3 rounded text-blue-600 focus:ring-0 cursor-pointer"
                   />
                   <label
                     htmlFor="reopen-windows"
-                    className="text-[11px] text-neutral-600 dark:text-neutral-400 select-none cursor-pointer"
+                    className="text-[11px] text-neutral-600 select-none cursor-pointer"
                   >
                     Reopen windows when logging back in
                   </label>
@@ -346,19 +346,19 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
                 <div className="flex justify-end gap-2 pt-1.5">
                   <button
                     onClick={handleCancel}
-                    className="px-4 py-1.5 bg-white hover:bg-neutral-50 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-neutral-300 dark:border-zinc-700 text-neutral-800 dark:text-neutral-200 rounded-[6px] text-[11px] font-medium transition-colors cursor-pointer shadow-sm"
+                    className="px-4 py-1.5 bg-white hover:bg-neutral-50 text-neutral-800 rounded-[6px] text-[11px] font-medium transition-colors cursor-pointer shadow-sm"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSleep}
-                    className="px-4 py-1.5 bg-white hover:bg-neutral-50 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-neutral-300 dark:border-zinc-700 text-neutral-800 dark:text-neutral-200 rounded-[6px] text-[11px] font-medium transition-colors cursor-pointer shadow-sm"
+                    className="px-4 py-1.5 bg-white hover:bg-neutral-50 text-neutral-800 rounded-[6px] text-[11px] font-medium transition-colors cursor-pointer shadow-sm"
                   >
                     Sleep
                   </button>
                   <button
                     onClick={handleRestart}
-                    className="px-4 py-1.5 bg-white hover:bg-neutral-50 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-neutral-300 dark:border-zinc-700 text-neutral-800 dark:text-neutral-200 rounded-[6px] text-[11px] font-medium transition-colors cursor-pointer shadow-sm"
+                    className="px-4 py-1.5 bg-white hover:bg-neutral-50 text-neutral-800 rounded-[6px] text-[11px] font-medium transition-colors cursor-pointer shadow-sm"
                   >
                     Restart
                   </button>
