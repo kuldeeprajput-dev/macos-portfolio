@@ -15,7 +15,7 @@ import {
   Check,
 } from "lucide-react";
 import MapViewSection from "./MapViewSection";
-import PRESET_PLACES from "../components/mapData";
+import PRESET_PLACES from "../../data";
 
 const MapSection = (props) => {
   const [drawerHeight, setDrawerHeight] = useState("half"); // "collapsed", "half", "full"

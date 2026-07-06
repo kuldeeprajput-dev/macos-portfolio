@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PRESET_PLACES from "./mapData";
+import PRESET_PLACES from "../data";
 
 const useMap = () => {
   const nominatimApiBase =

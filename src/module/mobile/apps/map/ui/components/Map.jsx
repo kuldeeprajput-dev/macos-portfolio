@@ -1,7 +1,7 @@
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import { Compass } from "lucide-react";
-import useMap from "./useMap";
+import useMap from "../../hooks/useMap";
 import MapSection from "../section/MapSection";
 
 const Map = () => {
