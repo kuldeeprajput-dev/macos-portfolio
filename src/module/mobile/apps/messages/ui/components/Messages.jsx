@@ -1,5 +1,5 @@
 import windowWrapper from "@hoc/windowWrapper";
-import useMessages from "./useMessages";
+import useMessages from "../../hooks/useMessages";
 import MessagesSection from "../section/MessagesSection";
 
 const Messages = () => {
