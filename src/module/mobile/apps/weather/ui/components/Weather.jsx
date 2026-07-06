@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import windowWrapper from "@hoc/windowWrapper";
-import useWeather from "./useWeather";
+import useWeather from "../../hooks/useWeather";
 import WeatherHeader from "./WeatherHeader";
 import WeatherSection from "../section/WeatherSection";
 

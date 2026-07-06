@@ -1,5 +1,5 @@
 import React from "react";
-import { getSafeTemp } from "./weatherUtils";
+import { getSafeTemp } from "../../data";
 
 const WeatherHero = ({ activeCity, unitMode }) => {
   const activeTemps = getSafeTemp(activeCity);

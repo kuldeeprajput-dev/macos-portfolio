@@ -1,6 +1,6 @@
 import React from "react";
 import { Clock } from "lucide-react";
-import { renderIcon } from "./weatherUtils";
+import { renderIcon } from "../../data";
 
 const HourlyForecast = ({ activeCity, unitMode }) => {
   return (

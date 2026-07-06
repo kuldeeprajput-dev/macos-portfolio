@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import WEATHER_DATA from "./weatherData";
-import { parseWttrResponse, generateWeatherData } from "./weatherUtils";
+import { WEATHER_DATA, parseWttrResponse, generateWeatherData } from "../data";
 
 const useWeather = () => {
   const apiBase =

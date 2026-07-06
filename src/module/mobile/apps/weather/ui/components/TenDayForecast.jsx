@@ -1,6 +1,6 @@
 import React from "react";
 import { Calendar } from "lucide-react";
-import { renderIcon } from "./weatherUtils";
+import { renderIcon } from "../../data";
 
 const TenDayForecast = ({ activeCity, unitMode }) => {
   const forecasts = activeCity.forecast || [];
