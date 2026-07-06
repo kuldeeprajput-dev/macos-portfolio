@@ -683,11 +683,12 @@ const MobileNotch = () => {
                 </p>
               </div>
               {/* Animated visualizer */}
-              <div className="flex items-end gap-[2px] h-[15px] pr-1">
-                <span className="w-[2px] h-[10px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_100ms] shadow-[0_0_4px_#30d158]" />
-                <span className="w-[2px] h-[15px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_300ms] shadow-[0_0_4px_#30d158]" />
-                <span className="w-[2px] h-[8px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_200ms] shadow-[0_0_4px_#30d158]" />
-                <span className="w-[2px] h-[12px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_400ms] shadow-[0_0_4px_#30d158]" />
+              <div className="notch-wave">
+                <div className="notch-wave-bar" />
+                <div className="notch-wave-bar" />
+                <div className="notch-wave-bar" />
+                <div className="notch-wave-bar" />
+                <div className="notch-wave-bar" />
               </div>
             </div>
 
@@ -780,10 +781,12 @@ const MobileNotch = () => {
             </div>
 
             {/* Animated mini visualizer */}
-            <div className="flex items-end gap-[1.5px] h-[11px] pb-[1px] pr-0.5">
-              <span className="w-[1.5px] h-[5px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_100ms] shadow-[0_0_2px_#30d158]" />
-              <span className="w-[1.5px] h-[10px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_300ms] shadow-[0_0_2px_#30d158]" />
-              <span className="w-[1.5px] h-[6px] bg-[#30d158] rounded-full animate-[bounce_0.8s_infinite_200ms] shadow-[0_0_2px_#30d158]" />
+            <div className="notch-wave">
+              <div className="notch-wave-bar" />
+              <div className="notch-wave-bar" />
+              <div className="notch-wave-bar" />
+              <div className="notch-wave-bar" />
+              <div className="notch-wave-bar" />
             </div>
           </div>
         );
