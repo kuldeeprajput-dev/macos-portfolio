@@ -11,7 +11,6 @@ import {
   Accessibility,
   LayoutDashboard,
   Globe,
-  Lock,
   Battery,
 } from "lucide-react";
 

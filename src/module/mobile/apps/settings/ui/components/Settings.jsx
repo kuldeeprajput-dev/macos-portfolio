@@ -1,6 +1,6 @@
 import React from "react";
 import windowWrapper from "@hoc/windowWrapper";
-import useSettings from "./useSettings";
+import useSettings from "../../hooks/useSettings";
 import SettingsSidebar from "./SettingsSidebar";
 import SettingsPane from "./SettingsPane";
 

@@ -1,4 +1,4 @@
-import { GithubIcon, BookMarkedIcon } from "../components/settingsData";
+import { GithubIcon, BookMarkedIcon } from "../../data/settingsData";
 
 const SettingsAppleIDSection = ({ githubData }) => {
   if (!githubData) return null;
