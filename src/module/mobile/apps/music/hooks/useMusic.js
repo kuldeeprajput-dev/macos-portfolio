@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import useWindowsStore from "@store/window";
 import { getCoverColor, getCoverEmoji } from "../data";
 
@@ -44,9 +44,6 @@ const useMusic = () => {
   const [activeCategory, setActiveCategory] = useState("Browse");
   const [isLoading, setIsLoading] = useState(false);
 
-  const [page, setPage] = useState(1);
-  const [isFetchingMore, setIsFetchingMore] = useState(false);
-
   const audioRef = useRef(null);
   const searchInputRef = useRef(null);
 
@@ -78,93 +75,14 @@ const useMusic = () => {
   }, [activeTrack, setMusicState]);
 
   useEffect(() => {
-    // Reset page when activeCategory or searchQuery changes
-    setPage(1);
-  }, [activeCategory, searchQuery]);
-
-  useEffect(() => {
     const fetchTracks = async () => {
-      if (page === 1) {
-        setIsLoading(true);
-      } else {
-        setIsFetchingMore(true);
-      }
+      setIsLoading(true);
       try {
         const apiBase =
           process.env.NEXT_PUBLIC_JIOSAAVN_API_URL ||
           "https://jiosaavn-apix.arcadopredator.workers.dev";
 
         if (searchQuery.trim() === "" && activeCategory === "Browse") {
-          if (page > 1) {
-            const SECOND_BATCH = [
-              "Tum Hi Ho Arijit",
-              "Kesariya Brahmastra",
-              "Chaleya Jawan",
-              "Heeriye Jasleen",
-              "Kabira Yeh Jawaani",
-              "Ilahi Ranbir",
-              "Mast Magan 2 States",
-              "Agar Tum Saath Ho Tamasha",
-            ];
-            const fetchPromises = SECOND_BATCH.map(async (name) => {
-              try {
-                const res = await fetch(
-                  `${apiBase}/api/search/songs?query=${encodeURIComponent(name)}&limit=1`,
-                );
-                const resultData = await res.json();
-                if (
-                  resultData.success &&
-                  resultData.data &&
-                  resultData.data.results &&
-                  resultData.data.results.length > 0
-                ) {
-                  return resultData.data.results[0];
-                }
-              } catch (e) {
-                console.error(e);
-              }
-              return null;
-            });
-            const results = await Promise.all(fetchPromises);
-            const filteredResults = results.filter(Boolean);
-
-            const formattedTracks = filteredResults.map((track, index) => {
-              const downloadUrls = track.downloadUrl || [];
-              const audioUrl =
-                downloadUrls.length > 0 ? downloadUrls[downloadUrls.length - 1]?.url : "";
-              const images = track.image || track.album?.image || [];
-              let coverUrl = "";
-              if (typeof images === "string") {
-                coverUrl = images;
-              } else if (Array.isArray(images) && images.length > 0) {
-                const lastImg = images[images.length - 1];
-                coverUrl =
-                  typeof lastImg === "string" ? lastImg : lastImg?.url || lastImg?.link || "";
-              }
-              if (coverUrl && coverUrl.startsWith("http://")) {
-                coverUrl = coverUrl.replace("http://", "https://");
-              }
-              return {
-                id: track.id,
-                title: track.name,
-                artist:
-                  track.artists?.primary?.map((a) => a.name).join(", ") ||
-                  track.label ||
-                  "Unknown Artist",
-                album: track.album?.name || "Single",
-                duration: track.duration,
-                coverColor: getCoverColor(index),
-                coverText: getCoverEmoji(track.name),
-                coverUrl: coverUrl,
-                url: audioUrl,
-                language: track.language,
-              };
-            });
-            setTracks((prev) => [...prev, ...formattedTracks]);
-            setIsFetchingMore(false);
-            return;
-          }
-
           const PRELOADED_SONG_NAMES = [
             "Apna Bana Le Bhediya",
             "Zaalima Raees",
@@ -241,30 +159,10 @@ const useMusic = () => {
         let query = "Bollywood Hits";
         switch (activeCategory) {
           case "Browse":
-          case "Bollywood Hits":
             query = "Bollywood Hits";
             break;
-          case "Hindi Hits":
-            query = "New Hindi Songs";
-            break;
-          case "Pop Music":
-            query = "Imagine Dragons";
-            break;
-          case "Romantic":
-            query = "Arijit Romantic";
-            break;
-          case "Global Chart":
-            query = "Top Global Hits";
-            break;
           case "Listen Now":
-          case "Heavy Rotation":
             query = "Arijit Singh Hits";
-            break;
-          case "Chill Vibes":
-            query = "Lofi Beats";
-            break;
-          case "Power Workout":
-            query = "Gym Bass";
             break;
           case "Hindi Music":
             query = "New Hindi Songs";
@@ -292,7 +190,7 @@ const useMusic = () => {
         }
 
         const res = await fetch(
-          `${apiBase}/api/search/songs?query=${encodeURIComponent(query)}&limit=25&page=${page}`,
+          `${apiBase}/api/search/songs?query=${encodeURIComponent(query)}&limit=25`,
         );
         const resultData = await res.json();
         if (resultData.success && resultData.data && resultData.data.results) {
@@ -328,33 +226,22 @@ const useMusic = () => {
               language: track.language,
             };
           });
-          if (page === 1) {
-            setTracks(formattedTracks);
-          } else {
-            setTracks((prev) => [...prev, ...formattedTracks]);
-          }
+          setTracks(formattedTracks);
         } else {
-          if (page === 1) setTracks([]);
+          setTracks([]);
         }
       } catch (err) {
         console.error("Failed to fetch JioSaavn tracks:", err);
-        if (page === 1) setTracks([]);
+        setTracks([]);
       } finally {
         setIsLoading(false);
-        setIsFetchingMore(false);
       }
     };
     const timer = setTimeout(() => {
       fetchTracks();
     }, 450);
     return () => clearTimeout(timer);
-  }, [activeCategory, searchQuery, page]);
-
-  const handleLoadMore = () => {
-    if (!isLoading && !isFetchingMore) {
-      setPage((prev) => prev + 1);
-    }
-  };
+  }, [activeCategory, searchQuery]);
 
   useEffect(() => {
     if (tracks.length > 0 && activeTrack.id === 0) {
@@ -362,21 +249,21 @@ const useMusic = () => {
     }
   }, [tracks, activeTrack, setMusicState]);
 
-  const handleSelectTrack = (track) => {
+  const handleSelectTrack = useCallback((track) => {
     setMusicState({ activeTrack: track, isPlaying: true });
     setCurrentTime(0);
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
     }
-  };
+  }, [setMusicState]);
 
-  const handlePlayPause = () => {
+  const handlePlayPause = useCallback(() => {
     if (activeTrack.url) {
       setMusicState({ isPlaying: !isPlaying });
     }
-  };
+  }, [activeTrack.url, isPlaying, setMusicState]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (tracks.length === 0) return;
     let nextTrack;
     if (isShuffle) {
@@ -395,9 +282,9 @@ const useMusic = () => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
     }
-  };
+  }, [tracks, activeTrack, isShuffle, setMusicState]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (tracks.length === 0) return;
     const currentIdx = tracks.findIndex((t) => t.id === activeTrack.id);
     const prevIdx =
@@ -409,23 +296,23 @@ const useMusic = () => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
     }
-  };
+  }, [tracks, activeTrack, setMusicState]);
 
-  const formatTime = (seconds) => {
+  const formatTime = useCallback((seconds) => {
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60)
       .toString()
       .padStart(2, "0");
     return `${min}:${sec}`;
-  };
+  }, []);
 
-  const handleProgressChange = (e) => {
+  const handleProgressChange = useCallback((e) => {
     const newTime = parseInt(e.target.value);
     setCurrentTime(newTime);
     if (audioRef.current) {
       audioRef.current.currentTime = newTime;
     }
-  };
+  }, []);
 
   return {
     tracks,
@@ -445,8 +332,6 @@ const useMusic = () => {
     isRepeat,
     setIsRepeat,
     isLoading,
-    isFetchingMore,
-    handleLoadMore,
     audioRef,
     searchInputRef,
     handleTimeUpdate: () => {},
