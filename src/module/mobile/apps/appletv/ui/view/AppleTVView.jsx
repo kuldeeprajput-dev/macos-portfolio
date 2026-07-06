@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import PlayerOverlay from "../components/PlayerOverlay";
 import ProfileOverlay from "../components/ProfileOverlay";
-import { FEATURED_SHOW } from "../components/appleTvCatalog";
+import { FEATURED_SHOW } from "../../data";
 import AppleTVHeaderSection from "../section/AppleTVHeaderSection";
 import AppleTVSection from "../section/AppleTVSection";
 import { GITHUB_USERNAME } from "@constants";

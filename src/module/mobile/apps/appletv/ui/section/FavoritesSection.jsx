@@ -1,5 +1,5 @@
 import MovieCard from "../components/MovieCard";
-import { MOVIES } from "../components/appleTvCatalog";
+import { MOVIES } from "../../data";
 
 const FavoritesSection = ({ upNext, onPlayMovie }) => {
   const queuedMovies = MOVIES.filter((movie) => upNext.includes(movie.id));

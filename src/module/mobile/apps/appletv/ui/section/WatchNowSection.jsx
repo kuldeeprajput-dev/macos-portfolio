@@ -1,7 +1,7 @@
 import { Check, Play, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
-import { FEATURED_SHOW, MOVIES } from "../components/appleTvCatalog";
+import { FEATURED_SHOW, MOVIES } from "../../data";
 
 const WatchNowSection = ({
   upNext,
