@@ -103,7 +103,7 @@ const SettingsSidebar = ({
             </div>
           )}
 
-          <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-4 thin-scrollbar">
+          <div className="flex-1 overflow-y-auto px-3 pt-[5px] pb-4 space-y-4 thin-scrollbar">
             <div
               className={`flex items-center gap-3 cursor-pointer p-2 rounded-lg transition-colors border border-transparent ${activeTab === "Apple ID" ? "bg-black/5 border-black/5" : "hover:bg-black/5"}`}
               onClick={() => setActiveTab("Apple ID")}
