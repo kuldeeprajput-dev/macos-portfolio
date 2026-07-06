@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import useWindowsStore from "@store/window";
-import { CONTACTS } from "./callData";
+import { CONTACTS } from "../data";
 
 const useCall = () => {
   const { windows } = useWindowsStore();

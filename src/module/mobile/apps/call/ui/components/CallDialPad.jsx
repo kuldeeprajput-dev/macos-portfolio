@@ -1,5 +1,5 @@
 import { X, Phone, Video, Trash2 } from "lucide-react";
-import { DIALPAD_KEYS } from "./callData";
+import { DIALPAD_KEYS } from "../../data";
 
 const CallDialPad = ({
   dialNumber,

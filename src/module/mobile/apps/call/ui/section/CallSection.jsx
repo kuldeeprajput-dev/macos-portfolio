@@ -3,7 +3,7 @@ import { Link, Video, Phone, Info, X, Search, Grid, Users, ChevronLeft } from "l
 import CallInProgress from "../components/CallInProgress";
 import CallContactList from "../components/CallContactList";
 import CallDialPad from "../components/CallDialPad";
-import { CONTACTS } from "../components/callData";
+import { CONTACTS } from "../../data";
 import WindowControls from "@components/WindowControls";
 import useWindowsStore from "@store/window";
 

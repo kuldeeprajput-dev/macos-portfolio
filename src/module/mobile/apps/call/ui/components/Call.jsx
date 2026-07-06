@@ -1,5 +1,5 @@
 import windowWrapper from "@hoc/windowWrapper";
-import useCall from "./useCall";
+import useCall from "../../hooks/useCall";
 import CallSection from "../section/CallSection";
 
 const Call = () => {
