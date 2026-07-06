@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import windowWrapper from "@hoc/windowWrapper";
-import useNotes from "./useNotes";
+import useNotes from "../../hooks/useNotes";
 import NotesSection from "../section/NotesSection";
 
 const Notes = () => {
