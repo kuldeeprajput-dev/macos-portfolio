@@ -10,7 +10,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import useWindowsStore from "@store/window";
-import { STORE_APPS } from "../components/appStoreData";
+import { STORE_APPS } from "../../data";
 import { GITHUB_USERNAME } from "@constants";
 import AppStoreContentSection from "./AppStoreContentSection";
 import AppDetailsModal from "../components/AppDetailsModal";

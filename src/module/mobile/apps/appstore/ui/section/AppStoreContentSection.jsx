@@ -1,5 +1,5 @@
 import { RefreshCw, Search as SearchIcon, ArrowRight, Sparkles, Trophy, Star } from "lucide-react";
-import { STORE_APPS, FEATURED_APPS } from "../components/appStoreData";
+import { STORE_APPS, FEATURED_APPS } from "../../data";
 import { AppStoreCard, UpdateItem } from "../components/AppStoreCard";
 import { useState, useRef } from "react";
 
