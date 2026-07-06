@@ -1,8 +1,3 @@
-import WindowControls from "@components/WindowControls";
-import { useState, useEffect } from "react";
-import useWindowsStore from "@store/window";
-import { DEFAULT_BOOKMARKS } from "@module/desktop/apps/safari/data/bookmarks";
-import { PROJECT_1_URL, PROJECT_2_URL, PROJECT_3_URL, PROJECT_4_URL, PORTFOLIO_ALT_URL } from "@constants";
 import {
   ChevronLeft,
   ChevronRight,
@@ -12,7 +7,6 @@ import {
   Search,
   Share,
   ShieldHalf,
-  PanelLeft,
   RotateCw,
   Lock,
   AlertTriangle,
@@ -24,295 +18,42 @@ import {
   FileText,
   Home,
 } from "lucide-react";
+import useSafari from "../../hooks/useSafari";
 
-const SafariDesktopToolbar = ({ showSidebar, onToggleSidebar }) => {
-  return (
-    <div id="window-header" className="!bg-white !border-b-[#d1d1d1] !px-4 !py-2">
-      <div className="flex items-center gap-4 w-full">
-        <div className="flex items-center gap-2">
-          <WindowControls target="safari" />
-          <button
-            onClick={onToggleSidebar}
-            className={`p-1 rounded hover:bg-black/5 transition-colors ${showSidebar ? "bg-black/5" : ""}`}
-          >
-            <PanelLeft size={16} className="text-gray-600" />
-          </button>
-        </div>
-        <div className="flex items-center gap-1">
-          <ChevronLeft size={20} className="text-gray-400 cursor-not-allowed" />
-          <ChevronRight size={20} className="text-gray-400 cursor-not-allowed" />
-        </div>
-        <div className="flex-1 max-w-2xl mx-auto">
-          <div className="flex items-center gap-2 bg-white/80 border border-black/5 rounded-lg px-3 py-1 text-sm text-gray-600 shadow-sm backdrop-blur-sm">
-            <ShieldHalf size={14} className="text-green-600" />
-            <div className="flex-1 flex items-center justify-center gap-1 overflow-hidden">
-              <Search size={12} className="text-gray-400" />
-              <span className="truncate">kuldeep.dev — Projects</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <Share size={18} className="text-gray-600 cursor-pointer hover:text-black" />
-          <Plus size={18} className="text-gray-600 cursor-pointer hover:text-black" />
-          <Layout size={18} className="text-gray-600 cursor-pointer hover:text-black" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SafariMobileHeader = ({ _socials, projects }) => {
-  const { closeWindow, setWindowData } = useWindowsStore();
-  const safariWindowData = useWindowsStore((state) => state.windows.safari?.data);
-  const mobileBookmarks = DEFAULT_BOOKMARKS.map((fav) => {
-    if (fav.title.toLowerCase().includes("portfolio")) {
-      return { ...fav, url: PORTFOLIO_ALT_URL };
-    }
-    return fav;
-  });
-  const [tabs, setTabs] = useState([
-    {
-      id: 1,
-      url: "safari://start",
-      history: ["safari://start"],
-      historyIndex: 0,
-    },
-  ]);
-  const [activeTabId, setActiveTabId] = useState(1);
-  const [inputValue, setInputValue] = useState("");
-  const [showTabsOverview, setShowTabsOverview] = useState(false);
-  const [showShareSheet, setShowShareSheet] = useState(false);
-  const [showFormatMenu, setShowFormatMenu] = useState(false);
-  const [textSize, setTextSize] = useState(100);
-  const [toastMessage, setToastMessage] = useState("");
-  const [iframeLoading, setIframeLoading] = useState(true);
-
-  const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
-  const currentUrl = activeTab.url;
-  const history = activeTab.history;
-  const historyIndex = activeTab.historyIndex;
-
-  useEffect(() => {
-    setIframeLoading(true);
-  }, [currentUrl]);
-
-  useEffect(() => {
-    setInputValue(currentUrl === "safari://start" ? "" : currentUrl);
-  }, [activeTabId, currentUrl]);
-
-  const triggerToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(""), 2000);
-  };
-
-  const navigateTo = (url) => {
-    let targetUrl = url.trim();
-    if (!targetUrl) return;
-
-    const lowerQuery = targetUrl.toLowerCase();
-    let isRedirected = false;
-
-    if (lowerQuery.includes("youtube") || lowerQuery.includes("newtube")) {
-      targetUrl = PROJECT_1_URL;
-      isRedirected = true;
-    } else if (lowerQuery.includes("insta") || lowerQuery.includes("snsta")) {
-      targetUrl = PROJECT_2_URL;
-      isRedirected = true;
-    } else if (lowerQuery.includes("resume")) {
-      targetUrl = PROJECT_3_URL;
-      isRedirected = true;
-    } else if (lowerQuery.includes("docs-editor") || lowerQuery.includes("docs")) {
-      targetUrl = PROJECT_4_URL;
-      isRedirected = true;
-    } else if (lowerQuery.includes("portfolio")) {
-      targetUrl = PORTFOLIO_ALT_URL;
-      isRedirected = true;
-    } else if (lowerQuery.includes("wikipedia")) {
-      targetUrl = "https://en.wikipedia.org";
-      isRedirected = true;
-    } else if (lowerQuery.includes("map")) {
-      targetUrl = "https://openstreetmap.org";
-      isRedirected = true;
-    }
-
-    if (!isRedirected && !targetUrl.startsWith("safari://")) {
-      if (!/^https?:\/\//i.test(targetUrl)) {
-        if (targetUrl.includes(".") && !targetUrl.includes(" ")) {
-          targetUrl = "https://" + targetUrl;
-        } else {
-          targetUrl = `https://www.google.com/search?q=${encodeURIComponent(targetUrl)}`;
-        }
-      }
-    }
-
-    setTabs((prev) =>
-      prev.map((t) => {
-        if (t.id === activeTabId) {
-          const newHistory = t.history.slice(0, t.historyIndex + 1);
-          newHistory.push(targetUrl);
-          return {
-            ...t,
-            url: targetUrl,
-            history: newHistory,
-            historyIndex: newHistory.length - 1,
-          };
-        }
-        return t;
-      }),
-    );
-  };
-
-  useEffect(() => {
-    if (!safariWindowData) return;
-    if (safariWindowData.url) {
-      navigateTo(safariWindowData.url);
-    }
-    setWindowData("safari", null);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [safariWindowData, setWindowData]);
-
-  const handleBack = () => {
-    if (historyIndex > 0) {
-      const idx = historyIndex - 1;
-      setTabs((prev) =>
-        prev.map((t) => {
-          if (t.id === activeTabId) {
-            return {
-              ...t,
-              url: t.history[idx],
-              historyIndex: idx,
-            };
-          }
-          return t;
-        }),
-      );
-    }
-  };
-
-  const handleForward = () => {
-    if (historyIndex < history.length - 1) {
-      const idx = historyIndex + 1;
-      setTabs((prev) =>
-        prev.map((t) => {
-          if (t.id === activeTabId) {
-            return {
-              ...t,
-              url: t.history[idx],
-              historyIndex: idx,
-            };
-          }
-          return t;
-        }),
-      );
-    }
-  };
-
-  const handleSearchSubmit = (val) => {
-    if (!val.trim()) return;
-    let target = val.trim();
-    if (!/^https?:\/\//i.test(target) && target.includes(".")) {
-      target = "https://" + target;
-    } else if (!/^https?:\/\//i.test(target)) {
-      target = `https://www.google.com/search?q=${encodeURIComponent(target)}`;
-    }
-    navigateTo(target);
-  };
-
-  const getCleanDomain = (url) => {
-    if (url === "safari://start") return "Start Page";
-    if (url === "safari://privacy-report") return "Privacy Report";
-    try {
-      const parsed = new URL(url);
-      return parsed.hostname.replace("www.", "");
-    } catch {
-      return url;
-    }
-  };
-
-  const isIframeable = (url) => {
-    if (url.startsWith("safari://")) return true;
-    const urlLower = url.toLowerCase();
-    try {
-      const parsedUrl = new URL(url);
-      const host = parsedUrl.hostname.toLowerCase();
-      const currentHost = window.location.hostname.toLowerCase();
-      if (host === "localhost" || host === "127.0.0.1" || host === currentHost) {
-        return true;
-      }
-    } catch {
-      /* empty */
-    }
-    const getDomain = (urlStr) => {
-      if (!urlStr) return "";
-      try {
-        const parsed = new URL(urlStr);
-        return parsed.hostname;
-      } catch {
-        return "";
-      }
-    };
-    const compatible = [
-      "openstreetmap.org",
-      "wttr.in",
-      "example.com",
-      "example.org",
-      "map",
-      getDomain(PROJECT_1_URL),
-      getDomain(PROJECT_2_URL),
-      getDomain(PROJECT_3_URL),
-      getDomain(PROJECT_4_URL),
-      "wikipedia.org",
-      getDomain(PORTFOLIO_ALT_URL),
-    ].filter(Boolean);
-    return compatible.some((site) => urlLower.includes(site));
-  };
-
-  const handleNewTab = () => {
-    const newId = Date.now();
-    setTabs((prev) => [
-      ...prev,
-      {
-        id: newId,
-        url: "safari://start",
-        history: ["safari://start"],
-        historyIndex: 0,
-      },
-    ]);
-    setActiveTabId(newId);
-    setShowTabsOverview(false);
-  };
-
-  const handleCloseTab = (id, e) => {
-    e.stopPropagation();
-    if (tabs.length === 1) {
-      setTabs([
-        {
-          id: 1,
-          url: "safari://start",
-          history: ["safari://start"],
-          historyIndex: 0,
-        },
-      ]);
-      setActiveTabId(1);
-      return;
-    }
-    const filtered = tabs.filter((t) => t.id !== id);
-    setTabs(filtered);
-    if (activeTabId === id) {
-      setActiveTabId(filtered[filtered.length - 1].id);
-    }
-  };
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(currentUrl);
-    triggerToast("Copied Link to Clipboard");
-    setShowShareSheet(false);
-  };
-
-  const handleAddBookmark = () => {
-    triggerToast("Added to Bookmarks");
-    setShowShareSheet(false);
-  };
+const SafariMobileHeader = ({ projects }) => {
+  const {
+    tabs,
+    activeTabId,
+    setActiveTabId,
+    inputValue,
+    setInputValue,
+    showTabsOverview,
+    setShowTabsOverview,
+    showShareSheet,
+    setShowShareSheet,
+    showFormatMenu,
+    setShowFormatMenu,
+    textSize,
+    setTextSize,
+    toastMessage,
+    iframeLoading,
+    setIframeLoading,
+    currentUrl,
+    historyIndex,
+    triggerToast,
+    navigateTo,
+    handleBack,
+    handleForward,
+    handleSearchSubmit,
+    getCleanDomain,
+    isIframeable,
+    handleNewTab,
+    handleCloseTab,
+    handleCopyLink,
+    handleAddBookmark,
+    mobileBookmarks,
+    closeWindow,
+  } = useSafari();
 
   return (
     <div className="flex flex-col h-full w-full bg-[#f2f2f7] select-none text-zinc-950 relative overflow-hidden">
@@ -882,16 +623,6 @@ const SafariMobileHeader = ({ _socials, projects }) => {
             </button>
           </div>
 
-          {/* Grid of Tabs */}
-          <style>{`
-            .hide-scrollbar::-webkit-scrollbar {
-              display: none !important;
-            }
-            .hide-scrollbar {
-              -ms-overflow-style: none !important;
-              scrollbar-width: none !important;
-            }
-          `}</style>
           <div className="flex-1 overflow-y-auto grid grid-cols-2 gap-4 my-4 content-start pb-24 hide-scrollbar">
             {tabs.map((tab) => {
               const isTabActive = tab.id === activeTabId;
@@ -1005,4 +736,4 @@ const SafariMobileHeader = ({ _socials, projects }) => {
   );
 };
 
-export { SafariDesktopToolbar, SafariMobileHeader };
+export { SafariMobileHeader };

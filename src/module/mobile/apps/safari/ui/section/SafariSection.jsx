@@ -1,8 +1,8 @@
-import { projects, socials } from "@constants";
+import { projects } from "@constants";
 import { SafariMobileHeader } from "../components/SafariToolbar";
 
 const SafariSection = () => {
-  return <SafariMobileHeader socials={socials} projects={projects} />;
+  return <SafariMobileHeader projects={projects} />;
 };
 
 export default SafariSection;
