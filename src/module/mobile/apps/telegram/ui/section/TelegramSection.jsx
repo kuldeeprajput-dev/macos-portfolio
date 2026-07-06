@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MessageCircle,
   Phone,
@@ -71,6 +71,7 @@ const TelegramSection = ({
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isCreatingGroupModal, setIsCreatingGroupModal] = useState(false);
   const [isCreatingChannelModal, setIsCreatingChannelModal] = useState(false);
+  const [forwardDestination, setForwardDestination] = useState(null);
 
   // Status helper
   const getStatusColor = (status) => {
@@ -88,9 +89,87 @@ const TelegramSection = ({
   };
 
   // Close active chat room and go back to chats index
-  const handleBackToChats = () => {
+  const handleBackToChats = React.useCallback(() => {
+    setForwardDestination({ type: "chat" });
     setIsSidebarOpen(true);
-  };
+  }, [setIsSidebarOpen]);
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app !== "telegram") return;
+
+      if (activeCall) {
+        e.preventDefault();
+        handleEndCall();
+        setForwardDestination(null);
+      } else if (showProfileDrawer) {
+        e.preventDefault();
+        setShowProfileDrawer(false);
+        setForwardDestination({ type: "profile" });
+      } else if (isCreatingGroupModal) {
+        e.preventDefault();
+        setIsCreatingGroupModal(false);
+        setForwardDestination({ type: "group" });
+      } else if (isCreatingChannelModal) {
+        e.preventDefault();
+        setIsCreatingChannelModal(false);
+        setForwardDestination({ type: "channel" });
+      } else if (isEditingProfile) {
+        e.preventDefault();
+        setIsEditingProfile(false);
+        setForwardDestination({ type: "editProfile" });
+      } else if (activeTab === "chats" && !isSidebarOpen) {
+        e.preventDefault();
+        handleBackToChats();
+      } else if (activeTab !== "chats") {
+        e.preventDefault();
+        setForwardDestination({ type: "tab", tab: activeTab });
+        setActiveTab("chats");
+        setIsSidebarOpen(true);
+      }
+    };
+
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "telegram" || !forwardDestination) return;
+
+      e.preventDefault();
+      if (forwardDestination.type === "profile" && activeTab === "chats" && !isSidebarOpen) {
+        setShowProfileDrawer(true);
+      } else if (forwardDestination.type === "group") {
+        setIsCreatingGroupModal(true);
+      } else if (forwardDestination.type === "channel") {
+        setIsCreatingChannelModal(true);
+      } else if (forwardDestination.type === "editProfile") {
+        setIsEditingProfile(true);
+      } else if (forwardDestination.type === "chat" && isSidebarOpen) {
+        setIsSidebarOpen(false);
+      } else if (forwardDestination.type === "tab") {
+        setActiveTab(forwardDestination.tab);
+        setIsSidebarOpen(true);
+      }
+      setForwardDestination(null);
+    };
+
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [
+    activeCall,
+    activeTab,
+    forwardDestination,
+    handleBackToChats,
+    handleEndCall,
+    isCreatingChannelModal,
+    isCreatingGroupModal,
+    isEditingProfile,
+    isSidebarOpen,
+    setIsSidebarOpen,
+    setShowProfileDrawer,
+    showProfileDrawer,
+  ]);
 
   // Mock Contacts List
   const contacts = [
@@ -533,6 +612,7 @@ const TelegramSection = ({
                     <div
                       key={chat.id}
                       onClick={() => {
+                        setForwardDestination(null);
                         setActiveChatId(chat.id);
                         setIsSidebarOpen(false);
                       }}
@@ -637,6 +717,7 @@ const TelegramSection = ({
                   <div
                     key={index}
                     onClick={() => {
+                      setForwardDestination(null);
                       openOrCreateChat(
                         contact.id,
                         contact.name,
@@ -814,6 +895,7 @@ const TelegramSection = ({
                 </span>
                 <div
                   onClick={() => {
+                    setForwardDestination(null);
                     openSavedMessages();
                     setActiveTab("chats");
                     setIsSidebarOpen(false);
@@ -952,6 +1034,7 @@ const TelegramSection = ({
       >
         <button
           onClick={() => {
+            setForwardDestination(null);
             setActiveTab("contacts");
             setIsSidebarOpen(true);
           }}
@@ -965,6 +1048,7 @@ const TelegramSection = ({
 
         <button
           onClick={() => {
+            setForwardDestination(null);
             setActiveTab("calls");
             setIsSidebarOpen(true);
           }}
@@ -978,6 +1062,7 @@ const TelegramSection = ({
 
         <button
           onClick={() => {
+            setForwardDestination(null);
             setActiveTab("chats");
             setIsSidebarOpen(true);
           }}
@@ -991,6 +1076,7 @@ const TelegramSection = ({
 
         <button
           onClick={() => {
+            setForwardDestination(null);
             setActiveTab("settings");
             setIsSidebarOpen(true);
           }}

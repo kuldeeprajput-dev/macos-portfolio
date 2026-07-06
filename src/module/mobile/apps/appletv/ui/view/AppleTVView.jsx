@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import PlayerOverlay from "../components/PlayerOverlay";
 import ProfileOverlay from "../components/ProfileOverlay";
@@ -20,6 +20,7 @@ const AppleTVView = () => {
   const [showControls, setShowControls] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
   const [profileUrl, setProfileUrl] = useState("/images/profile.jpg");
+  const [forwardDestination, setForwardDestination] = useState(null);
 
   const videoRef = useRef(null);
   const controlsTimeoutRef = useRef(null);
@@ -40,7 +41,10 @@ const AppleTVView = () => {
     };
   }, []);
 
-  const openVideo = (video) => setActiveVideo(video);
+  const openVideo = (video) => {
+    setForwardDestination(null);
+    setActiveVideo(video);
+  };
 
   const playFeatured = (video = FEATURED_SHOW) => {
     openVideo({
@@ -71,11 +75,11 @@ const AppleTVView = () => {
     });
   };
 
-  const closePlayer = () => {
+  const closePlayer = useCallback(() => {
     if (videoRef.current) videoRef.current.pause();
     setActiveVideo(null);
     setIsPlaying(false);
-  };
+  }, []);
 
   const handleMouseMove = () => {
     setShowControls(true);
@@ -130,6 +134,7 @@ const AppleTVView = () => {
   };
 
   const selectTab = (tab) => {
+    setForwardDestination(null);
     setActiveTab(tab);
     if (tab !== "search") setSearchQuery("");
   };
@@ -143,6 +148,48 @@ const AppleTVView = () => {
       setShowHeader(true);
     }
   };
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app !== "appletv") return;
+
+      if (activeVideo) {
+        e.preventDefault();
+        setForwardDestination({ type: "video", video: activeVideo });
+        closePlayer();
+      } else if (showProfile) {
+        e.preventDefault();
+        setForwardDestination({ type: "profile" });
+        setShowProfile(false);
+      } else if (activeTab !== "watchNow") {
+        e.preventDefault();
+        setForwardDestination({ type: "tab", tab: activeTab });
+        setActiveTab("watchNow");
+        setSearchQuery("");
+      }
+    };
+
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "appletv" || !forwardDestination) return;
+
+      e.preventDefault();
+      if (forwardDestination.type === "video") {
+        setActiveVideo(forwardDestination.video);
+      } else if (forwardDestination.type === "profile") {
+        setShowProfile(true);
+      } else if (forwardDestination.type === "tab") {
+        setActiveTab(forwardDestination.tab);
+      }
+      setForwardDestination(null);
+    };
+
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [activeTab, activeVideo, closePlayer, forwardDestination, showProfile]);
 
   return (
     <div className="flex flex-col h-full w-full bg-[#f5f5f7] rounded-xl overflow-hidden select-none relative">
@@ -169,7 +216,10 @@ const AppleTVView = () => {
       />
       <ProfileOverlay isOpen={showProfile} onClose={() => setShowProfile(false)} />
       <AppleTVHeaderSection
-        onProfileClick={() => setShowProfile(true)}
+        onProfileClick={() => {
+          setForwardDestination(null);
+          setShowProfile(true);
+        }}
         profileUrl={profileUrl}
         showHeader={showHeader}
       />

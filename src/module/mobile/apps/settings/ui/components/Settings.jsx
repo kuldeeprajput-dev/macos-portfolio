@@ -7,16 +7,49 @@ import SettingsPane from "./SettingsPane";
 const Settings = () => {
   const { activeTab, setActiveTab, githubData, isLoading, isMobile, mobileView, setMobileView } =
     useSettings();
+  const [forwardMobileView, setForwardMobileView] = React.useState(null);
+
+  const handleSetMobileView = React.useCallback(
+    (nextView) => {
+      if (nextView === "main" && mobileView !== "main") {
+        setForwardMobileView(mobileView);
+      } else if (nextView !== "main") {
+        setForwardMobileView(null);
+      }
+      setMobileView(nextView);
+    },
+    [mobileView, setMobileView],
+  );
 
   React.useEffect(() => {
     const handleNavBack = (e) => {
-      if (e.detail?.app === "settings" && mobileView !== "main") {
-        setMobileView("main");
-      }
+      if (e.detail?.app !== "settings") return;
+
+      setTimeout(() => {
+        if (e.defaultPrevented) return;
+        if (mobileView !== "main") {
+          handleSetMobileView("main");
+        }
+      }, 0);
+    };
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "settings") return;
+
+      setTimeout(() => {
+        if (e.defaultPrevented) return;
+        if (mobileView === "main" && forwardMobileView) {
+          setMobileView(forwardMobileView);
+          setForwardMobileView(null);
+        }
+      }, 0);
     };
     window.addEventListener("app-navigate-back", handleNavBack);
-    return () => window.removeEventListener("app-navigate-back", handleNavBack);
-  }, [mobileView, setMobileView]);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [forwardMobileView, handleSetMobileView, mobileView, setMobileView]);
 
   return (
     <div className="@container w-full h-full">
@@ -28,7 +61,7 @@ const Settings = () => {
           isLoading={isLoading}
           isMobile={isMobile}
           mobileView={mobileView}
-          setMobileView={setMobileView}
+          setMobileView={handleSetMobileView}
         />
 
         <div
@@ -41,7 +74,7 @@ const Settings = () => {
             isLoading={isLoading}
             isMobile={isMobile}
             mobileView={mobileView}
-            setMobileView={setMobileView}
+            setMobileView={handleSetMobileView}
           />
         </div>
       </div>

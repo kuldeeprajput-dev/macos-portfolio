@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
 import { getMobileBookmarks, DEFAULT_TABS } from "../data";
 import {
@@ -109,7 +109,7 @@ export default function useSafari() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safariWindowData, setWindowData]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (historyIndex > 0) {
       const idx = historyIndex - 1;
       setTabs((prev) =>
@@ -125,9 +125,9 @@ export default function useSafari() {
         }),
       );
     }
-  };
+  }, [activeTabId, historyIndex]);
 
-  const handleForward = () => {
+  const handleForward = useCallback(() => {
     if (historyIndex < history.length - 1) {
       const idx = historyIndex + 1;
       setTabs((prev) =>
@@ -143,7 +143,57 @@ export default function useSafari() {
         }),
       );
     }
-  };
+  }, [activeTabId, history.length, historyIndex]);
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app !== "safari") return;
+
+      if (showTabsOverview) {
+        e.preventDefault();
+        setShowTabsOverview(false);
+        return;
+      }
+      if (showShareSheet) {
+        e.preventDefault();
+        setShowShareSheet(false);
+        return;
+      }
+      if (showFormatMenu) {
+        e.preventDefault();
+        setShowFormatMenu(false);
+        return;
+      }
+      if (historyIndex > 0) {
+        e.preventDefault();
+        handleBack();
+      }
+    };
+
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "safari") return;
+
+      if (historyIndex < history.length - 1) {
+        e.preventDefault();
+        handleForward();
+      }
+    };
+
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [
+    handleBack,
+    handleForward,
+    history.length,
+    historyIndex,
+    showFormatMenu,
+    showShareSheet,
+    showTabsOverview,
+  ]);
 
   const handleSearchSubmit = (val) => {
     if (!val.trim()) return;

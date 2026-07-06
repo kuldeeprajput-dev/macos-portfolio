@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Video, Phone, Info, X, Search, Grid, Users, ChevronLeft } from "lucide-react";
 import CallInProgress from "../components/CallInProgress";
 import CallContactList from "../components/CallContactList";
@@ -36,6 +36,7 @@ const CallSection = ({
   const [toastTimeoutId, setToastTimeoutId] = useState(null);
   const [activeInfoContact, setActiveInfoContact] = useState(null);
   const [generatedLink, setGeneratedLink] = useState(null);
+  const [forwardTarget, setForwardTarget] = useState(null);
 
   const showToast = (message) => {
     if (toastTimeoutId) {
@@ -77,6 +78,51 @@ const CallSection = ({
   };
 
   const handleClear = () => setDialNumber("");
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app !== "call") return;
+
+      if (activeCall) {
+        e.preventDefault();
+        endCall();
+        setForwardTarget(null);
+      } else if (activeInfoContact) {
+        e.preventDefault();
+        setForwardTarget({ type: "info", contact: activeInfoContact });
+        setActiveInfoContact(null);
+      } else if (generatedLink) {
+        e.preventDefault();
+        setForwardTarget({ type: "link", link: generatedLink });
+        setGeneratedLink(null);
+      } else if (showNewFaceTimeDrawer) {
+        e.preventDefault();
+        setForwardTarget({ type: "drawer" });
+        setShowNewFaceTimeDrawer(false);
+      }
+    };
+
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "call" || !forwardTarget) return;
+
+      e.preventDefault();
+      if (forwardTarget.type === "info") {
+        setActiveInfoContact(forwardTarget.contact);
+      } else if (forwardTarget.type === "link") {
+        setGeneratedLink(forwardTarget.link);
+      } else if (forwardTarget.type === "drawer") {
+        setShowNewFaceTimeDrawer(true);
+      }
+      setForwardTarget(null);
+    };
+
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [activeCall, activeInfoContact, endCall, forwardTarget, generatedLink, showNewFaceTimeDrawer]);
 
   return (
     <div className="flex flex-col h-full w-full bg-zinc-50 rounded-xl overflow-hidden shadow-2xl border border-black/5 select-none text-zinc-950 relative">
@@ -159,6 +205,7 @@ const CallSection = ({
                 {/* Create Link Card */}
                 <button
                   onClick={() => {
+                    setForwardTarget(null);
                     const rnd1 = Math.random().toString(36).substring(2, 7);
                     const rnd2 = Math.random().toString(36).substring(2, 7);
                     setGeneratedLink(`https://facetime.apple.com/join/${rnd1}-${rnd2}`);
@@ -175,7 +222,10 @@ const CallSection = ({
 
                 {/* New FaceTime Card */}
                 <button
-                  onClick={() => setShowNewFaceTimeDrawer(true)}
+                  onClick={() => {
+                    setForwardTarget(null);
+                    setShowNewFaceTimeDrawer(true);
+                  }}
                   className="flex-1 h-24 bg-[#30d158] hover:bg-[#2cb84e] rounded-2xl p-4 flex flex-col justify-between items-start text-left transition-all active:scale-95 shadow-lg shadow-green-500/10"
                 >
                   <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white">
@@ -227,6 +277,7 @@ const CallSection = ({
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            setForwardTarget(null);
                             setActiveInfoContact({
                               ...log,
                               faceTimeId: `+1 (${Math.floor(200 + Math.random() * 800)}) ${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`,

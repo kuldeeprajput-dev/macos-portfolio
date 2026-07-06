@@ -25,6 +25,7 @@ const AppStoreSection = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [profileUrl, setProfileUrl] = useState("/images/profile.jpg");
   const [showHeader, setShowHeader] = useState(true);
+  const [forwardDestination, setForwardDestination] = useState(null);
 
   const [installStates, setInstallStates] = useState(() => {
     const initial = {};
@@ -141,16 +142,41 @@ const AppStoreSection = () => {
   useEffect(() => {
     const handleNavBack = (e) => {
       if (e.detail?.app === "appstore") {
-        if (selectedApp) {
-          setSelectedApp(null);
-        } else if (alertApp) {
+        if (alertApp) {
+          e.preventDefault();
+          setForwardDestination({ type: "alert", app: alertApp });
           setAlertApp(null);
+        } else if (showProfile) {
+          e.preventDefault();
+          setForwardDestination({ type: "profile" });
+          setShowProfile(false);
+        } else if (selectedApp) {
+          e.preventDefault();
+          setForwardDestination({ type: "details", app: selectedApp });
+          setSelectedApp(null);
         }
       }
     };
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "appstore" || !forwardDestination) return;
+
+      e.preventDefault();
+      if (forwardDestination.type === "alert") {
+        setAlertApp(forwardDestination.app);
+      } else if (forwardDestination.type === "profile") {
+        setShowProfile(true);
+      } else if (forwardDestination.type === "details") {
+        setSelectedApp(forwardDestination.app);
+      }
+      setForwardDestination(null);
+    };
     window.addEventListener("app-navigate-back", handleNavBack);
-    return () => window.removeEventListener("app-navigate-back", handleNavBack);
-  }, [alertApp, selectedApp]);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [alertApp, forwardDestination, selectedApp, showProfile]);
 
   // Tab configurations
   const tabItems = [
@@ -207,7 +233,10 @@ const AppStoreSection = () => {
 
         {/* Profile Avatar Button */}
         <button
-          onClick={() => setShowProfile(true)}
+          onClick={() => {
+            setForwardDestination(null);
+            setShowProfile(true);
+          }}
           className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center border border-zinc-200 shadow-sm active:scale-95 transition-transform cursor-pointer relative z-50"
         >
           <img
@@ -235,7 +264,10 @@ const AppStoreSection = () => {
           handleSingleUpdate={handleSingleUpdate}
           updateProgresses={updateProgresses}
           updatingAll={updatingAll}
-          onSelectApp={(app) => setSelectedApp(app)}
+          onSelectApp={(app) => {
+            setForwardDestination(null);
+            setSelectedApp(app);
+          }}
           onScrollDirection={handleScrollDirection}
         />
       </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Bell, ChevronRight, ArrowLeft } from "lucide-react";
 
 const Toggle = ({ active, onChange }) => (
@@ -12,12 +12,13 @@ const Toggle = ({ active, onChange }) => (
   </button>
 );
 
-const SettingsNotificationsSection = () => {
+const SettingsNotificationsSection = ({ isActive = true }) => {
   const [displayStyle, setDisplayStyle] = useState("stack"); // 'count' | 'stack' | 'list'
   const [showPreviews, setShowPreviews] = useState("unlocked"); // 'always' | 'unlocked' | 'never'
   const [scheduledSummary, setScheduledSummary] = useState(false);
   const [sharePlayNotifications, setSharePlayNotifications] = useState(false);
   const [selectedApp, setSelectedApp] = useState(null);
+  const [forwardApp, setForwardApp] = useState(null);
 
   // App notification configurations
   const [appConfigs, setAppConfigs] = useState({
@@ -66,13 +67,48 @@ const SettingsNotificationsSection = () => {
     }));
   };
 
+  const openAppNotifications = (appId) => {
+    setSelectedApp(appId);
+    setForwardApp(null);
+  };
+
+  const closeAppNotifications = () => {
+    setForwardApp(selectedApp);
+    setSelectedApp(null);
+  };
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (!isActive) return;
+      if (e.detail?.app === "settings" && selectedApp) {
+        e.preventDefault();
+        setForwardApp(selectedApp);
+        setSelectedApp(null);
+      }
+    };
+    const handleNavForward = (e) => {
+      if (!isActive) return;
+      if (e.detail?.app === "settings" && !selectedApp && forwardApp) {
+        e.preventDefault();
+        setSelectedApp(forwardApp);
+        setForwardApp(null);
+      }
+    };
+    window.addEventListener("app-navigate-back", handleNavBack, true);
+    window.addEventListener("app-navigate-forward", handleNavForward, true);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack, true);
+      window.removeEventListener("app-navigate-forward", handleNavForward, true);
+    };
+  }, [forwardApp, isActive, selectedApp]);
+
   if (selectedApp) {
     const config = appConfigs[selectedApp];
     return (
       <div className="max-w-2xl mx-auto p-4 sm:p-6 animate-in slide-in-from-right-3 duration-250 select-none text-zinc-900 bg-[#f2f2f7] min-h-dvh">
         {/* Navigation Header */}
         <button
-          onClick={() => setSelectedApp(null)}
+          onClick={closeAppNotifications}
           className="flex items-center gap-1 text-[12px] font-bold text-black hover:opacity-75 transition-opacity focus:outline-none mb-5"
         >
           <ArrowLeft size={13} strokeWidth={2.5} />
@@ -318,7 +354,7 @@ const SettingsNotificationsSection = () => {
         {Object.entries(appConfigs).map(([key, value]) => (
           <div
             key={key}
-            onClick={() => setSelectedApp(key)}
+            onClick={() => openAppNotifications(key)}
             className="flex items-center justify-between p-3 px-4 hover:bg-zinc-50 active:bg-zinc-100 transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-3">

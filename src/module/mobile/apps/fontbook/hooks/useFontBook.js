@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import INITIAL_FONTS from "../data";
 
 const useFontBook = () => {
   const [currentView, setCurrentView] = useState("collections"); // "collections" | "list" | "preview"
+  const [forwardView, setForwardView] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All Fonts");
   const [fonts, setFonts] = useState(INITIAL_FONTS);
   const [activeFont, setActiveFont] = useState(INITIAL_FONTS[0]);
@@ -62,6 +63,43 @@ const useFontBook = () => {
       : activeCategory === "All Fonts" || font.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app !== "font") return;
+
+      if (currentView === "preview") {
+        e.preventDefault();
+        setForwardView("preview");
+        setCurrentView("list");
+      } else if (currentView === "list") {
+        e.preventDefault();
+        setForwardView("list");
+        setCurrentView("collections");
+      }
+    };
+
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "font" || !forwardView) return;
+
+      if (currentView === "collections" && forwardView === "list") {
+        e.preventDefault();
+        setCurrentView("list");
+        setForwardView(null);
+      } else if (currentView === "list" && forwardView === "preview") {
+        e.preventDefault();
+        setCurrentView("preview");
+        setForwardView(null);
+      }
+    };
+
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [currentView, forwardView]);
 
   return {
     currentView,

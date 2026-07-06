@@ -732,7 +732,7 @@ const MobileNotch = () => {
             </div>
 
             {/* Media Control row */}
-            <div 
+            <div
               className="flex items-center justify-center gap-8 w-full pb-0.5"
               onClick={(e) => e.stopPropagation()}
             >
@@ -833,10 +833,14 @@ const MobileNotch = () => {
       {(notchState === "SIRI" || notchState === "EXPANDED_MUSIC") && (
         <div
           className="fixed inset-0 bg-transparent pointer-events-auto z-[79] w-screen h-screen"
-          onClick={notchState === "SIRI" ? handleCloseSiri : (e) => {
-            e.stopPropagation();
-            setNotchState(music.isPlaying ? "ACTIVE_MUSIC" : "IDLE");
-          }}
+          onClick={
+            notchState === "SIRI"
+              ? handleCloseSiri
+              : (e) => {
+                  e.stopPropagation();
+                  setNotchState(music.isPlaying ? "ACTIVE_MUSIC" : "IDLE");
+                }
+          }
         />
       )}
 

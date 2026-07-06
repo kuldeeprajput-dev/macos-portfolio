@@ -1,4 +1,5 @@
 import windowWrapper from "@hoc/windowWrapper";
+import { useEffect, useState } from "react";
 import useMessages from "../../hooks/useMessages";
 import MessagesSection from "../section/MessagesSection";
 
@@ -34,6 +35,56 @@ const Messages = () => {
     addReaction,
     sendAttachment,
   } = useMessages();
+  const [forwardTarget, setForwardTarget] = useState(null);
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app !== "messages") return;
+
+      if (callState.isOpen) {
+        e.preventDefault();
+        endCall();
+        setForwardTarget(null);
+      } else if (showInfo) {
+        e.preventDefault();
+        setShowInfo(false);
+        setForwardTarget("info");
+      } else if (!isSidebarOpen) {
+        e.preventDefault();
+        setIsSidebarOpen(true);
+        setForwardTarget("chat");
+      }
+    };
+
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "messages" || !forwardTarget) return;
+
+      if (forwardTarget === "info" && !showInfo && !isSidebarOpen) {
+        e.preventDefault();
+        setShowInfo(true);
+        setForwardTarget(null);
+      } else if (forwardTarget === "chat" && isSidebarOpen) {
+        e.preventDefault();
+        setIsSidebarOpen(false);
+        setForwardTarget(null);
+      }
+    };
+
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [
+    callState.isOpen,
+    endCall,
+    forwardTarget,
+    isSidebarOpen,
+    setIsSidebarOpen,
+    setShowInfo,
+    showInfo,
+  ]);
 
   return (
     <MessagesSection

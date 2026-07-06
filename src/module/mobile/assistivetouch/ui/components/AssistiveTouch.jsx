@@ -90,21 +90,11 @@ const AssistiveTouch = () => {
   const handleBackAction = () => {
     const activeApp = getActiveWindowKey();
     if (activeApp) {
-      const appsWithBackListener = [
-        "finder",
-        "notes",
-        "appstore",
-        "settings",
-        "safari",
-        "photos",
-      ];
-      if (!appsWithBackListener.includes(activeApp)) {
-        closeWindow(activeApp);
-      } else {
-        // Dispatch app-specific back navigation event
-        const event = new CustomEvent("app-navigate-back", { detail: { app: activeApp } });
-        window.dispatchEvent(event);
-      }
+      const event = new CustomEvent("app-navigate-back", {
+        cancelable: true,
+        detail: { app: activeApp },
+      });
+      window.dispatchEvent(event);
     }
     setIsMenuOpen(false);
   };
@@ -112,8 +102,10 @@ const AssistiveTouch = () => {
   const handleForwardAction = () => {
     const activeApp = getActiveWindowKey();
     if (activeApp) {
-      // Dispatch app-specific forward navigation event
-      const event = new CustomEvent("app-navigate-forward", { detail: { app: activeApp } });
+      const event = new CustomEvent("app-navigate-forward", {
+        cancelable: true,
+        detail: { app: activeApp },
+      });
       window.dispatchEvent(event);
     }
     setIsMenuOpen(false);
@@ -167,6 +159,8 @@ const AssistiveTouch = () => {
           return (
             <button
               key={item.label}
+              aria-label={item.label}
+              title={item.label}
               onClick={(e) => {
                 e.stopPropagation();
                 if (isMenuOpen) item.onClick();

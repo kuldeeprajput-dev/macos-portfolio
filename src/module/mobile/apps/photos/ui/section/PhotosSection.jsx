@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WindowControls from "@components/WindowControls";
 import { Search, X, ChevronLeft } from "lucide-react";
 import PhotosSidebarSection from "./PhotosSidebarSection";
@@ -20,10 +20,11 @@ const PhotosSection = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [selectedAlbum, setSelectedAlbum] = useState(null); // null means show main collections page
+  const [forwardView, setForwardView] = useState(null);
   const scrollContainerRef = useRef(null);
   const searchInputRef = useRef(null);
   const collectionsRef = useRef(null);
-  
+
   const [showHeader, setShowHeader] = useState(true);
   const lastScrollY = useRef(0);
 
@@ -46,6 +47,7 @@ const PhotosSection = ({
   };
 
   const handleSearchClick = () => {
+    setForwardView(null);
     setShowSearchInput(true);
     setTimeout(() => {
       if (searchInputRef.current) {
@@ -53,6 +55,79 @@ const PhotosSection = ({
       }
     }, 100);
   };
+
+  const selectAlbum = React.useCallback(
+    (albumName) => {
+      setForwardView(null);
+      setSelectedAlbum(albumName);
+      onSelectAlbum(albumName);
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    },
+    [onSelectAlbum],
+  );
+
+  const goBack = React.useCallback(
+    ({ closeAtRoot = false } = {}) => {
+      if (showSearchInput) {
+        setForwardView({ type: "search", query: searchQuery });
+        setShowSearchInput(false);
+        setSearchQuery("");
+        return true;
+      }
+      if (selectedAlbum) {
+        setForwardView({ type: "album", album: selectedAlbum });
+        setSelectedAlbum(null);
+        return true;
+      }
+      if (closeAtRoot) {
+        closeWindow("photos");
+        return true;
+      }
+      return false;
+    },
+    [closeWindow, searchQuery, selectedAlbum, showSearchInput],
+  );
+
+  const goForward = React.useCallback(() => {
+    if (!forwardView) return false;
+
+    if (forwardView.type === "search") {
+      setShowSearchInput(true);
+      setSearchQuery(forwardView.query || "");
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    } else if (forwardView.type === "album") {
+      setSelectedAlbum(forwardView.album);
+      onSelectAlbum(forwardView.album);
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+    setForwardView(null);
+    return true;
+  }, [forwardView, onSelectAlbum]);
+
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleNavBack = (e) => {
+      if (e.detail?.app === "photos" && goBack()) {
+        e.preventDefault();
+      }
+    };
+    const handleNavForward = (e) => {
+      if (e.detail?.app === "photos" && goForward()) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [forwardView, goBack, goForward, isMobile, searchQuery, selectedAlbum, showSearchInput]);
 
   // Filter gallery based on search query or selectedAlbum/activeTab
   const getFilteredPhotos = () => {
@@ -108,16 +183,7 @@ const PhotosSection = ({
           }}
         >
           <button
-            onClick={() => {
-              if (showSearchInput) {
-                setShowSearchInput(false);
-                setSearchQuery("");
-              } else if (selectedAlbum) {
-                setSelectedAlbum(null);
-              } else {
-                closeWindow("photos");
-              }
-            }}
+            onClick={() => goBack({ closeAtRoot: true })}
             style={{
               border: "none",
               background: "none",
@@ -243,11 +309,7 @@ const PhotosSection = ({
                 favorites={favorites}
                 onSelectPhoto={onSelectPhoto}
                 onSelectAlbum={(albumName) => {
-                  setSelectedAlbum(albumName);
-                  onSelectAlbum(albumName);
-                  if (scrollContainerRef.current) {
-                    scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
-                  }
+                  selectAlbum(albumName);
                 }}
               />
             </div>
@@ -260,17 +322,18 @@ const PhotosSection = ({
           activeAlbum={selectedAlbum || "Collections"}
           onSelectAlbum={(albumName) => {
             if (albumName === "Collections") {
+              setForwardView(null);
               setSelectedAlbum(null);
             } else {
-              setSelectedAlbum(albumName);
-              onSelectAlbum(albumName);
+              selectAlbum(albumName);
             }
-            if (scrollContainerRef.current) {
+            if (scrollContainerRef.current && albumName === "Collections") {
               scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
             }
           }}
           isMobile
           onScrollToCollections={() => {
+            setForwardView(null);
             setSelectedAlbum(null);
             if (scrollContainerRef.current) {
               scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });

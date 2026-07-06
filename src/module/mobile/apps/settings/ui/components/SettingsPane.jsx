@@ -14,7 +14,7 @@ import SettingsControlCenterSection from "../section/SettingsControlCenterSectio
 import SettingsAppleIDSection from "../section/SettingsAppleIDSection";
 import SettingsBatterySection from "../section/SettingsBatterySection";
 
-const SettingsPane = ({ activeTab, githubData, isMobile, setMobileView }) => {
+const SettingsPane = ({ activeTab, githubData, isMobile, mobileView, setMobileView }) => {
   const renderContent = () => {
     switch (activeTab) {
       case "Wi-Fi":
@@ -28,7 +28,9 @@ const SettingsPane = ({ activeTab, githubData, isMobile, setMobileView }) => {
       case "Network":
         return <SettingsNetworkSection />;
       case "Notifications":
-        return <SettingsNotificationsSection />;
+        return (
+          <SettingsNotificationsSection isActive={!isMobile || mobileView === "Notifications"} />
+        );
       case "Sound":
         return <SettingsSoundSection />;
       case "Focus":

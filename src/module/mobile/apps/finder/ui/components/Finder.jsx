@@ -16,6 +16,7 @@ const Finder = () => {
   const { activeLocation, setActiveLocation } = useLocationStore();
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const [navStack, setNavStack] = useState([]);
+  const [forwardStack, setForwardStack] = useState([]);
   const [activeTab, setActiveTab] = useState("browse"); // "recents" or "browse"
   const [searchVal, setSearchVal] = useState("");
 
@@ -29,26 +30,58 @@ const Finder = () => {
     if (navStack.length > 0) {
       const prev = navStack[navStack.length - 1];
       setNavStack((s) => s.slice(0, -1));
+      setForwardStack((s) => [...s, activeLocation]);
       setActiveLocation(prev);
     }
+  };
+
+  const _goForward = () => {
+    if (forwardStack.length > 0) {
+      const next = forwardStack[forwardStack.length - 1];
+      setForwardStack((s) => s.slice(0, -1));
+      setNavStack((s) => [...s, activeLocation]);
+      setActiveLocation(next);
+    }
+  };
+
+  const openFolder = (location) => {
+    setNavStack((prev) => [...prev, activeLocation]);
+    setForwardStack([]);
+    setActiveLocation(location);
   };
 
   useEffect(() => {
     const handleNavBack = (e) => {
       if (e.detail?.app === "finder") {
+        if (navStack.length > 0) {
+          e.preventDefault();
+        }
         _goBack();
       }
     };
+    const handleNavForward = (e) => {
+      if (e.detail?.app === "finder") {
+        if (forwardStack.length > 0) {
+          e.preventDefault();
+        }
+        _goForward();
+      }
+    };
     window.addEventListener("app-navigate-back", handleNavBack);
-    return () => window.removeEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navStack, activeLocation]);
+  }, [navStack, forwardStack, activeLocation]);
 
   const openItem = (item) => {
     if (item.fileType === "pdf") return openWindow("resume");
     if (item.kind === "folder") {
       if (isMobile) {
-        setNavStack((prev) => [...prev, activeLocation]);
+        openFolder(item);
+        return;
       }
       return setActiveLocation(item);
     }
@@ -195,8 +228,7 @@ const Finder = () => {
                         <button
                           key={item.id}
                           onClick={() => {
-                            setNavStack((prev) => [...prev, activeLocation]);
-                            setActiveLocation(item);
+                            openFolder(item);
                           }}
                           className="flex items-center gap-3.5 w-full p-4 hover:bg-neutral-50 active:bg-neutral-100 text-left"
                         >

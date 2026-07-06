@@ -4,6 +4,7 @@ import CalendarEventModal from "../components/CalendarEventModal";
 import CalendarDayPopover from "../components/CalendarDayPopover";
 import { CATEGORIES } from "../../data";
 import { Trash2, CalendarDays, Plus, Clock } from "lucide-react";
+import { useEffect } from "react";
 
 const CalendarSection = (props) => {
   const {
@@ -41,6 +42,42 @@ const CalendarSection = (props) => {
   } = props;
 
   const selectedDayEvents = getEventsForDate(selectedDate);
+
+  useEffect(() => {
+    const handleNavBack = (e) => {
+      if (e.detail?.app !== "calendar") return;
+
+      e.preventDefault();
+      if (isModalOpen) {
+        setIsModalOpen(false);
+      } else if (dayEventsPopover) {
+        setDayEventsPopover(null);
+      } else {
+        handlePrevMonth();
+      }
+    };
+
+    const handleNavForward = (e) => {
+      if (e.detail?.app !== "calendar") return;
+
+      e.preventDefault();
+      handleNextMonth();
+    };
+
+    window.addEventListener("app-navigate-back", handleNavBack);
+    window.addEventListener("app-navigate-forward", handleNavForward);
+    return () => {
+      window.removeEventListener("app-navigate-back", handleNavBack);
+      window.removeEventListener("app-navigate-forward", handleNavForward);
+    };
+  }, [
+    dayEventsPopover,
+    handleNextMonth,
+    handlePrevMonth,
+    isModalOpen,
+    setDayEventsPopover,
+    setIsModalOpen,
+  ]);
 
   const getFormattedSelectedDate = () => {
     return selectedDate.toLocaleDateString("en-US", {
