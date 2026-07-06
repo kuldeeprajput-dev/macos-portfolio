@@ -67,7 +67,7 @@ const FontPreview = ({
       />
     </div>
 
-    <div className="p-4 border-t border-zinc-200 bg-gray-50/50 text-[11px] text-gray-600 flex items-start gap-2.5 shrink-0 select-none">
+    <div className="py-2 px-4 border-t border-zinc-200 bg-gray-50/50 text-[11px] text-gray-600 flex items-start gap-2.5 shrink-0 select-none">
       <Info size={14} className="text-indigo-500 shrink-0 mt-0.5" />
       <div>
         <span className="font-bold text-gray-700 block">About {activeFont?.name}</span>
