@@ -3,11 +3,11 @@ import useWindowsStore from "@store/window";
 import dayjs from "dayjs";
 import { useRef, useState, useEffect } from "react";
 import useTimeStore from "@store/time";
-import MobileOSStatusBar from "./MobileOSStatusBar";
-import MobileOSControlCenter from "./MobileOSControlCenter";
+import MobileOSStatusBar from "../../../statusbar/ui/components/MobileOSStatusBar";
+import MobileOSControlCenter from "../../../controlcenter/ui/components/MobileOSControlCenter";
 import MobileOSAppGrid from "./MobileOSAppGrid";
-import MobileOSDock from "./MobileOSDock";
-import MobileNotch from "./MobileNotch";
+import MobileOSDock from "../../../dock/ui/components/MobileOSDock";
+import MobileNotch from "../../../notch/ui/components/MobileNotch";
 
 const MobileOS = () => {
   const { openWindow, windows, systemSettings } = useWindowsStore();

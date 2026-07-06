@@ -10,7 +10,7 @@ import Image from "@module/mobile/apps/image/ui/view/ImageView";
 import Launchpad from "@module/mobile/apps/launchpad/ui/view/LaunchpadView";
 import Map from "@module/mobile/apps/map/ui/view/MapView";
 import Messages from "@module/mobile/apps/messages/ui/view/MessagesView";
-import MobileOS from "@module/mobile/apps/mobile-os/ui/view/MobileOSView";
+import MobileOS from "@module/mobile/home/ui/view/MobileOSView";
 import Music from "@module/mobile/apps/music/ui/view/MusicView";
 import Notes from "@module/mobile/apps/notes/ui/view/NotesView";
 import Photos from "@module/mobile/apps/photos/ui/view/PhotosView";
@@ -26,7 +26,7 @@ const Terminal = dynamic(() => import("@module/mobile/apps/terminal/ui/view/Term
 });
 import Text from "@module/mobile/apps/text/ui/view/TextView";
 import Weather from "@module/mobile/apps/weather/ui/view/WeatherView";
-import AssistiveTouch from "./apps/mobile-os/ui/components/AssistiveTouch";
+import AssistiveTouch from "./assistivetouch/ui/components/AssistiveTouch";
 import useWindowsStore from "@store/window";
 
 const Mobile = () => {
