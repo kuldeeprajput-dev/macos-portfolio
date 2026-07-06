@@ -611,7 +611,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                 <div className="bg-[#1c1c1e]/70 backdrop-blur-md border border-white/[0.06] rounded-[22px] p-4.5 shadow-lg grid grid-cols-4 gap-y-5 gap-x-2.5">
                   {/* Show top 8 commonly used apps */}
                   {allDockApps
-                    .filter((app) => app.id !== "launchpad" && app.id !== "trash")
+                    .filter((app) => app.id !== "launchpad" && app.id !== "trash" && app.id !== "vscode" && app.id !== "postman")
                     .slice(0, 8)
                     .map((app) => (
                       <button
@@ -670,6 +670,8 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                       (app) =>
                         app.id !== "launchpad" &&
                         app.id !== "trash" &&
+                        app.id !== "vscode" &&
+                        app.id !== "postman" &&
                         (app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           app.id.toLowerCase().includes(searchQuery.toLowerCase())),
                     )
@@ -728,6 +730,8 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                   (app) =>
                     app.id !== "launchpad" &&
                     app.id !== "trash" &&
+                    app.id !== "vscode" &&
+                    app.id !== "postman" &&
                     (app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                       app.id.toLowerCase().includes(searchQuery.toLowerCase())),
                 ).length === 0 && (
