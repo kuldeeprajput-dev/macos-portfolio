@@ -51,9 +51,10 @@ const Desktop = () => {
   useEffect(() => {
     const updateCoords = () => {
       if (githubRedirect) {
-        const finderEl = document.getElementById("finder");
-        if (finderEl && finderEl.style.display !== "none") {
-          const rect = finderEl.getBoundingClientRect();
+        const sourceId = githubRedirect.source || "finder";
+        const targetEl = document.getElementById(sourceId);
+        if (targetEl && targetEl.style.display !== "none") {
+          const rect = targetEl.getBoundingClientRect();
           setPopupCoords({
             left: rect.left + rect.width / 2,
             top: rect.top + rect.height / 2,
@@ -66,11 +67,12 @@ const Desktop = () => {
 
     updateCoords();
 
-    const finderEl = document.getElementById("finder");
+    const sourceId = githubRedirect?.source || "finder";
+    const targetEl = document.getElementById(sourceId);
     let observer;
-    if (finderEl) {
+    if (targetEl) {
       observer = new MutationObserver(updateCoords);
-      observer.observe(finderEl, { attributes: true, attributeFilter: ["style", "class"] });
+      observer.observe(targetEl, { attributes: true, attributeFilter: ["style", "class"] });
     }
 
     window.addEventListener("resize", updateCoords);

@@ -92,6 +92,7 @@ const TelegramProfileDrawer = ({ activeChat, nightMode }) => {
               setGithubRedirect({
                 name: "Developer Profile",
                 href: GITHUB_PROFILE,
+                source: "telegram",
               })
             }
             className={`flex items-center justify-between p-2 border rounded-md text-[11px] text-[#3390ec] transition-colors w-full font-medium cursor-pointer ${
