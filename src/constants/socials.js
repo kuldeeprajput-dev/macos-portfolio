@@ -7,7 +7,7 @@ export const socials = [
     icon: "/icons/github.svg",
     bg: "#f4656b",
     link: GITHUB_PROFILE,
-    img: "/images/github.png",
+    img: "/images/github.webp",
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const socials = [
     icon: "/icons/atom.svg",
     bg: "#4bcb63",
     link: PORTFOLIO_URL,
-    img: "/images/portfolio.png",
+    img: "/images/portfolio.webp",
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ export const socials = [
     icon: "/icons/twitter.svg",
     bg: "#ff866b",
     link: TWITTER_URL,
-    img: "/images/x.png",
+    img: "/images/x.webp",
   },
   {
     id: 4,
@@ -31,6 +31,6 @@ export const socials = [
     icon: "/icons/linkedin.svg",
     bg: "#05b6f6",
     link: LINKEDIN_URL,
-    img: "/images/linkedin.png",
+    img: "/images/linkedin.webp",
   },
 ];

@@ -50,8 +50,8 @@ const SettingsNotificationsSection = () => {
   };
 
   const apps = [
-    { name: "Safari", icon: "/images/safari.png", isSvg: false },
-    { name: "Finder", icon: "/images/finder.png", isSvg: false },
+    { name: "Safari", icon: "/images/safari.webp", isSvg: false },
+    { name: "Finder", icon: "/images/finder.webp", isSvg: false },
     { name: "System", icon: "System", isSvg: true },
     { name: "Mail", icon: "✉️", isEmoji: true },
     { name: "Telegram", icon: "✈️", isEmoji: true },

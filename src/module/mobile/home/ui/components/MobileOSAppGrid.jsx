@@ -13,6 +13,7 @@ import {
   Mic,
 } from "lucide-react";
 import useWeather from "@module/desktop/apps/weather/hooks/useWeather";
+import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 import { dockApps as allDockApps } from "@constants";
 import useTimeStore from "@store/time";
 
@@ -459,9 +460,11 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                         </div>
                       </div>
                     ) : (
-                      <img
+                      <OptimizedImage
                         src={`/images/${app.icon}`}
                         alt={app.name}
+                        width={64}
+                        height={64}
                         className={`w-full h-full object-cover rounded-[16px] pointer-events-none ${scaleMap[app.id] || ""}`}
                       />
                     )}
@@ -520,9 +523,11 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                       </div>
                     </div>
                   ) : (
-                    <img
+                    <OptimizedImage
                       src={`/images/${app.icon}`}
                       alt={app.name}
+                      width={64}
+                      height={64}
                       className={`w-full h-full object-cover rounded-[16px] pointer-events-none ${scaleMap[app.id] || ""}`}
                     />
                   )}
@@ -611,7 +616,13 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                 <div className="bg-[#1c1c1e]/70 backdrop-blur-md border border-white/[0.06] rounded-[22px] p-4.5 shadow-lg grid grid-cols-4 gap-y-5 gap-x-2.5">
                   {/* Show top 8 commonly used apps */}
                   {allDockApps
-                    .filter((app) => app.id !== "launchpad" && app.id !== "trash" && app.id !== "vscode" && app.id !== "postman")
+                    .filter(
+                      (app) =>
+                        app.id !== "launchpad" &&
+                        app.id !== "trash" &&
+                        app.id !== "vscode" &&
+                        app.id !== "postman",
+                    )
                     .slice(0, 8)
                     .map((app) => (
                       <button
@@ -643,9 +654,11 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                               </div>
                             </div>
                           ) : (
-                            <img
+                            <OptimizedImage
                               src={`/images/${app.icon}`}
                               alt={app.name}
+                              width={48}
+                              height={48}
                               className={`w-full h-full object-cover rounded-[12px] ${scaleMap[app.id] || ""}`}
                             />
                           )}
@@ -706,9 +719,11 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                               </div>
                             </div>
                           ) : (
-                            <img
+                            <OptimizedImage
                               src={`/images/${app.icon}`}
                               alt={app.name}
+                              width={40}
+                              height={40}
                               className={`w-full h-full object-cover rounded-[10px] ${scaleMap[app.id] || ""}`}
                             />
                           )}

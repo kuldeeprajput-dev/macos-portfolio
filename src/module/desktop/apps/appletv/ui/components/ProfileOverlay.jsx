@@ -57,7 +57,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
   const displayName = profile?.name || "Kuldeep Rajput";
   const bio = profile?.bio || "Full Stack Developer | Building premium macOS Web Portfolios";
   const location = profile?.location || "India";
-  const avatarUrl = profile?.avatar_url || "/images/profile.jpg";
+  const avatarUrl = profile?.avatar_url || "/images/profile.webp";
 
   return (
     <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] z-[999] flex items-center justify-center p-4">
@@ -87,7 +87,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                 alt={displayName}
                 className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
                 onError={(e) => {
-                  e.target.src = "/images/profile.jpg";
+                  e.target.src = "/images/profile.webp";
                 }}
               />
               <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white p-0.5 rounded-full shadow-sm">
@@ -288,7 +288,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
           <div className="absolute inset-0 bg-white/95 backdrop-blur-md flex items-center justify-center z-[100] p-6 text-center animate-in fade-in duration-150">
             <div className="space-y-4 max-w-xs transform animate-in zoom-in-95 duration-150">
               <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
-                <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" />
+                <img src="/images/github.webp" alt="GitHub" className="w-7 h-7 object-contain" />
               </div>
               <div className="space-y-1">
                 <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>

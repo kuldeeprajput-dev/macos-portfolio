@@ -4,7 +4,7 @@ export const CONTACTS = [
     name: "Steve Jobs",
     status: "Think Different",
     available: false,
-    avatar: "/images/contacts/steve.png",
+    avatar: "/images/contacts/steve.webp",
     avatarColor: "bg-gradient-to-tr from-gray-600 to-zinc-800",
   },
   {
@@ -12,7 +12,7 @@ export const CONTACTS = [
     name: "Kuldeep (Developer)",
     status: "Working on MacOS Portfolio",
     available: true,
-    avatar: "/images/profile.jpg",
+    avatar: "/images/profile.webp",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-600",
   },
   {
@@ -20,7 +20,7 @@ export const CONTACTS = [
     name: "Antigravity AI",
     status: "Coding assistant online",
     available: true,
-    avatar: "/images/contacts/antigravity.png",
+    avatar: "/images/contacts/antigravity.webp",
     avatarColor: "bg-gradient-to-tr from-purple-500 to-pink-600",
   },
   {
@@ -28,7 +28,7 @@ export const CONTACTS = [
     name: "Kunal",
     status: "Building beautiful React apps",
     available: true,
-    avatar: "/images/contacts/kunal.png",
+    avatar: "/images/contacts/kunal.webp",
     avatarColor: "bg-gradient-to-tr from-emerald-500 to-teal-600",
   },
   {
@@ -36,7 +36,7 @@ export const CONTACTS = [
     name: "Steve Wozniak",
     status: "Tinkering in the garage",
     available: false,
-    avatar: "/images/contacts/woz.png",
+    avatar: "/images/contacts/woz.webp",
     avatarColor: "bg-gradient-to-tr from-amber-500 to-orange-600",
   },
 ];

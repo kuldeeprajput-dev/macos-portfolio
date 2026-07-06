@@ -108,11 +108,11 @@ const ContactInfoPanel = ({ activeChat, mutedChats, onToggleMute, onTriggerCall,
           <div className="space-y-4 max-w-xs transform animate-in zoom-in-95 duration-150">
             <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
               <img
-                src="/images/github.png"
+                src="/images/github.webp"
                 alt="GitHub"
                 className="w-7 h-7 object-contain"
                 onError={(e) => {
-                  e.target.src = "/icons/safari.png";
+                  e.target.src = "/images/safari.webp";
                 }}
               />
             </div>

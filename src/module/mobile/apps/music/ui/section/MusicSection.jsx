@@ -85,14 +85,7 @@ const MusicSection = (props) => {
         />
       </div>
 
-      {/* Audio backend controller */}
-      <audio
-        ref={audioRef}
-        src={activeTrack?.url || null}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        onEnded={handleAudioEnded}
-      />
+
 
       {/* Mini Player */}
       {activeTrack && !isPlayerExpanded && (

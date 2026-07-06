@@ -31,7 +31,7 @@ const SafariAboutModal = ({ show, onClose }) => {
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center mt-3 text-center">
           <img
-            src="/images/safari.png"
+            src="/images/safari.webp"
             alt="Safari Icon"
             className="w-16 h-16 object-contain drop-shadow-md select-none pointer-events-none"
           />

@@ -31,7 +31,7 @@ const FinderAboutModal = ({ show, onClose }) => {
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center mt-3 text-center">
           <img
-            src="/images/finder.png"
+            src="/images/finder.webp"
             alt="Finder Icon"
             className="w-16 h-16 object-contain drop-shadow-md select-none pointer-events-none"
           />

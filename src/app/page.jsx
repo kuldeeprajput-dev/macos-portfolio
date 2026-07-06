@@ -7,6 +7,7 @@ import Mobile from "@module/mobile";
 import gsap from "gsap";
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
+import GlobalAudio from "@module/shared/ui/components/GlobalAudio";
 
 import { Draggable } from "gsap/Draggable";
 gsap.registerPlugin(Draggable);
@@ -92,7 +93,12 @@ export default function Page() {
           }}
           onLogin={() => setIsLoggedIn(true)}
         />
-        {isLoggedIn && <Mobile />}
+        {isLoggedIn && (
+          <>
+            <Mobile />
+            <GlobalAudio />
+          </>
+        )}
       </>
     );
   }
@@ -116,7 +122,12 @@ export default function Page() {
         }}
         onLogin={() => setIsLoggedIn(true)}
       />
-      {isLoggedIn && <Desktop />}
+      {isLoggedIn && (
+        <>
+          <Desktop />
+          <GlobalAudio />
+        </>
+      )}
     </>
   );
 }

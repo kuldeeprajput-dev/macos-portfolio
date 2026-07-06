@@ -28,7 +28,7 @@ const MapAboutModal = ({ show, onClose }) => {
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center mt-3 text-center">
           <img
-            src="/images/map.png"
+            src="/images/map.webp"
             alt="Maps Icon"
             className="w-16 h-16 object-contain drop-shadow-md select-none pointer-events-none"
           />

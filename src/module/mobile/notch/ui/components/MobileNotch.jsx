@@ -627,7 +627,7 @@ const MobileNotch = () => {
               aria-label={isListening ? "Stop Siri listening" : "Start Siri listening"}
             >
               <img
-                src="/images/siri.gif"
+                src="/images/siri.webp"
                 alt="Siri"
                 className="w-full h-full object-cover scale-[1.5]"
               />

@@ -31,7 +31,7 @@ const AboutPortfolioModal = ({ show, onClose }) => {
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center mt-3 text-center">
           <img
-            src="/images/profile.jpg"
+            src="/images/profile.webp"
             alt="Kuldeep Rajput"
             className="w-16 h-16 rounded-full object-cover drop-shadow-md border border-gray-200 select-none pointer-events-none"
           />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 
 const scaleMap = {
   finder: "scale-[0.90]",
@@ -97,9 +98,11 @@ const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove }) => {
         {shortcut.appId === "calendar" ? (
           <CalendarIcon />
         ) : (
-          <img
+          <OptimizedImage
             src={`/images/${shortcut.icon}`}
             alt={shortcut.name}
+            width={64}
+            height={64}
             className={`w-full h-full object-contain ${scaleMap[shortcut.appId] || ""}`}
           />
         )}

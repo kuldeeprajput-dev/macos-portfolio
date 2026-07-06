@@ -18,7 +18,7 @@ const CallInProgress = ({
       <div className="absolute inset-0 pointer-events-none z-0">
         {activeCall.type === "video" && !cameraMuted && activeCall.status === "connected" ? (
           <img
-            src="/images/facetime_call_preview.png"
+            src="/images/facetime_call_preview.webp"
             alt="Active Video Call Stream"
             className="w-full h-full object-cover brightness-[0.95]"
           />
@@ -57,7 +57,7 @@ const CallInProgress = ({
           ) : (
             <div className="w-full h-full relative">
               <img
-                src="/images/profile.jpg"
+                src="/images/profile.webp"
                 alt="Self Camera Preview"
                 className="w-full h-full object-cover brightness-[0.9]"
               />

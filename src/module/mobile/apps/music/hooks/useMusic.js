@@ -25,15 +25,6 @@ const STUNNING_ALBUM_COVERS = [
   "https://images.unsplash.com/photo-1446057032654-9d8885b7a391?w=500&auto=format&fit=crop&q=80",
 ];
 
-const _getUniqueCover = (title) => {
-  let hash = 0;
-  for (let i = 0; i < title.length; i++) {
-    hash = title.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const index = Math.abs(hash) % STUNNING_ALBUM_COVERS.length;
-  return STUNNING_ALBUM_COVERS[index];
-};
-
 const useMusic = () => {
   const { music, setMusicState, focusWindow } = useWindowsStore();
   const activeTrack = music.activeTrack;
@@ -41,12 +32,16 @@ const useMusic = () => {
   const volume = music.volume;
   const isMuted = music.isMuted;
 
-  const [tracks, setTracks] = useState([]);
+  const tracks = music.tracks || [];
+  const setTracks = (newTracks) => setMusicState({ tracks: newTracks });
+  const isShuffle = music.isShuffle;
+  const setIsShuffle = (val) => setMusicState({ isShuffle: val });
+  const isRepeat = music.isRepeat;
+  const setIsRepeat = (val) => setMusicState({ isRepeat: val });
+
   const [currentTime, setCurrentTime] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("Browse");
-  const [isShuffle, setIsShuffle] = useState(false);
-  const [isRepeat, setIsRepeat] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const [page, setPage] = useState(1);
@@ -54,6 +49,33 @@ const useMusic = () => {
 
   const audioRef = useRef(null);
   const searchInputRef = useRef(null);
+
+  // Sync with global audio element
+  useEffect(() => {
+    const audio = document.getElementById("global-music-player");
+    if (!audio) return;
+    audioRef.current = audio;
+
+    const onTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+    const onLoadedMetadata = () => {
+      const duration = Math.round(audio.duration);
+      if (duration && !isNaN(duration) && duration !== activeTrack.duration) {
+        setMusicState({ activeTrack: { ...activeTrack, duration } });
+      }
+    };
+
+    setCurrentTime(audio.currentTime);
+
+    audio.addEventListener("timeupdate", onTimeUpdate);
+    audio.addEventListener("loadedmetadata", onLoadedMetadata);
+
+    return () => {
+      audio.removeEventListener("timeupdate", onTimeUpdate);
+      audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+    };
+  }, [activeTrack, setMusicState]);
 
   useEffect(() => {
     // Reset page when activeCategory or searchQuery changes
@@ -340,54 +362,12 @@ const useMusic = () => {
     }
   }, [tracks, activeTrack, setMusicState]);
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume / 100;
-    }
-  }, [volume, isMuted]);
-
-  useEffect(() => {
-    if (audioRef.current && activeTrack.url) {
-      if (isPlaying) {
-        audioRef.current.play().catch((err) => {
-          console.log("Audio playback blocked or interrupted:", err);
-          setMusicState({ isPlaying: false });
-        });
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [isPlaying, activeTrack, setMusicState]);
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      const duration = Math.round(audioRef.current.duration);
-      if (duration && !isNaN(duration)) {
-        setMusicState({ activeTrack: { ...activeTrack, duration } });
-      }
-    }
-  };
-
-  const handleAudioEnded = () => {
-    if (isRepeat) {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0;
-        audioRef.current.play().catch((err) => console.log(err));
-      }
-    } else {
-      handleNext();
-    }
-  };
-
   const handleSelectTrack = (track) => {
     setMusicState({ activeTrack: track, isPlaying: true });
     setCurrentTime(0);
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+    }
   };
 
   const handlePlayPause = () => {
@@ -397,34 +377,38 @@ const useMusic = () => {
   };
 
   const handleNext = () => {
-    const currentList = tracks;
-    if (currentList.length === 0) return;
+    if (tracks.length === 0) return;
     let nextTrack;
     if (isShuffle) {
-      const randIdx = Math.floor(Math.random() * currentList.length);
-      nextTrack = currentList[randIdx];
+      const randIdx = Math.floor(Math.random() * tracks.length);
+      nextTrack = tracks[randIdx];
     } else {
-      const currentIdx = currentList.findIndex((t) => t.id === activeTrack.id);
+      const currentIdx = tracks.findIndex((t) => t.id === activeTrack.id);
       if (currentIdx === -1) {
-        nextTrack = currentList[0];
+        nextTrack = tracks[0];
       } else {
-        nextTrack = currentList[(currentIdx + 1) % currentList.length];
+        nextTrack = tracks[(currentIdx + 1) % tracks.length];
       }
     }
-    setMusicState({ activeTrack: nextTrack });
+    setMusicState({ activeTrack: nextTrack, isPlaying: true });
     setCurrentTime(0);
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+    }
   };
 
   const handlePrev = () => {
-    const currentList = tracks;
-    if (currentList.length === 0) return;
-    const currentIdx = currentList.findIndex((t) => t.id === activeTrack.id);
+    if (tracks.length === 0) return;
+    const currentIdx = tracks.findIndex((t) => t.id === activeTrack.id);
     const prevIdx =
       currentIdx === -1
-        ? currentList.length - 1
-        : (currentIdx - 1 + currentList.length) % currentList.length;
-    setMusicState({ activeTrack: currentList[prevIdx] });
+        ? tracks.length - 1
+        : (currentIdx - 1 + tracks.length) % tracks.length;
+    setMusicState({ activeTrack: tracks[prevIdx], isPlaying: true });
     setCurrentTime(0);
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+    }
   };
 
   const formatTime = (seconds) => {
@@ -442,26 +426,6 @@ const useMusic = () => {
       audioRef.current.currentTime = newTime;
     }
   };
-
-  useEffect(() => {
-    const onNext = () => handleNext();
-    const onPrev = () => handlePrev();
-    window.addEventListener("macos-portfolio-next-track", onNext);
-    window.addEventListener("macos-portfolio-prev-track", onPrev);
-    return () => {
-      window.removeEventListener("macos-portfolio-next-track", onNext);
-      window.removeEventListener("macos-portfolio-prev-track", onPrev);
-    };
-  }, [tracks, activeTrack, isShuffle, handleNext, handlePrev]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    return () => {
-      if (audio) {
-        audio.pause();
-      }
-    };
-  }, []);
 
   return {
     tracks,
@@ -485,9 +449,9 @@ const useMusic = () => {
     handleLoadMore,
     audioRef,
     searchInputRef,
-    handleTimeUpdate,
-    handleLoadedMetadata,
-    handleAudioEnded,
+    handleTimeUpdate: () => {},
+    handleLoadedMetadata: () => {},
+    handleAudioEnded: () => {},
     handleSelectTrack,
     handlePlayPause,
     handleNext,

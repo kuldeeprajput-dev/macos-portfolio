@@ -81,7 +81,7 @@ const Mobile = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-12 h-12 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto shadow-inner border border-zinc-200">
-              <img src="/images/github.png" alt="GitHub" className="w-7 h-7 object-contain" />
+              <img src="/images/github.webp" alt="GitHub" className="w-7 h-7 object-contain" />
             </div>
             <div className="space-y-1">
               <h3 className="text-sm font-bold text-gray-800">Open in New Tab</h3>

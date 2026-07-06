@@ -4,7 +4,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "kuldeep",
     name: "Kuldeep (Developer)",
-    avatar: "/images/profile.jpg",
+    avatar: "/images/profile.webp",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-500",
     initials: "K",
     unread: true,
@@ -34,7 +34,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "john",
     name: "Akash",
-    avatar: "/images/people/akash.png",
+    avatar: "/images/people/akash.webp",
     avatarColor: "bg-gradient-to-tr from-green-400 to-teal-600",
     initials: "A",
     unread: false,

@@ -1,3 +1,4 @@
+import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 import useWindowsStore from "@store/window";
 
 const scaleMap = {
@@ -99,9 +100,11 @@ const DockIcon = ({
           {id === "calendar" ? (
             <CalendarIcon />
           ) : (
-            <img
+            <OptimizedImage
               src={`/images/${icon}`}
               alt={name}
+              width={64}
+              height={64}
               loading="lazy"
               className={`${canOpen ? "" : "opacity-60"} ${scaleMap[id] || ""} pointer-events-none`}
             />

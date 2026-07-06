@@ -24,7 +24,7 @@ const SettingsNotificationsSection = ({ isActive = true }) => {
   const [appConfigs, setAppConfigs] = useState({
     safari: {
       name: "Safari",
-      icon: "/images/safari.png",
+      icon: "/images/safari.webp",
       isSvg: false,
       allow: true,
       lockScreen: true,
@@ -35,7 +35,7 @@ const SettingsNotificationsSection = ({ isActive = true }) => {
     },
     finder: {
       name: "Finder",
-      icon: "/images/finder.png",
+      icon: "/images/finder.webp",
       isSvg: false,
       allow: true,
       lockScreen: false,

@@ -108,14 +108,6 @@ const MusicSection = (props) => {
         />
       </div>
 
-      <audio
-        ref={audioRef}
-        src={activeTrack?.url || null}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        onEnded={handleAudioEnded}
-        autoPlay={isPlaying}
-      />
 
       <MusicPlayerSection
         activeTrack={activeTrack}

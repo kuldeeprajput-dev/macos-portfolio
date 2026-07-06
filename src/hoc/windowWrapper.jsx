@@ -47,7 +47,9 @@ const windowWrapper = (Component, windowKey) => {
     const zIndex = baseZIndex;
     const ref = useRef(null);
     const prevOpenRef = useRef(false);
-    const [isMobile, setIsMobile] = useState(() => (typeof window !== "undefined" ? window.innerWidth < 768 : false));
+    const [isMobile, setIsMobile] = useState(() =>
+      typeof window !== "undefined" ? window.innerWidth < 768 : false,
+    );
 
     useEffect(() => {
       const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -354,6 +356,7 @@ const windowWrapper = (Component, windowKey) => {
     const componentElement = useMemo(() => {
       return <Component {...memoizedProps} />;
     }, [memoizedProps]);
+    const shouldMountComponent = isOpen || shouldRender;
 
     return (
       <section
@@ -365,7 +368,7 @@ const windowWrapper = (Component, windowKey) => {
           if (!isMobile) focusWindow(windowKey);
         }}
       >
-        {componentElement}
+        {shouldMountComponent ? componentElement : null}
         {!isMobile && !windows[windowKey]?.isMaximized && !windows[windowKey]?.isMinimized && (
           <>
             <div

@@ -1,3 +1,5 @@
+import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
+
 const scaleMap = {
   finder: "scale-[0.90]",
   launchpad: "scale-[0.90]",
@@ -32,9 +34,11 @@ const MobileOSDock = ({ dockApps, openWindow }) => (
         onClick={() => openWindow(app.id)}
         className="active:scale-[0.82] transition-transform duration-150 w-[58px] h-[58px] rounded-[14px] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
       >
-        <img
+        <OptimizedImage
           src={`/images/${app.icon}`}
           alt={app.name}
+          width={64}
+          height={64}
           className={`w-full h-full object-cover rounded-[14px] ${scaleMap[app.id] || ""}`}
         />
       </button>

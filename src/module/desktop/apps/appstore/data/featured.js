@@ -12,6 +12,6 @@ export const FEATURED_APPS = [
     subtitle: "Xcode 16 Developer Preview",
     desc: "Build applications with swift predictive compiler engines.",
     bg: "from-blue-950/90 to-slate-950/95",
-    image: "wallpapers/wallpaper.png",
+    image: "wallpapers/wallpaper.webp",
   },
 ];

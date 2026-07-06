@@ -5,7 +5,7 @@ const CallStandbySection = () => (
     <div className="relative w-64 h-44 md:w-80 md:h-56 rounded-2xl shadow-2xl flex items-center justify-center border border-black/10 overflow-hidden group">
       {/* Standby Camera Viewport Image */}
       <img
-        src="/images/facetime_standby.png"
+        src="/images/facetime_standby.webp"
         alt="Camera Standby Preview"
         className="absolute inset-0 w-full h-full object-cover brightness-[0.7] select-none pointer-events-none group-hover:scale-105 transition-transform duration-700 ease-out"
       />

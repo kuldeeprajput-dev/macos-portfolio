@@ -121,26 +121,28 @@ const SafariMobileHeader = ({ projects }) => {
                 Favorites
               </h2>
               <div className="grid grid-cols-4 gap-4">
-                {mobileBookmarks.filter(
-                  (fav) =>
-                    !fav.title.toLowerCase().includes("wikipedia") &&
-                    !fav.title.toLowerCase().includes("openstreetmap")
-                ).map((fav) => (
-                  <button
-                    key={fav.id}
-                    onClick={() => {
-                      navigateTo(fav.url);
-                    }}
-                    className="flex flex-col items-center gap-1.5 transition-all active:scale-95 group text-decoration-none bg-transparent border-none outline-none cursor-pointer"
-                  >
-                    <div className="w-13 h-13 rounded-2xl bg-white border border-zinc-200/50 shadow-sm flex items-center justify-center transition-all group-hover:shadow-md">
-                      <img src={fav.img} alt={fav.title} className="w-7 h-7 object-contain" />
-                    </div>
-                    <span className="text-[10px] font-bold text-zinc-600 truncate max-w-full">
-                      {fav.title}
-                    </span>
-                  </button>
-                ))}
+                {mobileBookmarks
+                  .filter(
+                    (fav) =>
+                      !fav.title.toLowerCase().includes("wikipedia") &&
+                      !fav.title.toLowerCase().includes("openstreetmap"),
+                  )
+                  .map((fav) => (
+                    <button
+                      key={fav.id}
+                      onClick={() => {
+                        navigateTo(fav.url);
+                      }}
+                      className="flex flex-col items-center gap-1.5 transition-all active:scale-95 group text-decoration-none bg-transparent border-none outline-none cursor-pointer"
+                    >
+                      <div className="w-13 h-13 rounded-2xl bg-white border border-zinc-200/50 shadow-sm flex items-center justify-center transition-all group-hover:shadow-md">
+                        <img src={fav.img} alt={fav.title} className="w-7 h-7 object-contain" />
+                      </div>
+                      <span className="text-[10px] font-bold text-zinc-600 truncate max-w-full">
+                        {fav.title}
+                      </span>
+                    </button>
+                  ))}
               </div>
             </div>
 
@@ -331,9 +333,7 @@ const SafariMobileHeader = ({ projects }) => {
                   <div className="flex flex-col items-center gap-4">
                     <div className="w-8 h-8 border-[3px] border-zinc-200 border-t-[#007aff] rounded-full animate-spin" />
                     <div className="flex flex-col items-center gap-1">
-                      <span className="text-xs font-bold text-zinc-700">
-                        Loading...
-                      </span>
+                      <span className="text-xs font-bold text-zinc-700">Loading...</span>
                       <span className="text-[10px] text-zinc-400 truncate max-w-[200px]">
                         {currentUrl}
                       </span>
@@ -401,7 +401,9 @@ const SafariMobileHeader = ({ projects }) => {
       </div>
 
       {/* iOS 17 Bottom Unified Section (URL + Nav) */}
-      <div className={`absolute bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-zinc-200/80 z-30 flex flex-col ${currentUrl === "safari://start" ? "gap-2.5 pb-7 pt-2 px-4" : "gap-1 pb-5 pt-2.5 px-4"} shadow-lg shrink-0`}>
+      <div
+        className={`absolute bottom-0 left-0 right-0 bg-white/94 backdrop-blur-xl border-t border-zinc-200/80 z-30 flex flex-col ${currentUrl === "safari://start" ? "gap-2.5 pb-7 pt-2 px-4" : "gap-1 pb-5 pt-2.5 px-4"} shadow-lg shrink-0`}
+      >
         {/* Floating URL Address Bar */}
         {currentUrl === "safari://start" && (
           <div className="w-full h-[38px] bg-zinc-100 border border-zinc-200/40 rounded-2xl flex items-center justify-between px-3 shadow-inner relative overflow-hidden">
@@ -416,9 +418,11 @@ const SafariMobileHeader = ({ projects }) => {
                 animation: safariLoad 2.5s cubic-bezier(0.1, 0.85, 0.45, 1) forwards;
               }
             `}</style>
-            {iframeLoading && !currentUrl.startsWith("safari://") && !currentUrl.includes("google.com/search") && (
-              <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#007aff] animate-safari-load transition-all" />
-            )}
+            {iframeLoading &&
+              !currentUrl.startsWith("safari://") &&
+              !currentUrl.includes("google.com/search") && (
+                <div className="absolute bottom-0 left-0 h-[2.5px] bg-[#007aff] animate-safari-load transition-all" />
+              )}
             <button
               onClick={() => setShowFormatMenu(!showFormatMenu)}
               className="text-[11px] font-bold text-zinc-600 hover:text-zinc-900 select-none tracking-wide bg-transparent border-none outline-none cursor-pointer p-1"
@@ -455,10 +459,7 @@ const SafariMobileHeader = ({ projects }) => {
             onClick={handleBack}
             className="border-none bg-transparent cursor-pointer p-2 active:opacity-50 transition-opacity"
           >
-            <ChevronLeft
-              size={24}
-              className={historyIndex > 0 ? "text-black" : "text-zinc-300"}
-            />
+            <ChevronLeft size={24} className={historyIndex > 0 ? "text-black" : "text-zinc-300"} />
           </button>
           <button
             onClick={handleForward}
@@ -657,19 +658,49 @@ const SafariMobileHeader = ({ projects }) => {
                     {(() => {
                       const urlLower = tab.url.toLowerCase();
                       if (urlLower.includes("newtube") || urlLower.includes("youtube")) {
-                        return <img src="/projects/newtube.png" alt="NewTube" className="w-full h-full object-cover object-top" />;
+                        return (
+                          <img
+                            src="/projects/newtube.webp"
+                            alt="NewTube"
+                            className="w-full h-full object-cover object-top"
+                          />
+                        );
                       }
                       if (urlLower.includes("insta") || urlLower.includes("snsta")) {
-                        return <img src="/projects/snsta.png" alt="Insta Downloader" className="w-full h-full object-cover object-top" />;
+                        return (
+                          <img
+                            src="/projects/snsta.webp"
+                            alt="Insta Downloader"
+                            className="w-full h-full object-cover object-top"
+                          />
+                        );
                       }
                       if (urlLower.includes("resume")) {
-                        return <img src="/projects/resume-ats.png" alt="Resume ATS" className="w-full h-full object-cover object-top" />;
+                        return (
+                          <img
+                            src="/projects/resume-ats.webp"
+                            alt="Resume ATS"
+                            className="w-full h-full object-cover object-top"
+                          />
+                        );
                       }
                       if (urlLower.includes("docs")) {
-                        return <img src="/projects/docs-editor.png" alt="Docs Editor" className="w-full h-full object-cover object-top" />;
+                        return (
+                          <img
+                            src="/projects/docs-editor.webp"
+                            alt="Docs Editor"
+                            className="w-full h-full object-cover object-top"
+                          />
+                        );
                       }
                       if (urlLower.includes("openstreetmap") || urlLower.includes("map")) {
-                        return <img src="/images/openstreetmap.png" alt="Map" className="w-full h-full object-cover" />;
+                        return (
+                          <img
+                            src="/images/openstreetmap.webp"
+                            alt="Map"
+                            className="w-full h-full object-cover"
+                          />
+                        );
                       }
                       if (urlLower.includes("wikipedia")) {
                         return (
@@ -682,14 +713,20 @@ const SafariMobileHeader = ({ projects }) => {
                       if (urlLower.includes("google.com")) {
                         return (
                           <div className="flex flex-col items-center gap-1 transform scale-[1.35]">
-                            <span className="text-base font-bold tracking-tight text-blue-600">Google</span>
+                            <span className="text-base font-bold tracking-tight text-blue-600">
+                              Google
+                            </span>
                           </div>
                         );
                       }
                       if (tab.url === "safari://start") {
                         return (
                           <div className="flex flex-col items-center gap-1.5 transform scale-[1.35]">
-                            <img src="/images/safari.png" alt="Safari" className="w-10 h-10 object-contain" />
+                            <img
+                              src="/images/safari.webp"
+                              alt="Safari"
+                              className="w-10 h-10 object-contain"
+                            />
                             <span className="text-[7.5px] uppercase tracking-wider font-extrabold text-zinc-400">
                               Start Page
                             </span>

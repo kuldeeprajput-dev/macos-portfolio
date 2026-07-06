@@ -10,7 +10,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
   // Swipe / Drag states
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  
+
   const [rotation, setRotation] = useState(0);
   const [zoomScale, setZoomScale] = useState(1);
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
@@ -30,7 +30,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
     openWindow("imgfile", {
       id: nextPhoto.id,
       name: "Gallery image",
-      icon: "/images/image.png",
+      icon: "/images/image.webp",
       kind: "file",
       fileType: "img",
       imageUrl: nextPhoto.img,
@@ -44,7 +44,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
     openWindow("imgfile", {
       id: prevPhoto.id,
       name: "Gallery image",
-      icon: "/images/image.png",
+      icon: "/images/image.webp",
       kind: "file",
       fileType: "img",
       imageUrl: prevPhoto.img,
@@ -63,10 +63,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
       // Pinch gesture
       const touch1 = e.targetTouches[0];
       const touch2 = e.targetTouches[1];
-      const distance = Math.hypot(
-        touch1.clientX - touch2.clientX,
-        touch1.clientY - touch2.clientY
-      );
+      const distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
       initialPinchDistanceRef.current = distance;
       initialZoomScaleRef.current = zoomScale;
       setIsDragging(false); // Disable dragging when pinching
@@ -88,10 +85,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
       // Pinching
       const touch1 = e.targetTouches[0];
       const touch2 = e.targetTouches[1];
-      const distance = Math.hypot(
-        touch1.clientX - touch2.clientX,
-        touch1.clientY - touch2.clientY
-      );
+      const distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
       const factor = distance / initialPinchDistanceRef.current;
       const newScale = Math.min(4, Math.max(0.5, initialZoomScaleRef.current * factor));
       setZoomScale(parseFloat(newScale.toFixed(2)));
@@ -123,7 +117,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
       if (zoomScale <= 1) {
         setPanOffset({ x: 0, y: 0 });
       }
-      
+
       if (e.targetTouches.length === 0) {
         if (!touchStart || !touchEnd) return;
         const distance = touchStart - touchEnd;
@@ -202,9 +196,10 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
               <div
                 style={{
                   transform: `translate(${panOffset.x}px, ${panOffset.y}px) rotate(${rotation}deg) scale(${zoomScale})`,
-                  transition: (isDragging || isPinching)
-                    ? "none"
-                    : "transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94)",
+                  transition:
+                    isDragging || isPinching
+                      ? "none"
+                      : "transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94)",
                   width: "100%",
                   height: "100%",
                   display: "flex",

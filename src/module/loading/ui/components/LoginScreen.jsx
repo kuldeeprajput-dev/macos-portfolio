@@ -250,7 +250,8 @@ const LoginScreen = ({ onLogin, isMobile }) => {
       <div
         className="fixed inset-0 z-50 flex flex-col items-center justify-between text-white select-none overflow-hidden"
         style={{
-          backgroundImage: "url('/images/mobile-wallpaper.png')",
+          backgroundImage:
+            "image-set(url('/images/mobile-wallpaper.webp') type('image/webp'), url('/images/mobile-wallpaper.png'))",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -313,7 +314,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
             {/* Notification preview (iOS Widget style) */}
             <div className="w-full max-w-sm bg-white/5 backdrop-blur-xl border border-white/5 rounded-2xl p-4 flex gap-3.5 shadow-xl animate-bounce duration-[3000ms] mt-10">
               <img
-                src="/images/profile.jpg"
+                src="/images/profile.webp"
                 alt="Profile Avatar"
                 className="w-10 h-10 rounded-xl object-cover border border-white/10 shadow-sm shrink-0"
               />
@@ -534,7 +535,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center relative bg-neutral-950">
                   <img
-                    src="/images/profile.jpg"
+                    src="/images/profile.webp"
                     alt="Mock viewfinder"
                     className="w-full h-full object-cover opacity-50 transition-all duration-300"
                     style={{
@@ -769,7 +770,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
             {/* Bottom Profile and Prompt */}
             <div className="flex flex-col items-center gap-4">
               <img
-                src="/images/profile.jpg"
+                src="/images/profile.webp"
                 alt="Profile Avatar"
                 className="w-10 h-10 rounded-full object-cover border border-white/20 shadow-md"
               />
@@ -808,7 +809,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
               <div className={error ? "shake-animation" : ""}>
                 <div className="flex flex-col items-center">
                   <img
-                    src="/images/profile.jpg"
+                    src="/images/profile.webp"
                     alt="User Profile"
                     className="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover shadow-lg border-2 border-white/20 mb-4"
                   />

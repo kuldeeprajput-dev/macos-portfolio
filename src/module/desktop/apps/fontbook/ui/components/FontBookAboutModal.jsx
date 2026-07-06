@@ -28,7 +28,7 @@ const FontBookAboutModal = ({ show, onClose }) => {
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center mt-3 text-center">
           <img
-            src="/images/font.png"
+            src="/images/font.webp"
             alt="Font Book Icon"
             className="w-16 h-16 scale-[2.7] object-contain drop-shadow-md select-none pointer-events-none"
           />

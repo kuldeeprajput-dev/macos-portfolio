@@ -28,7 +28,7 @@ const ContactAboutModal = ({ show, onClose }) => {
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center mt-3 text-center">
           <img
-            src="/images/contact.png"
+            src="/images/contact.webp"
             alt="Contacts Icon"
             className="w-16 h-16 object-contain drop-shadow-md select-none pointer-events-none"
           />

@@ -22,7 +22,7 @@ const AppleTVHeaderSection = ({ onProfileClick, profileUrl, showHeader = true })
       className="w-7 h-7 rounded-full overflow-hidden flex items-center justify-center border border-zinc-200 shadow-sm active:scale-95 transition-transform cursor-pointer relative z-50"
     >
       <img
-        src={profileUrl || "/images/profile.jpg"}
+        src={profileUrl || "/images/profile.webp"}
         alt="Profile"
         className="w-full h-full object-cover"
         onError={(e) => {

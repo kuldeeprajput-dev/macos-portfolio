@@ -1211,7 +1211,7 @@ const Notch = () => {
               title={isListening ? "Stop listening" : "Start listening"}
               aria-label={isListening ? "Stop Siri listening" : "Start Siri listening"}
             >
-              <img src="/images/siri.gif" alt="Siri" className="notch-siri-gif" />
+              <img src="/images/siri.webp" alt="Siri" className="notch-siri-gif" />
             </button>
             <div className="notch-siri-content">
               <div className="notch-siri-text">
