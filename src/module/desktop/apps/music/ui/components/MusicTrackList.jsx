@@ -1,4 +1,4 @@
-import { TracksTable } from "./musicData";
+import { TracksTable } from "../../data/musicData";
 
 const MusicTrackList = ({
   tracks,

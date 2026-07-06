@@ -51,7 +51,7 @@ export const TracksTable = React.memo(
                     {isActive && isPlaying ? (
                       <div className="flex items-center gap-0.5 justify-center w-4 h-4">
                         <span
-                          className="w-0.5 h-3 bg-red-500 animate-bounce"
+                           className="w-0.5 h-3 bg-red-500 animate-bounce"
                           style={{ animationDelay: "0ms" }}
                         />
                         <span

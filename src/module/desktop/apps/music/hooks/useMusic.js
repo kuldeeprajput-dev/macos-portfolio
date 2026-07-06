@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import useWindowsStore from "@store/window";
-import { getCoverColor, getCoverEmoji } from "./musicData";
+import { getCoverColor, getCoverEmoji } from "../data/musicData";
 
 const STUNNING_ALBUM_COVERS = [
   "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=500&auto=format&fit=crop&q=80",

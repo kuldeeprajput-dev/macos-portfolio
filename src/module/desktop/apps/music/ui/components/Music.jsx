@@ -1,5 +1,5 @@
 import windowWrapper from "@hoc/windowWrapper";
-import useMusic from "./useMusic";
+import useMusic from "../../hooks/useMusic";
 import MusicSection from "../section/MusicSection";
 
 const Music = () => {
