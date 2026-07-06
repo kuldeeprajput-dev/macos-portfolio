@@ -1,11 +1,9 @@
 import { useState } from "react";
-import PRESET_PLACES from "./mapData";
+import PRESET_PLACES from "../data/mapData";
 
 const useMap = () => {
   const nominatimApiBase =
     process.env.NEXT_PUBLIC_NOMINATIM_API_URL || "https://nominatim.openstreetmap.org";
-  const openStreetMapBase =
-    process.env.NEXT_PUBLIC_OPENSTREETMAP_URL || "https://www.openstreetmap.org";
 
   const [activeTab, setActiveTab] = useState("explore");
   const [activeKey, setActiveKey] = useState("mumbai");

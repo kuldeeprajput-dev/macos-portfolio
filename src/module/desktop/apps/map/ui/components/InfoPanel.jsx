@@ -1,5 +1,5 @@
 import { MapPin, CloudSun, Route } from "lucide-react";
-import PRESET_PLACES from "./mapData";
+import PRESET_PLACES from "../../data/mapData";
 
 const InfoPanel = ({
   activeTab,

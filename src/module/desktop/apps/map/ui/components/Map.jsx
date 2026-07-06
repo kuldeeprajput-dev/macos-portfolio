@@ -3,7 +3,7 @@ import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
 import { Compass, PanelLeft, MapPin } from "lucide-react";
-import useMap from "./useMap";
+import useMap from "../../hooks/useMap";
 import MapSection from "../section/MapSection";
 import MapAboutModal from "./MapAboutModal";
 
