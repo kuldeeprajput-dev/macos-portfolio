@@ -98,7 +98,7 @@ const SettingsSidebar = ({
       >
         <div className="w-[240px] h-full flex flex-col shrink-0">
           {!hideHeader && (
-            <div className="window-header h-[52px] shrink-0 flex items-center px-4 cursor-default">
+            <div className="window-header bg-[#f3f3f3]! border-b-[#d1d1d6]! px-4 h-[46px] shrink-0 flex items-center cursor-default">
               <WindowControls target="settings" />
             </div>
           )}

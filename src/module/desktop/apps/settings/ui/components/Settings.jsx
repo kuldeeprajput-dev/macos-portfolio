@@ -59,14 +59,14 @@ const Settings = () => {
         {!isMobile && (
           <div
             id="window-header"
-            className="window-header shrink-0 flex items-center h-[52px] px-4 border-b border-[#d1d1d6] justify-between select-none cursor-default bg-[#f3f3f3] z-40 relative"
+            className="window-header bg-[#f3f3f3]! border-b-[#d1d1d6]! px-4 h-[46px] flex items-center justify-between shrink-0 text-gray-600 gap-4 z-40 relative select-none cursor-default"
           >
-            <div className="flex items-center gap-4 z-10">
+            <div className="flex items-center gap-2 z-10">
               <WindowControls target="settings" />
               {isNarrow && (
                 <button
                   onClick={() => setIsSidebarOpen((prev) => !prev)}
-                  className="p-1.5 rounded hover:bg-black/5 transition-colors cursor-pointer text-gray-700 flex items-center justify-center border-none outline-none focus:outline-none shadow-none"
+                  className="p-1 rounded hover:bg-zinc-200 transition-colors ml-1 cursor-pointer text-gray-700 flex items-center justify-center border-none outline-none focus:outline-none shadow-none"
                   title="Toggle Sidebar"
                 >
                   <PanelLeft className="w-4 h-4 text-gray-600" />
@@ -74,7 +74,7 @@ const Settings = () => {
               )}
             </div>
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="font-bold text-gray-700 text-[13px]">
+              <span className="font-bold text-gray-700 text-xs">
                 Settings
               </span>
             </div>
