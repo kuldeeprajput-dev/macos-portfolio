@@ -1,25 +1,27 @@
 import { useState, useEffect, useRef } from "react";
-import { INITIAL_CHATS } from "./telegramData";
+import { INITIAL_CHATS } from "../data/telegramData";
 
 const useTelegram = () => {
   const [chats, setChats] = useState(() => {
-    const saved = localStorage.getItem("macos_portfolio_telegram");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.map((savedChat) => {
-          const initialChat = INITIAL_CHATS.find((c) => c.id === savedChat.id);
-          if (initialChat) {
-            return {
-              ...initialChat,
-              messages: savedChat.messages,
-              status: savedChat.status || initialChat.status,
-            };
-          }
-          return savedChat;
-        });
-      } catch (e) {
-        console.error(e);
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("macos_portfolio_telegram");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          return parsed.map((savedChat) => {
+            const initialChat = INITIAL_CHATS.find((c) => c.id === savedChat.id);
+            if (initialChat) {
+              return {
+                ...initialChat,
+                messages: savedChat.messages,
+                status: savedChat.status || initialChat.status,
+              };
+            }
+            return savedChat;
+          });
+        } catch (e) {
+          console.error(e);
+        }
       }
     }
     return INITIAL_CHATS;
@@ -50,7 +52,9 @@ const useTelegram = () => {
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    localStorage.setItem("macos_portfolio_telegram", JSON.stringify(chats));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("macos_portfolio_telegram", JSON.stringify(chats));
+    }
   }, [chats]);
 
   const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];

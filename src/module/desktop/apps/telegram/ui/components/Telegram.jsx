@@ -1,6 +1,6 @@
 import React from "react";
 import windowWrapper from "@hoc/windowWrapper";
-import useTelegram from "./useTelegram";
+import useTelegram from "../../hooks/useTelegram";
 import TelegramSection from "../section/TelegramSection";
 
 const Telegram = () => {
