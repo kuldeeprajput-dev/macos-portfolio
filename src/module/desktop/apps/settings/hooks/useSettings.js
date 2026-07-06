@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
-
 import { GITHUB_USERNAME } from "@constants";
 
 const useSettings = () => {
@@ -18,7 +17,7 @@ const useSettings = () => {
     }
   }, [windowData]);
 
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
   const [mobileView, setMobileView] = useState("main");
 
   useEffect(() => {

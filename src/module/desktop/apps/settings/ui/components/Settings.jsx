@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import useSettings from "./useSettings";
+import useSettings from "../../hooks/useSettings";
 import SettingsSidebar from "./SettingsSidebar";
 import SettingsPane from "./SettingsPane";
 import SettingsAboutModal from "./SettingsAboutModal";

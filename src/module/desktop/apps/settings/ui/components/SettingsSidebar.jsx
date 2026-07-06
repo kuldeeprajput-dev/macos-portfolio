@@ -1,7 +1,7 @@
 import React from "react";
 import WindowControls from "@components/WindowControls";
 import { ChevronRight } from "lucide-react";
-import { SIDEBAR_GROUPS, SidebarItem } from "./settingsData";
+import { SIDEBAR_GROUPS, SidebarItem } from "../../data/settingsData";
 
 const SettingsSidebar = ({
   activeTab,

@@ -1,5 +1,5 @@
 import useWindowsStore from "@store/window";
-import { GithubIcon, BookMarkedIcon } from "../components/settingsData";
+import { GithubIcon, BookMarkedIcon } from "../../data/settingsData";
 
 const SettingsAppleIDSection = ({ githubData }) => {
   const { setGithubRedirect } = useWindowsStore();
