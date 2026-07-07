@@ -17,7 +17,11 @@ import {
   Info,
   Palette,
   Mic,
+  MicOff,
   Camera,
+  Video,
+  VideoOff,
+  PhoneOff,
   Trash2,
 } from "lucide-react";
 import WindowControls from "@components/WindowControls";
@@ -72,6 +76,8 @@ const TelegramSection = ({
   const [isCreatingGroupModal, setIsCreatingGroupModal] = useState(false);
   const [isCreatingChannelModal, setIsCreatingChannelModal] = useState(false);
   const [forwardDestination, setForwardDestination] = useState(null);
+  const [callMicMuted, setCallMicMuted] = useState(false);
+  const [callCameraOff, setCallCameraOff] = useState(true);
 
   // Status helper
   const getStatusColor = (status) => {
@@ -1374,48 +1380,110 @@ const TelegramSection = ({
       )}
       {/* 5. Calling Overlay (Full screen inside the iPhone mockup container) */}
       {activeCall && (
-        <div className="absolute inset-0 bg-[#0e1621] text-white z-50 rounded-xl flex flex-col items-center justify-between p-8 animate-in fade-in duration-200">
-          <div className="w-full flex justify-between items-center text-xs text-zinc-400 select-none">
-            <span>Telegram Call</span>
-            <span className="bg-zinc-800 px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider">
-              End-to-End Encrypted
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214] text-white z-50 rounded-2xl flex flex-col items-center justify-between py-10 px-6 animate-in fade-in duration-200">
+          
+          {/* Header */}
+          <div className="text-center mt-4 select-none">
+            <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">
+              FaceTime Audio
             </span>
+            <h2 className="text-2xl font-bold mt-1 text-white">{activeCall.name}</h2>
+            <p className="text-sm text-neutral-300 mt-1 font-medium">
+              {activeCall.status === "Connected" ? callDuration : activeCall.status}
+            </p>
           </div>
 
-          <div className="flex flex-col items-center gap-4 text-center mt-12 select-none">
-            {activeCall.avatar ? (
-              <img
-                src={activeCall.avatar}
-                alt={activeCall.name}
-                className="w-28 h-28 rounded-full object-cover shadow-2xl border border-white/20 animate-pulse"
-              />
-            ) : (
+          {/* Avatar and pulses */}
+          <div className="flex-1 flex flex-col items-center justify-center w-full relative">
+            <div className="relative flex items-center justify-center">
+              {activeCall.status !== "Connected" ? (
+                <>
+                  <div 
+                    className="absolute w-28 h-28 rounded-full border border-white/20 animate-ping opacity-70"
+                    style={{ animationDuration: "2s" }}
+                  />
+                  <div 
+                    className="absolute w-28 h-28 rounded-full border border-white/10 animate-ping opacity-40"
+                    style={{ animationDuration: "2.8s", animationDelay: "0.4s" }}
+                  />
+                  <div className="absolute -inset-4 rounded-full bg-white/5 blur-xl animate-pulse" />
+                </>
+              ) : (
+                <div className="absolute -inset-4 rounded-full bg-emerald-500/10 blur-xl animate-pulse animate-duration-2000" />
+              )}
+
               <div
-                className={`w-28 h-28 rounded-full flex items-center justify-center text-4xl font-extrabold shadow-2xl animate-pulse ${activeCall.avatarColor}`}
+                className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative z-10 flex items-center justify-center bg-zinc-900 border border-white/15"
               >
-                {activeCall.initials}
+                {activeCall.avatar ? (
+                  <img
+                    src={activeCall.avatar}
+                    alt={activeCall.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div
+                    className={`w-full h-full flex items-center justify-center text-white font-bold text-3xl ${activeCall.avatarColor}`}
+                  >
+                    {activeCall.initials}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Connected Sound Wave visualizer */}
+            {activeCall.status === "Connected" && (
+              <div className="flex items-end gap-1.5 h-8 mt-8 justify-center select-none z-10">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
+                  <span
+                    key={idx}
+                    className="w-[3px] h-6 bg-zinc-400 rounded-full origin-bottom"
+                    style={{
+                      animation: "bounceVisualizer 1.2s ease-in-out infinite alternate",
+                      animationDelay: `${idx * 0.15}s`,
+                    }}
+                  />
+                ))}
               </div>
             )}
-            <div>
-              <h2 className="text-2xl font-bold mt-4">{activeCall.name}</h2>
-              <p className="text-sm text-zinc-400 mt-1.5 tracking-wide animate-pulse">
-                {activeCall.status}
-              </p>
-            </div>
           </div>
 
-          <div className="flex flex-col items-center gap-6 w-full mb-8">
-            {activeCall.status === "Connected" && (
-              <span className="text-sm font-semibold tracking-wider text-green-400">
-                {callDuration}
-              </span>
-            )}
+          {/* Action Buttons Panel */}
+          <div className="flex items-center gap-6 mb-4 z-10">
+            {/* Mic Toggle button */}
+            <button
+              onClick={() => setCallMicMuted(!callMicMuted)}
+              className={`w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-colors cursor-pointer outline-none ${
+                callMicMuted
+                  ? "bg-red-600 text-white"
+                  : "bg-neutral-800/80 hover:bg-neutral-700 text-neutral-250"
+              }`}
+              title={callMicMuted ? "Unmute Mic" : "Mute Mic"}
+            >
+              {callMicMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            </button>
 
+            {/* End Call Button */}
             <button
               onClick={handleEndCall}
-              className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-650 active:scale-95 transition-all flex items-center justify-center border-none cursor-pointer shadow-lg"
+              className="w-16 h-16 bg-red-650 hover:bg-red-700 active:scale-95 transition-all text-white rounded-full shadow-lg flex items-center justify-center border-none cursor-pointer animate-pulse"
+              style={{ backgroundColor: "#ef4444" }}
+              title="End Call"
             >
-              <Phone style={{ transform: "rotate(135deg)" }} className="text-white" size={26} />
+              <PhoneOff className="w-6 h-6" />
+            </button>
+
+            {/* Camera Toggle Button */}
+            <button
+              onClick={() => setCallCameraOff(!callCameraOff)}
+              className={`w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-colors cursor-pointer outline-none ${
+                !callCameraOff
+                  ? "bg-emerald-600 text-white"
+                  : "bg-neutral-800/80 hover:bg-neutral-700 text-neutral-250"
+              }`}
+              title={callCameraOff ? "Turn Camera On" : "Turn Camera Off"}
+            >
+              {!callCameraOff ? <Video className="w-5 h-5" /> : <VideoOff className="w-5 h-5" />}
             </button>
           </div>
         </div>
