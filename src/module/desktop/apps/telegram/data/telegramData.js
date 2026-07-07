@@ -31,7 +31,7 @@ export const INITIAL_CHATS = [
     id: "kuldeep",
     name: "Kuldeep (Developer)",
     type: "user",
-    avatar: "/images/telegram/kuldeep.webp",
+    avatar: "/images/profile.webp",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-600",
     initials: "K",
     status: "online",
