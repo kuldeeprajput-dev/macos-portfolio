@@ -80,15 +80,20 @@ const useMap = () => {
         const { latitude, longitude } = position.coords;
         try {
           const response = await fetch(
-            `${nominatimApiBase}/reverse?format=json&lat=${latitude}&lon=${longitude}`
+            `${nominatimApiBase}/reverse?format=json&lat=${latitude}&lon=${longitude}`,
           );
           const data = await response.json();
-          
+
           let name = "Current Location";
           if (data && data.address) {
-            name = data.address.city || data.address.town || data.address.village || data.address.county || name;
+            name =
+              data.address.city ||
+              data.address.town ||
+              data.address.village ||
+              data.address.county ||
+              name;
           }
-          
+
           const newPlace = {
             name: name,
             region: data?.address?.state || "Local",
@@ -100,7 +105,7 @@ const useMap = () => {
             landmarks: ["Your Location", "Device GPS"],
             steps: [
               `Coordinates: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}.`,
-              "You are here."
+              "You are here.",
             ],
           };
 
@@ -128,7 +133,7 @@ const useMap = () => {
       (error) => {
         console.error(error);
         alert("Unable to retrieve your location. Please check browser permissions.");
-      }
+      },
     );
   };
 

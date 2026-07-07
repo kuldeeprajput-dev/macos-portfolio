@@ -69,21 +69,14 @@ const SafariTabBar = ({
                   {isStartPage ? (
                     <span className="text-[10px]">🧭</span>
                   ) : (
-                    <Globe
-                      size={11}
-                      className={
-                        isActive ? "text-blue-500" : "text-gray-400"
-                      }
-                    />
+                    <Globe size={11} className={isActive ? "text-blue-500" : "text-gray-400"} />
                   )}
                 </span>
               )}
 
               {/* Title — hidden when in icon-only mode */}
               {!iconOnly && (
-                <span className="truncate flex-1 min-w-0 pr-4 text-[11px]">
-                  {tab.title}
-                </span>
+                <span className="truncate flex-1 min-w-0 pr-4 text-[11px]">{tab.title}</span>
               )}
 
               {/* Close × */}
@@ -92,11 +85,7 @@ const SafariTabBar = ({
                 className={`absolute top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-black/15 transition-all text-gray-400 hover:text-gray-700 ${
                   iconOnly
                     ? "left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100"
-                    : `right-1.5 ${
-                        isActive
-                          ? "opacity-100"
-                          : "opacity-0 group-hover:opacity-100"
-                      }`
+                    : `right-1.5 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`
                 }`}
               >
                 <X size={10} />
@@ -110,13 +99,9 @@ const SafariTabBar = ({
           onClick={onNewTab}
           disabled={isMaxTabsReached}
           className={`flex-shrink-0 h-7 w-7 mb-[2px] flex items-center justify-center ml-1.5 rounded-md text-gray-600 transition-colors ${
-            isMaxTabsReached
-              ? "opacity-30 cursor-not-allowed"
-              : "hover:bg-black/10 cursor-pointer"
+            isMaxTabsReached ? "opacity-30 cursor-not-allowed" : "hover:bg-black/10 cursor-pointer"
           }`}
-          title={
-            isMaxTabsReached ? "Tab limit reached (Max 10)" : "Open a new tab"
-          }
+          title={isMaxTabsReached ? "Tab limit reached (Max 10)" : "Open a new tab"}
         >
           <Plus size={14} />
         </button>

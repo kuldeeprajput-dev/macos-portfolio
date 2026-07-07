@@ -1,4 +1,18 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
 
-npx --no-install lint-staged
+echo "🔍 Running pre-commit checks..."
+
+# Check for merge conflict markers
+if git diff --cached --name-only | xargs grep -rn "^<<<<<<<" >/dev/null 2>&1; then
+  echo "❌ Error: Merge conflict markers found in staged files. Resolve them before committing."
+  exit 1
+fi
+
+# Run lint-staged to format & lint changed files
+if command -v bun >/dev/null 2>&1; then
+  bun x lint-staged
+else
+  npx lint-staged
+fi
+
+echo "✅ Pre-commit checks passed successfully!"

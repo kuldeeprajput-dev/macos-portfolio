@@ -136,9 +136,7 @@ const SafariSidebar = ({
             {projects.map((project) => (
               <div
                 key={project.id}
-                onClick={() =>
-                  navigateTabTo(project.link || GITHUB_PROFILE)
-                }
+                onClick={() => navigateTabTo(project.link || GITHUB_PROFILE)}
                 className="p-2 rounded-lg hover:bg-black/5 cursor-pointer transition-colors flex gap-2.5 items-start"
               >
                 <div className="w-10 h-10 rounded overflow-hidden bg-gray-200 shrink-0">

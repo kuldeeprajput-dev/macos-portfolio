@@ -16,7 +16,9 @@ const SettingsAppearancePane = () => {
         >
           <div
             className={`w-24 h-16 rounded-md bg-gray-100 border-2 shadow-sm overflow-hidden flex flex-col transition-all ${
-              selectedMode === "light" ? "border-blue-500" : "border-transparent opacity-60 hover:opacity-100"
+              selectedMode === "light"
+                ? "border-blue-500"
+                : "border-transparent opacity-60 hover:opacity-100"
             }`}
           >
             <div className="h-4 bg-white border-b border-gray-200"></div>
@@ -40,7 +42,9 @@ const SettingsAppearancePane = () => {
         >
           <div
             className={`w-24 h-16 rounded-md bg-gray-800 border-2 shadow-sm overflow-hidden flex flex-col transition-all ${
-              selectedMode === "dark" ? "border-blue-500" : "border-transparent opacity-60 hover:opacity-100"
+              selectedMode === "dark"
+                ? "border-blue-500"
+                : "border-transparent opacity-60 hover:opacity-100"
             }`}
           >
             <div className="h-4 bg-[#2c2c2e] border-b border-black"></div>
@@ -64,7 +68,9 @@ const SettingsAppearancePane = () => {
         >
           <div
             className={`w-24 h-16 rounded-md bg-gradient-to-r from-gray-100 to-gray-800 border-2 shadow-sm overflow-hidden flex flex-col transition-all ${
-              selectedMode === "auto" ? "border-blue-500" : "border-transparent opacity-60 hover:opacity-100"
+              selectedMode === "auto"
+                ? "border-blue-500"
+                : "border-transparent opacity-60 hover:opacity-100"
             }`}
           >
             <div className="h-4 flex">

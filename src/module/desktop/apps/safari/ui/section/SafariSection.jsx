@@ -92,7 +92,10 @@ const SafariSection = () => {
   }
 
   return (
-    <div ref={containerRef} className="flex flex-col h-full w-full @container bg-white select-none overflow-hidden rounded-xl relative">
+    <div
+      ref={containerRef}
+      className="flex flex-col h-full w-full @container bg-white select-none overflow-hidden rounded-xl relative"
+    >
       {/* 1. Main Unified Toolbar */}
       <SafariDesktopToolbar
         showSidebar={safari.showSidebar}

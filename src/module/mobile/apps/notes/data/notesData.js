@@ -2,7 +2,8 @@ export const defaultNotes = [
   {
     id: "1",
     title: "Welcome to Notes",
-    preview: "This is a macOS-style Notes application integrated into this interactive desktop portfolio.",
+    preview:
+      "This is a macOS-style Notes application integrated into this interactive desktop portfolio.",
     body: "<div><strong>Welcome to Notes</strong></div><div><br></div><div>This is a macOS-style Notes application integrated into this interactive desktop portfolio.</div><div><br></div><div><strong>Features:</strong></div><ul><li>Add new notes using the compose button</li><li>Delete notes when they are no longer needed</li><li>Real-time search to quickly find what you're looking for</li><li>Automated persistence so your thoughts are saved locally!</li></ul>",
     updatedAt: new Date().toISOString(),
   },

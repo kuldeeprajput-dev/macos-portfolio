@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import useWindowsStore from "@store/window";
-import { GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL, PROJECT_3_URL, PROJECT_4_URL, EMAIL } from "@constants";
+import {
+  GITHUB_PROFILE,
+  LINKEDIN_URL,
+  TWITTER_URL,
+  PROJECT_3_URL,
+  PROJECT_4_URL,
+  EMAIL,
+} from "@constants";
 
 const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleMenuOpen }) => {
   const { setAboutPortfolioOpen, setWindowData, windows } = useWindowsStore();
@@ -230,8 +237,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
       [
         {
           label: "Connect on LinkedIn",
-          onClick: () =>
-            openWindow("safari", { url: LINKEDIN_URL }),
+          onClick: () => openWindow("safari", { url: LINKEDIN_URL }),
         },
         {
           label: "Follow on Twitter / X",

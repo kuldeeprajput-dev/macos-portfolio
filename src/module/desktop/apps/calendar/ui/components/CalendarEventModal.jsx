@@ -23,7 +23,9 @@ const CalendarEventModal = ({
   if (!isModalOpen) return null;
 
   return (
-    <div className={`absolute inset-0 bg-black/30 backdrop-blur-xs z-50 flex items-center justify-center ${isVeryNarrow ? "p-2" : "p-4"}`}>
+    <div
+      className={`absolute inset-0 bg-black/30 backdrop-blur-xs z-50 flex items-center justify-center ${isVeryNarrow ? "p-2" : "p-4"}`}
+    >
       <form
         onSubmit={handleAddEvent}
         className="w-full max-w-[380px] max-h-[92%] bg-white rounded-2xl shadow-2xl border border-black/10 flex flex-col overflow-hidden animate-fade-in"
@@ -42,7 +44,9 @@ const CalendarEventModal = ({
           </button>
         </div>
 
-        <div className={`bg-white flex-1 overflow-y-auto thin-scrollbar text-xs ${isVeryNarrow ? "p-3 space-y-2" : "p-4 space-y-3"}`}>
+        <div
+          className={`bg-white flex-1 overflow-y-auto thin-scrollbar text-xs ${isVeryNarrow ? "p-3 space-y-2" : "p-4 space-y-3"}`}
+        >
           <div className="space-y-1">
             <label className="font-bold text-gray-700">Event Title</label>
             <input

@@ -74,9 +74,7 @@ const Settings = () => {
               )}
             </div>
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="font-bold text-gray-700 text-xs">
-                Settings
-              </span>
+              <span className="font-bold text-gray-700 text-xs">Settings</span>
             </div>
             <div className="w-14" />
           </div>

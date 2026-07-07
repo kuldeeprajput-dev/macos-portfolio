@@ -125,7 +125,7 @@ const AppleTVSection = ({
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight, clientHeight } = e.target;
-    
+
     // Detect scroll direction and notify parent
     if (onScrollDirection) {
       if (scrollTop <= 10) {

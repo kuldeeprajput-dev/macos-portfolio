@@ -21,9 +21,7 @@ const MapCanvas = ({ currentCity, mapStyle, iframeSrc }) => {
       />
       <div className="flex flex-col items-center gap-3 text-zinc-400 select-none">
         <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-        <span className="text-xs font-semibold font-sans tracking-wide">
-          Syncing Telemetry...
-        </span>
+        <span className="text-xs font-semibold font-sans tracking-wide">Syncing Telemetry...</span>
       </div>
 
       <iframe

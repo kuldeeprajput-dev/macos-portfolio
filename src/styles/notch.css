@@ -578,7 +578,7 @@
   .notch-nook-tab.active {
     background: rgba(255, 255, 255, 0.12);
     color: #ffffff;
-    box-shadow: 
+    box-shadow:
       0 2px 5px rgba(0, 0, 0, 0.25),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
@@ -644,7 +644,7 @@
     height: 52px;
     border-radius: 12px;
     background: #18181c;
-    box-shadow: 
+    box-shadow:
       0 4px 15px rgba(0, 0, 0, 0.4),
       0 1px 2px rgba(255, 255, 255, 0.1) inset;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -779,7 +779,7 @@
     background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
     color: #ffffff;
     font-weight: 700;
-    box-shadow: 
+    box-shadow:
       0 2px 6px rgba(10, 132, 255, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.15);
   }
@@ -817,9 +817,15 @@
   }
 
   @keyframes pulseGreenDot {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
+    0% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
   }
 
   /* Camera Launcher Layout */
@@ -839,7 +845,7 @@
     border-radius: 50%;
     background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
     border: 1.5px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 
+    box-shadow:
       0 4px 12px rgba(0, 0, 0, 0.4),
       inset 0 1.5px 2px rgba(255, 255, 255, 0.15);
     display: flex;
@@ -880,7 +886,7 @@
   .nook-camera-lens-btn:hover {
     transform: scale(1.08);
     border-color: rgba(255, 255, 255, 0.28);
-    box-shadow: 
+    box-shadow:
       0 6px 16px rgba(0, 0, 0, 0.5),
       inset 0 1.5px 2px rgba(255, 255, 255, 0.25);
   }
@@ -1033,17 +1039,32 @@
 
   /* Simulated Camera animations */
   @keyframes scanBarMove {
-    0% { top: 0%; }
-    50% { top: 100%; }
-    100% { top: 0%; }
+    0% {
+      top: 0%;
+    }
+    50% {
+      top: 100%;
+    }
+    100% {
+      top: 0%;
+    }
   }
   .animate-scan-bar {
     animation: scanBarMove 4s linear infinite;
   }
   @keyframes facePulseEffect {
-    0% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.03); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.8; }
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.03);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
   }
   .animate-face-pulse {
     animation: facePulseEffect 2.5s ease-in-out infinite;

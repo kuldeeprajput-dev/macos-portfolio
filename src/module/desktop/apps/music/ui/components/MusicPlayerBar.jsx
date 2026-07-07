@@ -109,7 +109,9 @@ const MusicPlayerBar = ({
         </div>
       </div>
 
-      <div className={`${isNarrow ? "w-[32px] shrink-0" : "w-1/3"} flex items-center justify-end gap-2 text-gray-500`}>
+      <div
+        className={`${isNarrow ? "w-[32px] shrink-0" : "w-1/3"} flex items-center justify-end gap-2 text-gray-500`}
+      >
         <button
           onClick={onMuteToggle}
           className="hover:text-gray-700 transition-colors"

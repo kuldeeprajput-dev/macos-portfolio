@@ -134,9 +134,7 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
                 "\x1b[1;38;2;16;185;129mRole:      \x1b[38;2;75;85;99mFull-Stack Developer & Designer\x1b[0m",
               );
               println("\x1b[1;38;2;16;185;129mLocation:  \x1b[38;2;75;85;99mIndia 🇮🇳\x1b[0m");
-              println(
-                `\x1b[1;38;2;16;185;129mEmail:     \x1b[4;38;2;37;99;235m${EMAIL}\x1b[0m`,
-              );
+              println(`\x1b[1;38;2;16;185;129mEmail:     \x1b[4;38;2;37;99;235m${EMAIL}\x1b[0m`);
               println(
                 `\x1b[1;38;2;16;185;129mGitHub:    \x1b[4;38;2;37;99;235m${GITHUB_PROFILE}\x1b[0m`,
               );

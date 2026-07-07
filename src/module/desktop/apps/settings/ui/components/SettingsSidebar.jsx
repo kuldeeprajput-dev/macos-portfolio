@@ -92,9 +92,11 @@ const SettingsSidebar = ({
       )}
       <div
         className={`inset-y-0 left-0 z-30 shrink-0 h-full bg-gray-50 flex-col transition-all duration-300 ease-in-out ${
-          isNarrow ? "absolute bg-gray-50 shadow-lg border-r border-gray-200" : "relative border-r border-gray-200"
+          isNarrow
+            ? "absolute bg-gray-50 shadow-lg border-r border-gray-200"
+            : "relative border-r border-gray-200"
         } ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} flex overflow-hidden`}
-        style={{ width: isNarrow ? "240px" : (isSidebarOpen ? "240px" : "0px") }}
+        style={{ width: isNarrow ? "240px" : isSidebarOpen ? "240px" : "0px" }}
       >
         <div className="w-[240px] h-full flex flex-col shrink-0">
           {!hideHeader && (

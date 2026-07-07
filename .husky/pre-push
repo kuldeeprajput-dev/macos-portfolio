@@ -1,5 +1,12 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
 
-npm run check
-npm run build
+echo "🚀 Running pre-push validations..."
+
+# Run full project checks (eslint + prettier check)
+if command -v bun >/dev/null 2>&1; then
+  bun run check && bun run build
+else
+  npm run check && npm run build
+fi
+
+echo "✅ Pre-push validation successful!"

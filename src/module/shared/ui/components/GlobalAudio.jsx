@@ -84,8 +84,7 @@ export default function GlobalAudio() {
             coverUrl = images;
           } else if (Array.isArray(images) && images.length > 0) {
             const lastImg = images[images.length - 1];
-            coverUrl =
-              typeof lastImg === "string" ? lastImg : lastImg?.url || lastImg?.link || "";
+            coverUrl = typeof lastImg === "string" ? lastImg : lastImg?.url || lastImg?.link || "";
           }
           if (coverUrl && coverUrl.startsWith("http://")) {
             coverUrl = coverUrl.replace("http://", "https://");
@@ -194,9 +193,7 @@ export default function GlobalAudio() {
     if (!tracks || tracks.length === 0) return;
     const currentIdx = tracks.findIndex((t) => t.id === activeTrack.id);
     const prevIdx =
-      currentIdx === -1
-        ? tracks.length - 1
-        : (currentIdx - 1 + tracks.length) % tracks.length;
+      currentIdx === -1 ? tracks.length - 1 : (currentIdx - 1 + tracks.length) % tracks.length;
     setMusicState({ activeTrack: tracks[prevIdx], isPlaying: true });
     const audio = audioRef.current;
     if (audio) {

@@ -69,9 +69,11 @@ const TelegramChatList = ({
         </div>
 
         {/* Category Filter Tabs */}
-        <div className={`flex items-center gap-1.5 py-1 text-[10px] font-bold text-gray-400 select-none overflow-x-auto whitespace-nowrap scrollbar-none border-b ${
-          nightMode ? "border-zinc-800/60" : "border-zinc-250/10"
-        }`}>
+        <div
+          className={`flex items-center gap-1.5 py-1 text-[10px] font-bold text-gray-400 select-none overflow-x-auto whitespace-nowrap scrollbar-none border-b ${
+            nightMode ? "border-zinc-800/60" : "border-zinc-250/10"
+          }`}
+        >
           {["All", "Personal", "Groups", "Channels"].map((tab) => (
             <button
               key={tab}

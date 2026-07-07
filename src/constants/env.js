@@ -14,7 +14,7 @@ export const GITHUB_USERNAME = GITHUB_PROFILE
   : "kuldeeprajput-dev";
 
 export const PORTFOLIO_URL = process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://kuldeeprajput.in";
-export const PORTFOLIO_ALT_URL = process.env.NEXT_PUBLIC_PORTFOLIO_ALT_URL || "https://kuldeep-rajput.vercel.app/";
+export const PORTFOLIO_ALT_URL =
+  process.env.NEXT_PUBLIC_PORTFOLIO_ALT_URL || "https://kuldeep-rajput.vercel.app/";
 export const EMAIL = process.env.NEXT_PUBLIC_EMAIL || "contact.kuldeeprajput@gmail.com";
 export const PHONE = process.env.NEXT_PUBLIC_PHONE || "+91 0000000000";
-

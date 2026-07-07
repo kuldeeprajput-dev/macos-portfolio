@@ -274,7 +274,12 @@ const TelegramSection = ({
             <div className="w-20 shrink-0 flex justify-end items-center gap-2.5">
               <button
                 onClick={() =>
-                  handlePlaceCall(activeChat.name, activeChat.avatarColor, activeChat.initials, activeChat.avatar)
+                  handlePlaceCall(
+                    activeChat.name,
+                    activeChat.avatarColor,
+                    activeChat.initials,
+                    activeChat.avatar,
+                  )
                 }
                 className={`p-1.5 rounded-full bg-transparent border-none cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center ${
                   nightMode
@@ -758,7 +763,7 @@ const TelegramSection = ({
                         contact.color,
                         contact.status,
                         undefined,
-                        contact.avatar
+                        contact.avatar,
                       );
                       setActiveTab("chats");
                       setIsSidebarOpen(false);
@@ -823,7 +828,9 @@ const TelegramSection = ({
                 {callLogs.map((log, index) => (
                   <div
                     key={index}
-                    onClick={() => handlePlaceCall(log.name, log.avatarColor, log.initials, log.avatar)}
+                    onClick={() =>
+                      handlePlaceCall(log.name, log.avatarColor, log.initials, log.avatar)
+                    }
                     className={`p-4 flex items-center justify-between cursor-pointer transition-colors ${
                       nightMode ? "active:bg-[#24303f]" : "active:bg-zinc-50"
                     }`}
@@ -918,9 +925,11 @@ const TelegramSection = ({
                   </div>
                 </div>
                 {userProfile.bio && (
-                  <p className={`text-xs text-left leading-relaxed text-zinc-500 font-medium px-1 border-t pt-2 ${
-                    nightMode ? "border-zinc-800/60" : "border-zinc-100"
-                  }`}>
+                  <p
+                    className={`text-xs text-left leading-relaxed text-zinc-500 font-medium px-1 border-t pt-2 ${
+                      nightMode ? "border-zinc-800/60" : "border-zinc-100"
+                    }`}
+                  >
                     {userProfile.bio}
                   </p>
                 )}
@@ -1381,7 +1390,6 @@ const TelegramSection = ({
       {/* 5. Calling Overlay (Full screen inside the iPhone mockup container) */}
       {activeCall && (
         <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214] text-white z-50 rounded-2xl flex flex-col items-center justify-between py-10 px-6 animate-in fade-in duration-200">
-          
           {/* Header */}
           <div className="text-center mt-4 select-none">
             <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-bold">
@@ -1398,11 +1406,11 @@ const TelegramSection = ({
             <div className="relative flex items-center justify-center">
               {activeCall.status !== "Connected" ? (
                 <>
-                  <div 
+                  <div
                     className="absolute w-28 h-28 rounded-full border border-white/20 animate-ping opacity-70"
                     style={{ animationDuration: "2s" }}
                   />
-                  <div 
+                  <div
                     className="absolute w-28 h-28 rounded-full border border-white/10 animate-ping opacity-40"
                     style={{ animationDuration: "2.8s", animationDelay: "0.4s" }}
                   />
@@ -1412,9 +1420,7 @@ const TelegramSection = ({
                 <div className="absolute -inset-4 rounded-full bg-emerald-500/10 blur-xl animate-pulse animate-duration-2000" />
               )}
 
-              <div
-                className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative z-10 flex items-center justify-center bg-zinc-900 border border-white/15"
-              >
+              <div className="w-28 h-28 rounded-full overflow-hidden shadow-2xl relative z-10 flex items-center justify-center bg-zinc-900 border border-white/15">
                 {activeCall.avatar ? (
                   <img
                     src={activeCall.avatar}

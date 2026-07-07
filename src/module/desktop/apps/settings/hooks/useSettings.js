@@ -17,7 +17,9 @@ const useSettings = () => {
     }
   }, [windowData]);
 
-  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth < 768,
+  );
   const [mobileView, setMobileView] = useState("main");
 
   useEffect(() => {

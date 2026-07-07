@@ -108,7 +108,6 @@ const MusicSection = (props) => {
         />
       </div>
 
-
       <MusicPlayerSection
         activeTrack={activeTrack}
         currentTime={currentTime}

@@ -51,7 +51,7 @@ export const TracksTable = React.memo(
                     {isActive && isPlaying ? (
                       <div className="flex items-center gap-0.5 justify-center w-4 h-4">
                         <span
-                           className="w-0.5 h-3 bg-red-500 animate-bounce"
+                          className="w-0.5 h-3 bg-red-500 animate-bounce"
                           style={{ animationDelay: "0ms" }}
                         />
                         <span
@@ -74,9 +74,15 @@ export const TracksTable = React.memo(
                     )}
                   </div>
                 </td>
-                <td className={`py-3 px-3 max-w-0 truncate ${isActive ? "text-red-600" : "text-gray-900"}`}>
+                <td
+                  className={`py-3 px-3 max-w-0 truncate ${isActive ? "text-red-600" : "text-gray-900"}`}
+                >
                   <div className="truncate font-semibold">{track.title}</div>
-                  {isNarrow && <div className="text-[10px] text-gray-400 truncate mt-0.5 font-normal">{track.artist}</div>}
+                  {isNarrow && (
+                    <div className="text-[10px] text-gray-400 truncate mt-0.5 font-normal">
+                      {track.artist}
+                    </div>
+                  )}
                 </td>
                 {!isNarrow && <td className="py-3 px-3 text-gray-600 truncate">{track.artist}</td>}
                 {!isNarrow && <td className="py-3 px-3 text-gray-500 truncate">{track.album}</td>}

@@ -85,8 +85,6 @@ const MusicSection = (props) => {
         />
       </div>
 
-
-
       {/* Mini Player */}
       {activeTrack && !isPlayerExpanded && (
         <AppleMusicMiniPlayer

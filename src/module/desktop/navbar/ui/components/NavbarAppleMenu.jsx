@@ -18,7 +18,10 @@ const NavbarAppleMenu = ({
       },
     ],
     [
-      { label: "System Settings...", onClick: () => openWindow("settings", { tab: "Apple ID", subPage: null }) },
+      {
+        label: "System Settings...",
+        onClick: () => openWindow("settings", { tab: "Apple ID", subPage: null }),
+      },
       { label: "App Store...", onClick: () => openWindow("appstore") },
     ],
     [

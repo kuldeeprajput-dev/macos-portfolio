@@ -80,7 +80,9 @@ const Map = () => {
             title="Find My Location"
           >
             <MapPin size={14} className="text-red-500 shrink-0 fill-red-500/20" />
-            <span className="font-bold text-gray-700 text-xs">{props.currentCity?.name || "Current Location"}</span>
+            <span className="font-bold text-gray-700 text-xs">
+              {props.currentCity?.name || "Current Location"}
+            </span>
           </button>
 
           <div className="w-16 flex justify-end">

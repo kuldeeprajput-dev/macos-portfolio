@@ -146,16 +146,16 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
         const currentY = e.touches[0].clientY;
         const currentTime = performance.now();
         const deltaY = currentY - touchStartY;
-        
+
         const viewport = terminalEl.querySelector(".xterm-viewport");
         if (viewport) {
           viewport.scrollTop = touchStartScrollTop - deltaY;
-          
+
           const timeDiff = currentTime - lastTouchTime;
           if (timeDiff > 0) {
             velocityY = (currentY - lastTouchY) / timeDiff;
           }
-          
+
           lastTouchY = currentY;
           lastTouchTime = currentTime;
           e.preventDefault();
@@ -175,7 +175,7 @@ const TerminalInput = ({ terminalRef, xtermRef, fitAddonRef, commandRef }) => {
           animationFrameId = null;
           return;
         }
-        
+
         viewport.scrollTop -= currentVelocity * 16;
         currentVelocity *= friction;
         animationFrameId = requestAnimationFrame(step);

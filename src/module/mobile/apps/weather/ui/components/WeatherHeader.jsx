@@ -5,10 +5,7 @@ const WeatherHeader = ({ _activeCity, unitMode, setUnitMode, viewMode, setViewMo
   const isDashboard = viewMode === "dashboard";
 
   return (
-    <div
-      id="window-header"
-      className="shrink-0 flex items-center justify-between relative z-20"
-    >
+    <div id="window-header" className="shrink-0 flex items-center justify-between relative z-20">
       <div className="flex items-center">
         <WindowControls target="weather" />
       </div>

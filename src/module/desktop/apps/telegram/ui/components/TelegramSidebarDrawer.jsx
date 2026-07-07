@@ -47,9 +47,11 @@ const TelegramSidebarDrawer = ({
         nightMode ? "bg-[#181818] border-r border-zinc-800" : "bg-white border-r border-zinc-200"
       }`}
     >
-      <div className={`p-3 border-b flex items-center gap-3 shrink-0 ${
-        nightMode ? "border-zinc-800" : "border-zinc-200"
-      }`}>
+      <div
+        className={`p-3 border-b flex items-center gap-3 shrink-0 ${
+          nightMode ? "border-zinc-800" : "border-zinc-200"
+        }`}
+      >
         <button
           onClick={() => {
             if (drawerSection === "menu") {
@@ -145,9 +147,11 @@ const TelegramSidebarDrawer = ({
                 <span>Settings</span>
               </button>
 
-              <div className={`p-2.5 flex items-center justify-between text-xs border-t mt-2 ${
-                nightMode ? "border-zinc-800 text-zinc-300" : "border-zinc-100 text-zinc-700"
-              }`}>
+              <div
+                className={`p-2.5 flex items-center justify-between text-xs border-t mt-2 ${
+                  nightMode ? "border-zinc-800 text-zinc-300" : "border-zinc-100 text-zinc-700"
+                }`}
+              >
                 <div className="flex items-center gap-3">
                   <Moon className="w-4.5 h-4.5 text-gray-400" />
                   <span>Night Mode</span>
@@ -159,16 +163,20 @@ const TelegramSidebarDrawer = ({
                     onChange={() => setNightMode(!nightMode)}
                     className="sr-only peer"
                   />
-                  <div className={`w-8 h-4.5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-500 ${
-                    nightMode ? "bg-zinc-700" : "bg-zinc-200"
-                  }`}></div>
+                  <div
+                    className={`w-8 h-4.5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-500 ${
+                      nightMode ? "bg-zinc-700" : "bg-zinc-200"
+                    }`}
+                  ></div>
                 </label>
               </div>
             </div>
 
-            <div className={`mt-auto p-4 text-[10px] text-gray-400 text-center select-none border-t ${
-              nightMode ? "border-zinc-800" : "border-zinc-200"
-            }`}>
+            <div
+              className={`mt-auto p-4 text-[10px] text-gray-400 text-center select-none border-t ${
+                nightMode ? "border-zinc-800" : "border-zinc-200"
+              }`}
+            >
               Telegram Desktop
               <br />
               Version 6.8.2 – About
@@ -178,9 +186,11 @@ const TelegramSidebarDrawer = ({
 
         {drawerSection === "profile" && (
           <div className="p-4 space-y-4 text-xs text-left">
-            <div className={`flex flex-col items-center gap-2.5 py-4 border-b ${
-              nightMode ? "border-zinc-800" : "border-zinc-200"
-            }`}>
+            <div
+              className={`flex flex-col items-center gap-2.5 py-4 border-b ${
+                nightMode ? "border-zinc-800" : "border-zinc-200"
+              }`}
+            >
               <div className="w-18 h-18 rounded-full relative shadow group overflow-hidden border border-white/20">
                 <img
                   src="/images/profile.webp"
@@ -389,7 +399,9 @@ const TelegramSidebarDrawer = ({
                 }`}
               >
                 <div>
-                  <h5 className={`font-semibold ${nightMode ? "text-white" : "text-gray-900"}`}>{call.name}</h5>
+                  <h5 className={`font-semibold ${nightMode ? "text-white" : "text-gray-900"}`}>
+                    {call.name}
+                  </h5>
                   <span className="text-[10px] text-gray-400 block">{call.time}</span>
                 </div>
                 <span
@@ -423,9 +435,11 @@ const TelegramSidebarDrawer = ({
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" />
-                  <div className={`w-8 h-4.5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-500 ${
-                    nightMode ? "bg-zinc-700" : "bg-zinc-200"
-                  }`}></div>
+                  <div
+                    className={`w-8 h-4.5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-500 ${
+                      nightMode ? "bg-zinc-700" : "bg-zinc-200"
+                    }`}
+                  ></div>
                 </label>
               </div>
               <div className="flex justify-between items-center">
@@ -435,9 +449,11 @@ const TelegramSidebarDrawer = ({
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" defaultChecked className="sr-only peer" />
-                  <div className={`w-8 h-4.5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-500 ${
-                    nightMode ? "bg-zinc-700" : "bg-zinc-200"
-                  }`}></div>
+                  <div
+                    className={`w-8 h-4.5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-blue-500 ${
+                      nightMode ? "bg-zinc-700" : "bg-zinc-200"
+                    }`}
+                  ></div>
                 </label>
               </div>
             </div>
@@ -446,12 +462,16 @@ const TelegramSidebarDrawer = ({
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
                 Active Devices
               </span>
-              <div className={`p-2 rounded-lg flex items-center gap-2 ${
-                nightMode ? "bg-zinc-800 text-white" : "bg-zinc-100 text-gray-800"
-              }`}>
+              <div
+                className={`p-2 rounded-lg flex items-center gap-2 ${
+                  nightMode ? "bg-zinc-800 text-white" : "bg-zinc-100 text-gray-800"
+                }`}
+              >
                 <Monitor className="w-4 h-4 text-blue-500 shrink-0" />
                 <div>
-                  <h6 className={`font-bold text-[10px] ${nightMode ? "text-white" : "text-gray-800"}`}>
+                  <h6
+                    className={`font-bold text-[10px] ${nightMode ? "text-white" : "text-gray-800"}`}
+                  >
                     macOS M2 Max
                   </h6>
                   <span className="text-[8px] text-gray-400 block">

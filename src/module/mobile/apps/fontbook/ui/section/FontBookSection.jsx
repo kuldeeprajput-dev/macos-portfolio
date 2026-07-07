@@ -38,10 +38,7 @@ const FontBookSection = ({
   return (
     <div className="flex flex-col h-full w-full bg-[#f2f2f7] text-gray-800 font-sans select-none md:rounded-xl overflow-hidden md:shadow-2xl md:border md:border-zinc-200/80">
       {/* Window Header (For macOS portfolio container integrity) */}
-      <div
-        id="window-header"
-        className="shrink-0 flex items-center justify-between relative z-10"
-      >
+      <div id="window-header" className="shrink-0 flex items-center justify-between relative z-10">
         <WindowControls target="font" />
         <span className="text-xs font-bold text-gray-400">Font Book</span>
         <div className="w-12" /> {/* spacer */}
@@ -255,7 +252,7 @@ const FontBookSection = ({
             <div className="w-12" /> {/* spacer */}
           </div>
 
-           {/* Styling Toolbar Controls */}
+          {/* Styling Toolbar Controls */}
           <div className="p-4 border-b border-zinc-100 flex flex-col gap-3.5 bg-gray-50/50 shrink-0">
             <div className="flex items-center justify-between gap-4 text-xs font-semibold text-zinc-700">
               <div className="flex bg-zinc-200 p-0.5 rounded-xl">

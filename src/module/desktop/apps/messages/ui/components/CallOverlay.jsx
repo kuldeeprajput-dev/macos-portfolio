@@ -77,11 +77,11 @@ const CallOverlay = ({
           <div className="relative col-center flex flex-col items-center justify-center">
             {callState.status === "ringing" ? (
               <>
-                <div 
+                <div
                   className="absolute w-28 h-28 rounded-full border border-white/25 animate-ping opacity-75"
                   style={{ animationDuration: "2s" }}
                 />
-                <div 
+                <div
                   className="absolute w-28 h-28 rounded-full border border-white/15 animate-ping opacity-45"
                   style={{ animationDuration: "2.8s", animationDelay: "0.4s" }}
                 />
@@ -91,9 +91,7 @@ const CallOverlay = ({
               <div className="absolute -inset-4 rounded-full bg-emerald-500/10 blur-xl animate-pulse animate-duration-2000" />
             )}
 
-            <div
-              className="w-28 h-28 rounded-full overflow-hidden shadow-xl relative z-10 flex items-center justify-center bg-gray-50 border border-gray-100/20"
-            >
+            <div className="w-28 h-28 rounded-full overflow-hidden shadow-xl relative z-10 flex items-center justify-center bg-gray-50 border border-gray-100/20">
               {activeChat.avatar ? (
                 <img
                   src={activeChat.avatar}

@@ -12,8 +12,12 @@ const CalendarDayPopover = ({
   if (!dayEventsPopover) return null;
 
   return (
-    <div className={`absolute inset-0 bg-black/20 backdrop-blur-[0.5px] z-40 flex items-center justify-center ${isVeryNarrow ? "p-2" : "p-4"}`}>
-      <div className={`w-full max-w-[340px] max-h-[92%] bg-white rounded-2xl shadow-2xl border border-black/10 flex flex-col animate-fade-in relative ${isVeryNarrow ? "p-3.5 gap-2.5" : "p-5 gap-4"}`}>
+    <div
+      className={`absolute inset-0 bg-black/20 backdrop-blur-[0.5px] z-40 flex items-center justify-center ${isVeryNarrow ? "p-2" : "p-4"}`}
+    >
+      <div
+        className={`w-full max-w-[340px] max-h-[92%] bg-white rounded-2xl shadow-2xl border border-black/10 flex flex-col animate-fade-in relative ${isVeryNarrow ? "p-3.5 gap-2.5" : "p-5 gap-4"}`}
+      >
         <button
           onClick={() => setDayEventsPopover(null)}
           className="absolute top-3.5 right-3.5 text-gray-400 hover:text-gray-600 rounded p-0.5 cursor-pointer z-10"

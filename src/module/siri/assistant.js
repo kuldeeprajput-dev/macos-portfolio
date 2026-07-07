@@ -1,4 +1,17 @@
-import { dockApps, locations, projects, socials, PROJECT_1_URL, PROJECT_2_URL, PROJECT_3_URL, PROJECT_4_URL, GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL, PORTFOLIO_URL } from "@constants";
+import {
+  dockApps,
+  locations,
+  projects,
+  socials,
+  PROJECT_1_URL,
+  PROJECT_2_URL,
+  PROJECT_3_URL,
+  PROJECT_4_URL,
+  GITHUB_PROFILE,
+  LINKEDIN_URL,
+  TWITTER_URL,
+  PORTFOLIO_URL,
+} from "@constants";
 
 const OWNER_NAME = "Kuldeep Rajput";
 

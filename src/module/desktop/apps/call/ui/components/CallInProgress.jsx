@@ -62,15 +62,15 @@ const CallInProgress = ({
             {/* Mac-style calling ring pulse animation */}
             {activeCall.status === "ringing" ? (
               <>
-                <div 
+                <div
                   className="absolute w-28 h-28 rounded-full border border-white/25 animate-ping opacity-75"
                   style={{ animationDuration: "2s" }}
                 />
-                <div 
+                <div
                   className="absolute w-28 h-28 rounded-full border border-white/15 animate-ping opacity-45"
                   style={{ animationDuration: "2.8s", animationDelay: "0.4s" }}
                 />
-                <div 
+                <div
                   className="absolute w-28 h-28 rounded-full border border-white/5 animate-ping opacity-20"
                   style={{ animationDuration: "3.6s", animationDelay: "0.8s" }}
                 />

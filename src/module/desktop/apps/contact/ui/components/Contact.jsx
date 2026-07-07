@@ -36,12 +36,7 @@ const Contact = () => {
           <h2 className="flex-1 text-center text-sm font-bold text-gray-500">Contact Me</h2>
         </div>
         <div className="p-5 space-y-5 flex-1 overflow-y-auto">
-          <ContactCard
-            email={EMAIL}
-            phone={PHONE}
-            copied={copied}
-            onCopy={handleCopy}
-          />
+          <ContactCard email={EMAIL} phone={PHONE} copied={copied} onCopy={handleCopy} />
           <ContactList onSocialClick={setRedirectSocial} />
         </div>
 

@@ -288,9 +288,7 @@ const useMusic = () => {
     if (tracks.length === 0) return;
     const currentIdx = tracks.findIndex((t) => t.id === activeTrack.id);
     const prevIdx =
-      currentIdx === -1
-        ? tracks.length - 1
-        : (currentIdx - 1 + tracks.length) % tracks.length;
+      currentIdx === -1 ? tracks.length - 1 : (currentIdx - 1 + tracks.length) % tracks.length;
     setMusicState({ activeTrack: tracks[prevIdx], isPlaying: true });
     setCurrentTime(0);
     if (audioRef.current) {

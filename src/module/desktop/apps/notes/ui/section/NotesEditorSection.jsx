@@ -63,9 +63,7 @@ const NotesEditorSection = ({
               <span className="text-xs text-gray-400 flex items-center gap-1 font-semibold whitespace-nowrap">
                 <Type className="w-3.5 h-3.5 text-[#e4a52e] shrink-0" />
                 <span>{wordCount}</span>
-                <span className="hidden @sm:inline">
-                  {wordCount === 1 ? "word" : "words"}
-                </span>
+                <span className="hidden @sm:inline">{wordCount === 1 ? "word" : "words"}</span>
               </span>
             </>
           )}
