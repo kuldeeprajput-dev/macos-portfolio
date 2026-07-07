@@ -31,30 +31,32 @@ const MusicPlayerBar = ({
 }) => {
   return (
     <div className="h-20 border-t border-zinc-200 bg-gray-50/80 backdrop-blur px-6 flex items-center justify-between shrink-0 select-none">
-      <div className={`${isNarrow ? "flex-1" : "w-1/3"} flex items-center gap-3 min-w-0`}>
-        {activeTrack.coverUrl ? (
-          <img
-            src={activeTrack.coverUrl}
-            alt={activeTrack.title}
-            className="w-12 h-12 rounded-lg object-cover shadow-md shrink-0 bg-zinc-100 border border-zinc-200"
-          />
-        ) : (
-          <div
-            className={`w-12 h-12 rounded-lg bg-gradient-to-tr ${activeTrack.coverColor} flex items-center justify-center text-xl shadow-md shrink-0`}
-          >
-            {activeTrack.coverText}
+      {!isNarrow && (
+        <div className="w-1/3 flex items-center gap-3 min-w-0">
+          {activeTrack.coverUrl ? (
+            <img
+              src={activeTrack.coverUrl}
+              alt={activeTrack.title}
+              className="w-12 h-12 rounded-lg object-cover shadow-md shrink-0 bg-zinc-100 border border-zinc-200"
+            />
+          ) : (
+            <div
+              className={`w-12 h-12 rounded-lg bg-gradient-to-tr ${activeTrack.coverColor} flex items-center justify-center text-xl shadow-md shrink-0`}
+            >
+              {activeTrack.coverText}
+            </div>
+          )}
+          <div className="min-w-0">
+            <h4 className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
+              {activeTrack.title}
+              <Heart size={12} className="text-red-500 cursor-pointer fill-red-500" />
+            </h4>
+            <p className="text-[10px] text-gray-500 truncate">{activeTrack.artist}</p>
           </div>
-        )}
-        <div className="min-w-0">
-          <h4 className="text-xs font-bold text-gray-900 truncate flex items-center gap-1.5">
-            {activeTrack.title}
-            <Heart size={12} className="text-red-500 cursor-pointer fill-red-500" />
-          </h4>
-          <p className="text-[10px] text-gray-500 truncate">{activeTrack.artist}</p>
         </div>
-      </div>
+      )}
 
-      <div className={`${isNarrow ? "w-[240px] shrink-0 mx-2" : "w-1/3"} flex flex-col items-center gap-1.5`}>
+      <div className={`${isNarrow ? "flex-1 mx-2" : "w-1/3"} flex flex-col items-center gap-1.5`}>
         <div className={`flex items-center ${isNarrow ? "gap-2" : "gap-4"}`}>
           <button
             onClick={onShuffleToggle}
