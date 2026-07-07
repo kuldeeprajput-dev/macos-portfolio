@@ -23,9 +23,9 @@ const CallInProgress = ({
             className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
           />
         ) : (
-          <div
-            className={`absolute inset-0 bg-linear-to-tr ${activeCall.avatarColor || "from-neutral-900 via-zinc-900 to-indigo-950"}`}
-          >
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214]">
+            {/* Subtle floating ambient light radial glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_60%)]" />
             <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
           </div>
         )}
@@ -33,22 +33,22 @@ const CallInProgress = ({
 
       {/* Top Header Overlay */}
       <div className="z-10 w-full flex flex-col items-center pt-8 text-center select-none pointer-events-none">
-        <div className="flex items-center gap-1.5 bg-black/40 border border-white/10 px-3 py-1 rounded-full backdrop-blur-xl shadow-lg">
+        <div className="flex items-center gap-1.5 bg-black/45 border border-white/10 px-3.5 py-1 rounded-full backdrop-blur-xl shadow-lg">
           <span
-            className={`w-1.5 h-1.5 rounded-full ${activeCall.status === "ringing" ? "bg-yellow-400 animate-ping" : "bg-emerald-500 animate-pulse"}`}
+            className={`w-1.5 h-1.5 rounded-full ${activeCall.status === "ringing" ? "bg-yellow-500 animate-pulse" : "bg-emerald-500 animate-pulse"}`}
           />
-          <span className="text-[10px] font-bold tracking-widest text-white/75 uppercase">
+          <span className="text-[10px] font-bold tracking-widest text-white/80 uppercase">
             FaceTime {activeCall.type === "video" ? "Video" : "Audio"}
           </span>
         </div>
         <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3 drop-shadow-md">
           {activeCall.name}
         </h2>
-        <div className="text-xs font-semibold tracking-wide text-white/60 mt-1">
+        <div className="text-xs font-medium tracking-wide text-white/50 mt-1">
           {activeCall.status === "ringing" ? (
             <span className="animate-pulse">Ringing...</span>
           ) : (
-            <span className="tabular-nums bg-white/10 border border-white/10 px-2 py-0.5 rounded-md backdrop-blur-md">
+            <span className="tabular-nums bg-white/10 border border-white/10 px-2 py-0.5 rounded-md backdrop-blur-md text-white/80">
               {formatTimer(callTimer)}
             </span>
           )}
@@ -58,8 +58,28 @@ const CallInProgress = ({
       {/* Center Avatar Content (For audio calls or inactive cameras) */}
       {(activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing") && (
         <div className="z-10 flex-1 flex flex-col items-center justify-center">
-          <div className="relative group">
-            <div className="absolute -inset-4 rounded-full bg-blue-500/20 blur-xl group-hover:bg-blue-500/30 transition duration-1000 animate-pulse animate-duration-1000" />
+          <div className="relative group flex items-center justify-center">
+            {/* Mac-style calling ring pulse animation */}
+            {activeCall.status === "ringing" ? (
+              <>
+                <div 
+                  className="absolute w-28 h-28 rounded-full border border-white/25 animate-ping opacity-75"
+                  style={{ animationDuration: "2s" }}
+                />
+                <div 
+                  className="absolute w-28 h-28 rounded-full border border-white/15 animate-ping opacity-45"
+                  style={{ animationDuration: "2.8s", animationDelay: "0.4s" }}
+                />
+                <div 
+                  className="absolute w-28 h-28 rounded-full border border-white/5 animate-ping opacity-20"
+                  style={{ animationDuration: "3.6s", animationDelay: "0.8s" }}
+                />
+                <div className="absolute -inset-4 rounded-full bg-white/5 blur-xl animate-pulse" />
+              </>
+            ) : (
+              <div className="absolute -inset-4 rounded-full bg-emerald-500/10 blur-xl animate-pulse" />
+            )}
+
             {activeCall.avatar ? (
               <img
                 src={activeCall.avatar}
@@ -67,7 +87,7 @@ const CallInProgress = ({
                 className="w-28 h-28 rounded-full object-cover shadow-2xl border-2 border-white/20 relative z-10 transition duration-500 hover:scale-105"
               />
             ) : (
-              <div className="w-28 h-28 rounded-full bg-linear-to-tr from-slate-700 to-slate-800 text-white flex items-center justify-center font-bold text-3xl uppercase shadow-2xl border-2 border-white/20 relative z-10">
+              <div className="w-28 h-28 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-800 text-white flex items-center justify-center font-bold text-3xl uppercase shadow-2xl border-2 border-white/20 relative z-10">
                 {activeCall.name
                   .split(" ")
                   .map((n) => n[0])
@@ -81,16 +101,16 @@ const CallInProgress = ({
             </span>
           )}
 
-          {/* Animated Wave visualizer */}
+          {/* Animated Gray Wave visualizer (matches notch visualizer style) */}
           {activeCall.status === "connected" && !micMuted && (
-            <div className="flex items-center gap-2 h-10 mt-6">
-              {[1, 2, 3, 4, 5, 6, 7].map((idx) => (
+            <div className="flex items-end gap-1.5 h-8 mt-8 justify-center select-none">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
                 <span
                   key={idx}
-                  className="w-2 rounded-full bg-linear-to-t from-blue-500 to-cyan-400 animate-pulse"
+                  className="w-[3px] h-6 bg-zinc-400 rounded-full origin-bottom"
                   style={{
-                    height: `${Math.sin(idx) * 16 + 24}px`,
-                    animationDelay: `${idx * 150}ms`,
+                    animation: "bounceVisualizer 1.2s ease-in-out infinite alternate",
+                    animationDelay: `${idx * 0.15}s`,
                   }}
                 />
               ))}

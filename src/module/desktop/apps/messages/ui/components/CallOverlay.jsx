@@ -10,7 +10,7 @@ const CallOverlay = ({
   formatCallTime,
 }) => {
   return (
-    <div className="absolute inset-0 bg-neutral-950/98 text-white z-40 flex flex-col items-center justify-between py-10 px-6 animate-fade-in">
+    <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214] text-white z-40 flex flex-col items-center justify-between py-10 px-6 animate-fade-in">
       <div className="text-center mt-4">
         <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold">
           FaceTime {callState.type === "video" ? "Video" : "Audio"}
@@ -74,9 +74,25 @@ const CallOverlay = ({
             )}
           </div>
         ) : (
-          <div className="relative col-center flex flex-col items-center">
+          <div className="relative col-center flex flex-col items-center justify-center">
+            {callState.status === "ringing" ? (
+              <>
+                <div 
+                  className="absolute w-28 h-28 rounded-full border border-white/25 animate-ping opacity-75"
+                  style={{ animationDuration: "2s" }}
+                />
+                <div 
+                  className="absolute w-28 h-28 rounded-full border border-white/15 animate-ping opacity-45"
+                  style={{ animationDuration: "2.8s", animationDelay: "0.4s" }}
+                />
+                <div className="absolute -inset-4 rounded-full bg-white/5 blur-xl animate-pulse" />
+              </>
+            ) : (
+              <div className="absolute -inset-4 rounded-full bg-emerald-500/10 blur-xl animate-pulse animate-duration-2000" />
+            )}
+
             <div
-              className={`w-28 h-28 rounded-full overflow-hidden shadow-xl relative flex items-center justify-center bg-gray-50 border border-gray-100/20 ${callState.status === "ringing" ? "animate-pulse" : ""}`}
+              className="w-28 h-28 rounded-full overflow-hidden shadow-xl relative z-10 flex items-center justify-center bg-gray-50 border border-gray-100/20"
             >
               {activeChat.avatar ? (
                 <img
@@ -93,12 +109,15 @@ const CallOverlay = ({
               )}
             </div>
             {callState.status === "connected" && (
-              <div className="flex gap-1.5 items-center justify-center mt-6">
-                {[0, 150, 300, 450, 600].map((delay, i) => (
+              <div className="flex items-end gap-1.5 h-8 mt-8 justify-center select-none">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
                   <span
-                    key={i}
-                    className="w-1.5 h-3 bg-blue-500 rounded-full animate-bounce"
-                    style={{ height: `${[3, 5, 7, 5, 3][i] * 4}px`, animationDelay: `${delay}ms` }}
+                    key={idx}
+                    className="w-[3px] h-6 bg-zinc-400 rounded-full origin-bottom"
+                    style={{
+                      animation: "bounceVisualizer 1.2s ease-in-out infinite alternate",
+                      animationDelay: `${idx * 0.15}s`,
+                    }}
                   />
                 ))}
               </div>
