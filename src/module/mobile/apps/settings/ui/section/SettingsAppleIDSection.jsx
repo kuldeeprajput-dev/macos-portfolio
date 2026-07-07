@@ -1,6 +1,9 @@
+import useWindowsStore from "@store/window";
 import { GithubIcon, BookMarkedIcon } from "../../data/settingsData";
 
 const SettingsAppleIDSection = ({ githubData }) => {
+  const { setGithubRedirect } = useWindowsStore();
+
   if (!githubData) return null;
 
   return (
@@ -8,8 +11,15 @@ const SettingsAppleIDSection = ({ githubData }) => {
       <div className="flex flex-col items-center mb-6 @sm:mb-8 text-center px-2 overflow-hidden">
         <img
           src={githubData.profile.avatar_url}
-          className="w-20 h-20 @sm:w-28 @sm:h-28 rounded-full mb-3 @sm:mb-4 shadow-lg border-2 border-white shrink-0"
+          className="w-20 h-20 @sm:w-28 @sm:h-28 rounded-full mb-3 @sm:mb-4 shadow-lg border-2 border-white shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
           alt="Avatar"
+          onClick={() =>
+            setGithubRedirect({
+              href: githubData.profile.html_url,
+              name: githubData.profile.name || githubData.profile.login,
+              source: "settings",
+            })
+          }
         />
         <h2 className="text-[22px] @sm:text-[26px] font-semibold text-gray-900 tracking-tight break-words max-w-full">
           {githubData.profile.name || githubData.profile.login}
@@ -27,7 +37,13 @@ const SettingsAppleIDSection = ({ githubData }) => {
           </div>
           <div
             className="flex items-center justify-between p-3 px-4 hover:bg-black/5 cursor-pointer transition-colors"
-            onClick={() => window.open(githubData.profile.html_url, "_blank")}
+            onClick={() =>
+              setGithubRedirect({
+                href: githubData.profile.html_url,
+                name: "GitHub Profile",
+                source: "settings",
+              })
+            }
           >
             <div className="flex items-center gap-3">
               <GithubIcon size={16} className="text-gray-700" />
@@ -79,7 +95,13 @@ const SettingsAppleIDSection = ({ githubData }) => {
               <div
                 key={repo.id}
                 className={`flex items-center justify-between p-3 px-4 cursor-pointer hover:bg-black/5 transition-colors ${i < githubData.repos.length - 1 ? "border-b border-gray-200" : ""}`}
-                onClick={() => window.open(repo.html_url, "_blank")}
+                onClick={() =>
+                  setGithubRedirect({
+                    href: repo.html_url,
+                    name: repo.name,
+                    source: "settings",
+                  })
+                }
               >
                 <div className="flex items-center gap-3 overflow-hidden">
                   <BookMarkedIcon size={16} className="text-blue-500 shrink-0" />
