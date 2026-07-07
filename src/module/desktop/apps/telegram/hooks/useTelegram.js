@@ -34,14 +34,14 @@ const useTelegram = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showProfileDrawer, setShowProfileDrawer] = useState(false);
   const [nightMode, setNightMode] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerSection, setDrawerSection] = useState("menu");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [drawerSection, setDrawerSection] = useState("settings");
 
   const [userProfile, setUserProfile] = useState({
-    name: "Purav Rajput",
-    username: "@purav_rajput",
-    bio: "Student & Developer | Crafting beautiful macOS desktop portfolios.",
-    phone: "+91 98765 43210",
+    name: "Kuldeep Rajput",
+    username: "@kuldeeprajput_dev",
+    bio: "Full Stack Engineer | React, Next.js, Node.js & TypeScript enthusiast.",
+    phone: "+91 ••••• •••••",
   });
 
   const [newGroupName, setNewGroupName] = useState("");

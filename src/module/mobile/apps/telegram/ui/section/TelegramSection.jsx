@@ -844,12 +844,11 @@ const TelegramSection = ({
                   nightMode ? "bg-[#182533] border-zinc-800" : "bg-white border-black/5"
                 }`}
               >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white flex items-center justify-center font-extrabold text-2xl shadow-sm">
-                  {userProfile.name
-                    .split(" ")
-                    .map((w) => w[0])
-                    .join("")}
-                </div>
+                <img
+                  src="/images/profile.webp"
+                  alt={userProfile.name}
+                  className="w-16 h-16 rounded-full object-cover shadow-sm border border-white/20"
+                />
                 <div>
                   <h3
                     className={`font-extrabold text-[17px] leading-tight ${
