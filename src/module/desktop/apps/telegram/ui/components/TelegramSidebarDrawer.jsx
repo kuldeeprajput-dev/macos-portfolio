@@ -76,7 +76,7 @@ const TelegramSidebarDrawer = ({
       <div className="flex-1 overflow-y-auto min-h-0">
         {drawerSection === "menu" && (
           <div className="flex flex-col h-full">
-            <div className="p-5 text-left flex flex-col items-start gap-3 bg-gradient-to-br from-indigo-500/10 via-blue-500/5 to-cyan-500/10 shrink-0">
+            <div className="p-3 text-left flex flex-row items-center gap-4 shrink-0">
               <img
                 src="/images/profile.webp"
                 alt={userProfile.name}
@@ -179,7 +179,7 @@ const TelegramSidebarDrawer = ({
         {drawerSection === "profile" && (
           <div className="p-4 space-y-4 text-xs text-left">
             <div className={`flex flex-col items-center gap-2.5 py-4 border-b ${
-              nightMode ? "border-zinc-800" : "border-zinc-150"
+              nightMode ? "border-zinc-800" : "border-zinc-200"
             }`}>
               <div className="w-18 h-18 rounded-full relative shadow group overflow-hidden border border-white/20">
                 <img
@@ -412,30 +412,6 @@ const TelegramSidebarDrawer = ({
 
         {drawerSection === "settings" && (
           <div className="p-3 text-xs text-left space-y-4">
-            <div>
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">
-                Select Chat Theme
-              </span>
-              <div className="flex gap-2.5">
-                {["blue", "green", "purple", "orange"].map((col) => (
-                  <button
-                    key={col}
-                    onClick={() => setChatThemeColor(col)}
-                    className={`w-6 h-6 rounded-full border-2 transition-all cursor-pointer ${
-                      col === "blue"
-                        ? "bg-blue-500"
-                        : col === "green"
-                          ? "bg-emerald-500"
-                          : col === "purple"
-                            ? "bg-purple-500"
-                            : "bg-orange-500"
-                    } ${chatThemeColor === col ? `${nightMode ? "border-white" : "border-black"} scale-110 shadow-md ring-1 ring-blue-400` : "border-transparent hover:scale-105"}`}
-                    title={`${col} theme`}
-                  />
-                ))}
-              </div>
-            </div>
-            <hr className={nightMode ? "border-zinc-800" : "border-zinc-150"} />
             <div className="space-y-3">
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
                 Privacy & Security
@@ -465,15 +441,17 @@ const TelegramSidebarDrawer = ({
                 </label>
               </div>
             </div>
-            <hr className={nightMode ? "border-zinc-800" : "border-zinc-150"} />
+            <hr className={nightMode ? "border-zinc-800" : "border-zinc-200"} />
             <div className="space-y-2">
               <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
                 Active Devices
               </span>
-              <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center gap-2">
+              <div className={`p-2 rounded-lg flex items-center gap-2 ${
+                nightMode ? "bg-zinc-800 text-white" : "bg-zinc-100 text-gray-800"
+              }`}>
                 <Monitor className="w-4 h-4 text-blue-500 shrink-0" />
                 <div>
-                  <h6 className="font-bold text-[10px] text-gray-800 dark:text-white">
+                  <h6 className={`font-bold text-[10px] ${nightMode ? "text-white" : "text-gray-800"}`}>
                     macOS M2 Max
                   </h6>
                   <span className="text-[8px] text-gray-400 block">
