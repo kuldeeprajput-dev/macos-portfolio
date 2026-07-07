@@ -90,6 +90,25 @@ const SettingsAppearancePane = () => {
           </button>
         </div>
       </div>
+
+      {(darkMode || automaticMode) && (
+        <div className="w-full p-3 px-4 bg-amber-50 border border-amber-200/60 rounded-xl flex items-center gap-2.5 text-[12px] text-amber-800 font-medium animate-in fade-in slide-in-from-top-2 duration-300 shadow-sm">
+          <svg
+            className="w-4 h-4 text-amber-600 shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <span>Dark mode is coming soon</span>
+        </div>
+      )}
     </div>
   );
 };
