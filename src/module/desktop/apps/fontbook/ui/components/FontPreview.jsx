@@ -67,11 +67,18 @@ const FontPreview = ({
       />
     </div>
 
-    <div className="py-2 px-4 border-t border-zinc-200 bg-gray-50/50 text-[11px] text-gray-600 flex items-start gap-2.5 shrink-0 select-none">
-      <Info size={14} className="text-indigo-500 shrink-0 mt-0.5" />
-      <div>
-        <span className="font-bold text-gray-700 block">About {activeFont?.name}</span>
-        <p className="leading-relaxed mt-0.5">{activeFont?.desc}</p>
+    <div className="py-2.5 px-4 border-t border-zinc-200 bg-gray-50/50 text-[11px] text-gray-600 flex items-center justify-between gap-4 shrink-0 select-none">
+      <div className="flex items-start gap-2.5 min-w-0">
+        <Info size={14} className="text-indigo-500 shrink-0 mt-0.5" />
+        <div className="min-w-0">
+          <span className="font-bold text-gray-700 block">About {activeFont?.name}</span>
+          <p className="leading-relaxed mt-0.5 truncate">{activeFont?.desc}</p>
+        </div>
+      </div>
+      <div className="shrink-0 self-center">
+        <span className="bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider">
+          Coming Soon
+        </span>
       </div>
     </div>
   </div>
