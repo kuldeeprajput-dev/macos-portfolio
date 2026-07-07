@@ -6,7 +6,14 @@ const useTelegram = () => {
     const saved = localStorage.getItem("macos_portfolio_telegram");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return parsed.map((c) => {
+          const match = INITIAL_CHATS.find((ic) => ic.id === c.id);
+          if (match && match.avatar && !c.avatar) {
+            return { ...c, avatar: match.avatar };
+          }
+          return c;
+        });
       } catch (e) {
         console.error(e);
       }
@@ -60,6 +67,7 @@ const useTelegram = () => {
         missed: false,
         avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-600",
         initials: "K",
+        avatar: "/images/profile.webp",
       },
       {
         name: "Telegram Assistant Bot",
@@ -68,6 +76,7 @@ const useTelegram = () => {
         missed: false,
         avatarColor: "bg-gradient-to-tr from-cyan-400 to-sky-600",
         initials: "TB",
+        avatar: "/images/telegram/bot.webp",
       },
       {
         name: "Mom",
@@ -122,7 +131,7 @@ const useTelegram = () => {
     };
   }, [activeCall?.status]);
 
-  const handlePlaceCall = (name, avatarColor, initials) => {
+  const handlePlaceCall = (name, avatarColor, initials, avatar) => {
     if (callTimerRef.current) clearInterval(callTimerRef.current);
     if (callAudioRef.current) {
       callAudioRef.current.pause();
@@ -151,6 +160,7 @@ const useTelegram = () => {
           .join("")
           .toUpperCase()
           .slice(0, 2),
+      avatar,
       status: "Calling...",
     });
     setCallDuration("00:00");
@@ -194,6 +204,7 @@ const useTelegram = () => {
         name: activeCall.name,
         avatarColor: activeCall.avatarColor,
         initials: activeCall.initials,
+        avatar: activeCall.avatar,
         type: "outgoing",
         time: `Today, ${timeString}`,
         missed: false,
@@ -486,13 +497,14 @@ const useTelegram = () => {
     setIsDrawerOpen(false);
   };
 
-  const openOrCreateChat = (contactId, name, initials, color, status, bio) => {
+  const openOrCreateChat = (contactId, name, initials, color, status, bio, avatar) => {
     const hasChat = chats.some((c) => c.id === contactId);
     if (!hasChat) {
       const newChatObj = {
         id: contactId,
         name: name,
         type: "user",
+        avatar: avatar,
         avatarColor: color || "bg-gradient-to-tr from-zinc-500 to-zinc-600",
         initials:
           initials ||

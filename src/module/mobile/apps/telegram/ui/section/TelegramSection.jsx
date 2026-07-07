@@ -179,6 +179,7 @@ const TelegramSection = ({
       initials: "K",
       status: "online",
       color: "bg-gradient-to-tr from-blue-500 to-indigo-600",
+      avatar: "/images/profile.webp",
     },
     {
       name: "Saved Messages",
@@ -193,6 +194,7 @@ const TelegramSection = ({
       initials: "TB",
       status: "bot",
       color: "bg-gradient-to-tr from-cyan-400 to-sky-600",
+      avatar: "/images/telegram/bot.webp",
     },
     {
       name: "Amit Sharma",
@@ -266,7 +268,7 @@ const TelegramSection = ({
             <div className="w-20 shrink-0 flex justify-end items-center gap-2.5">
               <button
                 onClick={() =>
-                  handlePlaceCall(activeChat.name, activeChat.avatarColor, activeChat.initials)
+                  handlePlaceCall(activeChat.name, activeChat.avatarColor, activeChat.initials, activeChat.avatar)
                 }
                 className={`p-1.5 rounded-full bg-transparent border-none cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center ${
                   nightMode
@@ -277,12 +279,21 @@ const TelegramSection = ({
               >
                 <Phone size={16} />
               </button>
-              <div
-                onClick={() => setShowProfileDrawer(true)}
-                className={`w-7.5 h-7.5 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-sm cursor-pointer hover:opacity-90 transition-opacity shrink-0 ${activeChat.avatarColor}`}
-              >
-                {activeChat.initials}
-              </div>
+              {activeChat.avatar ? (
+                <img
+                  src={activeChat.avatar}
+                  alt={activeChat.name}
+                  onClick={() => setShowProfileDrawer(true)}
+                  className="w-7.5 h-7.5 rounded-full object-cover shadow-sm cursor-pointer hover:opacity-90 transition-opacity shrink-0 border border-black/5"
+                />
+              ) : (
+                <div
+                  onClick={() => setShowProfileDrawer(true)}
+                  className={`w-7.5 h-7.5 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-sm cursor-pointer hover:opacity-90 transition-opacity shrink-0 ${activeChat.avatarColor}`}
+                >
+                  {activeChat.initials}
+                </div>
+              )}
             </div>
           </>
         ) : (
@@ -424,11 +435,19 @@ const TelegramSection = ({
                   <div className="w-12 h-1.5 bg-zinc-300 dark:bg-zinc-700 rounded-full mx-auto mb-1 shrink-0" />
 
                   <div className="flex flex-col items-center text-center">
-                    <div
-                      className={`w-20 h-20 rounded-full flex items-center justify-center text-3xl font-extrabold text-white shadow-md ${activeChat.avatarColor}`}
-                    >
-                      {activeChat.initials}
-                    </div>
+                    {activeChat.avatar ? (
+                      <img
+                        src={activeChat.avatar}
+                        alt={activeChat.name}
+                        className="w-20 h-20 rounded-full object-cover shadow-md border border-white/20"
+                      />
+                    ) : (
+                      <div
+                        className={`w-20 h-20 rounded-full flex items-center justify-center text-3xl font-extrabold text-white shadow-md ${activeChat.avatarColor}`}
+                      >
+                        {activeChat.initials}
+                      </div>
+                    )}
                     <h3
                       className={`text-xl font-bold mt-3 ${nightMode ? "text-white" : "text-zinc-900"}`}
                     >
@@ -621,11 +640,19 @@ const TelegramSection = ({
                       }`}
                     >
                       <div className="relative shrink-0">
-                        <div
-                          className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-sm ${chat.avatarColor}`}
-                        >
-                          {chat.initials}
-                        </div>
+                        {chat.avatar ? (
+                          <img
+                            src={chat.avatar}
+                            alt={chat.name}
+                            className="w-11 h-11 rounded-full object-cover shadow-sm shrink-0 border border-black/5"
+                          />
+                        ) : (
+                          <div
+                            className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-sm ${chat.avatarColor}`}
+                          >
+                            {chat.initials}
+                          </div>
+                        )}
                         <span
                           className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 ${
                             nightMode ? "border-[#182533]" : "border-white"
@@ -724,6 +751,8 @@ const TelegramSection = ({
                         contact.initials,
                         contact.color,
                         contact.status,
+                        undefined,
+                        contact.avatar
                       );
                       setActiveTab("chats");
                       setIsSidebarOpen(false);
@@ -732,11 +761,19 @@ const TelegramSection = ({
                       nightMode ? "active:bg-[#24303f]" : "active:bg-zinc-50"
                     }`}
                   >
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-sm ${contact.color}`}
-                    >
-                      {contact.initials}
-                    </div>
+                    {contact.avatar ? (
+                      <img
+                        src={contact.avatar}
+                        alt={contact.name}
+                        className="w-10 h-10 rounded-full object-cover shadow-sm border border-black/5"
+                      />
+                    ) : (
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-sm ${contact.color}`}
+                      >
+                        {contact.initials}
+                      </div>
+                    )}
                     <div>
                       <h4
                         className={`font-bold text-[15px] leading-tight ${
@@ -780,17 +817,25 @@ const TelegramSection = ({
                 {callLogs.map((log, index) => (
                   <div
                     key={index}
-                    onClick={() => handlePlaceCall(log.name, log.avatarColor, log.initials)}
+                    onClick={() => handlePlaceCall(log.name, log.avatarColor, log.initials, log.avatar)}
                     className={`p-4 flex items-center justify-between cursor-pointer transition-colors ${
                       nightMode ? "active:bg-[#24303f]" : "active:bg-zinc-50"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-sm shrink-0 ${log.avatarColor || "bg-blue-500"}`}
-                      >
-                        {log.initials || log.name[0]}
-                      </div>
+                      {log.avatar ? (
+                        <img
+                          src={log.avatar}
+                          alt={log.name}
+                          className="w-10 h-10 rounded-full object-cover shadow-sm shrink-0 border border-black/5"
+                        />
+                      ) : (
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-sm shrink-0 ${log.avatarColor || "bg-blue-500"}`}
+                        >
+                          {log.initials || log.name[0]}
+                        </div>
+                      )}
                       <div>
                         <h4
                           className={`font-bold text-[15px] leading-tight ${
@@ -840,51 +885,39 @@ const TelegramSection = ({
               {/* Profile Card Info Banner */}
               <div
                 onClick={() => setIsEditingProfile(true)}
-                className={`rounded-2xl border p-4 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col items-center text-center gap-2 cursor-pointer hover:opacity-95 transition-opacity ${
+                className={`rounded-2xl border p-4 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col gap-3 cursor-pointer hover:opacity-95 transition-opacity ${
                   nightMode ? "bg-[#182533] border-zinc-800" : "bg-white border-black/5"
                 }`}
               >
-                <img
-                  src="/images/profile.webp"
-                  alt={userProfile.name}
-                  className="w-16 h-16 rounded-full object-cover shadow-sm border border-white/20"
-                />
-                <div>
-                  <h3
-                    className={`font-extrabold text-[17px] leading-tight ${
-                      nightMode ? "text-white" : "text-zinc-900"
-                    }`}
-                  >
-                    {userProfile.name}
-                  </h3>
-                  <span className="text-xs text-zinc-400 font-semibold">
-                    {userProfile.username}
-                  </span>
+                <div className="flex flex-row items-center gap-4">
+                  <img
+                    src="/images/profile.webp"
+                    alt={userProfile.name}
+                    className="w-14 h-14 rounded-full object-cover shadow-sm border border-white/20 shrink-0"
+                  />
+                  <div className="flex-1 text-left min-w-0">
+                    <h3
+                      className={`font-extrabold text-[16px] leading-tight ${
+                        nightMode ? "text-white" : "text-zinc-900"
+                      }`}
+                    >
+                      {userProfile.name}
+                    </h3>
+                    <span className="text-xs text-zinc-400 font-semibold block mt-0.5">
+                      {userProfile.username}
+                    </span>
+                    <span className="text-[11px] text-zinc-500 font-medium block mt-0.5">
+                      {userProfile.phone}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-xs leading-relaxed text-zinc-500 font-medium px-4 mt-1">
-                  {userProfile.bio}
-                </p>
-                <span
-                  className={`text-xs font-bold text-zinc-400 px-2.5 py-0.5 rounded-full mt-1 ${
-                    nightMode ? "bg-zinc-800" : "bg-zinc-100"
-                  }`}
-                >
-                  {userProfile.phone}
-                </span>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsEditingProfile(true);
-                  }}
-                  className={`w-full py-2 font-bold rounded-xl text-xs mt-3 border-none hover:opacity-90 transition-all cursor-pointer active:scale-98 ${
-                    nightMode
-                      ? "bg-zinc-800 text-blue-400"
-                      : "bg-zinc-100 text-blue-500 hover:bg-zinc-200"
-                  }`}
-                >
-                  Edit Profile
-                </button>
+                {userProfile.bio && (
+                  <p className={`text-xs text-left leading-relaxed text-zinc-500 font-medium px-1 border-t pt-2 ${
+                    nightMode ? "border-zinc-800/60" : "border-zinc-100"
+                  }`}>
+                    {userProfile.bio}
+                  </p>
+                )}
               </div>
 
               {/* Saved Messages Quick Access */}
@@ -1350,11 +1383,19 @@ const TelegramSection = ({
           </div>
 
           <div className="flex flex-col items-center gap-4 text-center mt-12 select-none">
-            <div
-              className={`w-28 h-28 rounded-full flex items-center justify-center text-4xl font-extrabold shadow-2xl animate-pulse ${activeCall.avatarColor}`}
-            >
-              {activeCall.initials}
-            </div>
+            {activeCall.avatar ? (
+              <img
+                src={activeCall.avatar}
+                alt={activeCall.name}
+                className="w-28 h-28 rounded-full object-cover shadow-2xl border border-white/20 animate-pulse"
+              />
+            ) : (
+              <div
+                className={`w-28 h-28 rounded-full flex items-center justify-center text-4xl font-extrabold shadow-2xl animate-pulse ${activeCall.avatarColor}`}
+              >
+                {activeCall.initials}
+              </div>
+            )}
             <div>
               <h2 className="text-2xl font-bold mt-4">{activeCall.name}</h2>
               <p className="text-sm text-zinc-400 mt-1.5 tracking-wide animate-pulse">
