@@ -47,19 +47,40 @@ const PlayerOverlay = ({
   const [_selectedSeason, setSelectedSeason] = useState(activeVideo?.season || 1);
   const [_selectedEpisode, setSelectedEpisode] = useState(activeVideo?.episode || 1);
   const [showEpisodePicker, setShowEpisodePicker] = useState(false);
+  const [selectedServer, setSelectedServer] = useState("vidsrc_to");
 
   if (!activeVideo) return null;
 
   const isStreaming = !!activeVideo.tmdbId && /^\d+$/.test(activeVideo.tmdbId);
   const isTvShow = isStreaming && activeVideo.type === "tv";
 
-  const apiBaseUrl = process.env.NEXT_PUBLIC_VIDLINK_API_URL || "https://vidlink.pro";
+  const SERVERS = [
+    { id: "vidsrc_to", name: "Vidsrc.to" },
+    { id: "vidlink", name: "VidLink" },
+  ];
 
-  const embedUrl = isTvShow
-    ? `${apiBaseUrl}/tv/${activeVideo.tmdbId}/${activeVideo.season || 1}/${
-        activeVideo.episode || 1
-      }?autoplay=true&nextbutton=true`
-    : `${apiBaseUrl}/movie/${activeVideo.tmdbId}?autoplay=true`;
+  const getEmbedUrl = () => {
+    if (!activeVideo.tmdbId) return "";
+    const season = activeVideo.season || 1;
+    const episode = activeVideo.episode || 1;
+
+    switch (selectedServer) {
+      case "vidlink": {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_VIDLINK_API_URL || "https://vidlink.pro";
+        return isTvShow
+          ? `${apiBaseUrl}/tv/${activeVideo.tmdbId}/${season}/${episode}?autoplay=true&nextbutton=true`
+          : `${apiBaseUrl}/movie/${activeVideo.tmdbId}?autoplay=true`;
+      }
+      case "vidsrc_to":
+      default:
+        return isTvShow
+          ? `https://vidsrc.to/embed/tv/${activeVideo.tmdbId}/${season}/${episode}`
+          : `https://vidsrc.to/embed/movie/${activeVideo.tmdbId}`;
+    }
+  };
+
+  const embedUrl = getEmbedUrl();
+  const activeServerName = SERVERS.find((s) => s.id === selectedServer)?.name || "VidLink";
 
   const handleSeasonChange = (e) => {
     const s = parseInt(e.target.value, 10);
@@ -101,7 +122,7 @@ const PlayerOverlay = ({
           src={embedUrl}
           className="w-full h-full border-none"
           allowFullScreen
-          allow="autoplay; encrypted-media; picture-in-picture"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
           title={activeVideo.title}
         />
       ) : (
@@ -134,85 +155,110 @@ const PlayerOverlay = ({
           </button>
           <div className="flex-1 text-center px-4">
             <p className="text-[10px] font-bold text-blue-400 tracking-wider uppercase">
-              {isStreaming ? "Streaming" : "Playing"}
+              {isStreaming ? `Streaming via ${activeServerName}` : "Playing"}
             </p>
             <h2 className="text-sm font-bold text-white leading-tight truncate">
               {activeVideo.title}
               {isTvShow && ` • S${activeVideo.season || 1} E${activeVideo.episode || 1}`}
             </h2>
           </div>
-          {isTvShow && (
+          {isStreaming && (
             <button
               onClick={() => setShowEpisodePicker(!showEpisodePicker)}
               className="px-2.5 py-1 bg-white/10 border border-white/20 rounded-lg text-[10px] font-bold text-white backdrop-blur-sm active:scale-95 transition-transform"
             >
-              Episodes
+              Settings
             </button>
           )}
-          {!isTvShow && <div className="w-8" />}
+          {!isStreaming && <div className="w-8" />}
         </div>
       </div>
 
-      {/* Episode Picker for TV Shows */}
-      {isTvShow && showEpisodePicker && (
-        <div className="absolute top-24 right-3 left-3 bg-neutral-900/95 border border-white/10 rounded-2xl p-4 backdrop-blur-xl z-20 shadow-2xl">
-          <div className="flex items-center justify-between mb-3">
+      {/* Stream Settings/Episode Picker for Mobile */}
+      {isStreaming && showEpisodePicker && (
+        <div className="absolute top-24 right-3 left-3 bg-neutral-900/95 border border-white/10 rounded-2xl p-4 backdrop-blur-xl z-20 shadow-2xl space-y-3">
+          <div className="flex items-center justify-between">
             <span className="text-[10px] font-extrabold tracking-wider uppercase text-neutral-400">
-              Episode Selector
+              Stream Settings
             </span>
             <button onClick={() => setShowEpisodePicker(false)} className="p-1">
               <X className="w-4 h-4 text-white/60" />
             </button>
           </div>
-          <div className="flex gap-3 mb-3">
-            <div className="flex-1">
-              <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
-                Season
-              </label>
-              <select
-                value={activeVideo.season || 1}
-                onChange={handleSeasonChange}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
-              >
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <option key={s} value={s}>
-                    Season {s}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex-1">
-              <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
-                Episode
-              </label>
-              <select
-                value={activeVideo.episode || 1}
-                onChange={handleEpisodeChange}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
-              >
-                {Array.from({ length: 24 }, (_, i) => i + 1).map((ep) => (
-                  <option key={ep} value={ep}>
-                    Episode {ep}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={handlePrevEpisode}
-              disabled={(activeVideo.episode || 1) <= 1}
-              className="flex-1 flex items-center justify-center gap-1 py-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg text-xs text-white font-semibold disabled:opacity-30 active:scale-95 transition-all"
+
+          <div>
+            <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
+              Server
+            </label>
+            <select
+              value={selectedServer}
+              onChange={(e) => setSelectedServer(e.target.value)}
+              className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
-              <ChevronLeft className="w-4 h-4" /> Prev
-            </button>
-            <button
-              onClick={handleNextEpisode}
-              className="flex-1 flex items-center justify-center gap-1 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-xs text-white font-semibold active:scale-95 transition-all"
-            >
-              Next <ChevronRight className="w-4 h-4" />
-            </button>
+              {SERVERS.map((srv) => (
+                <option key={srv.id} value={srv.id}>
+                  {srv.name}
+                </option>
+              ))}
+            </select>
           </div>
+
+          {isTvShow && (
+            <div className="border-t border-white/5 pt-3 space-y-3">
+              <span className="text-[10px] font-extrabold tracking-wider uppercase text-neutral-400 block">
+                Episode Selector
+              </span>
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
+                    Season
+                  </label>
+                  <select
+                    value={activeVideo.season || 1}
+                    onChange={handleSeasonChange}
+                    className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <option key={s} value={s}>
+                        Season {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-1">
+                  <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
+                    Episode
+                  </label>
+                  <select
+                    value={activeVideo.episode || 1}
+                    onChange={handleEpisodeChange}
+                    className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  >
+                    {Array.from({ length: 24 }, (_, i) => i + 1).map((ep) => (
+                      <option key={ep} value={ep}>
+                        Episode {ep}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handlePrevEpisode}
+                  disabled={(activeVideo.episode || 1) <= 1}
+                  className="flex-1 flex items-center justify-center gap-1 py-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg text-xs text-white font-semibold disabled:opacity-30 active:scale-95 transition-all"
+                >
+                  <ChevronLeft className="w-4 h-4" /> Prev
+                </button>
+                <button
+                  onClick={handleNextEpisode}
+                  className="flex-1 flex items-center justify-center gap-1 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-xs text-white font-semibold active:scale-95 transition-all"
+                >
+                  Next <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

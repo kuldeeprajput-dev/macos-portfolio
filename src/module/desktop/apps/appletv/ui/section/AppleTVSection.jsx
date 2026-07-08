@@ -217,7 +217,7 @@ const AppleTVSection = ({
                     Stream TMDB ID: {normalizedQuery}
                   </h3>
                   <p className="text-xs text-neutral-300 leading-relaxed">
-                    Directly stream this movie or TV show using the VidLink embed player.
+                    Directly stream this movie or TV show using multiple stream servers.
                   </p>
                 </div>
                 <div className="flex items-center gap-3 pt-1">
