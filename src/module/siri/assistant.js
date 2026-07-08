@@ -462,17 +462,65 @@ const handleProjectCommand = (query, actions) => {
 
 const handleLocationCommand = (query, actions) => {
   if (hasAny(query, ["about portfolio", "portfolio info", "about this portfolio"])) {
-    actions.setAboutPortfolioOpen?.(true);
-    return makeResult("Opening About This Portfolio.");
+    return makeResult(
+      "This is a simulated macOS desktop environment built with React and Next.js. It features interactive windows, widgets, a terminal, dynamic apps, and Siri voice integration to showcase my developer portfolio.",
+      { listenAfter: true },
+    );
   }
 
-  if (hasAny(query, ["about me", "about kuldeep", "developer profile"])) {
-    if (hasAny(query, ["tell me", "who is", "explain"])) {
-      return makeResult(
-        `${OWNER_NAME} is a web developer focused on React, Next.js, and polished interactive portfolio experiences.`,
-        { listenAfter: true },
-      );
-    }
+  // Queries asking about the user ("me")
+  if (
+    hasAny(query, [
+      "tell me about me",
+      "tell about me",
+      "tell aboue me",
+      "about me",
+      "say about me",
+      "who am i",
+    ]) &&
+    !hasAny(query, OPEN_INTENTS)
+  ) {
+    return makeResult("I am designed only responsive about Kuldeep Rajput.", { listenAfter: true });
+  }
+
+  // Informational queries about Kuldeep
+  if (
+    hasAny(query, [
+      "tell me about kuldeep",
+      "tell me about rajput",
+      "tell me about kuldeep rajput",
+      "who is kuldeep",
+      "who is rajput",
+      "who is kuldeep rajput",
+      "say about kuldeep",
+      "say about rajput",
+      "say about kuldeep rajput",
+    ]) ||
+    query === "kuldeep" ||
+    query === "rajput" ||
+    query === "kuldeep rajput" ||
+    ((containsTerm(query, "kuldeep") || containsTerm(query, "rajput")) &&
+      !hasAny(query, OPEN_INTENTS))
+  ) {
+    return makeResult(
+      `${OWNER_NAME} is a web developer focused on React, Next.js, and polished interactive portfolio experiences.`,
+      { listenAfter: true },
+    );
+  }
+
+  // Open queries for the About Me section
+  if (
+    query === "about" ||
+    hasAny(query, [
+      "open about me",
+      "open about",
+      "about me",
+      "about kuldeep",
+      "about rajput",
+      "about kuldeep rajput",
+      "developer profile",
+    ])
+  ) {
     openFinderLocation(actions, locations.about);
     return makeResult("Opening the About Me folder.");
   }
