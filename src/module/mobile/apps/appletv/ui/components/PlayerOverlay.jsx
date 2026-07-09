@@ -47,7 +47,7 @@ const PlayerOverlay = ({
   const [_selectedSeason, setSelectedSeason] = useState(activeVideo?.season || 1);
   const [_selectedEpisode, setSelectedEpisode] = useState(activeVideo?.episode || 1);
   const [showEpisodePicker, setShowEpisodePicker] = useState(false);
-  const [selectedServer, setSelectedServer] = useState("vidsrc_to");
+  const [selectedServer, setSelectedServer] = useState("vidlink");
 
   if (!activeVideo) return null;
 
@@ -55,8 +55,8 @@ const PlayerOverlay = ({
   const isTvShow = isStreaming && activeVideo.type === "tv";
 
   const SERVERS = [
-    { id: "vidsrc_to", name: "Vidsrc.to" },
     { id: "vidlink", name: "VidLink" },
+    { id: "vidsrc_to", name: "Vidsrc.to" },
   ];
 
   const getEmbedUrl = () => {
@@ -65,17 +65,17 @@ const PlayerOverlay = ({
     const episode = activeVideo.episode || 1;
 
     switch (selectedServer) {
-      case "vidlink": {
+      case "vidsrc_to":
+        return isTvShow
+          ? `https://vidsrc.to/embed/tv/${activeVideo.tmdbId}/${season}/${episode}`
+          : `https://vidsrc.to/embed/movie/${activeVideo.tmdbId}`;
+      case "vidlink":
+      default: {
         const apiBaseUrl = process.env.NEXT_PUBLIC_VIDLINK_API_URL || "https://vidlink.pro";
         return isTvShow
           ? `${apiBaseUrl}/tv/${activeVideo.tmdbId}/${season}/${episode}?autoplay=true&nextbutton=true`
           : `${apiBaseUrl}/movie/${activeVideo.tmdbId}?autoplay=true`;
       }
-      case "vidsrc_to":
-      default:
-        return isTvShow
-          ? `https://vidsrc.to/embed/tv/${activeVideo.tmdbId}/${season}/${episode}`
-          : `https://vidsrc.to/embed/movie/${activeVideo.tmdbId}`;
     }
   };
 
