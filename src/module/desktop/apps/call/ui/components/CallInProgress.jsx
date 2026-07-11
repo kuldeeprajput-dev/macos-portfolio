@@ -36,11 +36,11 @@ const CallInProgress = ({
   const isBhavesh = activeCall.name?.toLowerCase().includes("bhavesh");
   const isMahabub = activeCall.name?.toLowerCase().includes("mahabub");
   const videoUrl = isKuldeep
-    ? process.env.NEXT_PUBLIC_VIDEOCALL_KULDEEPRAJPUT || process.env.videocall_kuldeeprajput
+    ? process.env.NEXT_PUBLIC_VIDEOCALL_KULDEEPRAJPUT
     : isBhavesh
-      ? process.env.NEXT_PUBLIC_VIDEOCALL_BHAVESH_KUMAR || process.env.videocall_bhaveshkumar
+      ? process.env.NEXT_PUBLIC_VIDEOCALL_BHAVESH_KUMAR
       : isMahabub
-        ? process.env.NEXT_PUBLIC_VIDEOCALL_MAHABUB || process.env.videocall_mahabub
+        ? process.env.NEXT_PUBLIC_VIDEOCALL_MAHABUB
         : "";
   const showVideo = (isKuldeep || isBhavesh || isMahabub) && videoUrl && !videoError;
 
