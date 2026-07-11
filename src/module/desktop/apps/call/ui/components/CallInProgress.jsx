@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { User, Mic, MicOff, Video, VideoOff, Volume2, VolumeX, PhoneOff } from "lucide-react";
 
 const CallInProgress = ({
@@ -12,16 +13,34 @@ const CallInProgress = ({
   onEndCall,
   formatTimer,
 }) => {
+  const [videoError, setVideoError] = useState(false);
+  const isKuldeep = activeCall.name?.toLowerCase().includes("kuldeep");
+  const videoUrl =
+    process.env.NEXT_PUBLIC_VIDEOCALL_KULDEEPRAJPUT || process.env.videocall_kuldeeprajput;
+  const showVideo = isKuldeep && videoUrl && !videoError;
+
   return (
     <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl">
       {/* Full-screen Background Stream or Dynamic Gradient */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {activeCall.type === "video" && !cameraMuted && activeCall.status === "connected" ? (
-          <img
-            src={activeCall.callPreview || "/images/facetime_call_preview.webp"}
-            alt="Active Video Call Stream"
-            className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
-          />
+          showVideo ? (
+            <video
+              src={videoUrl}
+              autoPlay
+              loop
+              muted={speakerMuted}
+              playsInline
+              onError={() => setVideoError(true)}
+              className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
+            />
+          ) : (
+            <img
+              src={activeCall.callPreview || "/images/facetime_call_preview.webp"}
+              alt="Active Video Call Stream"
+              className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
+            />
+          )
         ) : (
           <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214]">
             {/* Subtle floating ambient light radial glow */}
