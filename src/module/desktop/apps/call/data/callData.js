@@ -1,12 +1,12 @@
 export const CONTACTS = [
   {
-    id: "steve",
-    name: "Steve Jobs",
-    status: "Think Different",
-    available: false,
-    avatar: "/images/contacts/steve.webp",
-    avatarColor: "bg-gradient-to-tr from-gray-600 to-zinc-800",
-    callPreview: "/images/contacts/call_preview_steve.webp",
+    id: "bhavesh",
+    name: "Bhavesh Kumar",
+    status: "Frontend Developer",
+    available: true,
+    avatar: "/images/contacts/Bhavesh.webp",
+    avatarColor: "bg-gradient-to-tr from-indigo-500 to-purple-600",
+    callPreview: "/images/contacts/Bhavesh.webp",
   },
   {
     id: "kuldeep",

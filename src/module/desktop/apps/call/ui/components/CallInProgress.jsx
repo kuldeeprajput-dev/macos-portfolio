@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, Mic, MicOff, Video, VideoOff, Volume2, VolumeX, PhoneOff } from "lucide-react";
 
 const CallInProgress = ({
@@ -14,10 +14,32 @@ const CallInProgress = ({
   formatTimer,
 }) => {
   const [videoError, setVideoError] = useState(false);
+  const [profileAvatar, setProfileAvatar] = useState("/images/profile.webp");
+
+  useEffect(() => {
+    const githubProfileUrl = process.env.NEXT_PUBLIC_GITHUB_PROFILE || "";
+    const username = githubProfileUrl
+      ? githubProfileUrl.replace(/\/+$/, "").split("/").pop()
+      : "kuldeeprajput-dev";
+
+    fetch(`https://api.github.com/users/${username}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.avatar_url) {
+          setProfileAvatar(data.avatar_url);
+        }
+      })
+      .catch((err) => console.error("Error fetching profile avatar:", err));
+  }, []);
+
   const isKuldeep = activeCall.name?.toLowerCase().includes("kuldeep");
-  const videoUrl =
-    process.env.NEXT_PUBLIC_VIDEOCALL_KULDEEPRAJPUT || process.env.videocall_kuldeeprajput;
-  const showVideo = isKuldeep && videoUrl && !videoError;
+  const isBhavesh = activeCall.name?.toLowerCase().includes("bhavesh");
+  const videoUrl = isKuldeep
+    ? process.env.NEXT_PUBLIC_VIDEOCALL_KULDEEPRAJPUT || process.env.videocall_kuldeeprajput
+    : isBhavesh
+      ? process.env.NEXT_PUBLIC_VIDEOCALL_BHAVESH_KUMAR || process.env.videocall_bhaveshkumar
+      : "";
+  const showVideo = (isKuldeep || isBhavesh) && videoUrl && !videoError;
 
   return (
     <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl">
@@ -151,7 +173,7 @@ const CallInProgress = ({
           ) : (
             <div className="w-full h-full relative">
               <img
-                src="/images/profile.webp"
+                src={profileAvatar}
                 alt="Self Camera Preview"
                 className="w-full h-full object-cover brightness-[0.95]"
               />
