@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { User, Mic, MicOff, Video, VideoOff, Volume2, VolumeX, PhoneOff } from "lucide-react";
 
 const CallInProgress = ({
@@ -12,128 +13,206 @@ const CallInProgress = ({
   onEndCall,
   formatTimer,
 }) => {
+  const [videoError, setVideoError] = useState(false);
+  const [profileAvatar, setProfileAvatar] = useState("/images/profile.webp");
+
+  useEffect(() => {
+    const githubProfileUrl = process.env.NEXT_PUBLIC_GITHUB_PROFILE || "";
+    const username = githubProfileUrl
+      ? githubProfileUrl.replace(/\/+$/, "").split("/").pop()
+      : "kuldeeprajput-dev";
+
+    fetch(`https://api.github.com/users/${username}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.avatar_url) {
+          setProfileAvatar(data.avatar_url);
+        }
+      })
+      .catch((err) => console.error("Error fetching profile avatar:", err));
+  }, []);
+
+  const isKuldeep = activeCall.name?.toLowerCase().includes("kuldeep");
+  const isBhavesh = activeCall.name?.toLowerCase().includes("bhavesh");
+  const isMahabub = activeCall.name?.toLowerCase().includes("mahabub");
+  const videoUrl = isKuldeep
+    ? process.env.NEXT_PUBLIC_VIDEOCALL_KULDEEPRAJPUT
+    : isBhavesh
+      ? process.env.NEXT_PUBLIC_VIDEOCALL_BHAVESH_KUMAR
+      : isMahabub
+        ? process.env.NEXT_PUBLIC_VIDEOCALL_MAHABUB
+        : "";
+  const showVideo = (isKuldeep || isBhavesh || isMahabub) && videoUrl && !videoError;
+
   return (
-    <div className="absolute inset-0 bg-zinc-50 text-zinc-800 z-40 flex flex-col justify-between p-5 pb-8 animate-fade-in h-full overflow-hidden select-none">
-      {/* 1. Full-screen Video Background Simulating Remote Stream */}
+    <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl group">
+      {/* Full-screen Background Stream or Dynamic Gradient */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        {activeCall.type === "video" && !cameraMuted && activeCall.status === "connected" ? (
-          <img
-            src="/images/facetime_call_preview.webp"
-            alt="Active Video Call Stream"
-            className="w-full h-full object-cover brightness-[0.95]"
+        {/* Play video element */}
+        {activeCall.status === "connected" && showVideo && (
+          <video
+            src={videoUrl}
+            autoPlay
+            loop
+            muted={speakerMuted}
+            playsInline
+            onError={() => setVideoError(true)}
+            className={
+              activeCall.type === "video" && !cameraMuted
+                ? "absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
+                : "absolute w-0 h-0 opacity-0 pointer-events-none"
+            }
           />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100 via-zinc-50 to-emerald-50" />
+        )}
+        {!(
+          activeCall.type === "video" &&
+          !cameraMuted &&
+          activeCall.status === "connected" &&
+          showVideo
+        ) && (
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214]">
+            {/* Subtle floating ambient light radial glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_60%)]" />
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-3xl" />
+          </div>
         )}
       </div>
 
-      {/* 2. Top Header Info Overlay */}
-      <div className="z-10 w-full flex flex-col items-center pt-6 text-center space-y-1">
-        <div className="flex items-center gap-1.5 bg-white/65 backdrop-blur-xl border border-zinc-200/50 px-3 py-1 rounded-full shadow-sm">
-          <span className="w-1.5 h-1.5 bg-[#30d158] rounded-full animate-pulse" />
-          <span className="text-[10px] font-bold tracking-widest text-zinc-650 uppercase">
+      {/* Top Header Overlay */}
+      <div className="z-10 w-full flex flex-col items-center pt-8 text-center select-none opacity-100 pointer-events-auto">
+        <div className="flex items-center gap-1.5 bg-black/45 border border-white/10 px-3.5 py-1 rounded-full backdrop-blur-xl shadow-lg pointer-events-auto">
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${activeCall.status === "ringing" ? "bg-yellow-500 animate-pulse" : "bg-emerald-500 animate-pulse"}`}
+          />
+          <span className="text-[10px] font-bold tracking-widest text-white/80 uppercase">
             FaceTime {activeCall.type === "video" ? "Video" : "Audio"}
           </span>
         </div>
-        <h2 className="text-2xl font-extrabold tracking-tight text-zinc-900 mt-2 drop-shadow-sm">
+        <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3 drop-shadow-md pointer-events-auto">
           {activeCall.name}
         </h2>
-        <div className="text-xs text-zinc-500 font-medium tracking-wide">
+        <div className="text-xs font-medium tracking-wide text-white/50 mt-1 pointer-events-auto">
           {activeCall.status === "ringing" ? (
             <span className="animate-pulse">Ringing...</span>
           ) : (
-            <span className="tabular-nums font-bold text-zinc-700 bg-white border border-zinc-200 px-2 py-0.5 rounded-md">
+            <span className="tabular-nums bg-white/10 border border-white/10 px-2 py-0.5 rounded-md backdrop-blur-md text-white/80">
               {formatTimer(callTimer)}
             </span>
           )}
         </div>
       </div>
 
-      {/* 3. Floating User PIP (Picture in Picture) Mock */}
-      {activeCall.status === "connected" && activeCall.type === "video" && (
-        <div className="absolute top-24 right-5 w-20 h-28 bg-white rounded-2xl border border-zinc-200 shadow-2xl overflow-hidden z-20 flex flex-col items-center justify-center transition-all hover:scale-105 active:scale-95">
-          {cameraMuted ? (
-            <VideoOff className="w-5 h-5 text-zinc-400" />
-          ) : (
-            <div className="w-full h-full relative">
-              <img
-                src="/images/profile.webp"
-                alt="Self Camera Preview"
-                className="w-full h-full object-cover brightness-[0.9]"
-              />
-              <span className="text-[8px] text-white bg-black/60 px-1 py-0.5 rounded font-extrabold tracking-wider absolute bottom-2 left-2 select-none">
-                Me
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Center avatar/indicator for audio calls or paused cameras */}
+      {/* Center Avatar Content (For audio calls or ringing/inactive cameras in video calls) */}
       {(activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing") && (
         <div className="z-10 flex-1 flex flex-col items-center justify-center">
-          {activeCall.avatar ? (
-            <img
-              src={activeCall.avatar}
-              alt={activeCall.name}
-              className="w-24 h-24 rounded-full object-cover shadow-2xl border border-white"
-            />
-          ) : (
-            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-zinc-200 to-zinc-100 text-zinc-700 flex items-center justify-center font-extrabold text-2xl uppercase shadow-xl border border-zinc-200">
-              {activeCall.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
-            </div>
-          )}
+          <div className="relative group flex items-center justify-center">
+            {activeCall.status === "ringing" ? (
+              <>
+                <div
+                  className="absolute w-28 h-28 rounded-full border border-white/25 animate-ping opacity-75"
+                  style={{ animationDuration: "2s" }}
+                />
+                <div
+                  className="absolute w-28 h-28 rounded-full border border-white/15 animate-ping opacity-45"
+                  style={{ animationDuration: "2.8s", animationDelay: "0.4s" }}
+                />
+                <div
+                  className="absolute w-28 h-28 rounded-full border border-white/5 animate-ping opacity-20"
+                  style={{ animationDuration: "3.6s", animationDelay: "0.8s" }}
+                />
+                <div className="absolute -inset-4 rounded-full bg-white/5 blur-xl animate-pulse" />
+              </>
+            ) : (
+              <div className="absolute -inset-4 rounded-full bg-emerald-500/10 blur-xl animate-pulse" />
+            )}
+
+            {activeCall.avatar ? (
+              <img
+                src={activeCall.avatar}
+                alt={activeCall.name}
+                className="w-28 h-28 rounded-full object-cover shadow-2xl border-2 border-white/20 relative z-10 transition duration-500 hover:scale-105"
+              />
+            ) : (
+              <div className="w-28 h-28 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-800 text-white flex items-center justify-center font-bold text-3xl uppercase shadow-2xl border-2 border-white/20 relative z-10">
+                {activeCall.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </div>
+            )}
+          </div>
           {cameraMuted && activeCall.type === "video" && (
-            <span className="text-[10px] text-red-500 bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full font-bold mt-4 shadow-sm">
-              Camera Off
+            <span className="text-[10px] text-red-400 bg-red-950/60 border border-red-500/30 px-3 py-1 rounded-full font-bold mt-4 backdrop-blur-md shadow-lg">
+              Camera Paused
             </span>
+          )}
+
+          {/* Animated Gray Wave visualizer */}
+          {activeCall.status === "connected" && !micMuted && (
+            <div className="flex items-end gap-1.5 h-8 mt-8 justify-center select-none">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
+                <span
+                  key={idx}
+                  className="w-[3px] h-6 bg-zinc-400 rounded-full origin-bottom"
+                  style={{
+                    animation: "bounceVisualizer 1.2s ease-in-out infinite alternate",
+                    animationDelay: `${idx * 0.15}s`,
+                  }}
+                />
+              ))}
+            </div>
           )}
         </div>
       )}
 
-      {/* Spacer to align layout when center content is not active */}
+      {/* Spacer when remote video stream is full-screen */}
       {!(activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing") && (
         <div className="flex-1" />
       )}
 
-      {/* 4. Bottom Controls Bar Overlay */}
-      <div className="z-10 w-full max-w-[340px] mx-auto bg-white/70 border border-zinc-200 backdrop-blur-2xl px-5 py-4 rounded-[28px] shadow-xl flex items-center justify-between shrink-0">
+      {/* Bottom Controls Panel */}
+      <div
+        className={`z-10 w-full mx-auto bg-neutral-900/65 border border-white/10 backdrop-blur-2xl px-6 py-4 rounded-[32px] shadow-2xl flex items-center justify-between mb-8 shrink-0 transition-all hover:bg-neutral-900/70 opacity-100 pointer-events-auto ${
+          activeCall.type === "video" ? "max-w-[325px]" : "max-w-[250px]"
+        }`}
+      >
         {/* Toggle Mic */}
         <button
           onClick={onMicToggle}
           disabled={activeCall.status !== "connected"}
-          className={`p-3.5 rounded-full transition-all active:scale-90 disabled:opacity-30 flex items-center justify-center ${
-            micMuted ? "bg-zinc-200 text-zinc-950" : "bg-zinc-100 hover:bg-zinc-150 text-zinc-700"
+          className={`p-3.5 rounded-full transition-all duration-200 active:scale-90 disabled:opacity-30 flex items-center justify-center ${
+            micMuted
+              ? "bg-[#ff3b30] text-white shadow-lg shadow-red-500/20"
+              : "bg-white/10 hover:bg-white/20 text-neutral-100"
           }`}
           title={micMuted ? "Unmute Microphone" : "Mute Microphone"}
         >
           {micMuted ? <MicOff className="w-4.5 h-4.5" /> : <Mic className="w-4.5 h-4.5" />}
         </button>
 
-        {/* Toggle Camera */}
-        <button
-          onClick={onCameraToggle}
-          disabled={activeCall.type !== "video" || activeCall.status !== "connected"}
-          className={`p-3.5 rounded-full transition-all active:scale-90 disabled:opacity-30 flex items-center justify-center ${
-            cameraMuted
-              ? "bg-zinc-200 text-zinc-950"
-              : "bg-zinc-100 hover:bg-zinc-150 text-zinc-700"
-          }`}
-          title={cameraMuted ? "Start Camera" : "Pause Camera"}
-        >
-          {cameraMuted ? <VideoOff className="w-4.5 h-4.5" /> : <Video className="w-4.5 h-4.5" />}
-        </button>
+        {/* Toggle Camera (Only for video calls) */}
+        {activeCall.type === "video" && (
+          <button
+            onClick={onCameraToggle}
+            disabled={activeCall.status !== "connected"}
+            className={`p-3.5 rounded-full transition-all duration-200 active:scale-90 disabled:opacity-30 flex items-center justify-center ${
+              cameraMuted
+                ? "bg-[#ff3b30] text-white shadow-lg shadow-red-500/20"
+                : "bg-white/10 hover:bg-white/20 text-neutral-100"
+            }`}
+            title={cameraMuted ? "Start Camera" : "Pause Camera"}
+          >
+            {cameraMuted ? <VideoOff className="w-4.5 h-4.5" /> : <Video className="w-4.5 h-4.5" />}
+          </button>
+        )}
 
         {/* Toggle Speaker */}
         <button
           onClick={onSpeakerToggle}
-          className={`p-3.5 rounded-full transition-all active:scale-90 flex items-center justify-center ${
+          className={`p-3.5 rounded-full transition-all duration-200 active:scale-90 flex items-center justify-center ${
             speakerMuted
-              ? "bg-zinc-200 text-zinc-950"
-              : "bg-zinc-100 hover:bg-zinc-150 text-zinc-700"
+              ? "bg-[#ff3b30] text-white shadow-lg shadow-red-500/20"
+              : "bg-white/10 hover:bg-white/20 text-neutral-100"
           }`}
           title={speakerMuted ? "Unmute Sound" : "Mute Sound"}
         >
@@ -143,7 +222,7 @@ const CallInProgress = ({
         {/* End Call Button */}
         <button
           onClick={onEndCall}
-          className="p-3.5 bg-[#ff3b30] hover:bg-[#e03025] text-white rounded-full transition-all active:scale-90 shadow-lg shadow-red-500/20 flex items-center justify-center"
+          className="p-3.5 bg-[#ff3b30] hover:bg-[#e03025] text-white rounded-full transition-all duration-200 active:scale-90 shadow-lg shadow-red-500/20 flex items-center justify-center"
           title="End Call"
         >
           <PhoneOff className="w-4.5 h-4.5" />

@@ -51,24 +51,23 @@ const CallSection = ({
 
   // Mock Recents Call Log
   const recentsLog = [
-    { name: "Kunal", type: "video", date: "10:30 AM", avatarColor: "from-blue-500 to-indigo-600" },
     {
-      name: "Steve Jobs",
+      name: "Kuldeep (Developer)",
+      type: "video",
+      date: "10:30 AM",
+      avatarColor: "from-blue-500 to-indigo-600",
+    },
+    {
+      name: "Bhavesh Kumar",
       type: "video",
       date: "Yesterday",
-      avatarColor: "from-gray-600 to-zinc-800",
+      avatarColor: "from-indigo-500 to-purple-600",
     },
     {
-      name: "Antigravity AI",
-      type: "audio",
+      name: "Mahabub",
+      type: "video",
       date: "Monday",
       avatarColor: "from-purple-500 to-pink-600",
-    },
-    {
-      name: "Steve Wozniak",
-      type: "video",
-      date: "May 28",
-      avatarColor: "from-amber-500 to-orange-600",
     },
   ];
 
@@ -251,12 +250,28 @@ const CallSection = ({
                     >
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-10 h-10 rounded-full bg-gradient-to-tr ${log.avatarColor} flex items-center justify-center text-white font-bold text-sm shadow-inner`}
+                          className={`w-10 h-10 rounded-full bg-gradient-to-tr ${log.avatarColor} flex items-center justify-center text-white font-bold text-sm shadow-inner overflow-hidden`}
                         >
-                          {log.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
+                          {(() => {
+                            const contact = CONTACTS.find(
+                              (c) => c.name.toLowerCase() === log.name.toLowerCase(),
+                            );
+                            if (contact && contact.avatar) {
+                              return (
+                                <img
+                                  src={contact.avatar}
+                                  alt={log.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              );
+                            }
+                            const cleanName = log.name.replace(/\([^)]*\)/g, "").trim();
+                            return cleanName
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase();
+                          })()}
                         </div>
                         <div>
                           <h3 className="text-sm font-bold text-zinc-800 group-hover:text-[#30d158] transition-colors">
@@ -452,12 +467,28 @@ const CallSection = ({
                 </button>
 
                 <div
-                  className={`w-15 h-15 rounded-full bg-gradient-to-tr ${activeInfoContact.avatarColor} text-white flex items-center justify-center font-extrabold text-lg shadow-md mb-2.5 mt-2`}
+                  className={`w-15 h-15 rounded-full bg-gradient-to-tr ${activeInfoContact.avatarColor} text-white flex items-center justify-center font-extrabold text-lg shadow-md mb-2.5 mt-2 overflow-hidden`}
                 >
-                  {activeInfoContact.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
+                  {(() => {
+                    const contact = CONTACTS.find(
+                      (c) => c.name.toLowerCase() === activeInfoContact.name.toLowerCase(),
+                    );
+                    if (contact && contact.avatar) {
+                      return (
+                        <img
+                          src={contact.avatar}
+                          alt={activeInfoContact.name}
+                          className="w-full h-full object-cover"
+                        />
+                      );
+                    }
+                    const cleanName = activeInfoContact.name.replace(/\([^)]*\)/g, "").trim();
+                    return cleanName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase();
+                  })()}
                 </div>
 
                 <h3 className="font-extrabold text-base mb-0.5" style={{ color: "#1c1c1e" }}>
