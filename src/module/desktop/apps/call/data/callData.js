@@ -18,13 +18,13 @@ export const CONTACTS = [
     callPreview: "/images/profile.webp",
   },
   {
-    id: "antigravity",
-    name: "Antigravity AI",
+    id: "mahabub",
+    name: "Mahabub",
     status: "Coding assistant online",
     available: true,
-    avatar: "/images/contacts/antigravity.webp",
+    avatar: "/images/contacts/mahabub.webp",
     avatarColor: "bg-gradient-to-tr from-purple-500 to-pink-600",
-    callPreview: "/images/contacts/call_preview_antigravity.webp",
+    callPreview: "/images/contacts/mahabub.webp",
   },
   {
     id: "kunal",

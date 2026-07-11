@@ -34,12 +34,15 @@ const CallInProgress = ({
 
   const isKuldeep = activeCall.name?.toLowerCase().includes("kuldeep");
   const isBhavesh = activeCall.name?.toLowerCase().includes("bhavesh");
+  const isMahabub = activeCall.name?.toLowerCase().includes("mahabub");
   const videoUrl = isKuldeep
     ? process.env.NEXT_PUBLIC_VIDEOCALL_KULDEEPRAJPUT || process.env.videocall_kuldeeprajput
     : isBhavesh
       ? process.env.NEXT_PUBLIC_VIDEOCALL_BHAVESH_KUMAR || process.env.videocall_bhaveshkumar
-      : "";
-  const showVideo = (isKuldeep || isBhavesh) && videoUrl && !videoError;
+      : isMahabub
+        ? process.env.NEXT_PUBLIC_VIDEOCALL_MAHABUB || process.env.videocall_mahabub
+        : "";
+  const showVideo = (isKuldeep || isBhavesh || isMahabub) && videoUrl && !videoError;
 
   return (
     <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl">
