@@ -43,7 +43,7 @@ const CallOverlay = ({
 
   const showVideo = (isKuldeep || isBhavesh || isMahabub) && videoUrl && !videoError;
   return (
-    <div className="absolute inset-0 bg-[#0d0d0e] text-white z-40 flex flex-col items-center justify-between py-10 px-6 animate-fade-in overflow-hidden select-none rounded-b-xl">
+    <div className="absolute inset-0 bg-[#0d0d0e] text-white z-40 flex flex-col items-center justify-between py-10 px-6 animate-fade-in overflow-hidden select-none rounded-b-xl group">
       {/* Full-screen Background Stream or Dynamic Gradient */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {/* Play video element */}
@@ -72,12 +72,20 @@ const CallOverlay = ({
       </div>
 
       {/* Top Header Overlay */}
-      <div className="z-10 w-full flex flex-col items-center pt-4 text-center select-none pointer-events-none">
-        <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold drop-shadow">
+      <div
+        className={`z-10 w-full flex flex-col items-center pt-4 text-center select-none transition-all duration-300 ${
+          callState.type === "video"
+            ? "opacity-0 group-hover:opacity-100 pointer-events-none"
+            : "opacity-100 pointer-events-none"
+        }`}
+      >
+        <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold drop-shadow pointer-events-auto">
           FaceTime {callState.type === "video" ? "Video" : "Audio"}
         </span>
-        <h2 className="text-2xl font-bold mt-1 text-white drop-shadow-md">{activeChat.name}</h2>
-        <p className="text-sm text-neutral-300 mt-1 drop-shadow">
+        <h2 className="text-2xl font-bold mt-1 text-white drop-shadow-md pointer-events-auto">
+          {activeChat.name}
+        </h2>
+        <p className="text-sm text-neutral-300 mt-1 drop-shadow pointer-events-auto">
           {callState.status === "ringing" ? "Ringing..." : formatCallTime(callDuration)}
         </p>
       </div>
@@ -148,7 +156,13 @@ const CallOverlay = ({
       )}
 
       {/* Controls panel */}
-      <div className="z-10 flex items-center gap-6 mb-4">
+      <div
+        className={`z-10 flex items-center gap-6 mb-4 transition-opacity duration-300 ${
+          callState.type === "video"
+            ? "opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
+            : "opacity-100"
+        }`}
+      >
         {/* Toggle Mic */}
         <button
           onClick={onMicToggle}

@@ -45,7 +45,7 @@ const CallInProgress = ({
   const showVideo = (isKuldeep || isBhavesh || isMahabub) && videoUrl && !videoError;
 
   return (
-    <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl">
+    <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl group">
       {/* Full-screen Background Stream or Dynamic Gradient */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {/* Play video element */}
@@ -79,8 +79,14 @@ const CallInProgress = ({
       </div>
 
       {/* Top Header Overlay */}
-      <div className="z-10 w-full flex flex-col items-center pt-8 text-center select-none pointer-events-none">
-        <div className="flex items-center gap-1.5 bg-black/45 border border-white/10 px-3.5 py-1 rounded-full backdrop-blur-xl shadow-lg">
+      <div
+        className={`z-10 w-full flex flex-col items-center pt-8 text-center select-none transition-all duration-300 ${
+          activeCall.type === "video"
+            ? "opacity-0 group-hover:opacity-100 pointer-events-none"
+            : "opacity-100 pointer-events-none"
+        }`}
+      >
+        <div className="flex items-center gap-1.5 bg-black/45 border border-white/10 px-3.5 py-1 rounded-full backdrop-blur-xl shadow-lg pointer-events-auto">
           <span
             className={`w-1.5 h-1.5 rounded-full ${activeCall.status === "ringing" ? "bg-yellow-500 animate-pulse" : "bg-emerald-500 animate-pulse"}`}
           />
@@ -88,10 +94,10 @@ const CallInProgress = ({
             FaceTime {activeCall.type === "video" ? "Video" : "Audio"}
           </span>
         </div>
-        <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3 drop-shadow-md">
+        <h2 className="text-2xl font-extrabold tracking-tight text-white mt-3 drop-shadow-md pointer-events-auto">
           {activeCall.name}
         </h2>
-        <div className="text-xs font-medium tracking-wide text-white/50 mt-1">
+        <div className="text-xs font-medium tracking-wide text-white/50 mt-1 pointer-events-auto">
           {activeCall.status === "ringing" ? (
             <span className="animate-pulse">Ringing...</span>
           ) : (
@@ -172,7 +178,11 @@ const CallInProgress = ({
 
       {/* Bottom Controls Panel */}
       <div
-        className={`z-10 w-full mx-auto bg-neutral-900/65 border border-white/10 backdrop-blur-2xl px-6 py-4 rounded-[32px] shadow-2xl flex items-center justify-between mb-8 shrink-0 transition-all hover:bg-neutral-900/70 ${activeCall.type === "video" ? "max-w-[325px]" : "max-w-[250px]"}`}
+        className={`z-10 w-full mx-auto bg-neutral-900/65 border border-white/10 backdrop-blur-2xl px-6 py-4 rounded-[32px] shadow-2xl flex items-center justify-between mb-8 shrink-0 transition-all hover:bg-neutral-900/70 transition-opacity duration-300 ${
+          activeCall.type === "video"
+            ? "opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto max-w-[325px]"
+            : "opacity-100 max-w-[250px]"
+        }`}
       >
         {/* Toggle Mic */}
         <button
