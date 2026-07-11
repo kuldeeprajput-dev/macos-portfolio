@@ -147,26 +147,6 @@ const CallOverlay = ({
         <div className="flex-1" />
       )}
 
-      {/* Picture-in-Picture Local Camera Preview (PIP) */}
-      {callState.status === "connected" && callState.type === "video" && (
-        <div className="absolute bottom-6 right-6 w-24 h-36 bg-neutral-900/60 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-20 flex flex-col items-center justify-center backdrop-blur-md hover:scale-105 hover:border-white/20 transition-all duration-300">
-          {callState.cameraOff ? (
-            <VideoOff className="w-5 h-5 text-neutral-500" />
-          ) : (
-            <div className="w-full h-full relative">
-              <img
-                src={profileAvatar}
-                alt="Self Camera Preview"
-                className="w-full h-full object-cover brightness-[0.95]"
-              />
-              <div className="absolute bottom-2 left-2 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-white/95 uppercase font-black tracking-wider select-none pointer-events-none">
-                Me
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Controls panel */}
       <div className="z-10 flex items-center gap-6 mb-4">
         {/* Toggle Mic */}

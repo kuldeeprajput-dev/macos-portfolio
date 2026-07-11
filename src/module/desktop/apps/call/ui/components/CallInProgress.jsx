@@ -170,26 +170,6 @@ const CallInProgress = ({
         <div className="flex-1" />
       )}
 
-      {/* Picture-in-Picture Local Camera Preview (PIP) */}
-      {activeCall.status === "connected" && activeCall.type === "video" && (
-        <div className="absolute bottom-6 right-6 w-24 h-36 bg-neutral-900/60 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-20 flex flex-col items-center justify-center backdrop-blur-md hover:scale-105 hover:border-white/20 transition-all duration-300">
-          {cameraMuted ? (
-            <VideoOff className="w-5 h-5 text-neutral-500" />
-          ) : (
-            <div className="w-full h-full relative">
-              <img
-                src={profileAvatar}
-                alt="Self Camera Preview"
-                className="w-full h-full object-cover brightness-[0.95]"
-              />
-              <div className="absolute bottom-2 left-2 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-white/95 uppercase font-black tracking-wider select-none pointer-events-none">
-                Me
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Bottom Controls Panel */}
       <div
         className={`z-10 w-full mx-auto bg-neutral-900/65 border border-white/10 backdrop-blur-2xl px-6 py-4 rounded-[32px] shadow-2xl flex items-center justify-between mb-8 shrink-0 transition-all hover:bg-neutral-900/70 ${activeCall.type === "video" ? "max-w-[325px]" : "max-w-[250px]"}`}
