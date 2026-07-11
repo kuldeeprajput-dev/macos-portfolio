@@ -48,25 +48,28 @@ const CallInProgress = ({
     <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl">
       {/* Full-screen Background Stream or Dynamic Gradient */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        {activeCall.type === "video" && !cameraMuted && activeCall.status === "connected" ? (
-          showVideo ? (
-            <video
-              src={videoUrl}
-              autoPlay
-              loop
-              muted={speakerMuted}
-              playsInline
-              onError={() => setVideoError(true)}
-              className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
-            />
-          ) : (
-            <img
-              src={activeCall.callPreview || "/images/facetime_call_preview.webp"}
-              alt="Active Video Call Stream"
-              className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
-            />
-          )
-        ) : (
+        {/* Play video element */}
+        {activeCall.status === "connected" && showVideo && (
+          <video
+            src={videoUrl}
+            autoPlay
+            loop
+            muted={speakerMuted}
+            playsInline
+            onError={() => setVideoError(true)}
+            className={
+              activeCall.type === "video" && !cameraMuted
+                ? "absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
+                : "absolute w-0 h-0 opacity-0 pointer-events-none"
+            }
+          />
+        )}
+        {!(
+          activeCall.type === "video" &&
+          !cameraMuted &&
+          activeCall.status === "connected" &&
+          showVideo
+        ) && (
           <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214]">
             {/* Subtle floating ambient light radial glow */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_60%)]" />
@@ -99,11 +102,10 @@ const CallInProgress = ({
         </div>
       </div>
 
-      {/* Center Avatar Content (For audio calls or inactive cameras) */}
+      {/* Center Avatar Content (For audio calls or ringing/inactive cameras in video calls) */}
       {(activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing") && (
         <div className="z-10 flex-1 flex flex-col items-center justify-center">
           <div className="relative group flex items-center justify-center">
-            {/* Mac-style calling ring pulse animation */}
             {activeCall.status === "ringing" ? (
               <>
                 <div
@@ -145,7 +147,7 @@ const CallInProgress = ({
             </span>
           )}
 
-          {/* Animated Gray Wave visualizer (matches notch visualizer style) */}
+          {/* Animated Gray Wave visualizer */}
           {activeCall.status === "connected" && !micMuted && (
             <div className="flex items-end gap-1.5 h-8 mt-8 justify-center select-none">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
@@ -170,7 +172,7 @@ const CallInProgress = ({
 
       {/* Picture-in-Picture Local Camera Preview (PIP) */}
       {activeCall.status === "connected" && activeCall.type === "video" && (
-        <div className="absolute bottom-28 right-6 w-24 h-36 bg-neutral-900/60 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-20 flex flex-col items-center justify-center backdrop-blur-md hover:scale-105 hover:border-white/20 transition-all duration-300">
+        <div className="absolute bottom-6 right-6 w-24 h-36 bg-neutral-900/60 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-20 flex flex-col items-center justify-center backdrop-blur-md hover:scale-105 hover:border-white/20 transition-all duration-300">
           {cameraMuted ? (
             <VideoOff className="w-5 h-5 text-neutral-500" />
           ) : (
@@ -189,14 +191,16 @@ const CallInProgress = ({
       )}
 
       {/* Bottom Controls Panel */}
-      <div className="z-10 w-full max-w-[360px] mx-auto bg-neutral-900/65 border border-white/10 backdrop-blur-2xl px-6 py-4 rounded-[32px] shadow-2xl flex items-center justify-between mb-8 shrink-0 transition-all hover:bg-neutral-900/70">
+      <div
+        className={`z-10 w-full mx-auto bg-neutral-900/65 border border-white/10 backdrop-blur-2xl px-6 py-4 rounded-[32px] shadow-2xl flex items-center justify-between mb-8 shrink-0 transition-all hover:bg-neutral-900/70 ${activeCall.type === "video" ? "max-w-[325px]" : "max-w-[250px]"}`}
+      >
         {/* Toggle Mic */}
         <button
           onClick={onMicToggle}
           disabled={activeCall.status !== "connected"}
           className={`p-3.5 rounded-full transition-all duration-200 active:scale-90 disabled:opacity-30 flex items-center justify-center ${
             micMuted
-              ? "bg-red-650 text-white shadow-lg shadow-red-650/20"
+              ? "bg-[#ff3b30] text-white shadow-lg shadow-red-500/20"
               : "bg-white/10 hover:bg-white/20 text-neutral-100"
           }`}
           title={micMuted ? "Unmute Microphone" : "Mute Microphone"}
@@ -204,26 +208,28 @@ const CallInProgress = ({
           {micMuted ? <MicOff className="w-4.5 h-4.5" /> : <Mic className="w-4.5 h-4.5" />}
         </button>
 
-        {/* Toggle Camera */}
-        <button
-          onClick={onCameraToggle}
-          disabled={activeCall.type !== "video" || activeCall.status !== "connected"}
-          className={`p-3.5 rounded-full transition-all duration-200 active:scale-90 disabled:opacity-30 flex items-center justify-center ${
-            cameraMuted
-              ? "bg-red-650 text-white shadow-lg shadow-red-650/20"
-              : "bg-white/10 hover:bg-white/20 text-neutral-100"
-          }`}
-          title={cameraMuted ? "Start Camera" : "Pause Camera"}
-        >
-          {cameraMuted ? <VideoOff className="w-4.5 h-4.5" /> : <Video className="w-4.5 h-4.5" />}
-        </button>
+        {/* Toggle Camera (Only for video calls) */}
+        {activeCall.type === "video" && (
+          <button
+            onClick={onCameraToggle}
+            disabled={activeCall.status !== "connected"}
+            className={`p-3.5 rounded-full transition-all duration-200 active:scale-90 disabled:opacity-30 flex items-center justify-center ${
+              cameraMuted
+                ? "bg-[#ff3b30] text-white shadow-lg shadow-red-500/20"
+                : "bg-white/10 hover:bg-white/20 text-neutral-100"
+            }`}
+            title={cameraMuted ? "Start Camera" : "Pause Camera"}
+          >
+            {cameraMuted ? <VideoOff className="w-4.5 h-4.5" /> : <Video className="w-4.5 h-4.5" />}
+          </button>
+        )}
 
         {/* Toggle Speaker */}
         <button
           onClick={onSpeakerToggle}
           className={`p-3.5 rounded-full transition-all duration-200 active:scale-90 flex items-center justify-center ${
             speakerMuted
-              ? "bg-red-650 text-white shadow-lg shadow-red-650/20"
+              ? "bg-[#ff3b30] text-white shadow-lg shadow-red-500/20"
               : "bg-white/10 hover:bg-white/20 text-neutral-100"
           }`}
           title={speakerMuted ? "Unmute Sound" : "Mute Sound"}

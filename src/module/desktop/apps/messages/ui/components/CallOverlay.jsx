@@ -46,24 +46,27 @@ const CallOverlay = ({
     <div className="absolute inset-0 bg-[#0d0d0e] text-white z-40 flex flex-col items-center justify-between py-10 px-6 animate-fade-in overflow-hidden select-none rounded-b-xl">
       {/* Full-screen Background Stream or Dynamic Gradient */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        {callState.type === "video" && !callState.cameraOff && callState.status === "connected" ? (
-          showVideo ? (
-            <video
-              src={videoUrl}
-              autoPlay
-              loop
-              playsInline
-              onError={() => setVideoError(true)}
-              className="absolute inset-0 w-full h-full object-cover brightness-[0.85] animate-fade-in"
-            />
-          ) : (
-            <img
-              src={activeChat.avatar || "/images/facetime_call_preview.webp"}
-              alt="Active Video Call Stream"
-              className="absolute inset-0 w-full h-full object-cover brightness-[0.8] animate-fade-in"
-            />
-          )
-        ) : (
+        {/* Play video element */}
+        {callState.status === "connected" && showVideo && (
+          <video
+            src={videoUrl}
+            autoPlay
+            loop
+            playsInline
+            onError={() => setVideoError(true)}
+            className={
+              callState.type === "video" && !callState.cameraOff
+                ? "absolute inset-0 w-full h-full object-cover brightness-[0.85] animate-fade-in"
+                : "absolute w-0 h-0 opacity-0 pointer-events-none"
+            }
+          />
+        )}
+        {!(
+          callState.type === "video" &&
+          !callState.cameraOff &&
+          callState.status === "connected" &&
+          showVideo
+        ) && (
           <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1e] via-[#0d0d0e] to-[#121214]" />
         )}
       </div>
@@ -79,8 +82,8 @@ const CallOverlay = ({
         </p>
       </div>
 
-      {/* Center content when calling is ringing, type is audio, or camera is off */}
-      {callState.type === "audio" || callState.cameraOff || callState.status === "ringing" ? (
+      {/* Center content (for audio calls or ringing/inactive camera in video calls) */}
+      {(callState.type === "audio" || callState.cameraOff || callState.status === "ringing") && (
         <div className="z-10 flex-1 flex flex-col items-center justify-center">
           <div className="relative group flex items-center justify-center">
             {callState.status === "ringing" ? (
@@ -137,7 +140,10 @@ const CallOverlay = ({
             </div>
           )}
         </div>
-      ) : (
+      )}
+
+      {/* Spacer when remote video stream is full-screen */}
+      {!(callState.type === "audio" || callState.cameraOff || callState.status === "ringing") && (
         <div className="flex-1" />
       )}
 
@@ -163,6 +169,7 @@ const CallOverlay = ({
 
       {/* Controls panel */}
       <div className="z-10 flex items-center gap-6 mb-4">
+        {/* Toggle Mic */}
         <button
           onClick={onMicToggle}
           className={`p-4 rounded-full border border-white/10 transition-colors ${
@@ -174,13 +181,8 @@ const CallOverlay = ({
         >
           {callState.micMuted ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
         </button>
-        <button
-          onClick={onEndCall}
-          className="p-5 bg-[#ff3b30] hover:bg-[#e03025] active:scale-95 transition-all text-white rounded-full shadow-lg flex items-center justify-center"
-          title="End Call"
-        >
-          <PhoneOff className="w-6 h-6" />
-        </button>
+
+        {/* Toggle Camera (Only for video calls) */}
         {callState.type === "video" && (
           <button
             onClick={onCameraToggle}
@@ -194,6 +196,15 @@ const CallOverlay = ({
             {callState.cameraOff ? <VideoOff className="w-5 h-5" /> : <Video className="w-5 h-5" />}
           </button>
         )}
+
+        {/* End Call Button */}
+        <button
+          onClick={onEndCall}
+          className="p-5 bg-[#ff3b30] hover:bg-[#e03025] active:scale-95 transition-all text-white rounded-full shadow-lg flex items-center justify-center"
+          title="End Call"
+        >
+          <PhoneOff className="w-6 h-6" />
+        </button>
       </div>
     </div>
   );
