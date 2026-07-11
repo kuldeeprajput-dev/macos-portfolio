@@ -141,31 +141,80 @@ const useMessages = () => {
     const userMsg = inputText.toLowerCase();
     setInputText("");
 
-    if (activeChat.id === "kuldeep") {
+    const chatId = activeChat.id;
+    if (chatId === "kuldeep" || chatId === "mahabub" || chatId === "bhavesh") {
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
-        let replyText = "That's cool! Feel free to explore other apps in the dock too.";
-        if (userMsg.includes("project")) {
-          replyText =
-            "I have built several cool projects! You can check them out in the 'Portfolio' Finder app, or view 'NewTube', 'Snsta', and 'Docs Editor'.";
-        } else if (
-          userMsg.includes("skill") ||
-          userMsg.includes("tech") ||
-          userMsg.includes("stack")
-        ) {
-          replyText =
-            "My primary tech stack includes React, Next.js, TypeScript, Node.js, Express, Bun, Tailwind CSS, PostgreSQL, and MongoDB. Open the 'Skills' Terminal app to see the complete list!";
-        } else if (
-          userMsg.includes("contact") ||
-          userMsg.includes("mail") ||
-          userMsg.includes("hire")
-        ) {
-          replyText =
-            "You can contact me via email at kuldeeprajput.dev@gmail.com, or check out my socials (Github, LinkedIn) in the Safari app!";
-        } else if (userMsg.includes("hello") || userMsg.includes("hi") || userMsg.includes("hey")) {
-          replyText =
-            "Hey there! Hope you are enjoying the macOS portfolio. How can I help you today?";
+        let replyText = "";
+
+        if (chatId === "kuldeep") {
+          replyText = "That's cool! Feel free to explore other apps in the dock too.";
+          if (userMsg.includes("project")) {
+            replyText =
+              "I have built several cool projects! You can check them out in the 'Portfolio' Finder app, or view 'NewTube', 'Snsta', and 'Docs Editor'.";
+          } else if (
+            userMsg.includes("skill") ||
+            userMsg.includes("tech") ||
+            userMsg.includes("stack")
+          ) {
+            replyText =
+              "My primary tech stack includes React, Next.js, TypeScript, Node.js, Express, Bun, Tailwind CSS, PostgreSQL, and MongoDB. Open the 'Skills' Terminal app to see the complete list!";
+          } else if (
+            userMsg.includes("contact") ||
+            userMsg.includes("mail") ||
+            userMsg.includes("hire")
+          ) {
+            replyText =
+              "You can contact me via email at kuldeeprajput.dev@gmail.com, or check out my socials (Github, LinkedIn) in the Safari app!";
+          } else if (
+            userMsg.includes("hello") ||
+            userMsg.includes("hi") ||
+            userMsg.includes("hey")
+          ) {
+            replyText =
+              "Hello! How are you doing? I hope you are having a wonderful experience exploring my macOS portfolio interface! How can I help you today?";
+          }
+        } else if (chatId === "mahabub") {
+          replyText = "Awesome! Let me know if you want to collaborate on some projects.";
+          if (userMsg.includes("project") || userMsg.includes("work")) {
+            replyText =
+              "I love working on frontend architectures and agentic AI systems. I'm always looking to build cutting-edge web applications!";
+          } else if (
+            userMsg.includes("skill") ||
+            userMsg.includes("tech") ||
+            userMsg.includes("stack")
+          ) {
+            replyText =
+              "I specialize in React, Node.js, Next.js, AI system integrations, and frontend optimization.";
+          } else if (
+            userMsg.includes("hello") ||
+            userMsg.includes("hi") ||
+            userMsg.includes("hey")
+          ) {
+            replyText =
+              "Hello! How are you doing? I was just writing some code. Let me know if there's anything I can help you with!";
+          }
+        } else if (chatId === "bhavesh") {
+          replyText = "That sounds interesting! Let's build something beautiful.";
+          if (userMsg.includes("project") || userMsg.includes("design") || userMsg.includes("ui")) {
+            replyText =
+              "We should focus on making clean, modern, and beautiful designs with smooth micro-animations. Have you checked out the layout here?";
+          } else if (
+            userMsg.includes("skill") ||
+            userMsg.includes("tech") ||
+            userMsg.includes("stack")
+          ) {
+            replyText =
+              "I'm deep into CSS, UI design systems, React components, and responsive pixel-perfect implementations.";
+          } else if (
+            userMsg.includes("hello") ||
+            userMsg.includes("hi") ||
+            userMsg.includes("hey")
+          ) {
+            replyText =
+              "Hello! How are you doing? I'm currently designing a new interface. Let me know if you want to talk about design or development!";
+          }
         }
 
         const replyMessage = {
@@ -177,7 +226,7 @@ const useMessages = () => {
 
         setConversations((prev) =>
           prev.map((c) =>
-            c.id === "kuldeep" ? { ...c, messages: [...c.messages, replyMessage] } : c,
+            c.id === chatId ? { ...c, messages: [...c.messages, replyMessage] } : c,
           ),
         );
       }, 1200);
