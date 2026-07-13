@@ -1075,7 +1075,7 @@ const Notch = () => {
                         {hasSong ? activeTrack.title : "Select a Song"}
                       </span>
                       <span className="nook-music-subtitle truncate w-full">
-                        {hasSong ? formatTime(currentTime) : "JioSaavn"}
+                        {hasSong ? formatTime(currentTime) : "Jamendo"}
                       </span>
                       <div className="nook-music-controls mt-1 flex items-center gap-1.5">
                         <button className="nook-ctrl-btn" onClick={handlePrev} title="Previous">

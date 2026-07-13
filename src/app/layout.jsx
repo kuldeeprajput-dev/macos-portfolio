@@ -150,6 +150,8 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="preconnect" href="https://api.github.com" />
+        <link rel="preconnect" href="https://api.jamendo.com" />
+        <link rel="preconnect" href="https://prod-1.storage.jamendo.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://wttr.in" />
         <script
           type="application/ld+json"

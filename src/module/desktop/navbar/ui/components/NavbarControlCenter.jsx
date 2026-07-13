@@ -303,7 +303,7 @@ const NavbarControlCenter = ({
               {music.activeTrack.title || "Select a Song"}
             </span>
             <span className="text-[10px] text-white/50 truncate leading-tight mt-0.5">
-              {music.activeTrack.artist || "JioSaavn Music"}
+              {music.activeTrack.artist || "Jamendo Music"}
             </span>
           </div>
         </div>

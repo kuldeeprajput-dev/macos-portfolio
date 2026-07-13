@@ -90,7 +90,7 @@ const APP_ALIASES = {
   map: ["map", "maps", "location"],
   font: ["font book", "fonts", "font"],
   telegram: ["telegram", "chat"],
-  music: ["music", "jiosaavn", "song", "songs", "player"],
+  music: ["music", "jamendo", "song", "songs", "player"],
 };
 
 const OPEN_INTENTS = ["open", "launch", "show", "view", "start", "go to", "visit", "pull up"];

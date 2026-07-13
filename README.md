@@ -86,7 +86,7 @@
 | **Maps** | Interactive OpenStreetMap integration with location markers |
 | **Notes** | Editable notes application |
 | **Messages** | iMessage-style messaging interface |
-| **Music** | Full music player with JioSaavn API — play, pause, skip, shuffle, repeat, volume |
+| **Music** | Full music player with Jamendo API — play, pause, skip, shuffle, repeat, volume |
 | **Photos / Gallery** | Photo gallery with Library, Memories, Places, and People categories |
 | **Contact** | Contact form / contact info display |
 | **Resume** | In-browser PDF viewer for your resume |
@@ -206,8 +206,8 @@ Below is the full `.env` file with explanations for every variable:
 # ──────────────────────────────────────────────────────────
 # 🌐 API BASE URLs (Public Services — No API Key Needed)
 # ──────────────────────────────────────────────────────────
-# JioSaavn music API — powers the Music app
-NEXT_PUBLIC_JIOSAAVN_API_URL=https://jiosaavn-apix.arcadopredator.workers.dev
+# Jamendo music API Client ID — powers the Music app (uses public read ID as default)
+NEXT_PUBLIC_JAMENDO_CLIENT_ID=3dce8b55
 
 # Weather API (wttr.in) — powers the Weather app
 NEXT_PUBLIC_WEATHER_API_URL=https://wttr.in
@@ -568,7 +568,7 @@ See the [LICENSE](LICENSE) file for full details.
 ## 🙏 Credits & Acknowledgments
 
 - **macOS Design** — Inspired by Apple's macOS Sequoia / Sonoma interface
-- **JioSaavn API** — Music streaming data
+- **Jamendo API** — Music streaming data
 - **wttr.in** — Weather data
 - **OpenStreetMap & Nominatim** — Maps and geocoding
 - **TMDB** — Movie and TV show data for Apple TV app

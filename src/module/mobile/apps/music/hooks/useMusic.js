@@ -78,152 +78,62 @@ const useMusic = () => {
     const fetchTracks = async () => {
       setIsLoading(true);
       try {
-        const apiBase =
-          process.env.NEXT_PUBLIC_JIOSAAVN_API_URL ||
-          "https://jiosaavn-apix.arcadopredator.workers.dev";
+        const clientId = process.env.NEXT_PUBLIC_JAMENDO_CLIENT_ID;
 
-        if (searchQuery.trim() === "" && activeCategory === "Browse") {
-          const PRELOADED_SONG_NAMES = [
-            "Apna Bana Le Bhediya",
-            "Zaalima Raees",
-            "Phir Bhi Tumko Chaahunga Half Girlfriend",
-            "Tainu Khabar Nahi Munjya",
-            "Pal Pal Dil Ke Paas Title Track",
-            "Jaan Nisaar Arijit",
-            "Dekha Hazaro Dafaa",
-            "Tere Bina Arijit",
-            "Kalank Title Track",
-            "Ve Maahi Kesari",
-            "Aaj Se Teri",
-            "O Maahi Dunki",
-          ];
-          const fetchPromises = PRELOADED_SONG_NAMES.map(async (name) => {
-            try {
-              const res = await fetch(
-                `${apiBase}/api/search/songs?query=${encodeURIComponent(name)}&limit=1`,
-              );
-              const resultData = await res.json();
-              if (
-                resultData.success &&
-                resultData.data &&
-                resultData.data.results &&
-                resultData.data.results.length > 0
-              ) {
-                return resultData.data.results[0];
-              }
-            } catch (e) {
-              console.error(e);
-            }
-            return null;
-          });
-          const results = await Promise.all(fetchPromises);
-          const filteredResults = results.filter(Boolean);
-
-          const formattedTracks = filteredResults.map((track, index) => {
-            const downloadUrls = track.downloadUrl || [];
-            const audioUrl =
-              downloadUrls.length > 0 ? downloadUrls[downloadUrls.length - 1]?.url : "";
-            const images = track.image || track.album?.image || [];
-            let coverUrl = "";
-            if (typeof images === "string") {
-              coverUrl = images;
-            } else if (Array.isArray(images) && images.length > 0) {
-              const lastImg = images[images.length - 1];
-              coverUrl =
-                typeof lastImg === "string" ? lastImg : lastImg?.url || lastImg?.link || "";
-            }
-            if (coverUrl && coverUrl.startsWith("http://")) {
-              coverUrl = coverUrl.replace("http://", "https://");
-            }
-            return {
-              id: track.id,
-              title: track.name,
-              artist:
-                track.artists?.primary?.map((a) => a.name).join(", ") ||
-                track.label ||
-                "Unknown Artist",
-              album: track.album?.name || "Single",
-              duration: track.duration,
-              coverColor: getCoverColor(index),
-              coverText: getCoverEmoji(track.name),
-              coverUrl: coverUrl,
-              url: audioUrl,
-              language: track.language,
-            };
-          });
-          setTracks(formattedTracks);
-          setIsLoading(false);
-          return;
-        }
-
-        let query = "Bollywood Hits";
-        switch (activeCategory) {
-          case "Browse":
-            query = "Bollywood Hits";
-            break;
-          case "Listen Now":
-            query = "Arijit Singh Hits";
-            break;
-          case "Hindi Music":
-            query = "New Hindi Songs";
-            break;
-          case "English Music":
-            query = "Imagine Dragons";
-            break;
-          case "Recently Added":
-            query = "Latest Hits";
-            break;
-          case "Artists":
-            query = "Top Artists";
-            break;
-          case "Albums":
-            query = "Top Albums";
-            break;
-          case "Songs":
-            query = "Popular Songs";
-            break;
-          default:
-            query = "Bollywood Hits";
-        }
+        let params = `client_id=${clientId}&format=json&limit=25`;
         if (searchQuery.trim() !== "") {
-          query = searchQuery;
+          params += `&search=${encodeURIComponent(searchQuery)}`;
+        } else {
+          switch (activeCategory) {
+            case "Browse":
+              params += `&tags=pop&order=popularity_total_desc`;
+              break;
+            case "Listen Now":
+              params += `&tags=lofi&order=popularity_total_desc`;
+              break;
+            case "Hindi Music":
+              params += `&search=indian&order=popularity_total_desc`;
+              break;
+            case "English Music":
+              params += `&tags=rock&order=popularity_total_desc`;
+              break;
+            case "Recently Added":
+              params += `&order=releasedate_desc`;
+              break;
+            case "Artists":
+              params += `&search=acoustic&order=popularity_total_desc`;
+              break;
+            case "Albums":
+              params += `&search=chillout&order=popularity_total_desc`;
+              break;
+            case "Songs":
+              params += `&order=popularity_total_desc`;
+              break;
+            default:
+              params += `&order=popularity_total_desc`;
+          }
         }
 
-        const res = await fetch(
-          `${apiBase}/api/search/songs?query=${encodeURIComponent(query)}&limit=25`,
-        );
-        const resultData = await res.json();
-        if (resultData.success && resultData.data && resultData.data.results) {
-          const formattedTracks = resultData.data.results.map((track, index) => {
-            const downloadUrls = track.downloadUrl || [];
-            const audioUrl =
-              downloadUrls.length > 0 ? downloadUrls[downloadUrls.length - 1]?.url : "";
-            const images = track.image || track.album?.image || [];
-            let coverUrl = "";
-            if (typeof images === "string") {
-              coverUrl = images;
-            } else if (Array.isArray(images) && images.length > 0) {
-              const lastImg = images[images.length - 1];
-              coverUrl =
-                typeof lastImg === "string" ? lastImg : lastImg?.url || lastImg?.link || "";
-            }
+        const res = await fetch(`https://api.jamendo.com/v3.0/tracks/?${params}`);
+        const data = await res.json();
+
+        if (data.headers && data.headers.status === "success" && data.results) {
+          const formattedTracks = data.results.map((track, index) => {
+            let coverUrl = track.album_image || track.image || "";
             if (coverUrl && coverUrl.startsWith("http://")) {
               coverUrl = coverUrl.replace("http://", "https://");
             }
             return {
               id: track.id,
               title: track.name,
-              artist:
-                track.artists?.primary?.map((a) => a.name).join(", ") ||
-                track.label ||
-                "Unknown Artist",
-              album: track.album?.name || "Single",
+              artist: track.artist_name || "Unknown Artist",
+              album: track.album_name || "Single",
               duration: track.duration,
               coverColor: getCoverColor(index),
               coverText: getCoverEmoji(track.name),
               coverUrl: coverUrl,
-              url: audioUrl,
-              language: track.language,
+              url: track.audio,
+              language: "English",
             };
           });
           setTracks(formattedTracks);
@@ -231,7 +141,7 @@ const useMusic = () => {
           setTracks([]);
         }
       } catch (err) {
-        console.error("Failed to fetch JioSaavn tracks:", err);
+        console.error("Failed to fetch Jamendo tracks:", err);
         setTracks([]);
       } finally {
         setIsLoading(false);

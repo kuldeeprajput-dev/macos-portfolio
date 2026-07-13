@@ -24,7 +24,7 @@ const useWindowsStore = create(
       activeTrack: {
         id: 0,
         title: "Select a Song",
-        artist: "JioSaavn Music",
+        artist: "Jamendo Music",
         album: "Streaming",
         duration: 0,
         coverColor: "from-zinc-400 to-zinc-600",

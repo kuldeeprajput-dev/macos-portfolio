@@ -182,7 +182,7 @@ const Siri = () => {
       openWindow("resume");
       return "Opening Resume.";
     }
-    if (query.includes("open music") || query.includes("open jiosaavn")) {
+    if (query.includes("open music") || query.includes("open jamendo")) {
       openWindow("music");
       return "Opening Music app.";
     }

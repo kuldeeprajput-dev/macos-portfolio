@@ -23,98 +23,52 @@ const getCoverEmoji = (name) => {
   return emojis[code % emojis.length];
 };
 
-const PRELOADED_SONG_NAMES = [
-  "Apna Bana Le Bhediya",
-  "Zaalima Raees",
-  "Phir Bhi Tumko Chaahunga Half Girlfriend",
-  "Tainu Khabar Nahi Munjya",
-  "Pal Pal Dil Ke Paas Title Track",
-  "Jaan Nisaar Arijit",
-  "Dekha Hazaro Dafaa",
-  "Tere Bina Arijit",
-  "Kalank Title Track",
-  "Ve Maahi Kesari",
-  "Aaj Se Teri",
-  "O Maahi Dunki",
-];
-
 export default function GlobalAudio() {
   const { music, setMusicState } = useWindowsStore();
   const { activeTrack, isPlaying, volume, isMuted, tracks, isShuffle, isRepeat } = music;
   const audioRef = useRef(null);
+  const prevUrlRef = useRef("");
 
   // Fetch initial tracks on load if none exist
   useEffect(() => {
     const fetchInitialTracks = async () => {
       try {
-        const apiBase =
-          process.env.NEXT_PUBLIC_JIOSAAVN_API_URL ||
-          "https://jiosaavn-apix.arcadopredator.workers.dev";
+        const clientId = process.env.NEXT_PUBLIC_JAMENDO_CLIENT_ID;
+        const res = await fetch(
+          `https://api.jamendo.com/v3.0/tracks/?client_id=${clientId}&format=json&limit=25&tags=pop&order=popularity_total_desc`,
+        );
+        const data = await res.json();
 
-        const fetchPromises = PRELOADED_SONG_NAMES.map(async (name) => {
-          try {
-            const res = await fetch(
-              `${apiBase}/api/search/songs?query=${encodeURIComponent(name)}&limit=1`,
-            );
-            const resultData = await res.json();
-            if (
-              resultData.success &&
-              resultData.data &&
-              resultData.data.results &&
-              resultData.data.results.length > 0
-            ) {
-              return resultData.data.results[0];
+        if (data.headers && data.headers.status === "success" && data.results) {
+          const formattedTracks = data.results.map((track, index) => {
+            let coverUrl = track.album_image || track.image || "";
+            if (coverUrl && coverUrl.startsWith("http://")) {
+              coverUrl = coverUrl.replace("http://", "https://");
             }
-          } catch (e) {
-            console.error(e);
-          }
-          return null;
-        });
-
-        const results = await Promise.all(fetchPromises);
-        const filteredResults = results.filter(Boolean);
-
-        const formattedTracks = filteredResults.map((track, index) => {
-          const downloadUrls = track.downloadUrl || [];
-          const audioUrl =
-            downloadUrls.length > 0 ? downloadUrls[downloadUrls.length - 1]?.url : "";
-          const images = track.image || track.album?.image || [];
-          let coverUrl = "";
-          if (typeof images === "string") {
-            coverUrl = images;
-          } else if (Array.isArray(images) && images.length > 0) {
-            const lastImg = images[images.length - 1];
-            coverUrl = typeof lastImg === "string" ? lastImg : lastImg?.url || lastImg?.link || "";
-          }
-          if (coverUrl && coverUrl.startsWith("http://")) {
-            coverUrl = coverUrl.replace("http://", "https://");
-          }
-          return {
-            id: track.id,
-            title: track.name,
-            artist:
-              track.artists?.primary?.map((a) => a.name).join(", ") ||
-              track.label ||
-              "Unknown Artist",
-            album: track.album?.name || "Single",
-            duration: track.duration,
-            coverColor: getCoverColor(index),
-            coverText: getCoverEmoji(track.name),
-            coverUrl: coverUrl,
-            url: audioUrl,
-            language: track.language,
-          };
-        });
-
-        if (formattedTracks.length > 0) {
-          setMusicState({
-            tracks: formattedTracks,
+            return {
+              id: track.id,
+              title: track.name,
+              artist: track.artist_name || "Unknown Artist",
+              album: track.album_name || "Single",
+              duration: track.duration,
+              coverColor: getCoverColor(index),
+              coverText: getCoverEmoji(track.name),
+              coverUrl: coverUrl,
+              url: track.audio,
+              language: "English",
+            };
           });
-          // Also set the first track as active if none is selected
-          if (activeTrack.id === 0) {
+
+          if (formattedTracks.length > 0) {
             setMusicState({
-              activeTrack: formattedTracks[0],
+              tracks: formattedTracks,
             });
+            // Also set the first track as active if none is selected
+            if (activeTrack.id === 0) {
+              setMusicState({
+                activeTrack: formattedTracks[0],
+              });
+            }
           }
         }
       } catch (err) {
@@ -131,6 +85,11 @@ export default function GlobalAudio() {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !activeTrack.url) return;
+
+    if (prevUrlRef.current !== activeTrack.url) {
+      prevUrlRef.current = activeTrack.url;
+      audio.load();
+    }
 
     if (isPlaying) {
       const playPromise = audio.play();
