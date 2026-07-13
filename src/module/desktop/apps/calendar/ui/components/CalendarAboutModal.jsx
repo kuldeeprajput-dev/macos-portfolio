@@ -53,7 +53,7 @@ const CalendarAboutModal = ({ show, onClose }) => {
 
         {/* Footer/Copyright */}
         <div className="text-center text-[8.5px] text-gray-400/90 leading-tight mb-2 select-none">
-          <p>Copyright © 2002-2026 Apple Inc.</p>
+          <p>Portfolio UI demo. Not affiliated with Apple Inc.</p>
           <p>All rights reserved.</p>
         </div>
       </div>

@@ -187,7 +187,7 @@ const AppDetailsModal = ({ app, isOpen, onClose, installState, onStartDownload, 
               <div className="flex justify-between py-2.5">
                 <span className="text-gray-400 font-medium">Provider</span>
                 <span className="text-gray-800 font-semibold">
-                  {app.native ? "Apple Inc." : "Kuldeep Rajput"}
+                  {app.native ? "Portfolio UI Demo" : "Kuldeep Rajput"}
                 </span>
               </div>
               <div className="flex justify-between py-2.5">
