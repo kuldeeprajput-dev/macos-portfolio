@@ -10,7 +10,7 @@ import {
   ChevronRight,
   Maximize2,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const formatTime = (timeInSecs) => {
   if (Number.isNaN(timeInSecs)) return "00:00";
@@ -44,72 +44,62 @@ const PlayerOverlay = ({
   onLoadedMetadata,
   onChangeEpisode,
 }) => {
-  const [_selectedSeason, setSelectedSeason] = useState(activeVideo?.season || 1);
-  const [_selectedEpisode, setSelectedEpisode] = useState(activeVideo?.episode || 1);
-  const [showEpisodePicker, setShowEpisodePicker] = useState(false);
-  const [selectedServer, setSelectedServer] = useState("vidlink");
+  const [trailerUrl, setTrailerUrl] = useState("");
+  const [loadingTrailer, setLoadingTrailer] = useState(false);
+
+  useEffect(() => {
+    if (!activeVideo) {
+      setTrailerUrl("");
+      return;
+    }
+
+    const titleQuery = activeVideo.title || "movie";
+    const fallbackUrl = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(titleQuery + " official trailer")}&autoplay=1`;
+
+    if (!activeVideo.tmdbId) {
+      setTrailerUrl(fallbackUrl);
+      return;
+    }
+
+    const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+    const type = activeVideo.type || "movie";
+    setLoadingTrailer(true);
+
+    fetch(`https://api.themoviedb.org/3/${type}/${activeVideo.tmdbId}/videos?api_key=${apiKey}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("TMDB Response not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data && data.results && data.results.length > 0) {
+          const youtubeVideos = data.results.filter(
+            (v) => v.site?.toLowerCase() === "youtube" && v.key,
+          );
+          const trailer =
+            youtubeVideos.find((v) => v.type?.toLowerCase() === "trailer") ||
+            youtubeVideos.find((v) => v.type?.toLowerCase() === "teaser") ||
+            youtubeVideos[0];
+          if (trailer) {
+            setTrailerUrl(`https://www.youtube.com/embed/${trailer.key}?autoplay=1&rel=0`);
+          } else {
+            setTrailerUrl(fallbackUrl);
+          }
+        } else {
+          setTrailerUrl(fallbackUrl);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching trailer:", err);
+        setTrailerUrl(fallbackUrl);
+      })
+      .finally(() => {
+        setLoadingTrailer(false);
+      });
+  }, [activeVideo]);
 
   if (!activeVideo) return null;
-
-  const isStreaming = !!activeVideo.tmdbId && /^\d+$/.test(activeVideo.tmdbId);
-  const isTvShow = isStreaming && activeVideo.type === "tv";
-
-  const SERVERS = [
-    { id: "vidlink", name: "VidLink" },
-    { id: "vidsrc_to", name: "Vidsrc.to" },
-  ];
-
-  const getEmbedUrl = () => {
-    if (!activeVideo.tmdbId) return "";
-    const season = activeVideo.season || 1;
-    const episode = activeVideo.episode || 1;
-
-    switch (selectedServer) {
-      case "vidsrc_to":
-        return isTvShow
-          ? `https://vidsrc.to/embed/tv/${activeVideo.tmdbId}/${season}/${episode}`
-          : `https://vidsrc.to/embed/movie/${activeVideo.tmdbId}`;
-      case "vidlink":
-      default: {
-        const apiBaseUrl = process.env.NEXT_PUBLIC_VIDLINK_API_URL || "https://vidlink.pro";
-        return isTvShow
-          ? `${apiBaseUrl}/tv/${activeVideo.tmdbId}/${season}/${episode}?autoplay=true&nextbutton=true`
-          : `${apiBaseUrl}/movie/${activeVideo.tmdbId}?autoplay=true`;
-      }
-    }
-  };
-
-  const embedUrl = getEmbedUrl();
-  const activeServerName = SERVERS.find((s) => s.id === selectedServer)?.name || "VidLink";
-
-  const handleSeasonChange = (e) => {
-    const s = parseInt(e.target.value, 10);
-    setSelectedSeason(s);
-    setSelectedEpisode(1);
-    if (onChangeEpisode) onChangeEpisode(s, 1);
-  };
-
-  const handleEpisodeChange = (e) => {
-    const ep = parseInt(e.target.value, 10);
-    setSelectedEpisode(ep);
-    if (onChangeEpisode) onChangeEpisode(activeVideo.season || 1, ep);
-  };
-
-  const handlePrevEpisode = () => {
-    const currentEp = activeVideo.episode || 1;
-    if (currentEp > 1) {
-      const nextEp = currentEp - 1;
-      setSelectedEpisode(nextEp);
-      if (onChangeEpisode) onChangeEpisode(activeVideo.season || 1, nextEp);
-    }
-  };
-
-  const handleNextEpisode = () => {
-    const currentEp = activeVideo.episode || 1;
-    const nextEp = currentEp + 1;
-    setSelectedEpisode(nextEp);
-    if (onChangeEpisode) onChangeEpisode(activeVideo.season || 1, nextEp);
-  };
 
   return (
     <div
@@ -117,13 +107,20 @@ const PlayerOverlay = ({
       onTouchStart={onMouseMove}
       onMouseMove={onMouseMove}
     >
-      {isStreaming ? (
+      {loadingTrailer ? (
+        <div className="w-full h-full flex flex-col items-center justify-center bg-black text-white space-y-3">
+          <div className="w-8 h-8 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+          <span className="text-xs font-bold tracking-wider uppercase text-neutral-400">
+            Loading Trailer...
+          </span>
+        </div>
+      ) : trailerUrl ? (
         <iframe
-          src={embedUrl}
+          src={trailerUrl}
           className="w-full h-full border-none"
           allowFullScreen
           allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          title={activeVideo.title}
+          title={`${activeVideo.title} Trailer`}
         />
       ) : (
         <video
@@ -155,115 +152,18 @@ const PlayerOverlay = ({
           </button>
           <div className="flex-1 text-center px-4">
             <p className="text-[10px] font-bold text-blue-400 tracking-wider uppercase">
-              {isStreaming ? `Streaming via ${activeServerName}` : "Playing"}
+              {trailerUrl ? "Official Trailer" : "Playing"}
             </p>
             <h2 className="text-sm font-bold text-white leading-tight truncate">
               {activeVideo.title}
-              {isTvShow && ` • S${activeVideo.season || 1} E${activeVideo.episode || 1}`}
             </h2>
           </div>
-          {isStreaming && (
-            <button
-              onClick={() => setShowEpisodePicker(!showEpisodePicker)}
-              className="px-2.5 py-1 bg-white/10 border border-white/20 rounded-lg text-[10px] font-bold text-white backdrop-blur-sm active:scale-95 transition-transform"
-            >
-              Settings
-            </button>
-          )}
-          {!isStreaming && <div className="w-8" />}
+          <div className="w-8" />
         </div>
       </div>
 
-      {/* Stream Settings/Episode Picker for Mobile */}
-      {isStreaming && showEpisodePicker && (
-        <div className="absolute top-24 right-3 left-3 bg-neutral-900/95 border border-white/10 rounded-2xl p-4 backdrop-blur-xl z-20 shadow-2xl space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-extrabold tracking-wider uppercase text-neutral-400">
-              Stream Settings
-            </span>
-            <button onClick={() => setShowEpisodePicker(false)} className="p-1">
-              <X className="w-4 h-4 text-white/60" />
-            </button>
-          </div>
-
-          <div>
-            <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
-              Server
-            </label>
-            <select
-              value={selectedServer}
-              onChange={(e) => setSelectedServer(e.target.value)}
-              className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
-            >
-              {SERVERS.map((srv) => (
-                <option key={srv.id} value={srv.id}>
-                  {srv.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {isTvShow && (
-            <div className="border-t border-white/5 pt-3 space-y-3">
-              <span className="text-[10px] font-extrabold tracking-wider uppercase text-neutral-400 block">
-                Episode Selector
-              </span>
-              <div className="flex gap-3">
-                <div className="flex-1">
-                  <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
-                    Season
-                  </label>
-                  <select
-                    value={activeVideo.season || 1}
-                    onChange={handleSeasonChange}
-                    className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  >
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <option key={s} value={s}>
-                        Season {s}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex-1">
-                  <label className="text-[9px] text-neutral-500 font-bold uppercase mb-1 block">
-                    Episode
-                  </label>
-                  <select
-                    value={activeVideo.episode || 1}
-                    onChange={handleEpisodeChange}
-                    className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-white text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  >
-                    {Array.from({ length: 24 }, (_, i) => i + 1).map((ep) => (
-                      <option key={ep} value={ep}>
-                        Episode {ep}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={handlePrevEpisode}
-                  disabled={(activeVideo.episode || 1) <= 1}
-                  className="flex-1 flex items-center justify-center gap-1 py-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg text-xs text-white font-semibold disabled:opacity-30 active:scale-95 transition-all"
-                >
-                  <ChevronLeft className="w-4 h-4" /> Prev
-                </button>
-                <button
-                  onClick={handleNextEpisode}
-                  className="flex-1 flex items-center justify-center gap-1 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-xs text-white font-semibold active:scale-95 transition-all"
-                >
-                  Next <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Center play/pause button */}
-      {!isStreaming && (
+      {!trailerUrl && (
         <div
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 z-[5] ${
             showControls ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -283,7 +183,7 @@ const PlayerOverlay = ({
       )}
 
       {/* Bottom controls for local video playback */}
-      {!isStreaming && (
+      {!trailerUrl && (
         <div
           className={`absolute bottom-0 left-0 right-0 pb-8 px-4 pt-12 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 z-10 ${
             showControls ? "opacity-100" : "opacity-0 pointer-events-none"

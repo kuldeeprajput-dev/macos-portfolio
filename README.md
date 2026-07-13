@@ -277,9 +277,6 @@ GROQ_API_KEY=gsk_your_groq_api_key_here
 # ──────────────────────────────────────────────────────────
 # 🎬 Apple TV App — TMDB & Video APIs (Optional)
 # ──────────────────────────────────────────────────────────
-# Video streaming link API
-NEXT_PUBLIC_VIDLINK_API_URL=https://vidlink.pro
-
 # TMDB API key — Get from: https://www.themoviedb.org/settings/api
 NEXT_PUBLIC_TMDB_API_KEY=your_tmdb_api_key_here
 
