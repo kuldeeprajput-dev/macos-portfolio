@@ -70,15 +70,19 @@ const AppleTVSection = ({
         );
         const dataShows = await resShows.json();
         if (dataShows.results) {
-          const formattedShows = dataShows.results.map((item) => ({
-            id: `show_${item.id}`,
-            title: item.name,
-            category: `${item.vote_average.toFixed(1)} ★ • TV Show`,
-            duration: "TV Show",
-            tmdbId: item.id.toString(),
-            type: "tv",
-            poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
-          }));
+          const formattedShows = dataShows.results
+            .filter((item) => item.id !== 87096)
+            .map((item) => ({
+              id: `show_${item.id}`,
+              title: item.name,
+              category: `${item.vote_average.toFixed(1)} ★ • TV Show`,
+              duration: "TV Show",
+              tmdbId: item.id.toString(),
+              type: "tv",
+              poster: item.poster_path
+                ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
+                : null,
+            }));
           setPopularShows(formattedShows);
         }
       } catch (err) {

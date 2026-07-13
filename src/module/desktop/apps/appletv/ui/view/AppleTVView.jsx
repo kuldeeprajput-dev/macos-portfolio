@@ -15,7 +15,7 @@ const AppleTVView = () => {
   const [activeTab, setActiveTab] = useState("watchNow");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVideo, setActiveVideo] = useState(null);
-  const [upNext, setUpNext] = useState(["ted_lasso", "morning_show", "foundation", "severance"]);
+  const [upNext, setUpNext] = useState(["ted_lasso", "foundation", "severance"]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);

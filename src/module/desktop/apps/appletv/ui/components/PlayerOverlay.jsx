@@ -53,8 +53,7 @@ const PlayerOverlay = ({
       return;
     }
 
-    const titleQuery = activeVideo.title || "movie";
-    const fallbackUrl = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(titleQuery + " official trailer")}&autoplay=1`;
+    const fallbackUrl = "https://www.youtube.com/embed/xEQP4VVuyrY?autoplay=1&rel=0";
 
     if (!activeVideo.tmdbId) {
       setTrailerUrl(fallbackUrl);

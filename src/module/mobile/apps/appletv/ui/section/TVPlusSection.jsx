@@ -109,17 +109,19 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
         const movieData = await movieRes.json();
 
         if (tvData.results) {
-          const formattedTv = tvData.results.map((show) => ({
-            id: `apple_tv_${show.id}`,
-            title: show.name,
-            category: `${show.vote_average ? show.vote_average.toFixed(1) : "N/A"} ★ • Apple TV+`,
-            duration: "Series",
-            tmdbId: show.id.toString(),
-            type: "tv",
-            season: 1,
-            episode: 1,
-            genres: show.genre_ids || [],
-          }));
+          const formattedTv = tvData.results
+            .filter((show) => show.id !== 87096)
+            .map((show) => ({
+              id: `apple_tv_${show.id}`,
+              title: show.name,
+              category: `${show.vote_average ? show.vote_average.toFixed(1) : "N/A"} ★ • Apple TV+`,
+              duration: "Series",
+              tmdbId: show.id.toString(),
+              type: "tv",
+              season: 1,
+              episode: 1,
+              genres: show.genre_ids || [],
+            }));
           setPopularSeries(formattedTv.slice(0, 9));
           setSciFiSeries(
             formattedTv
@@ -163,11 +165,11 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
       episode: 1,
     },
     {
-      id: "morning_show",
-      title: "The Morning Show",
+      id: "silo",
+      title: "Silo",
       category: "8.3 ★ • Apple TV+",
-      duration: "3 Seasons",
-      tmdbId: "87096",
+      duration: "2 Seasons",
+      tmdbId: "125988",
       type: "tv",
       season: 1,
       episode: 1,
