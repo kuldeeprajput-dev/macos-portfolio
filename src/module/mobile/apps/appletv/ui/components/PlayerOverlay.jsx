@@ -60,7 +60,11 @@ const PlayerOverlay = ({
       return;
     }
 
-    const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+    const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+    if (!apiKey) {
+      setTrailerUrl(fallbackUrl);
+      return;
+    }
     const type = activeVideo.type || "movie";
     setLoadingTrailer(true);
 

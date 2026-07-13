@@ -60,7 +60,8 @@ const WatchNowSection = ({
 
   useEffect(() => {
     const fetchBackdrops = async () => {
-      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+      if (!apiKey) return;
       const backdrops = {};
       for (const item of FEATURED_CAROUSEL_ITEMS) {
         try {

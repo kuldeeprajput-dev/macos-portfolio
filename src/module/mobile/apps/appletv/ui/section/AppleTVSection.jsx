@@ -39,7 +39,8 @@ const AppleTVSection = ({
   useEffect(() => {
     const fetchWatchNowMovies = async () => {
       try {
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+        if (!apiKey) return;
         const res = await fetch(
           `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${watchNowPage}`,
         );
@@ -84,7 +85,8 @@ const AppleTVSection = ({
     const fetchMovies = async () => {
       setIsLoading(true);
       try {
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+        if (!apiKey) return;
         const res = await fetch(
           `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(
             query,

@@ -64,7 +64,8 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   // Fetch Carousel Backdrops
   useEffect(() => {
     const fetchBackdrops = async () => {
-      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+      if (!apiKey) return;
       const backdrops = {};
       for (const item of CAROUSEL_ITEMS) {
         try {
@@ -95,8 +96,12 @@ const TVPlusSection = ({ onPlayFeatured, onPlayMovie, upNext = [], onToggleUpNex
   // Fetch Apple TV+ content
   useEffect(() => {
     const fetchAppleContent = async () => {
+      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+      if (!apiKey) {
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(true);
-      const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
       try {
         const tvRes = await fetch(
           `https://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&with_networks=2552&sort_by=popularity.desc`,

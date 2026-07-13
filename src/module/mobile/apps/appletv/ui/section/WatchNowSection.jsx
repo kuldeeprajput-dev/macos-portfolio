@@ -17,7 +17,8 @@ const WatchNowSection = ({
     if (!FEATURED_SHOW.tmdbId) return;
     const fetchBackdrop = async () => {
       try {
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8";
+        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+        if (!apiKey) return;
         const type = FEATURED_SHOW.type || "tv";
         const res = await fetch(
           `https://api.themoviedb.org/3/${type}/${FEATURED_SHOW.tmdbId}?api_key=${apiKey}`,
