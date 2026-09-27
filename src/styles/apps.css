@@ -337,12 +337,9 @@
         @apply absolute select-none flex items-center flex-col;
         z-index: 1;
 
-        img {
-          @apply p-1 rounded-md;
-        }
-
         p {
-          @apply text-sm text-white text-center px-1 rounded-md transition-colors max-w-40;
+          @apply text-sm text-white text-center max-w-36 font-medium select-none mt-1;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
         }
       }
     }

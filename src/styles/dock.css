@@ -30,19 +30,19 @@
 }
 
 .dock-container {
-  --dock-icon-size: clamp(34px, calc((94vw - 156px) / 24), 56px);
-  --dock-item-height: calc(var(--dock-icon-size) + 6px);
-  --dock-padding-x: clamp(10px, 1.25vw, 24px);
-  --dock-gap: clamp(2px, 0.25vw, 4px);
-  --dock-separator-width: clamp(8px, 0.75vw, 12px);
+  --dock-icon-size: clamp(36px, calc((94vw - 420px) / 24), 52px);
+  --dock-item-height: calc(var(--dock-icon-size) + 8px);
+  --dock-padding-x: 24px;
+  --dock-gap: clamp(10px, calc(0.4vw + 7px), 15px);
+  --dock-separator-width: 12px;
 
   position: relative;
   isolation: isolate;
-  min-height: calc(var(--dock-item-height) + 6px);
+  min-height: calc(var(--dock-item-height) + 12px);
   max-width: calc(100vw - 16px);
-  padding: 6px var(--dock-padding-x);
+  padding: 8px var(--dock-padding-x);
   gap: var(--dock-gap);
-  border-radius: 16px;
+  border-radius: 20px;
   background: rgba(255, 255, 255, 0.2);
   border: none;
   box-shadow: none;
@@ -188,10 +188,10 @@
 
 @media (min-width: 1920px) {
   .dock-container {
-    --dock-icon-size: 56px;
-    --dock-item-height: 62px;
+    --dock-icon-size: 52px;
+    --dock-item-height: 60px;
     --dock-padding-x: 24px;
-    --dock-gap: 4px;
+    --dock-gap: 15px;
     --dock-separator-width: 12px;
   }
 
@@ -238,9 +238,9 @@
   opacity: 0;
   transition: all 500ms ease-in-out;
 
-  --dock-icon-size: clamp(34px, calc((94vw - 156px) / 24), 56px);
-  --dock-item-height: calc(var(--dock-icon-size) + 6px);
-  --dock-total-height: calc(var(--dock-item-height) + 18px);
+  --dock-icon-size: clamp(36px, calc((94vw - 420px) / 24), 52px);
+  --dock-item-height: calc(var(--dock-icon-size) + 8px);
+  --dock-total-height: calc(var(--dock-item-height) + 20px);
   bottom: calc(20px + var(--dock-total-height) + 8px);
 }
 
@@ -251,8 +251,8 @@
 
 @media (min-width: 1920px) {
   .desktop-visualizer-container {
-    --dock-icon-size: 56px;
-    --dock-item-height: 62px;
+    --dock-icon-size: 52px;
+    --dock-item-height: 60px;
   }
 }
 
@@ -265,15 +265,15 @@
   pointer-events: none;
   z-index: 0;
 
-  --dock-icon-size: clamp(34px, calc((94vw - 156px) / 24), 56px);
-  --dock-item-height: calc(var(--dock-icon-size) + 6px);
-  --dock-total-height: calc(var(--dock-item-height) + 18px);
+  --dock-icon-size: clamp(36px, calc((94vw - 420px) / 24), 52px);
+  --dock-item-height: calc(var(--dock-icon-size) + 8px);
+  --dock-total-height: calc(var(--dock-item-height) + 20px);
   bottom: calc(20px + var(--dock-total-height) + 8px);
 }
 
 @media (min-width: 1920px) {
   #folder-bounds {
-    --dock-icon-size: 56px;
-    --dock-item-height: 62px;
+    --dock-icon-size: 52px;
+    --dock-item-height: 60px;
   }
 }

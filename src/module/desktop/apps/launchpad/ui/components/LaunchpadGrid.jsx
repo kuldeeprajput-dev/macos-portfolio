@@ -12,7 +12,7 @@ const LaunchpadGrid = ({ apps, onLaunch, searchQuery }) => (
         >
           <div className="w-[80px] h-[80px] rounded-[18px] bg-transparent transition-transform duration-200 ease-out group-hover:scale-105 group-active:scale-95 flex items-center justify-center relative select-none">
             {app.id === "calendar" ? (
-              <div className="w-full h-full bg-white rounded-[18px] border border-black/10 shadow-md overflow-hidden flex flex-col items-center select-none aspect-square scale-[0.76]">
+              <div className="w-full h-full bg-white rounded-[18px] border border-black/10 shadow-md overflow-hidden flex flex-col items-center select-none aspect-square scale-[0.81]">
                 <div className="w-full bg-[#ff3b30] text-white text-[10px] font-extrabold py-0.5 md:py-1 text-center leading-none tracking-wider uppercase">
                   {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date().getDay()]}
                 </div>
@@ -24,29 +24,7 @@ const LaunchpadGrid = ({ apps, onLaunch, searchQuery }) => (
               <img
                 src={`/apps/${app.icon}`}
                 alt={app.name}
-                className={`w-full h-full object-contain filter drop-shadow-sm ${
-                  {
-                    finder: "scale-[0.90]",
-                    safari: "scale-[0.90]",
-                    photos: "scale-[0.90]",
-                    contact: "scale-[0.90]",
-                    terminal: "scale-[0.90]",
-                    settings: "scale-[0.83]",
-                    calculator: "scale-[0.83]",
-                    notes: "scale-[0.90]",
-                    messages: "scale-[0.90]",
-                    appletv: "scale-[0.80]",
-                    call: "scale-[0.71]",
-                    appstore: "scale-[0.90]",
-                    weather: "scale-[0.81]",
-                    vscode: "scale-[0.95]",
-                    postman: "scale-[0.95]",
-                    map: "scale-[0.72]",
-                    font: "scale-[2.8]",
-                    telegram: "scale-[0.90]",
-                    music: "scale-[0.90]",
-                  }[app.id] || ""
-                }`}
+                className="w-full h-full object-contain filter drop-shadow-sm"
               />
             )}
           </div>

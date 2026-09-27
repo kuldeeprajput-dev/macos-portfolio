@@ -237,32 +237,6 @@ const LockScreenTimeWidget = () => {
 
 // --- END WIDGET COMPONENTS ---
 
-const scaleMap = {
-  finder: "scale-[0.90]",
-  launchpad: "scale-[0.90]",
-  safari: "scale-[0.90]",
-  photos: "scale-[0.90]",
-  contact: "scale-[0.90]",
-  terminal: "scale-[0.90]",
-  settings: "scale-[0.83]",
-  calculator: "scale-[0.83]",
-  notes: "scale-[0.90]",
-  messages: "scale-[0.90]",
-  appletv: "scale-[0.80]",
-  call: "scale-[0.71]",
-  appstore: "scale-[0.90]",
-  calendar: "scale-[0.76]",
-  weather: "scale-[0.79]",
-  vscode: "scale-[0.95]",
-  postman: "scale-[0.95]",
-  map: "scale-[0.73]",
-  font: "scale-[1.6]",
-  telegram: "scale-[0.90]",
-  music: "scale-[0.90]",
-  folder: "scale-[0.80]",
-  trash: "scale-[0.80]",
-};
-
 const MobileOSAppGrid = ({ dockApps, openWindow }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const touchStart = useRef(0);
@@ -433,9 +407,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                     }}
                   >
                     {app.id === "calendar" ? (
-                      <div
-                        className={`w-full h-full bg-white flex flex-col items-center select-none rounded-[16px] overflow-hidden ${scaleMap[app.id] || ""}`}
-                      >
+                      <div className="w-full h-full bg-white flex flex-col items-center select-none rounded-[16px] overflow-hidden">
                         {/* Top Day Header Area with Red Background */}
                         <div className="w-full bg-[#ff3b30] py-1 flex items-center justify-center flex-shrink-0">
                           <span className="text-white text-[8px] font-bold uppercase tracking-wide leading-none">
@@ -465,7 +437,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                         alt={app.name}
                         width={64}
                         height={64}
-                        className={`w-full h-full object-cover rounded-[16px] pointer-events-none ${scaleMap[app.id] || ""}`}
+                        className="w-full h-full object-cover rounded-[16px] pointer-events-none"
                       />
                     )}
                   </div>
@@ -496,9 +468,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                   }}
                 >
                   {app.id === "calendar" ? (
-                    <div
-                      className={`w-full h-full bg-white flex flex-col items-center select-none rounded-[16px] overflow-hidden ${scaleMap[app.id] || ""}`}
-                    >
+                    <div className="w-full h-full bg-white flex flex-col items-center select-none rounded-[16px] overflow-hidden">
                       {/* Top Day Header Area with Red Background */}
                       <div className="w-full bg-[#ff3b30] py-1 flex items-center justify-center flex-shrink-0">
                         <span className="text-white text-[8px] font-bold uppercase tracking-wide leading-none">
@@ -528,7 +498,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                       alt={app.name}
                       width={64}
                       height={64}
-                      className={`w-full h-full object-cover rounded-[16px] pointer-events-none ${scaleMap[app.id] || ""}`}
+                      className="w-full h-full object-cover rounded-[16px] pointer-events-none"
                     />
                   )}
                 </div>
@@ -659,7 +629,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                               alt={app.name}
                               width={48}
                               height={48}
-                              className={`w-full h-full object-cover rounded-[12px] ${scaleMap[app.id] || ""}`}
+                              className="w-full h-full object-cover rounded-[12px]"
                             />
                           )}
                         </div>
@@ -724,7 +694,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                               alt={app.name}
                               width={40}
                               height={40}
-                              className={`w-full h-full object-cover rounded-[10px] ${scaleMap[app.id] || ""}`}
+                              className="w-full h-full object-cover rounded-[10px]"
                             />
                           )}
                         </div>

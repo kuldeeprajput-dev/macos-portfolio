@@ -30,7 +30,7 @@ const FontBookAboutModal = ({ show, onClose }) => {
           <img
             src="/apps/font.webp"
             alt="Font Book Icon"
-            className="w-16 h-16 scale-[2.7] object-contain drop-shadow-md select-none pointer-events-none"
+            className="w-16 h-16 object-contain drop-shadow-md select-none pointer-events-none"
           />
           <h1 className="text-base font-bold text-gray-900 mt-3 select-none">Font Book</h1>
           <p className="text-[10px] text-gray-500 font-medium select-none mt-0.5">

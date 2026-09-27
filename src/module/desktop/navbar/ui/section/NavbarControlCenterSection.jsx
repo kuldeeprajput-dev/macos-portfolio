@@ -936,7 +936,7 @@ const NavbarControlCenterSection = ({
                       ) : app.image ? (
                         <img
                           src={`/apps/${app.image}`}
-                          className={`w-[28px] h-[28px] object-contain shrink-0 ${app.key === "font" ? "scale-[3]" : ""}`}
+                          className="w-[28px] h-[28px] object-contain shrink-0"
                           alt={app.name}
                         />
                       ) : (
@@ -980,7 +980,7 @@ const NavbarControlCenterSection = ({
                       ) : app.image ? (
                         <img
                           src={`/apps/${app.image}`}
-                          className={`w-[26px] h-[26px] object-contain shrink-0 ${app.key === "font" ? "scale-[3]" : ""}`}
+                          className="w-[26px] h-[26px] object-contain shrink-0"
                           alt={app.name}
                         />
                       ) : (

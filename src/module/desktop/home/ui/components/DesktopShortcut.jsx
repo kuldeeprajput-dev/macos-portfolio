@@ -1,40 +1,15 @@
 import { useState, useEffect } from "react";
 import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 
-const scaleMap = {
-  finder: "scale-[0.90]",
-  launchpad: "scale-[0.90]",
-  safari: "scale-[0.90]",
-  photos: "scale-[0.90]",
-  contact: "scale-[0.90]",
-  terminal: "scale-[0.90]",
-  settings: "scale-[0.83]",
-  calculator: "scale-[0.83]",
-  notes: "scale-[0.90]",
-  messages: "scale-[0.90]",
-  appletv: "scale-[0.80]",
-  call: "scale-[0.71]",
-  appstore: "scale-[0.90]",
-  weather: "scale-[0.79]",
-  vscode: "scale-[0.95]",
-  postman: "scale-[0.95]",
-  map: "scale-[0.73]",
-  font: "scale-[2.7]",
-  telegram: "scale-[0.90]",
-  music: "scale-[0.90]",
-  folder: "scale-[0.80]",
-  trash: "scale-[0.80]",
-};
-
 const CalendarIcon = () => {
   const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const today = new Date();
   return (
-    <div className="w-full h-full bg-white rounded-[13px] border border-black/10 shadow-sm overflow-hidden flex flex-col items-center select-none scale-[0.76] relative aspect-square transition-all duration-200">
+    <div className="w-[92.2%] h-[92.2%] bg-white rounded-[22.5%] shadow-[0_1px_3px_rgba(0,0,0,0.18)] border border-black/10 overflow-hidden flex flex-col items-center select-none relative aspect-square pointer-events-none">
       <div className="w-full bg-[#ff3b30] text-white text-[9px] font-extrabold py-0.5 text-center leading-none tracking-wider uppercase">
         {days[today.getDay()]}
       </div>
-      <div className="flex-1 flex items-center justify-center text-gray-800 font-bold text-2xl leading-none font-sans -mt-0.5">
+      <div className="flex-1 flex items-center justify-center text-[#1d1d1f] font-bold text-2xl leading-none font-sans -mt-0.5">
         {today.getDate()}
       </div>
     </div>
@@ -94,7 +69,7 @@ const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove }) => {
       onPointerDown={handlePointerDown}
     >
       {/* App Icon Container - exact 64px (w-16 h-16) matching the desktop folder icon size */}
-      <div className="relative w-16 h-16 flex items-center justify-center transition-all duration-200 group-hover:scale-105 pointer-events-none">
+      <div className="relative w-16 h-16 flex items-center justify-center pointer-events-none">
         {shortcut.appId === "calendar" ? (
           <CalendarIcon />
         ) : (
@@ -103,13 +78,13 @@ const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove }) => {
             alt={shortcut.name}
             width={64}
             height={64}
-            className={`w-full h-full object-contain ${scaleMap[shortcut.appId] || ""}`}
+            className="w-full h-full object-contain"
           />
         )}
       </div>
 
       {/* App Name Label */}
-      <p className="text-sm text-white text-center px-1.5 py-0.5 rounded group-hover:bg-black/45 transition-colors max-w-40 font-medium select-none shadow-sm mt-1">
+      <p className="text-sm text-white text-center max-w-40 font-medium select-none mt-1 [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
         {shortcut.name}
       </p>
 
