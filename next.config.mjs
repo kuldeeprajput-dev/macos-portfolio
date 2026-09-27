@@ -25,8 +25,6 @@ const cachedPublicRoutes = [
   "/files/:path*",
   "/favicon.png",
   "/favicon.webp",
-  "/macbook.png",
-  "/macbook.webp",
 ];
 
 /** @type {import('next').NextConfig} */

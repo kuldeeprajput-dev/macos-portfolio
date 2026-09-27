@@ -17,12 +17,6 @@ export default function manifest() {
     categories: ["portfolio", "developer", "productivity"],
     icons: [
       {
-        src: "/macbook.png",
-        sizes: "100x100",
-        type: "image/png",
-        purpose: "any",
-      },
-      {
         src: "/favicon.png",
         sizes: "444x592",
         type: "image/png",
