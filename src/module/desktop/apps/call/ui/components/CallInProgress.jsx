@@ -14,7 +14,7 @@ const CallInProgress = ({
   formatTimer,
 }) => {
   const [videoError, setVideoError] = useState(false);
-  const [profileAvatar, setProfileAvatar] = useState("/images/profile.webp");
+  const [profileAvatar, setProfileAvatar] = useState("/contacts/avatars/profile.webp");
 
   useEffect(() => {
     const githubProfileUrl = process.env.NEXT_PUBLIC_GITHUB_PROFILE || "";

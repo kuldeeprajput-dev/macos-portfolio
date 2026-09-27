@@ -30,7 +30,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
     openWindow("imgfile", {
       id: nextPhoto.id,
       name: "Gallery image",
-      icon: "/images/image.webp",
+      icon: "/apps/image.webp",
       kind: "file",
       fileType: "img",
       imageUrl: nextPhoto.img,
@@ -44,7 +44,7 @@ const ImageViewer = ({ imageUrl, imageMobUrl, name, id, isMobile }) => {
     openWindow("imgfile", {
       id: prevPhoto.id,
       name: "Gallery image",
-      icon: "/images/image.webp",
+      icon: "/apps/image.webp",
       kind: "file",
       fileType: "img",
       imageUrl: prevPhoto.img,

@@ -27,7 +27,7 @@ const NavbarBatteryMenu = ({ battery }) => {
       </div>
       {battery.charging && (
         <img
-          src="/icons/battery-charging.svg"
+          src="/system/icons/battery-charging.svg"
           alt="Charging"
           aria-hidden="true"
           className="w-[14px]"

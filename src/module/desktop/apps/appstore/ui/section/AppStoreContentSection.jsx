@@ -73,7 +73,15 @@ const AppStoreContentSection = ({
                   {item.image && (
                     <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden pointer-events-none select-none">
                       <img
-                        src={`/images/${item.image}`}
+                        src={
+                          item.image.startsWith("/")
+                            ? item.image
+                            : item.image.includes("banner")
+                              ? `/games/banners/${item.image}`
+                              : item.image.includes("wallpaper")
+                                ? `/wallpapers/${item.image.replace("wallpapers/", "")}`
+                                : `/apps/${item.image}`
+                        }
                         alt={item.title}
                         className="w-full h-full object-cover opacity-35 group-hover/featured:scale-105 transition-transform duration-500"
                         style={{
@@ -151,7 +159,7 @@ const AppStoreContentSection = ({
                 {/* Banner Image overlay */}
                 <div className="absolute inset-y-0 right-0 w-1/2 md:w-3/5 overflow-hidden pointer-events-none select-none z-0">
                   <img
-                    src="/images/asphalt_banner.webp"
+                    src="/games/banners/asphalt_banner.webp"
                     alt="Asphalt 9 Banner"
                     className="w-full h-full object-cover opacity-45 group-hover/game-hero:scale-105 transition-transform duration-500"
                     style={{
@@ -176,7 +184,7 @@ const AppStoreContentSection = ({
                 <div className="flex items-center justify-between pt-6 relative z-10 border-t border-zinc-800 mt-4">
                   <div className="flex items-center gap-3">
                     <img
-                      src="/images/asphalt.webp"
+                      src="/games/icons/asphalt.webp"
                       alt={asphaltApp.name}
                       className="w-10 h-10 object-cover rounded-xl shadow-md border border-white/10"
                     />

@@ -286,7 +286,7 @@ const MobileNotch = () => {
 
   const playSiriLaunchSound = () => {
     return new Promise((resolve) => {
-      const sound = new Audio("/sound/siri.mp3");
+      const sound = new Audio("/system/audio/siri.mp3");
       sound.volume = 0.5;
       sound.onended = () => resolve();
       sound.onerror = () => resolve();
@@ -627,7 +627,7 @@ const MobileNotch = () => {
               aria-label={isListening ? "Stop Siri listening" : "Start Siri listening"}
             >
               <img
-                src="/images/siri.webp"
+                src="/system/siri/siri.webp"
                 alt="Siri"
                 className="w-full h-full object-cover scale-[1.5]"
               />

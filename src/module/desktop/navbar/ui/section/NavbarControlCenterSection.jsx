@@ -323,7 +323,7 @@ const NavbarControlCenterSection = ({
   // Status Icons with conditional filtering/Bluetooth injection
   const visibleIcons = [];
   if (settings.bluetooth) {
-    visibleIcons.push({ id: "bluetooth", img: "/icons/bluetooth.svg", type: "bluetooth" });
+    visibleIcons.push({ id: "bluetooth", img: "/system/icons/bluetooth.svg", type: "bluetooth" });
   }
 
   navIcons.forEach((icon) => {
@@ -572,7 +572,7 @@ const NavbarControlCenterSection = ({
                             src={
                               currentUserMode === "admin"
                                 ? profile.avatar_url
-                                : "/images/profile.webp"
+                                : "/contacts/avatars/profile.webp"
                             }
                             className="w-11 h-11 rounded-full border border-white/20 shadow-md shrink-0 object-cover"
                             alt="Profile Avatar"
@@ -935,7 +935,7 @@ const NavbarControlCenterSection = ({
                         <CalendarIcon sizeClass="w-[28px] h-[28px] rounded-[6px]" />
                       ) : app.image ? (
                         <img
-                          src={`/images/${app.image}`}
+                          src={`/apps/${app.image}`}
                           className={`w-[28px] h-[28px] object-contain shrink-0 ${app.key === "font" ? "scale-[3]" : ""}`}
                           alt={app.name}
                         />
@@ -979,7 +979,7 @@ const NavbarControlCenterSection = ({
                         <CalendarIcon sizeClass="w-[26px] h-[26px] rounded-[5px]" />
                       ) : app.image ? (
                         <img
-                          src={`/images/${app.image}`}
+                          src={`/apps/${app.image}`}
                           className={`w-[26px] h-[26px] object-contain shrink-0 ${app.key === "font" ? "scale-[3]" : ""}`}
                           alt={app.name}
                         />

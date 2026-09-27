@@ -185,7 +185,7 @@ const TelegramSection = ({
       initials: "K",
       status: "online",
       color: "bg-gradient-to-tr from-blue-500 to-indigo-600",
-      avatar: "/images/profile.webp",
+      avatar: "/contacts/avatars/profile.webp",
     },
     {
       name: "Saved Messages",
@@ -200,7 +200,7 @@ const TelegramSection = ({
       initials: "TB",
       status: "bot",
       color: "bg-gradient-to-tr from-cyan-400 to-sky-600",
-      avatar: "/images/telegram/bot.webp",
+      avatar: "/telegram/bot.webp",
     },
     {
       name: "Amit Sharma",
@@ -904,7 +904,7 @@ const TelegramSection = ({
               >
                 <div className="flex flex-row items-center gap-4">
                   <img
-                    src="/images/profile.webp"
+                    src="/contacts/avatars/profile.webp"
                     alt={userProfile.name}
                     className="w-14 h-14 rounded-full object-cover shadow-sm border border-white/20 shrink-0"
                   />

@@ -16,7 +16,7 @@ const FontBookAlertModal = ({ show, title, message, onClose }) => {
       >
         {/* App Icon */}
         <img
-          src="/images/font.webp"
+          src="/apps/font.webp"
           alt="Font Book"
           className="w-12 h-12 object-contain drop-shadow-sm select-none pointer-events-none"
         />

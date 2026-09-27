@@ -195,7 +195,7 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
       {isShuttingDown && (
         <div className="fixed inset-0 bg-black z-[99999999] flex flex-col items-center justify-center select-none cursor-none">
           <img
-            src="/icons/appleLogo.svg"
+            src="/system/icons/appleLogo.svg"
             alt="Apple Logo"
             className="w-16 h-16 invert dark:invert-0 opacity-95 animate-pulse mb-8"
           />
@@ -308,7 +308,7 @@ const RefreshInterceptor = ({ enabled, isLoggedIn, setBooting, setIsLoggedIn }) 
               {/* Left Column: Apple Logo */}
               <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center">
                 <img
-                  src="/icons/appleLogo.svg"
+                  src="/system/icons/appleLogo.svg"
                   alt="System Logo"
                   className="w-12 h-12 invert opacity-85"
                 />

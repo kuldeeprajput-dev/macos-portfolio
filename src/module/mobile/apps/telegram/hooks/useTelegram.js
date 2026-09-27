@@ -67,7 +67,7 @@ const useTelegram = () => {
         missed: false,
         avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-600",
         initials: "K",
-        avatar: "/images/profile.webp",
+        avatar: "/contacts/avatars/profile.webp",
       },
       {
         name: "Telegram Assistant Bot",
@@ -76,7 +76,7 @@ const useTelegram = () => {
         missed: false,
         avatarColor: "bg-gradient-to-tr from-cyan-400 to-sky-600",
         initials: "TB",
-        avatar: "/images/telegram/bot.webp",
+        avatar: "/telegram/bot.webp",
       },
       {
         name: "Mom",
@@ -141,7 +141,7 @@ const useTelegram = () => {
     if (ringingTimeoutRef.current) clearTimeout(ringingTimeoutRef.current);
 
     try {
-      const audio = new Audio("/sound/callertune.mp3");
+      const audio = new Audio("/system/audio/callertune.mp3");
       audio.loop = true;
       audio.play().catch((err) => console.log("Audio play blocked by browser:", err));
       callAudioRef.current = audio;

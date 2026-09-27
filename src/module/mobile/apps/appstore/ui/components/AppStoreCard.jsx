@@ -2,13 +2,47 @@ import { useState } from "react";
 import { Star, Play, Check, RefreshCw } from "lucide-react";
 import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 
+const resolveIcon = (icon) => {
+  if (!icon) return "/apps/appstore.webp";
+  if (icon.startsWith("/")) return icon;
+  const brands = [
+    "figma.webp",
+    "xcode.webp",
+    "vscode.webp",
+    "notion.webp",
+    "slack.webp",
+    "docker.webp",
+    "postman.webp",
+    "spotify.webp",
+    "github.webp",
+    "linkedin.webp",
+    "youtube.webp",
+    "x.webp",
+    "chrome.webp",
+    "chromee.webp",
+    "openstreetmap.webp",
+    "insta-downloader.webp",
+    "resume-ats.webp",
+  ];
+  if (brands.includes(icon)) return `/brands/${icon}`;
+  const games = [
+    "asphalt.webp",
+    "minecraft.webp",
+    "monumentvalley.webp",
+    "subwaysurfers.webp",
+    "tombraider.webp",
+  ];
+  if (games.includes(icon)) return `/games/icons/${icon}`;
+  return `/apps/${icon}`;
+};
+
 const AppStoreIcon = ({ icon, name, fallbackBg = "bg-blue-500" }) => {
   const [hasError, setHasError] = useState(false);
   return (
     <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden border border-gray-200/50 shadow-sm shrink-0">
       {!hasError ? (
         <OptimizedImage
-          src={`/images/${icon}`}
+          src={resolveIcon(icon)}
           alt={name}
           width={48}
           height={48}

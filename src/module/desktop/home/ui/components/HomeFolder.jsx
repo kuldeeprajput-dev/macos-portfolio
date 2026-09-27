@@ -6,7 +6,7 @@ const HomeFolder = ({ project, onClick }) => {
   return (
     <li className={clsx("group folder", project.windowPosition)} onClick={onClick}>
       <OptimizedImage
-        src="/images/folder.webp"
+        src="/apps/folder.webp"
         alt={displayName}
         width={64}
         height={64}

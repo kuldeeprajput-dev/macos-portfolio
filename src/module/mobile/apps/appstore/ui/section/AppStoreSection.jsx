@@ -23,7 +23,7 @@ const AppStoreSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedApp, setSelectedApp] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
-  const [profileUrl, setProfileUrl] = useState("/images/profile.webp");
+  const [profileUrl, setProfileUrl] = useState("/contacts/avatars/profile.webp");
   const [showHeader, setShowHeader] = useState(true);
   const [forwardDestination, setForwardDestination] = useState(null);
 
@@ -245,7 +245,7 @@ const AppStoreSection = () => {
             className="w-full h-full object-cover"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = "/images/profile.webp";
+              e.target.src = "/contacts/avatars/profile.webp";
             }}
           />
         </button>

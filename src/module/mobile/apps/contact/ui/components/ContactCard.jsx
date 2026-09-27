@@ -2,7 +2,7 @@ import { Copy, Check } from "lucide-react";
 
 const ContactCard = ({ _label, email, phone, copied, onCopy }) => (
   <>
-    <img src={"/images/profile.webp"} alt="kuldeep" className="w-20 rounded-full" />
+    <img src={"/contacts/avatars/profile.webp"} alt="kuldeep" className="w-20 rounded-full" />
     <h3>Let's Connect</h3>
     <p>Full-stack developer building scalable apps—let's connect and create something impactful.</p>
     <div

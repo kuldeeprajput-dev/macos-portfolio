@@ -461,7 +461,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                       </div>
                     ) : (
                       <OptimizedImage
-                        src={`/images/${app.icon}`}
+                        src={`/apps/${app.icon}`}
                         alt={app.name}
                         width={64}
                         height={64}
@@ -524,7 +524,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                     </div>
                   ) : (
                     <OptimizedImage
-                      src={`/images/${app.icon}`}
+                      src={`/apps/${app.icon}`}
                       alt={app.name}
                       width={64}
                       height={64}
@@ -655,7 +655,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                             </div>
                           ) : (
                             <OptimizedImage
-                              src={`/images/${app.icon}`}
+                              src={`/apps/${app.icon}`}
                               alt={app.name}
                               width={48}
                               height={48}
@@ -720,7 +720,7 @@ const MobileOSAppGrid = ({ dockApps, openWindow }) => {
                             </div>
                           ) : (
                             <OptimizedImage
-                              src={`/images/${app.icon}`}
+                              src={`/apps/${app.icon}`}
                               alt={app.name}
                               width={40}
                               height={40}

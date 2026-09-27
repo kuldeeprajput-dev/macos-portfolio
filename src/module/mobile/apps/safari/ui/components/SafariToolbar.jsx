@@ -660,7 +660,7 @@ const SafariMobileHeader = ({ projects }) => {
                       if (urlLower.includes("newtube") || urlLower.includes("youtube")) {
                         return (
                           <img
-                            src="/projects/newtube.webp"
+                            src="/projects/desktop/newtube.webp"
                             alt="NewTube"
                             className="w-full h-full object-cover object-top"
                           />
@@ -669,7 +669,7 @@ const SafariMobileHeader = ({ projects }) => {
                       if (urlLower.includes("insta") || urlLower.includes("snsta")) {
                         return (
                           <img
-                            src="/projects/snsta.webp"
+                            src="/projects/desktop/snsta.webp"
                             alt="Insta Downloader"
                             className="w-full h-full object-cover object-top"
                           />
@@ -678,7 +678,7 @@ const SafariMobileHeader = ({ projects }) => {
                       if (urlLower.includes("resume")) {
                         return (
                           <img
-                            src="/projects/resume-ats.webp"
+                            src="/projects/desktop/resume-ats.webp"
                             alt="Resume ATS"
                             className="w-full h-full object-cover object-top"
                           />
@@ -687,7 +687,7 @@ const SafariMobileHeader = ({ projects }) => {
                       if (urlLower.includes("docs")) {
                         return (
                           <img
-                            src="/projects/docs-editor.webp"
+                            src="/projects/desktop/docs-editor.webp"
                             alt="Docs Editor"
                             className="w-full h-full object-cover object-top"
                           />
@@ -696,7 +696,7 @@ const SafariMobileHeader = ({ projects }) => {
                       if (urlLower.includes("openstreetmap") || urlLower.includes("map")) {
                         return (
                           <img
-                            src="/images/openstreetmap.webp"
+                            src="/brands/openstreetmap.webp"
                             alt="Map"
                             className="w-full h-full object-cover"
                           />
@@ -723,7 +723,7 @@ const SafariMobileHeader = ({ projects }) => {
                         return (
                           <div className="flex flex-col items-center gap-1.5 transform scale-[1.35]">
                             <img
-                              src="/images/safari.webp"
+                              src="/apps/safari.webp"
                               alt="Safari"
                               className="w-10 h-10 object-contain"
                             />

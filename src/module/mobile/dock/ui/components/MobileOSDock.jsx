@@ -35,7 +35,7 @@ const MobileOSDock = ({ dockApps, openWindow }) => (
         className="active:scale-[0.82] transition-transform duration-150 w-[58px] h-[58px] rounded-[14px] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
       >
         <OptimizedImage
-          src={`/images/${app.icon}`}
+          src={`/apps/${app.icon}`}
           alt={app.name}
           width={64}
           height={64}

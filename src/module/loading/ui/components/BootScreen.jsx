@@ -103,7 +103,7 @@ const BootScreen = ({ onComplete, isMobile: propIsMobile }) => {
       ref={containerRef}
       className="fixed inset-0 z-99999 bg-black flex flex-col items-center justify-center gap-16"
     >
-      <img src="/icons/appleLogo.svg" alt="Apple Logo" width="70" height="70" />
+      <img src="/system/icons/appleLogo.svg" alt="Apple Logo" width="70" height="70" />
       <div className="w-56 h-1.5 bg-[#333] rounded-full overflow-hidden">
         <div ref={progressRef} className="h-full bg-white rounded-full w-0" />
       </div>

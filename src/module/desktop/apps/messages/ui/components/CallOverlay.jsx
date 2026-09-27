@@ -10,7 +10,7 @@ const CallOverlay = ({
   onEndCall,
   formatCallTime,
 }) => {
-  const [profileAvatar, setProfileAvatar] = useState("/images/profile.webp");
+  const [profileAvatar, setProfileAvatar] = useState("/contacts/avatars/profile.webp");
   const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {

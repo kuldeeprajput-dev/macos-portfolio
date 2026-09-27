@@ -276,7 +276,7 @@ const Notch = () => {
 
   const playSiriLaunchSound = () => {
     return new Promise((resolve) => {
-      const sound = new Audio("/sound/siri.mp3");
+      const sound = new Audio("/system/audio/siri.mp3");
       sound.volume = 0.5;
       sound.onended = () => resolve();
       sound.onerror = () => resolve();
@@ -576,9 +576,21 @@ const Notch = () => {
     // Shutter flash animation and sound
     setCameraFlash(true);
     try {
-      const sound = new Audio("/sound/shutter.mp3");
-      sound.volume = 0.4;
-      sound.play().catch(() => {});
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        const audioCtx = new AudioCtx();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      }
     } catch {
       /* silent */
     }
@@ -1211,7 +1223,7 @@ const Notch = () => {
               title={isListening ? "Stop listening" : "Start listening"}
               aria-label={isListening ? "Stop Siri listening" : "Start Siri listening"}
             >
-              <img src="/images/siri.webp" alt="Siri" className="notch-siri-gif" />
+              <img src="/system/siri/siri.webp" alt="Siri" className="notch-siri-gif" />
             </button>
             <div className="notch-siri-content">
               <div className="notch-siri-text">

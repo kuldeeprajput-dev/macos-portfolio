@@ -1,8 +1,5 @@
 .mobile-os-container {
-  background-image: image-set(
-    url("/images/mobile-wallpaper.webp") type("image/webp"),
-    url("/images/mobile-wallpaper.png")
-  );
+  background-image: url("/wallpapers/mobile-wallpaper.webp");
   background-size: cover;
   background-position: center;
   -webkit-font-smoothing: antialiased;

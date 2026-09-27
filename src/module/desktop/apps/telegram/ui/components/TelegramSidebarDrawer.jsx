@@ -80,7 +80,7 @@ const TelegramSidebarDrawer = ({
           <div className="flex flex-col h-full">
             <div className="p-3 text-left flex flex-row items-center gap-4 shrink-0">
               <img
-                src="/images/profile.webp"
+                src="/contacts/avatars/profile.webp"
                 alt={userProfile.name}
                 className="w-14 h-14 rounded-full object-cover shadow-md border border-white/20"
               />
@@ -193,7 +193,7 @@ const TelegramSidebarDrawer = ({
             >
               <div className="w-18 h-18 rounded-full relative shadow group overflow-hidden border border-white/20">
                 <img
-                  src="/images/profile.webp"
+                  src="/contacts/avatars/profile.webp"
                   alt={userProfile.name}
                   className="w-full h-full object-cover"
                 />

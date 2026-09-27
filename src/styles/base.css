@@ -51,10 +51,7 @@ body {
   width: 100dvw;
   overflow: hidden;
   height: 100dvh;
-  background-image: image-set(
-    url("/images/wallpapers/wallpaper.webp") type("image/webp"),
-    url("/images/wallpapers/wallpaper.png")
-  );
+  background-image: url("/wallpapers/wallpaper.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -69,9 +66,6 @@ body {
 
 @media (max-width: 767px) {
   body {
-    background-image: image-set(
-      url("/images/mobile-wallpaper.webp") type("image/webp"),
-      url("/images/mobile-wallpaper.png")
-    ) !important;
+    background-image: url("/wallpapers/mobile-wallpaper.webp") !important;
   }
 }

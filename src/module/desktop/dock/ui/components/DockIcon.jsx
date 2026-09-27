@@ -101,7 +101,7 @@ const DockIcon = ({
             <CalendarIcon />
           ) : (
             <OptimizedImage
-              src={`/images/${icon}`}
+              src={`/apps/${icon}`}
               alt={name}
               width={64}
               height={64}

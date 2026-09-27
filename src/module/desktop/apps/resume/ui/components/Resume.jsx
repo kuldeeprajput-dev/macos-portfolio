@@ -6,7 +6,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import useWindowsStore from "@store/window";
 
 // Configure pdfjs worker to render the PDF properly from the local public directory
-pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
+pdfjs.GlobalWorkerOptions.workerSrc = "/vendor/pdf.worker.min.js";
 
 const Resume = () => {
   const isOpen = useWindowsStore((state) => state.windows.resume?.isOpen);
@@ -125,7 +125,7 @@ const Resume = () => {
           </button>
 
           <a
-            href="/files/resume.pdf"
+            href="/documents/resume.pdf"
             download
             className="p-1.5 hover:bg-gray-200/60 rounded transition text-gray-600 hover:text-gray-800"
             title="Download PDF"
@@ -150,7 +150,7 @@ const Resume = () => {
       >
         <div className="flex flex-col items-center justify-center min-h-full py-6 px-4 w-fit mx-auto">
           <Document
-            file="/files/resume.pdf"
+            file="/documents/resume.pdf"
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<div className="p-4 text-gray-500">Loading Resume...</div>}
             error={<div className="p-4 text-rose-500">Failed to load PDF.</div>}

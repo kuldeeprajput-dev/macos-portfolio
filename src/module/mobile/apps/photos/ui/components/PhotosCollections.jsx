@@ -10,7 +10,7 @@ export const PhotosCollectionsMobile = ({
   // Extract categories for albums cover images
   const getCoverImage = (category) => {
     const item = gallery.find((p) => p.category === category);
-    return item ? item.img : "/images/gal1.webp";
+    return item ? item.img : "/gallery/library/gal1.webp";
   };
 
   const getFavoritesCover = () => {
@@ -19,7 +19,7 @@ export const PhotosCollectionsMobile = ({
       const item = gallery.find((p) => p.id === favId);
       if (item) return item.img;
     }
-    return "/images/gal1.webp";
+    return "/gallery/library/gal1.webp";
   };
 
   const albumList = [

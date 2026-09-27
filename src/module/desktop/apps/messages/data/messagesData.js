@@ -4,7 +4,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "kuldeep",
     name: "Kuldeep (Developer)",
-    avatar: "/images/profile.webp",
+    avatar: "/contacts/avatars/profile.webp",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-500",
     initials: "K",
     unread: true,
@@ -34,7 +34,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "bhavesh",
     name: "Bhavesh Kumar",
-    avatar: "/images/contacts/Bhavesh.webp",
+    avatar: "/contacts/avatars/Bhavesh.webp",
     avatarColor: "bg-gradient-to-tr from-indigo-500 to-purple-600",
     initials: "B",
     unread: false,
@@ -59,7 +59,7 @@ export const INITIAL_CONVERSATIONS = [
   {
     id: "mahabub",
     name: "Mahabub",
-    avatar: "/images/contacts/mahabub.webp",
+    avatar: "/contacts/avatars/mahabub.webp",
     avatarColor: "bg-gradient-to-tr from-purple-500 to-pink-600",
     initials: "M",
     unread: false,

@@ -5,7 +5,7 @@ import { Download, ZoomIn, ZoomOut, RefreshCw } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 // Configure pdfjs worker to render the PDF properly from the local public directory
-pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
+pdfjs.GlobalWorkerOptions.workerSrc = "/vendor/pdf.worker.min.js";
 
 const Resume = () => {
   const [numPages, setNumPages] = useState(null);
@@ -93,7 +93,7 @@ const Resume = () => {
       >
         <WindowControls target={"resume"} />
         <h2>Resume.pdf</h2>
-        <a href="/files/resume.pdf" download className="cursor-pointer" title="Download resume">
+        <a href="/documents/resume.pdf" download className="cursor-pointer" title="Download resume">
           <Download className="icon" />
         </a>
       </div>
@@ -101,7 +101,7 @@ const Resume = () => {
       <div ref={containerRef} className="resume-main flex-1 overflow-auto bg-[#f2f2f7] min-h-0">
         <div className="flex flex-col items-center justify-center min-h-full w-fit mx-auto py-6 px-4">
           <Document
-            file="/files/resume.pdf"
+            file="/documents/resume.pdf"
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<div className="p-4 text-gray-500">Loading Resume...</div>}
             error={<div className="p-4 text-rose-500">Failed to load PDF.</div>}
