@@ -19,7 +19,6 @@ const resolveIcon = (icon) => {
     "youtube.webp",
     "x.webp",
     "chrome.webp",
-    "chromee.webp",
     "openstreetmap.webp",
     "insta-downloader.webp",
     "resume-ats.webp",
