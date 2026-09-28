@@ -103,8 +103,8 @@ const Home = () => {
       bounds: "#home",
       allowContextMenu: true,
       cursor: "default",
-      activeCursor: "grabbing",
-      onPress: function () {
+      activeCursor: "default",
+      onDragStart: function () {
         document.body.classList.add("folder-dragging");
       },
       onDragEnd: function () {

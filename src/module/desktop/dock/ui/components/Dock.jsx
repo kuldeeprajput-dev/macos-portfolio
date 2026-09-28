@@ -128,13 +128,13 @@ const Dock = () => {
       e.dataTransfer.setDragImage(img, 24, 24);
     }
 
-    // Timeout ensures the browser has successfully captured the drag image before we hide it in the DOM
+    // Wait for a sustained drag before dimming the icon and showing the grabbing cursor.
     dragStartTimerRef.current = setTimeout(() => {
       if (draggedAppIdRef.current === id) {
         setDraggedAppId(id);
       }
       dragStartTimerRef.current = null;
-    }, 0);
+    }, 150);
   };
 
   const handleDragOver = (e, targetId) => {

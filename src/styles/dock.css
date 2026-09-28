@@ -107,11 +107,6 @@
   pointer-events: none !important;
 }
 
-.dock-item:active,
-.dock-icon:active {
-  cursor: grabbing;
-}
-
 #dock .dock-icon {
   width: var(--dock-icon-size);
   height: var(--dock-icon-size);

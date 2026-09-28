@@ -370,14 +370,6 @@
     cursor: default;
   }
 
-  .folder:active,
-  .folder:active *,
-  .desktop-shortcut:active,
-  .desktop-shortcut:active * {
-    cursor: grabbing !important;
-    cursor: -webkit-grabbing !important;
-  }
-
   body.folder-dragging,
   body.folder-dragging * {
     cursor: grabbing !important;
