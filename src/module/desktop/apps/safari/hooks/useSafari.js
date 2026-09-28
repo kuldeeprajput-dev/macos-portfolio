@@ -174,7 +174,7 @@ const useSafari = () => {
     } else if (lowerQuery.includes("course") || lowerQuery.includes("coursenva")) {
       targetUrl = PROJECT_2_URL;
       isRedirected = true;
-    } else if (lowerQuery.includes("resume")) {
+    } else if (lowerQuery.includes("resuvee") || lowerQuery.includes("resume")) {
       targetUrl = PROJECT_3_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("portfolio")) {
@@ -241,7 +241,7 @@ const useSafari = () => {
           } else if (targetUrl === PROJECT_2_URL) {
             newTitle = "Coursenva";
           } else if (targetUrl === PROJECT_3_URL) {
-            newTitle = "Resume ATS";
+            newTitle = "Resuvee";
           } else if (targetUrl === "https://en.wikipedia.org") {
             newTitle = "Wikipedia";
           } else if (targetUrl === "https://openstreetmap.org") {
@@ -362,7 +362,7 @@ const useSafari = () => {
     if (url === "safari://bookmarks") return "Bookmarks";
     if (url === PROJECT_1_URL) return "NewTube";
     if (url === PROJECT_2_URL) return "Coursenva";
-    if (url === PROJECT_3_URL) return "Resume ATS";
+    if (url === PROJECT_3_URL) return "Resuvee";
     if (url === "https://en.wikipedia.org") return "Wikipedia";
     if (url === "https://openstreetmap.org") return "OpenStreetMap";
     if (url === (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000"))

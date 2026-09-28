@@ -15,9 +15,9 @@ export const DEFAULT_BOOKMARKS = [
   },
   {
     id: 3,
-    title: "Resume ATS",
+    title: "Resuvee",
     url: PROJECT_3_URL,
-    img: "/brands/resume-ats.webp",
+    img: "/projects/desktop/resuvee.webp",
   },
   {
     id: 4,

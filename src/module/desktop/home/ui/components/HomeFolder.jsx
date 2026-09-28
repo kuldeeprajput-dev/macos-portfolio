@@ -3,8 +3,7 @@ import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 import FolderRenameInput from "./FolderRenameInput";
 
 const HomeFolder = ({ project, displayName, isEditing, onRename, onClick, onContextMenu }) => {
-  const currentName =
-    displayName || (project.name === "Resume Ats Scanner" ? "Resume ATS" : project.name);
+  const currentName = displayName || project.name;
 
   return (
     <li

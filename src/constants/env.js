@@ -2,8 +2,9 @@ export const PROJECT_1_URL = process.env.NEXT_PUBLIC_PROJECT_1_URL;
 export const PROJECT_1_GITHUB = process.env.NEXT_PUBLIC_PROJECT_1_GITHUB;
 export const PROJECT_2_URL = process.env.NEXT_PUBLIC_PROJECT_2_URL;
 export const PROJECT_2_GITHUB = process.env.NEXT_PUBLIC_PROJECT_2_GITHUB;
-export const PROJECT_3_URL = process.env.NEXT_PUBLIC_PROJECT_3_URL;
-export const PROJECT_3_GITHUB = process.env.NEXT_PUBLIC_PROJECT_3_GITHUB;
+export const PROJECT_3_URL = process.env.NEXT_PUBLIC_RESUVEE_URL || "https://resuvee.vercel.app/";
+export const PROJECT_3_GITHUB =
+  process.env.NEXT_PUBLIC_RESUVEE_GITHUB || "https://github.com/kuldeeprajput-dev/resuvee";
 export const PROJECT_4_URL = process.env.NEXT_PUBLIC_PROJECT_4_URL;
 export const PROJECT_4_GITHUB = process.env.NEXT_PUBLIC_PROJECT_4_GITHUB;
 export const GITHUB_PROFILE = process.env.NEXT_PUBLIC_GITHUB_PROFILE;

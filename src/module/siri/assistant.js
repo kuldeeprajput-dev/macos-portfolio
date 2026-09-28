@@ -48,13 +48,7 @@ const PROJECT_META = {
   },
   3: {
     key: "resume",
-    aliases: [
-      "resume ats",
-      "resume ats scanner",
-      "resume scanner",
-      "ats scanner",
-      "resume analyzer",
-    ],
+    aliases: ["resuvee", "resume", "resume builder", "ats analyzer", "resume analyzer"],
   },
   4: {
     key: "docs",

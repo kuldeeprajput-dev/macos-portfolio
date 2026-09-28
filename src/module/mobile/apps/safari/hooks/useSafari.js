@@ -56,7 +56,7 @@ export default function useSafari() {
     } else if (lowerQuery.includes("course") || lowerQuery.includes("coursenva")) {
       targetUrl = PROJECT_2_URL;
       isRedirected = true;
-    } else if (lowerQuery.includes("resume")) {
+    } else if (lowerQuery.includes("resuvee") || lowerQuery.includes("resume")) {
       targetUrl = PROJECT_3_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("docs-editor") || lowerQuery.includes("docs")) {

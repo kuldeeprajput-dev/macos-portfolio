@@ -120,7 +120,7 @@ const WORK_LOCATION = {
     },
     {
       id: 7,
-      name: "Resume Ats Scanner",
+      name: "Resuvee",
       icon: "/system/icons/files/folder.webp",
       kind: "folder",
       position: "top-10 left-80",
@@ -128,20 +128,20 @@ const WORK_LOCATION = {
       children: [
         {
           id: 1,
-          name: "Resume Ats Scanner Project.txt",
+          name: "Resuvee Project.txt",
           icon: "/system/icons/files/txt.webp",
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
           description: [
-            "This is an AI-powered resume parsing and analysis platform designed to help job seekers optimize their resumes for Applicant Tracking Systems (ATS).",
-            "It extracts key information from uploaded resumes, analyzes them against job descriptions, and provides detailed feedback on keyword optimization, formatting issues, and content improvements.",
-            "Built with Groq API, it ensures accurate parsing and intelligent scoring, helping users increase their chances of passing through automated screening processes.",
+            "Resuvee helps job seekers build polished resumes with customizable templates and live editing.",
+            "Its ATS analyzer offers structure checks, keyword insights, scoring, and suggestions to improve a resume.",
+            "AI writing tools help refine content, and finished resumes can be exported as PDF or DOCX files.",
           ],
         },
         {
           id: 2,
-          name: "resumeatsscanner.com",
+          name: "resuvee.vercel.app",
           icon: "/apps/safari.webp",
           kind: "file",
           fileType: "url",
@@ -150,13 +150,13 @@ const WORK_LOCATION = {
         },
         {
           id: 4,
-          name: "resumeatsscanner.png",
+          name: "resuvee.webp",
           icon: "/system/icons/files/image.webp",
           kind: "file",
           fileType: "img",
           position: "top-52 right-80",
-          imageUrl: "/projects/desktop/resume-ats.webp",
-          imageMobUrl: "/projects/mobile/resume-ats-mob.webp",
+          imageUrl: "/projects/desktop/resuvee.webp",
+          imageMobUrl: "/projects/mobile/resuvee-mob.webp",
         },
         {
           id: 5,

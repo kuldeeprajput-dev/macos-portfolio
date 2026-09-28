@@ -230,7 +230,7 @@ const useMessages = () => {
         let replyText = "That's cool! Feel free to explore other apps in the dock too.";
         if (userMsg.includes("project")) {
           replyText =
-            "I have built several cool projects! You can check them out in the 'Portfolio' Finder app, or view 'NewTube', 'Coursenva', 'Resume ATS Scanner', and 'Docs Editor'.";
+            "I have built several cool projects! You can check them out in the 'Portfolio' Finder app, or view 'NewTube', 'Coursenva', 'Resuvee', and 'Docs Editor'.";
         } else if (
           userMsg.includes("skill") ||
           userMsg.includes("tech") ||

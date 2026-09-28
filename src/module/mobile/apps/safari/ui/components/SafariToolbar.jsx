@@ -675,11 +675,11 @@ const SafariMobileHeader = ({ projects }) => {
                           />
                         );
                       }
-                      if (urlLower.includes("resume")) {
+                      if (urlLower.includes("resuvee") || urlLower.includes("resume")) {
                         return (
                           <img
-                            src="/projects/desktop/resume-ats.webp"
-                            alt="Resume ATS"
+                            src="/projects/desktop/resuvee.webp"
+                            alt="Resuvee"
                             className="w-full h-full object-cover object-top"
                           />
                         );

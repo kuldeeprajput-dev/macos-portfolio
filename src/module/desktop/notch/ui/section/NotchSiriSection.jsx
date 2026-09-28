@@ -284,7 +284,7 @@ Rules:
 - Kuldeep's Projects Context:
   1. Newtube: A feature-rich YouTube clone built with React.
   2. Coursenva: An AI-powered free course finder and learning roadmap generator.
-  3. Resume ATS Scanner: An ATS (Applicant Tracking System) parser that analyzes and scores resumes.
+  3. Resuvee: An AI resume builder and ATS analyzer with templates, writing help, and export.
   4. Docs Editor: A collaborative real-time rich-text document editor.
   Explain these projects briefly and enthusiastically if the user asks about them.`,
             },

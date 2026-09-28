@@ -20,7 +20,6 @@ const resolveIcon = (icon) => {
     "x.webp",
     "chrome.webp",
     "openstreetmap.webp",
-    "resume-ats.webp",
   ];
   if (brands.includes(icon)) return `/brands/${icon}`;
   const games = [

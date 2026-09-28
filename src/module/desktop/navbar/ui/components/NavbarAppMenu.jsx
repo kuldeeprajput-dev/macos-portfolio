@@ -266,7 +266,7 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
       ],
       [
         {
-          label: "Interactive ATS System",
+          label: "Open Resuvee",
           onClick: () => openWindow("safari", { url: PROJECT_3_URL }),
         },
       ],

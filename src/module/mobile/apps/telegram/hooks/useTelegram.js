@@ -274,7 +274,7 @@ const useTelegram = () => {
             "Hello! I am your Telegram assistant. Type `/projects`, `/skills`, or `/contact` to browse Kuldeep's portfolio.";
         } else if (cmd.includes("/project")) {
           reply =
-            "Here are some top projects:\n1. **NewTube**: Video platform built with Next.js, Mux & PostgreSQL.\n2. **Coursenva**: AI-powered course finder and roadmap generator.\n3. **Resume ATS Scanner**: ATS CV scoring app.\n4. **Docs Editor**: Live rich-text document collaboration.";
+            "Here are some top projects:\n1. **NewTube**: Video platform built with Next.js, Mux & PostgreSQL.\n2. **Coursenva**: AI-powered course finder and roadmap generator.\n3. **Resuvee**: AI resume builder and ATS analyzer.\n4. **Docs Editor**: Live rich-text document collaboration.";
         } else if (cmd.includes("/skill") || cmd.includes("/tech")) {
           reply =
             "Core Stack:\n• **Frontend**: React, Next.js, TypeScript\n• **Styling**: CSS, Sass, Tailwind CSS\n• **Backend**: Node.js, Express, Bun, tRPC\n• **Databases**: PostgreSQL, MongoDB\n• **Tools**: Git, GitHub, Docker";

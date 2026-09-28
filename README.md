@@ -235,9 +235,9 @@ NEXT_PUBLIC_PROJECT_1_GITHUB=https://github.com/your-username/project-1
 NEXT_PUBLIC_PROJECT_2_URL=https://your-project-2.vercel.app
 NEXT_PUBLIC_PROJECT_2_GITHUB=https://github.com/your-username/project-2
 
-# Project 3
-NEXT_PUBLIC_PROJECT_3_URL=https://your-project-3.vercel.app
-NEXT_PUBLIC_PROJECT_3_GITHUB=https://github.com/your-username/project-3
+# Project 3: Resuvee
+NEXT_PUBLIC_RESUVEE_URL=https://resuvee.vercel.app/
+NEXT_PUBLIC_RESUVEE_GITHUB=https://github.com/kuldeeprajput-dev/resuvee
 
 # Project 4
 NEXT_PUBLIC_PROJECT_4_URL=https://your-project-4.vercel.app
@@ -309,8 +309,8 @@ Open your `.env` file and replace every personal value:
 | `NEXT_PUBLIC_PROJECT_1_GITHUB` | GitHub repo URL of your 1st project | `https://github.com/johndoe-dev/my-app` |
 | `NEXT_PUBLIC_PROJECT_2_URL` | Live URL of your 2nd project | _(same pattern)_ |
 | `NEXT_PUBLIC_PROJECT_2_GITHUB` | GitHub repo URL of your 2nd project | _(same pattern)_ |
-| `NEXT_PUBLIC_PROJECT_3_URL` | Live URL of your 3rd project | _(same pattern)_ |
-| `NEXT_PUBLIC_PROJECT_3_GITHUB` | GitHub repo URL of your 3rd project | _(same pattern)_ |
+| `NEXT_PUBLIC_RESUVEE_URL` | Resuvee live URL | `https://resuvee.vercel.app/` |
+| `NEXT_PUBLIC_RESUVEE_GITHUB` | Resuvee GitHub repo | `https://github.com/kuldeeprajput-dev/resuvee` |
 | `NEXT_PUBLIC_PROJECT_4_URL` | Live URL of your 4th project | _(same pattern)_ |
 | `NEXT_PUBLIC_PROJECT_4_GITHUB` | GitHub repo URL of your 4th project | _(same pattern)_ |
 | `GROQ_API_KEY` | Your Groq API key for Siri AI | Get free at [console.groq.com/keys](https://console.groq.com/keys) |

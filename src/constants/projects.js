@@ -30,9 +30,10 @@ export const projects = [
   },
   {
     id: 3,
-    title: "Resume Ats Scanner",
-    description: "AI-powered resume parsing and analysis platform optimized for ATS.",
-    image: "/projects/desktop/resume-ats.webp",
+    title: "Resuvee",
+    description:
+      "Build and analyze resumes with customizable templates, AI writing suggestions, ATS insights, and PDF or DOCX export.",
+    image: "/projects/desktop/resuvee.webp",
     link: PROJECT_3_URL,
     github: PROJECT_3_GITHUB,
   },
