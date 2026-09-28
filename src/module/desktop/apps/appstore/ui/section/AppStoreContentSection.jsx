@@ -153,8 +153,8 @@ const AppStoreContentSection = ({
           {(() => {
             const asphaltApp = STORE_APPS.find((app) => app.id === "asphalt");
             return asphaltApp ? (
-              <div className="relative rounded-2xl overflow-hidden bg-linear-to-br from-[#0f172a] via-[#1e1b4b] to-[#311042] text-white p-6 md:p-8 flex flex-col justify-between min-h-[200px] shadow-lg border border-white/5 group/game-hero transition-all hover:shadow-xl hover:shadow-indigo-950/20">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent pointer-events-none" />
+              <div className="relative rounded-2xl overflow-hidden bg-linear-to-br from-[#292b28] via-[#1e2220] to-[#141817] text-white p-6 md:p-8 flex flex-col justify-between min-h-[200px] shadow-lg border border-white/5 group/game-hero transition-all hover:shadow-xl hover:shadow-black/20">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-orange-300/10 via-transparent to-transparent pointer-events-none" />
 
                 {/* Banner Image overlay */}
                 <div className="absolute inset-y-0 right-0 w-1/2 md:w-3/5 overflow-hidden pointer-events-none select-none z-0">
@@ -170,7 +170,7 @@ const AppStoreContentSection = ({
                   />
                 </div>
                 <div className="space-y-2 relative z-10 max-w-md md:max-w-xl">
-                  <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#f472b6] bg-[#f472b6]/10 px-2.5 py-1 rounded-full border border-[#f472b6]/20 w-fit block">
+                  <span className="text-[9px] font-extrabold uppercase tracking-widest text-orange-200 bg-orange-100/10 px-2.5 py-1 rounded-full border border-orange-100/20 w-fit block">
                     Featured Game
                   </span>
                   <h3 className="text-2xl md:text-3xl font-black tracking-tight leading-none mt-2">

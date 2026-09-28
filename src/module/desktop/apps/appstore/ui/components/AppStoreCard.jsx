@@ -5,14 +5,13 @@ import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 const resolveIcon = (icon) => {
   if (!icon) return "/apps/appstore.webp";
   if (icon.startsWith("/")) return icon;
+  if (icon === "vscode.webp" || icon === "postman.webp") return `/apps/${icon}`;
   const brands = [
     "figma.webp",
     "xcode.webp",
-    "vscode.webp",
     "notion.webp",
     "slack.webp",
     "docker.webp",
-    "postman.webp",
     "spotify.webp",
     "github.webp",
     "linkedin.webp",
@@ -36,7 +35,7 @@ const resolveIcon = (icon) => {
 const AppStoreIcon = ({ icon, name, fallbackBg = "bg-blue-500" }) => {
   const [hasError, setHasError] = useState(false);
   return (
-    <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden border border-gray-200/50 shadow-sm shrink-0">
+    <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
       {!hasError ? (
         <OptimizedImage
           src={resolveIcon(icon)}
