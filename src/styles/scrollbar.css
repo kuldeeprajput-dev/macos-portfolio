@@ -31,3 +31,31 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.weather-hourly-scroll::-webkit-scrollbar {
+  height: 0;
+}
+
+.weather-hourly-forecast:hover .weather-hourly-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.weather-hourly-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.weather-hourly-scroll::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.weather-hourly-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+}
+
+.weather-hourly-forecast:hover .weather-hourly-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.55);
+}

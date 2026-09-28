@@ -13,39 +13,39 @@ const WeatherHeader = ({
   return (
     <div
       id="window-header"
-      className="window-header shrink-0 flex items-center justify-between bg-gray-50 border-b border-[#d1d1d1] px-4 h-[44px] relative z-40 select-none cursor-default"
+      className="window-header absolute inset-x-0 top-0 z-40 flex h-12 items-center justify-between !border-0 !bg-transparent !p-0 select-none cursor-default"
     >
-      <div className="flex items-center gap-2">
+      <div
+        className={`flex h-full items-center gap-2 px-4 ${isSidebarOpen ? "w-56 border-r border-black/10 bg-[#ececef]" : ""}`}
+      >
         <WindowControls target="weather" />
         {isNarrow && (
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-1 rounded hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer flex items-center justify-center"
+            className={`ml-2 flex h-7 w-7 items-center justify-center rounded-md border transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${isSidebarOpen ? "border-black/10 bg-white/70 text-gray-700 hover:bg-white" : "border-white/20 bg-black/20 text-white shadow-sm backdrop-blur-md hover:bg-black/35"}`}
             aria-label="Toggle Sidebar"
           >
             <PanelLeft className="w-4 h-4" />
           </button>
         )}
       </div>
-      <div className="flex-1 text-center font-bold text-gray-700 text-sm block truncate px-2">
-        Weather — {activeCity.name}
-      </div>
-      <div className="flex bg-black/5 rounded-lg p-0.5 border border-black/5 text-[10px] font-bold text-gray-600">
+      <span className="sr-only">Weather — {activeCity.name}</span>
+      <div className="mr-4 flex rounded-lg border border-white/20 bg-black/20 p-0.5 text-[10px] font-semibold text-white backdrop-blur-xl">
         <button
           onClick={() => setUnitMode("both")}
-          className={`px-2 py-1 rounded-md transition-all cursor-pointer ${unitMode === "both" ? "bg-white text-gray-800 shadow-sm" : "hover:bg-black/5 text-gray-500 hover:text-gray-800"}`}
+          className={`rounded-md px-2 py-1 transition-all cursor-pointer ${unitMode === "both" ? "bg-white/90 text-gray-800 shadow-sm" : "text-white/80 hover:bg-white/15 hover:text-white"}`}
         >
           Both
         </button>
         <button
           onClick={() => setUnitMode("c")}
-          className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${unitMode === "c" ? "bg-white text-gray-800 shadow-sm" : "hover:bg-black/5 text-gray-500 hover:text-gray-800"}`}
+          className={`rounded-md px-2.5 py-1 transition-all cursor-pointer ${unitMode === "c" ? "bg-white/90 text-gray-800 shadow-sm" : "text-white/80 hover:bg-white/15 hover:text-white"}`}
         >
           °C
         </button>
         <button
           onClick={() => setUnitMode("f")}
-          className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${unitMode === "f" ? "bg-white text-gray-800 shadow-sm" : "hover:bg-black/5 text-gray-500 hover:text-gray-800"}`}
+          className={`rounded-md px-2.5 py-1 transition-all cursor-pointer ${unitMode === "f" ? "bg-white/90 text-gray-800 shadow-sm" : "text-white/80 hover:bg-white/15 hover:text-white"}`}
         >
           °F
         </button>

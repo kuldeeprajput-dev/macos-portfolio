@@ -3,9 +3,9 @@ import { Compass, Sunrise, Sunset } from "lucide-react";
 
 const MetricCard = ({ title, children, className = "" }) => (
   <div
-    className={`bg-white/10 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-between border border-white/10 shadow-sm min-h-[120px] ${className}`}
+    className={`flex min-h-[144px] flex-col justify-between rounded-2xl border border-white/15 bg-black/15 p-4 shadow-sm backdrop-blur-xl ${className}`}
   >
-    <h4 className="text-[9px] font-bold uppercase tracking-wider text-white/50 leading-none">
+    <h4 className="text-[10px] font-semibold uppercase tracking-wider text-white/75 leading-none">
       {title}
     </h4>
     {children}
@@ -15,8 +15,8 @@ const MetricCard = ({ title, children, className = "" }) => (
 export const UvIndexCard = ({ uv, uvLabel }) => (
   <MetricCard title="UV Index">
     <div className="space-y-1">
-      <span className="text-xl font-bold">{uv}</span>
-      <p className="text-[10px] font-bold">{uvLabel}</p>
+      <span className="text-2xl font-semibold">{uv}</span>
+      <p className="text-[11px] font-medium">{uvLabel}</p>
     </div>
     <div className="h-1 bg-gradient-to-r from-green-500 via-amber-400 via-orange-500 to-purple-600 rounded-full relative mt-2">
       <div
@@ -31,7 +31,7 @@ export const WindCard = ({ windSpeed, windDir, windAngle }) => (
   <MetricCard title="Wind">
     <div className="flex items-center gap-3">
       <div className="space-y-1 min-w-0 flex-1">
-        <span className="text-xl font-bold tracking-tight">
+        <span className="text-2xl font-semibold tracking-tight">
           {windSpeed} <span className="text-[10px] font-semibold">mph</span>
         </span>
         <p className="text-[9px] font-bold opacity-80">{windDir} Direction</p>
@@ -48,7 +48,7 @@ export const WindCard = ({ windSpeed, windDir, windAngle }) => (
 );
 
 export const SunriseSunsetCard = ({ sunrise, sunset }) => (
-  <MetricCard title="Sunrise">
+  <MetricCard title="Sunrise & Sunset">
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <Sunrise className="w-5 h-5 text-amber-300" />
@@ -71,8 +71,8 @@ export const SunriseSunsetCard = ({ sunrise, sunset }) => (
 export const AirQualityCard = ({ aqi, aqiLabel }) => (
   <MetricCard title="Air Quality">
     <div className="space-y-1">
-      <span className="text-xl font-bold">{aqi}</span>
-      <p className="text-[10px] font-bold">{aqiLabel}</p>
+      <span className="text-2xl font-semibold">{aqi}</span>
+      <p className="text-[11px] font-medium">{aqiLabel}</p>
     </div>
     <div className="h-1 bg-gradient-to-r from-green-500 via-yellow-400 via-orange-500 to-red-600 rounded-full relative mt-2">
       <div

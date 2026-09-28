@@ -1,14 +1,27 @@
 import React from "react";
 import { renderIcon } from "../../data/weatherUtils";
 
+const toCelsius = (valueC, value) => {
+  if (Number.isFinite(valueC)) return valueC;
+  if (!Number.isFinite(value)) return null;
+  return value <= 45 ? value : Math.round(((value - 32) * 5) / 9);
+};
+
 const TenDayForecast = ({ activeCity, unitMode }) => {
+  const forecast = activeCity.forecast ?? [];
+  const temperatures = forecast
+    .flatMap((day) => [toCelsius(day.tempMinC, day.tempMin), toCelsius(day.tempMaxC, day.tempMax)])
+    .filter(Number.isFinite);
+  const chartMin = temperatures.length ? Math.min(...temperatures) : 0;
+  const chartSpan = temperatures.length ? Math.max(1, Math.max(...temperatures) - chartMin) : 1;
+
   return (
-    <section className="bg-white/10 backdrop-blur-md rounded-2xl p-4 space-y-3.5 border border-white/10 shadow-sm">
-      <h3 className="text-[10px] font-bold uppercase tracking-wider text-white/50 leading-none">
+    <section className="min-w-0 space-y-2 rounded-2xl border border-white/15 bg-black/15 p-4 shadow-sm backdrop-blur-xl">
+      <h3 className="border-b border-white/15 pb-2.5 text-[10px] font-semibold uppercase tracking-wider text-white/75 leading-none">
         10-Day Forecast
       </h3>
-      <div className="space-y-3 text-xs">
-        {activeCity.forecast?.map((f, i) => {
+      <div className="divide-y divide-white/15 text-xs">
+        {forecast.map((f, i) => {
           const minC =
             f.tempMinC !== undefined
               ? f.tempMinC
@@ -41,45 +54,42 @@ const TenDayForecast = ({ activeCity, unitMode }) => {
                   ? f.tempMax
                   : Math.round((f.tempMax * 9) / 5 + 32)
                 : "--";
+          const barLow = Number.isFinite(minC) ? minC : chartMin;
+          const barHigh = Number.isFinite(maxC) ? maxC : chartMin;
           return (
-            <div key={i} className="flex items-center justify-between gap-1.5 font-semibold">
-              <span className="text-left opacity-80" style={{ width: "40px", minWidth: "40px" }}>
-                {f.day}
-              </span>
-              <div className="flex justify-center" style={{ width: "24px", minWidth: "24px" }}>
+            <div
+              key={i}
+              className="flex min-h-9 items-center justify-between gap-2 py-1.5 font-medium"
+            >
+              <span className="w-11 shrink-0 text-left text-white/90">{f.day}</span>
+              <div className="flex w-6 shrink-0 justify-center">
                 {renderIcon(f.icon, "w-4 h-4")}
               </div>
-              <div
-                className="flex-1 flex items-center justify-between gap-2"
-                style={{ maxWidth: "110px", minWidth: "80px" }}
-              >
-                <div
-                  className="flex flex-col items-end leading-none text-[9px] opacity-65"
-                  style={{ width: "32px", minWidth: "32px" }}
-                >
+              <div className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                <div className="flex w-9 shrink-0 flex-col items-end text-[10px] leading-none text-white/70">
                   {unitMode === "both" && (
                     <>
                       <span>{minC}°C</span>
-                      <span className="text-[8px] text-white/60 mt-0.5">{minF}°F</span>
+                      <span className="mt-0.5 text-[8px] text-white/55">{minF}°F</span>
                     </>
                   )}
                   {unitMode === "c" && <span>{minC}°C</span>}
                   {unitMode === "f" && <span>{minF}°F</span>}
                 </div>
-                <div className="flex-1 h-1 bg-white/20 rounded-full overflow-hidden relative">
+                <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-white/20">
                   <div
-                    className="absolute h-full bg-gradient-to-r from-orange-400 to-amber-300 rounded-full"
-                    style={{ left: "20%", right: "15%" }}
+                    className="absolute h-full rounded-full bg-gradient-to-r from-sky-200 via-yellow-200 to-orange-300"
+                    style={{
+                      left: `${((barLow - chartMin) / chartSpan) * 100}%`,
+                      right: `${100 - ((barHigh - chartMin) / chartSpan) * 100}%`,
+                    }}
                   />
                 </div>
-                <div
-                  className="flex flex-col items-end leading-none text-[9px]"
-                  style={{ width: "32px", minWidth: "32px" }}
-                >
+                <div className="flex w-9 shrink-0 flex-col items-end text-[10px] leading-none">
                   {unitMode === "both" && (
                     <>
                       <span>{maxC}°C</span>
-                      <span className="text-[8px] text-white/60 mt-0.5">{maxF}°F</span>
+                      <span className="mt-0.5 text-[8px] text-white/60">{maxF}°F</span>
                     </>
                   )}
                   {unitMode === "c" && <span>{maxC}°C</span>}
