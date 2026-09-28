@@ -77,7 +77,7 @@ export const STORE_APPS = [
     category: "Productivity",
     desc: "View and download my professional resume.",
     rating: 4.9,
-    icon: "pdf.webp",
+    icon: "/system/icons/files/pdf.webp",
     native: true,
   },
   {

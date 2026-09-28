@@ -13,13 +13,13 @@ const WORK_LOCATION = {
   id: 1,
   type: "work",
   name: "Work",
-  icon: "/system/icons/work.svg",
+  icon: "/system/icons/ui/work.svg",
   kind: "folder",
   children: [
     {
       id: 5,
       name: "NewTube",
-      icon: "/apps/folder.webp",
+      icon: "/system/icons/files/folder.webp",
       kind: "folder",
       position: "top-10 left-5",
       windowPosition: "top-[5vh] left-6",
@@ -27,7 +27,7 @@ const WORK_LOCATION = {
         {
           id: 1,
           name: "NewTube Project.txt",
-          icon: "/apps/txt.webp",
+          icon: "/system/icons/files/txt.webp",
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
@@ -49,7 +49,7 @@ const WORK_LOCATION = {
         {
           id: 4,
           name: "newtube.png",
-          icon: "/apps/image.webp",
+          icon: "/system/icons/files/image.webp",
           kind: "file",
           fileType: "img",
           position: "top-52 right-80",
@@ -70,7 +70,7 @@ const WORK_LOCATION = {
     {
       id: 6,
       name: "Snsta",
-      icon: "/apps/folder.webp",
+      icon: "/system/icons/files/folder.webp",
       kind: "folder",
       position: "top-52 right-80",
       windowPosition: "top-[20vh] left-6",
@@ -78,7 +78,7 @@ const WORK_LOCATION = {
         {
           id: 1,
           name: "Snsta Project.txt",
-          icon: "/apps/txt.webp",
+          icon: "/system/icons/files/txt.webp",
           kind: "file",
           fileType: "txt",
           position: "top-5 right-10",
@@ -100,7 +100,7 @@ const WORK_LOCATION = {
         {
           id: 4,
           name: "snsta.png",
-          icon: "/apps/image.webp",
+          icon: "/system/icons/files/image.webp",
           kind: "file",
           fileType: "img",
           position: "top-52 left-80",
@@ -121,7 +121,7 @@ const WORK_LOCATION = {
     {
       id: 7,
       name: "Resume Ats Scanner",
-      icon: "/apps/folder.webp",
+      icon: "/system/icons/files/folder.webp",
       kind: "folder",
       position: "top-10 left-80",
       windowPosition: "top-[35vh] left-6",
@@ -129,7 +129,7 @@ const WORK_LOCATION = {
         {
           id: 1,
           name: "Resume Ats Scanner Project.txt",
-          icon: "/apps/txt.webp",
+          icon: "/system/icons/files/txt.webp",
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
@@ -151,7 +151,7 @@ const WORK_LOCATION = {
         {
           id: 4,
           name: "resumeatsscanner.png",
-          icon: "/apps/image.webp",
+          icon: "/system/icons/files/image.webp",
           kind: "file",
           fileType: "img",
           position: "top-52 right-80",
@@ -172,7 +172,7 @@ const WORK_LOCATION = {
     {
       id: 8,
       name: "Docs Editor",
-      icon: "/apps/folder.webp",
+      icon: "/system/icons/files/folder.webp",
       kind: "folder",
       position: "top-52 left-5",
       windowPosition: "top-[50vh] left-6",
@@ -180,7 +180,7 @@ const WORK_LOCATION = {
         {
           id: 1,
           name: "Docs Editor Project.txt",
-          icon: "/apps/txt.webp",
+          icon: "/system/icons/files/txt.webp",
           kind: "file",
           fileType: "txt",
           position: "top-5 left-10",
@@ -202,7 +202,7 @@ const WORK_LOCATION = {
         {
           id: 4,
           name: "docs-editor.png",
-          icon: "/apps/image.webp",
+          icon: "/system/icons/files/image.webp",
           kind: "file",
           fileType: "img",
           position: "top-52 right-80",
@@ -227,13 +227,13 @@ const ABOUT_LOCATION = {
   id: 2,
   type: "about",
   name: "About me",
-  icon: "/system/icons/info.svg",
+  icon: "/system/icons/ui/info.svg",
   kind: "folder",
   children: [
     {
       id: 4,
       name: "about-me.txt",
-      icon: "/apps/txt.webp",
+      icon: "/system/icons/files/txt.webp",
       kind: "file",
       fileType: "txt",
       position: "top-60 left-5",
@@ -251,13 +251,13 @@ const RESUME_LOCATION = {
   id: 3,
   type: "resume",
   name: "Resume",
-  icon: "/system/icons/file.svg",
+  icon: "/system/icons/files/file.svg",
   kind: "folder",
   children: [
     {
       id: 1,
       name: "Resume.pdf",
-      icon: "/apps/pdf.webp",
+      icon: "/system/icons/files/pdf.webp",
       kind: "file",
       fileType: "pdf",
     },
@@ -268,26 +268,26 @@ const TRASH_LOCATION = {
   id: 4,
   type: "trash",
   name: "Trash",
-  icon: "/system/icons/trash.svg",
+  icon: "/system/icons/dock/trash.svg",
   kind: "folder",
   children: [
     {
       id: 1,
       name: "trash1.png",
-      icon: "/apps/image.webp",
+      icon: "/system/icons/files/image.webp",
       kind: "file",
       fileType: "img",
       position: "top-10 left-10",
-      imageUrl: "/apps/trash-1.webp",
+      imageUrl: "/trash/trash-1.webp",
     },
     {
       id: 2,
       name: "trash2.png",
-      icon: "/apps/image.webp",
+      icon: "/system/icons/files/image.webp",
       kind: "file",
       fileType: "img",
       position: "top-40 left-80",
-      imageUrl: "/apps/trash-2.webp",
+      imageUrl: "/trash/trash-2.webp",
     },
   ],
 };

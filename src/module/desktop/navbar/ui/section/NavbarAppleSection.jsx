@@ -9,7 +9,7 @@ const NavbarAppleSection = ({
 }) => (
   <>
     <img
-      src="/system/icons/logo.svg"
+      src="/system/icons/apple/logo.svg"
       alt="logo"
       className="apple-logo hover:bg-black/5 rounded px-2"
       onClick={(e) => {

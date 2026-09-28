@@ -22,7 +22,7 @@ const LaunchpadGrid = ({ apps, onLaunch, searchQuery }) => (
               </div>
             ) : (
               <img
-                src={`/apps/${app.icon}`}
+                src={app.icon?.startsWith("/") ? app.icon : `/apps/${app.icon}`}
                 alt={app.name}
                 className="w-full h-full object-contain filter drop-shadow-sm"
               />

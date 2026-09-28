@@ -1,6 +1,6 @@
 export const dockApps = [
   { id: "finder", name: "Portfolio", icon: "finder.webp", canOpen: true },
-  { id: "launchpad", name: "Launchpad", icon: "Launchpad.webp", canOpen: true },
+  { id: "launchpad", name: "Launchpad", icon: "/system/icons/dock/launchpad.webp", canOpen: true },
   { id: "safari", name: "Safari", icon: "safari.webp", canOpen: true },
   { id: "photos", name: "Gallery", icon: "photos.webp", canOpen: true },
   { id: "contact", name: "Contact", icon: "contact.webp", canOpen: true },
@@ -20,6 +20,6 @@ export const dockApps = [
   { id: "font", name: "Font Book", icon: "font.webp", canOpen: true },
   { id: "telegram", name: "Telegram", icon: "telegram.webp", canOpen: true },
   { id: "music", name: "Music", icon: "music.webp", canOpen: true },
-  { id: "folder", name: "Projects Folder", icon: "folder.webp", canOpen: true },
-  { id: "trash", name: "Trash", icon: "trash.webp", canOpen: true },
+  { id: "folder", name: "Projects Folder", icon: "/system/icons/files/folder.webp", canOpen: true },
+  { id: "trash", name: "Trash", icon: "/system/icons/dock/trash.webp", canOpen: true },
 ];

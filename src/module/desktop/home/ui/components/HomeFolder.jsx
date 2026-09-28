@@ -7,7 +7,7 @@ const HomeFolder = ({ project, onClick }) => {
     <li className={clsx("folder cursor-pointer", project.windowPosition)} onClick={onClick}>
       <div className="w-[62px] h-[52px] flex items-center justify-center pointer-events-none">
         <OptimizedImage
-          src="/apps/folder.webp"
+          src="/system/icons/files/folder.webp"
           alt={displayName}
           width={62}
           height={52}

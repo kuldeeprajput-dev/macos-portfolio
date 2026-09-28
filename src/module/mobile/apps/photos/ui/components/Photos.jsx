@@ -24,7 +24,7 @@ const Photos = () => {
     openWindow("imgfile", {
       id,
       name: "Gallery image",
-      icon: "/apps/image.webp",
+      icon: "/system/icons/files/image.webp",
       kind: "file",
       fileType: "img",
       imageUrl: img,

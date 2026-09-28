@@ -195,7 +195,7 @@ const NavbarControlCenterSection = ({
     {
       name: "Projects",
       key: "finder",
-      image: "folder.webp",
+      image: "/system/icons/files/folder.webp",
       icon: "💻",
       desc: "View Portfolio Projects",
     },
@@ -323,7 +323,11 @@ const NavbarControlCenterSection = ({
   // Status Icons with conditional filtering/Bluetooth injection
   const visibleIcons = [];
   if (settings.bluetooth) {
-    visibleIcons.push({ id: "bluetooth", img: "/system/icons/bluetooth.svg", type: "bluetooth" });
+    visibleIcons.push({
+      id: "bluetooth",
+      img: "/system/icons/control-center/bluetooth.svg",
+      type: "bluetooth",
+    });
   }
 
   navIcons.forEach((icon) => {
@@ -935,7 +939,7 @@ const NavbarControlCenterSection = ({
                         <CalendarIcon sizeClass="w-[28px] h-[28px] rounded-[6px]" />
                       ) : app.image ? (
                         <img
-                          src={`/apps/${app.image}`}
+                          src={app.image?.startsWith("/") ? app.image : `/apps/${app.image}`}
                           className="w-[28px] h-[28px] object-contain shrink-0"
                           alt={app.name}
                         />
@@ -979,7 +983,7 @@ const NavbarControlCenterSection = ({
                         <CalendarIcon sizeClass="w-[26px] h-[26px] rounded-[5px]" />
                       ) : app.image ? (
                         <img
-                          src={`/apps/${app.image}`}
+                          src={app.image?.startsWith("/") ? app.image : `/apps/${app.image}`}
                           className="w-[26px] h-[26px] object-contain shrink-0"
                           alt={app.name}
                         />

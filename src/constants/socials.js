@@ -4,7 +4,7 @@ export const socials = [
   {
     id: 1,
     text: "Github",
-    icon: "/system/icons/github.svg",
+    icon: "/system/icons/social/github.svg",
     bg: "#f4656b",
     link: GITHUB_PROFILE,
     img: "/brands/github.webp",
@@ -12,7 +12,7 @@ export const socials = [
   {
     id: 2,
     text: "Portfolio",
-    icon: "/system/icons/atom.svg",
+    icon: "/system/icons/social/atom.svg",
     bg: "#4bcb63",
     link: PORTFOLIO_URL,
     img: "/apps/portfolio.webp",
@@ -20,7 +20,7 @@ export const socials = [
   {
     id: 3,
     text: "Twitter/X",
-    icon: "/system/icons/twitter.svg",
+    icon: "/system/icons/social/twitter.svg",
     bg: "#ff866b",
     link: TWITTER_URL,
     img: "/brands/x.webp",
@@ -28,7 +28,7 @@ export const socials = [
   {
     id: 4,
     text: "LinkedIn",
-    icon: "/system/icons/linkedin.svg",
+    icon: "/system/icons/social/linkedin.svg",
     bg: "#05b6f6",
     link: LINKEDIN_URL,
     img: "/brands/linkedin.webp",

@@ -74,7 +74,7 @@ const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove }) => {
           <CalendarIcon />
         ) : (
           <OptimizedImage
-            src={`/apps/${shortcut.icon}`}
+            src={shortcut.icon?.startsWith("/") ? shortcut.icon : `/apps/${shortcut.icon}`}
             alt={shortcut.name}
             width={64}
             height={64}

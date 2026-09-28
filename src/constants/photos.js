@@ -1,9 +1,9 @@
 export const photosLinks = [
-  { id: 1, icon: "/system/icons/gicon1.svg", title: "Library" },
-  { id: 2, icon: "/system/icons/gicon2.svg", title: "Memories" },
-  { id: 3, icon: "/system/icons/file.svg", title: "Places" },
-  { id: 4, icon: "/system/icons/gicon4.svg", title: "People" },
-  { id: 5, icon: "/system/icons/gicon5.svg", title: "Favorites" },
+  { id: 1, icon: "/system/icons/ui/gicon1.svg", title: "Library" },
+  { id: 2, icon: "/system/icons/ui/gicon2.svg", title: "Memories" },
+  { id: 3, icon: "/system/icons/files/file.svg", title: "Places" },
+  { id: 4, icon: "/system/icons/ui/gicon4.svg", title: "People" },
+  { id: 5, icon: "/system/icons/ui/gicon5.svg", title: "Favorites" },
 ];
 
 export const gallery = [
