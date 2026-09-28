@@ -5,7 +5,7 @@ export const DEFAULT_BOOKMARKS = [
     id: 1,
     title: "Portfolio",
     url: typeof window !== "undefined" ? window.location.origin : "http://localhost:3000",
-    img: "/apps/portfolio.webp",
+    img: "/brands/portfolio.webp",
   },
   {
     id: 2,
@@ -17,13 +17,13 @@ export const DEFAULT_BOOKMARKS = [
     id: 3,
     title: "Resuvee",
     url: PROJECT_3_URL,
-    img: "/projects/desktop/resuvee.webp",
+    img: "/brands/resuvee.webp",
   },
   {
     id: 4,
     title: "Coursenva",
     url: PROJECT_2_URL,
-    img: "/projects/desktop/coursenva.webp",
+    img: "/brands/coursenva.webp",
   },
   {
     id: 5,
