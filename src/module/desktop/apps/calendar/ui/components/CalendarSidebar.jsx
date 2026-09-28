@@ -24,7 +24,7 @@ const CalendarSidebar = ({
       ${isSidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-full w-0 opacity-0 overflow-hidden pointer-events-none"}
     `}
     >
-      <div className="space-y-4 flex-1 overflow-y-auto thin-scrollbar">
+      <div className="space-y-4 flex-1 overflow-y-auto thin-scrollbar -mr-4 pr-4">
         <div className="space-y-2">
           <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
             Calendars
