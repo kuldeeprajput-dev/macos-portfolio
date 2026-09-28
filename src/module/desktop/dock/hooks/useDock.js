@@ -6,18 +6,21 @@ import useWindowsStore from "@store/window";
 const useDock = () => {
   const dockRef = useRef(null);
   const isDockDragging = useWindowsStore((state) => state.isDockDragging);
+  const dockAppIds = useWindowsStore((state) => state.dockAppIds);
 
-  useEffect(() => {
+  const clearAllGSAPStyles = () => {
     if (dockRef.current) {
-      // Instantly kill active tweens and completely clear inline GSAP styles
-      // to prevent layout distortion and overlapping during reordering/drag-and-drop.
       const icons = dockRef.current.querySelectorAll(".dock-icon");
       icons.forEach((icon) => {
         gsap.killTweensOf(icon);
         gsap.set(icon, { clearProps: "all" });
       });
     }
-  }, [isDockDragging]);
+  };
+
+  useEffect(() => {
+    clearAllGSAPStyles();
+  }, [isDockDragging, dockAppIds]);
 
   useGSAP(() => {
     const dock = dockRef.current;

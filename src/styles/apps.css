@@ -79,7 +79,7 @@
     }
 
     .dock-container {
-      @apply justify-between flex items-end overflow-visible;
+      @apply justify-center flex items-end overflow-visible;
     }
 
     .dock-icon {

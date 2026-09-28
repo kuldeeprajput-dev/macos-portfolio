@@ -38,6 +38,9 @@
 
   position: relative;
   isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   min-height: calc(var(--dock-item-height) + 12px);
   max-width: calc(100vw - 16px);
   padding: 8px var(--dock-padding-x);
@@ -87,10 +90,21 @@
   transform: translateY(-8px) scale(1.08);
   filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
   cursor: grabbing !important;
+  animation: none !important;
 }
 
-.dock-item.is-dragging {
+.dock-item.is-dragging,
+.dock-item.is-dragging * {
+  animation: none !important;
   cursor: grabbing !important;
+}
+
+.dock-item.is-dragging .dock-tooltip-custom,
+.is-dragging .dock-tooltip-custom {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .dock-item:active,

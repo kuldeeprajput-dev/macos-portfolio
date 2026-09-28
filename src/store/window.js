@@ -169,10 +169,21 @@ const useWindowsStore = create(
       }),
     reorderDockApps: (startIndex, endIndex) =>
       set((state) => {
-        const result = Array.from(state.dockAppIds);
+        if (
+          startIndex < 0 ||
+          endIndex < 0 ||
+          startIndex >= state.dockAppIds.length ||
+          endIndex >= state.dockAppIds.length ||
+          startIndex === endIndex
+        ) {
+          return;
+        }
+        const result = Array.from(new Set(state.dockAppIds));
         const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-        state.dockAppIds = result;
+        if (removed) {
+          result.splice(endIndex, 0, removed);
+          state.dockAppIds = result;
+        }
       }),
     addDesktopShortcut: (appId, x, y) =>
       set((state) => {

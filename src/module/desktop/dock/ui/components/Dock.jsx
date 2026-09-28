@@ -1,7 +1,8 @@
 import { dockApps, locations } from "@constants";
 import useWindowsStore from "@store/window";
 import useLocationStore from "@store/location";
-import { Fragment, useMemo, useState, useRef } from "react";
+import { Fragment, useMemo, useState, useRef, useEffect, useCallback } from "react";
+import gsap from "gsap";
 import DockIcon from "./DockIcon";
 import useDock from "../../hooks/useDock";
 
@@ -21,6 +22,16 @@ const Dock = () => {
   const [draggedAppId, setDraggedAppId] = useState(null);
   const draggedAppIdRef = useRef(null);
   const dockRef = useDock();
+
+  const resetAllIcons = () => {
+    if (dockRef.current) {
+      const icons = dockRef.current.querySelectorAll(".dock-icon");
+      icons.forEach((icon) => {
+        gsap.killTweensOf(icon);
+        gsap.set(icon, { clearProps: "all" });
+      });
+    }
+  };
 
   const focusedWindowId = useMemo(() => {
     return Object.entries(windows).reduce((focusedId, [id, win]) => {
@@ -96,8 +107,10 @@ const Dock = () => {
   );
 
   const handleDragStart = (e, id) => {
+    setHoveredAppId(null);
     draggedAppIdRef.current = id;
     setDockDragging(true);
+    resetAllIcons();
 
     const currentIds = useWindowsStore.getState().dockAppIds || [];
     const index = currentIds.indexOf(id);
@@ -133,16 +146,45 @@ const Dock = () => {
     const fromIndex = currentIds.indexOf(sourceId);
     const toIndex = currentIds.indexOf(targetId);
 
-    if (fromIndex !== -1 && toIndex !== -1 && fromIndex !== toIndex) {
-      reorderDockApps(fromIndex, toIndex);
+    if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex) return;
+
+    // Midpoint threshold check: only reorder once pointer crosses the midpoint
+    // of the target item in the drag direction to prevent rapid oscillation/flicker
+    const targetElement = e.currentTarget;
+    if (targetElement) {
+      const rect = targetElement.getBoundingClientRect();
+      const targetCenter = rect.left + rect.width / 2;
+
+      if (fromIndex < toIndex && e.clientX < targetCenter) {
+        return;
+      }
+      if (fromIndex > toIndex && e.clientX > targetCenter) {
+        return;
+      }
     }
+
+    reorderDockApps(fromIndex, toIndex);
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = useCallback(() => {
     draggedAppIdRef.current = null;
     setDraggedAppId(null);
+    setHoveredAppId(null);
     setDockDragging(false);
-  };
+    resetAllIcons();
+  }, [setDockDragging]);
+
+  useEffect(() => {
+    const handleGlobalDragEnd = () => {
+      if (draggedAppIdRef.current) {
+        handleDragEnd();
+      }
+    };
+    window.addEventListener("dragend", handleGlobalDragEnd);
+    return () => {
+      window.removeEventListener("dragend", handleGlobalDragEnd);
+    };
+  }, [handleDragEnd]);
 
   return (
     <section
@@ -162,9 +204,15 @@ const Dock = () => {
               app={{ id, name, icon, canOpen }}
               state={windows[id === "folder" ? "finder" : id]}
               isFocused={focusedWindowId === (id === "folder" ? "finder" : id)}
-              isHovered={hoveredAppId === id}
-              onMouseEnter={() => setHoveredAppId(id)}
-              onMouseLeave={() => setHoveredAppId(null)}
+              isHovered={hoveredAppId === id && !draggedAppId}
+              onMouseEnter={() => {
+                if (!draggedAppIdRef.current) {
+                  setHoveredAppId(id);
+                }
+              }}
+              onMouseLeave={() => {
+                setHoveredAppId((prev) => (prev === id ? null : prev));
+              }}
               onClick={() => toggleApp({ id, canOpen })}
               onDragStart={(e) => handleDragStart(e, id)}
               onDragOver={(e) => handleDragOver(e, id)}

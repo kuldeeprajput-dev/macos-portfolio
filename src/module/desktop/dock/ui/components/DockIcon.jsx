@@ -47,7 +47,7 @@ const DockIcon = ({
 
   const handleClick = (e) => {
     // Suppress opening app if the gesture was a drag
-    if (didDragRef.current || isDockDragging) {
+    if (didDragRef.current || isDockDragging || isDragging) {
       e.preventDefault();
       e.stopPropagation();
       didDragRef.current = false;
@@ -69,6 +69,11 @@ const DockIcon = ({
     }, 60);
   };
 
+  const handleMouseEnterInternal = (e) => {
+    if (isDockDragging || isDragging) return;
+    onMouseEnter?.(e);
+  };
+
   return (
     <div
       className={[
@@ -85,7 +90,7 @@ const DockIcon = ({
       onDragStart={handleDragStartInternal}
       onDragOver={onDragOver}
       onDragEnd={handleDragEndInternal}
-      onMouseEnter={onMouseEnter}
+      onMouseEnter={handleMouseEnterInternal}
       onMouseLeave={onMouseLeave}
       onClick={(e) => {
         // Handle clicks that hit dock-item outside the button
@@ -103,7 +108,7 @@ const DockIcon = ({
         disabled={!canOpen}
         onClick={handleClick}
       >
-        {isHovered && !isDockDragging && (
+        {isHovered && !isDockDragging && !isDragging && (
           <span className="dock-tooltip-custom animate-tooltip">{name}</span>
         )}
         <span className="size-full flex items-center justify-center overflow-hidden">
