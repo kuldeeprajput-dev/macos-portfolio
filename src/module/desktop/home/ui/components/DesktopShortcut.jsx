@@ -16,14 +16,18 @@ const CalendarIcon = () => {
   );
 };
 
-const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove }) => {
+const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove, onContextMenu }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [isRightSide, setIsRightSide] = useState(false);
 
   const handleRightClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setShowMenu(true);
+    if (onContextMenu) {
+      onContextMenu(e, shortcut);
+    } else {
+      setShowMenu(true);
+    }
   };
 
   const handlePointerDown = (e) => {
@@ -101,7 +105,7 @@ const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove }) => {
               onRemove();
               setShowMenu(false);
             }}
-            className="w-full text-left py-1.5 px-2 rounded-md hover:bg-[#ff3b30] hover:text-white transition-colors duration-100 flex items-center gap-2 cursor-pointer font-normal text-[#f5f5f7]"
+            className="w-full text-left py-1.5 px-2 rounded-md hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white transition-colors duration-100 flex items-center gap-2 cursor-pointer font-normal text-white/90"
           >
             <svg
               className="w-3.5 h-3.5 shrink-0"

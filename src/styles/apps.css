@@ -60,7 +60,7 @@
   }
 
   #welcome {
-    @apply text-gray-200 flex flex-col justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none max-sm:h-screen max-sm:w-full max-sm:px-10;
+    @apply text-gray-200 flex flex-col justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none max-sm:h-screen max-sm:w-full max-sm:px-10;
 
     .small-screen {
       @apply sm:hidden m-7 bg-red-300/20 backdrop-blur-lg p-3 rounded-md absolute top-10;
@@ -334,7 +334,7 @@
 
     ul {
       li {
-        @apply absolute select-none flex items-center flex-col;
+        @apply absolute select-none flex items-center flex-col w-[96px];
         z-index: 1;
 
         &.folder,
@@ -348,8 +348,18 @@
         }
 
         p {
-          @apply text-sm text-white text-center max-w-36 font-medium select-none mt-1;
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+          @apply text-[12px] text-white text-center font-normal select-none mt-1 w-full;
+          text-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.9),
+            0 0 2px rgba(0, 0, 0, 0.8);
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+          line-height: 1.25;
         }
       }
     }

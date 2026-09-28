@@ -18,7 +18,9 @@ const checkDockCollision = () => {
       winEl.id &&
       winEl.id !== "dock" &&
       winEl.id !== "navbar" &&
-      winEl.id !== "desktop-area"
+      winEl.id !== "desktop-area" &&
+      winEl.id !== "home" &&
+      winEl.id !== "welcome"
     ) {
       const winRect = winEl.getBoundingClientRect();
       const overlap = !(
