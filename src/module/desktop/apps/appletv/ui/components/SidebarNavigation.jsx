@@ -50,24 +50,11 @@ const SidebarNavigation = ({
 }) => (
   <aside
     className={`
-      appletv-sidebar-aside ${isCompact ? "absolute" : "relative"} inset-y-0 left-0 w-48 bg-gray-50/90 backdrop-blur-md border-r border-gray-300/40 p-4 gap-6 flex flex-col z-30 transition-transform duration-300 h-full
+      appletv-sidebar-aside ${isCompact ? "absolute" : "relative"} inset-y-0 left-0 w-48 bg-gray-50/90 backdrop-blur-md border-r border-gray-300/40 p-4 gap-6 flex flex-col z-30 transition-transform duration-300 h-full overflow-y-auto thin-scrollbar
       ${isSidebarOpen || !isCompact ? "translate-x-0" : "-translate-x-full"}
     `}
   >
     <style>{`
-      .appletv-sidebar-scroll::-webkit-scrollbar {
-        width: 5px;
-      }
-      .appletv-sidebar-scroll::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .appletv-sidebar-scroll::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.22);
-        border-radius: 99px;
-      }
-      .appletv-sidebar-scroll::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 0, 0, 0.35);
-      }
       @container (max-height: 480px) {
         .appletv-profile-switcher {
           display: none !important;
@@ -90,7 +77,7 @@ const SidebarNavigation = ({
       />
     </div>
 
-    <div className="space-y-5 flex-1 overflow-y-auto select-none pr-1 appletv-sidebar-scroll">
+    <div className="space-y-5 flex-1 select-none">
       <NavigationGroup
         title="Apple TV"
         items={appleTvItems}

@@ -14,6 +14,23 @@
   display: none;
 }
 
+@media (max-width: 767px), (hover: none) and (pointer: coarse) {
+  *,
+  *::before,
+  *::after {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  *::-webkit-scrollbar,
+  *::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-thumb {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
 @media (max-width: 767px) {
   #finder.window-visible,
   #safari.window-visible,

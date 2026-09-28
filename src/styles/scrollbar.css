@@ -1,7 +1,7 @@
 ::-webkit-scrollbar,
 .thin-scrollbar::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track,
@@ -11,13 +11,16 @@
 
 ::-webkit-scrollbar-thumb,
 .thin-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(128, 128, 128, 0.7);
+  background-clip: padding-box;
+  border: 2px solid transparent;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(128, 128, 128, 0.8);
+  border-width: 0;
 }
 
 /* Hide scrollbar utility */
