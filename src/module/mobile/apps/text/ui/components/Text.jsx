@@ -20,7 +20,7 @@ const Text = () => {
         </h2>
         <div className="w-[60px]" />
       </div>
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto min-h-0 thin-scrollbar select-text">
         <TextEditor image={image} name={name} subtitle={subtitle} description={description} />
       </div>
     </div>

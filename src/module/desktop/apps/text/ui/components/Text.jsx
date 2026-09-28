@@ -17,7 +17,9 @@ const Text = () => {
         <WindowControls target={"txtfile"} />
         <h2 className="flex-1 text-center font-bold text-gray-500">{name}</h2>
       </div>
-      <TextEditor image={image} name={name} subtitle={subtitle} description={description} />
+      <div className="flex-1 overflow-y-auto min-h-0 thin-scrollbar select-text">
+        <TextEditor image={image} name={name} subtitle={subtitle} description={description} />
+      </div>
     </div>
   );
 };
