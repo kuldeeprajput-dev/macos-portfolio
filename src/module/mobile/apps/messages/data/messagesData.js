@@ -3,10 +3,10 @@ import { GITHUB_PROFILE } from "@constants";
 export const INITIAL_CONVERSATIONS = [
   {
     id: "kuldeep",
-    name: "Kuldeep (Developer)",
+    name: "Kuldeep Rajput",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-500",
     initials: "K",
-    avatar: "/contacts/avatars/profile.webp",
+    avatar: "/contacts/avatars/kuldeep.webp",
     unread: true,
     email: "kuldeeprajput.dev@gmail.com",
     github: GITHUB_PROFILE,
@@ -58,7 +58,7 @@ export const INITIAL_CONVERSATIONS = [
   },
   {
     id: "mahabub",
-    name: "Mahabub",
+    name: "Mahabub Rahman",
     avatarColor: "bg-gradient-to-tr from-purple-500 to-pink-600",
     initials: "M",
     avatar: "/contacts/avatars/mahabub.webp",

@@ -57,7 +57,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
   const displayName = profile?.name || "Kuldeep Rajput";
   const bio = profile?.bio || "Full Stack Developer | Building premium macOS Web Portfolios";
   const location = profile?.location || "India";
-  const avatarUrl = profile?.avatar_url || "/contacts/avatars/profile.webp";
+  const avatarUrl = profile?.avatar_url || "/contacts/avatars/kuldeep.webp";
 
   return (
     <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-50 flex flex-col justify-end animate-fade-in">
@@ -87,7 +87,7 @@ const ProfileOverlay = ({ isOpen, onClose, appName = "appletv" }) => {
                 alt={displayName}
                 className="w-20 h-20 rounded-full object-cover border-2 border-white shadow-md"
                 onError={(e) => {
-                  e.target.src = "/contacts/avatars/profile.webp";
+                  e.target.src = "/contacts/avatars/kuldeep.webp";
                 }}
               />
               <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white p-1 rounded-full shadow-sm">

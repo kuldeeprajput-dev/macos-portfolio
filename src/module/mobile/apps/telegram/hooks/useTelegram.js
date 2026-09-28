@@ -61,13 +61,13 @@ const useTelegram = () => {
     }
     return [
       {
-        name: "Kuldeep (Developer)",
+        name: "Kuldeep Rajput",
         type: "outgoing",
         time: "Yesterday, 2:14 PM",
         missed: false,
         avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-600",
         initials: "K",
-        avatar: "/contacts/avatars/profile.webp",
+        avatar: "/contacts/avatars/kuldeep.webp",
       },
       {
         name: "Telegram Assistant Bot",

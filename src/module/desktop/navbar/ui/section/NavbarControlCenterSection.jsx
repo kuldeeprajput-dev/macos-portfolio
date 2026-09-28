@@ -576,7 +576,7 @@ const NavbarControlCenterSection = ({
                             src={
                               currentUserMode === "admin"
                                 ? profile.avatar_url
-                                : "/contacts/avatars/profile.webp"
+                                : "/contacts/avatars/kuldeep.webp"
                             }
                             className="w-11 h-11 rounded-full border border-white/20 shadow-md shrink-0 object-cover"
                             alt="Profile Avatar"

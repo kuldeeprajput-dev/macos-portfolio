@@ -16,6 +16,13 @@ const immutableAssetHeaders = [
   },
 ];
 
+const avatarAssetHeaders = [
+  {
+    key: "Cache-Control",
+    value: "public, max-age=86400, stale-while-revalidate=604800",
+  },
+];
+
 const cachedPublicRoutes = [
   "/icons/:path*",
   "/images/:path*",
@@ -48,6 +55,10 @@ const nextConfig = {
         source,
         headers: immutableAssetHeaders,
       })),
+      {
+        source: "/contacts/avatars/:path*",
+        headers: avatarAssetHeaders,
+      },
     ];
   },
 };

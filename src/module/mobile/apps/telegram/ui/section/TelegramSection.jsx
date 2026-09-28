@@ -180,12 +180,12 @@ const TelegramSection = ({
   // Mock Contacts List
   const contacts = [
     {
-      name: "Kuldeep (Developer)",
+      name: "Kuldeep Rajput",
       id: "kuldeep",
       initials: "K",
       status: "online",
       color: "bg-gradient-to-tr from-blue-500 to-indigo-600",
-      avatar: "/contacts/avatars/profile.webp",
+      avatar: "/contacts/avatars/kuldeep.webp",
     },
     {
       name: "Saved Messages",
@@ -904,7 +904,7 @@ const TelegramSection = ({
               >
                 <div className="flex flex-row items-center gap-4">
                   <img
-                    src="/contacts/avatars/profile.webp"
+                    src="/contacts/avatars/kuldeep.webp"
                     alt={userProfile.name}
                     className="w-14 h-14 rounded-full object-cover shadow-sm border border-white/20 shrink-0"
                   />

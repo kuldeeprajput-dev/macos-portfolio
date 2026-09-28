@@ -80,7 +80,7 @@ const TelegramSidebarDrawer = ({
           <div className="flex flex-col h-full">
             <div className="p-3 text-left flex flex-row items-center gap-4 shrink-0">
               <img
-                src="/contacts/avatars/profile.webp"
+                src="/contacts/avatars/kuldeep.webp"
                 alt={userProfile.name}
                 className="w-14 h-14 rounded-full object-cover shadow-md border border-white/20"
               />
@@ -193,7 +193,7 @@ const TelegramSidebarDrawer = ({
             >
               <div className="w-18 h-18 rounded-full relative shadow group overflow-hidden border border-white/20">
                 <img
-                  src="/contacts/avatars/profile.webp"
+                  src="/contacts/avatars/kuldeep.webp"
                   alt={userProfile.name}
                   className="w-full h-full object-cover"
                 />
@@ -339,7 +339,7 @@ const TelegramSidebarDrawer = ({
             </span>
             {[
               {
-                name: "Kuldeep (Developer)",
+                name: "Kuldeep Rajput",
                 role: "@kuldeeprajput_dev",
                 color: "bg-blue-500",
                 initial: "K",
@@ -388,8 +388,8 @@ const TelegramSidebarDrawer = ({
               Recent Call Logs
             </span>
             {[
-              { name: "Kuldeep (Developer)", time: "Today, 10:35 AM", type: "Outgoing" },
-              { name: "Kuldeep (Developer)", time: "Yesterday, 2:40 PM", type: "Missed" },
+              { name: "Kuldeep Rajput", time: "Today, 10:35 AM", type: "Outgoing" },
+              { name: "Kuldeep Rajput", time: "Yesterday, 2:40 PM", type: "Missed" },
               { name: "System Assistant", time: "May 25, 4:10 PM", type: "Incoming" },
             ].map((call, idx) => (
               <div

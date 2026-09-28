@@ -29,9 +29,9 @@ export const INITIAL_CHATS = [
   },
   {
     id: "kuldeep",
-    name: "Kuldeep (Developer)",
+    name: "Kuldeep Rajput",
     type: "user",
-    avatar: "/contacts/avatars/profile.webp",
+    avatar: "/contacts/avatars/kuldeep.webp",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-600",
     initials: "K",
     status: "online",

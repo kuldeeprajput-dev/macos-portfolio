@@ -19,7 +19,7 @@ const AppleTVView = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [showControls, setShowControls] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
-  const [profileUrl, setProfileUrl] = useState("/contacts/avatars/profile.webp");
+  const [profileUrl, setProfileUrl] = useState("/contacts/avatars/kuldeep.webp");
   const [forwardDestination, setForwardDestination] = useState(null);
 
   const videoRef = useRef(null);
