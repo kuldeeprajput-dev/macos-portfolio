@@ -1,7 +1,7 @@
 import { dockApps, locations } from "@constants";
 import useWindowsStore from "@store/window";
 import useLocationStore from "@store/location";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useMemo, useState, useRef } from "react";
 import DockIcon from "./DockIcon";
 import useDock from "../../hooks/useDock";
 
@@ -18,8 +18,8 @@ const Dock = () => {
   } = useWindowsStore();
   const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
   const [hoveredAppId, setHoveredAppId] = useState(null);
-  const [draggedIndex, setDraggedIndex] = useState(null);
-  const [isDraggingActive, setIsDraggingActive] = useState(false);
+  const [draggedAppId, setDraggedAppId] = useState(null);
+  const draggedAppIdRef = useRef(null);
   const dockRef = useDock();
 
   const focusedWindowId = useMemo(() => {
@@ -95,10 +95,16 @@ const Dock = () => {
     (win) => win.isOpen && win.isMaximized && !win.isMinimized,
   );
 
-  const handleDragStart = (e, index, id) => {
+  const handleDragStart = (e, id) => {
+    draggedAppIdRef.current = id;
+    setDockDragging(true);
+
+    const currentIds = useWindowsStore.getState().dockAppIds || [];
+    const index = currentIds.indexOf(id);
+
     e.dataTransfer.setData("text/plain", id);
     e.dataTransfer.setData("drag-source", "dock");
-    e.dataTransfer.setData("drag-index", index.toString());
+    e.dataTransfer.setData("drag-index", index >= 0 ? index.toString() : "0");
     e.dataTransfer.effectAllowed = "copyMove";
 
     // Set custom clean drag image using the inner icon/image element only
@@ -108,26 +114,33 @@ const Dock = () => {
       e.dataTransfer.setDragImage(img, 24, 24);
     }
 
-    setDraggedIndex(index);
-    setDockDragging(true);
-
     // Timeout ensures the browser has successfully captured the drag image before we hide it in the DOM
     setTimeout(() => {
-      setIsDraggingActive(true);
+      setDraggedAppId(id);
     }, 0);
   };
 
-  const handleDragOver = (e, index) => {
+  const handleDragOver = (e, targetId) => {
     e.preventDefault();
-    if (draggedIndex !== null && draggedIndex !== index) {
-      reorderDockApps(draggedIndex, index);
-      setDraggedIndex(index);
+    e.dataTransfer.dropEffect = "move";
+
+    const sourceId = draggedAppIdRef.current;
+    if (!sourceId || sourceId === targetId) return;
+
+    const currentIds = useWindowsStore.getState().dockAppIds;
+    if (!currentIds) return;
+
+    const fromIndex = currentIds.indexOf(sourceId);
+    const toIndex = currentIds.indexOf(targetId);
+
+    if (fromIndex !== -1 && toIndex !== -1 && fromIndex !== toIndex) {
+      reorderDockApps(fromIndex, toIndex);
     }
   };
 
   const handleDragEnd = () => {
-    setDraggedIndex(null);
-    setIsDraggingActive(false);
+    draggedAppIdRef.current = null;
+    setDraggedAppId(null);
     setDockDragging(false);
   };
 
@@ -138,7 +151,7 @@ const Dock = () => {
       aria-label="Dock"
     >
       <div ref={dockRef} className="dock-container">
-        {orderedDockApps.map(({ id, name, icon, canOpen }, index) => (
+        {orderedDockApps.map(({ id, name, icon, canOpen }) => (
           <Fragment key={id}>
             {id === "folder" && (
               <div className="dock-separator-wrap" aria-hidden="true">
@@ -153,12 +166,12 @@ const Dock = () => {
               onMouseEnter={() => setHoveredAppId(id)}
               onMouseLeave={() => setHoveredAppId(null)}
               onClick={() => toggleApp({ id, canOpen })}
-              draggable={true}
-              onDragStart={(e) => handleDragStart(e, index, id)}
-              onDragOver={(e) => handleDragOver(e, index)}
+              onDragStart={(e) => handleDragStart(e, id)}
+              onDragOver={(e) => handleDragOver(e, id)}
               onDragEnd={handleDragEnd}
+              isDragging={draggedAppId === id}
               style={{
-                opacity: isDraggingActive && draggedIndex === index ? 0 : 1,
+                opacity: draggedAppId === id ? 0.3 : 1,
               }}
             />
           </Fragment>

@@ -63,6 +63,7 @@
   height: var(--dock-item-height);
   align-items: flex-end;
   flex: 0 0 var(--dock-icon-size);
+  cursor: pointer;
 }
 
 .dock-icon {
@@ -79,6 +80,22 @@
   box-shadow: none;
   outline: none;
   padding: 0;
+  cursor: pointer;
+}
+
+.dock-item.is-dragging .dock-icon {
+  transform: translateY(-8px) scale(1.08);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+  cursor: grabbing !important;
+}
+
+.dock-item.is-dragging {
+  cursor: grabbing !important;
+}
+
+.dock-item:active,
+.dock-icon:active {
+  cursor: grabbing;
 }
 
 #dock .dock-icon {

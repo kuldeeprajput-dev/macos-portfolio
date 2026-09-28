@@ -1,5 +1,6 @@
 import OptimizedImage from "@module/shared/ui/components/OptimizedImage";
 import useWindowsStore from "@store/window";
+import { useRef } from "react";
 
 const statusLabel = (name, state, canOpen) => {
   if (!canOpen) return name;
@@ -31,10 +32,10 @@ const DockIcon = ({
   onMouseEnter,
   onMouseLeave,
   onClick,
-  draggable,
   onDragStart,
   onDragOver,
   onDragEnd,
+  isDragging,
   style,
 }) => {
   const { id, name, icon, canOpen } = app;
@@ -42,31 +43,65 @@ const DockIcon = ({
   const isMinimized = Boolean(state?.isMinimized);
   const isDockDragging = useWindowsStore((state) => state.isDockDragging);
 
+  const didDragRef = useRef(false);
+
+  const handleClick = (e) => {
+    // Suppress opening app if the gesture was a drag
+    if (didDragRef.current || isDockDragging) {
+      e.preventDefault();
+      e.stopPropagation();
+      didDragRef.current = false;
+      return;
+    }
+    onClick?.(e);
+  };
+
+  const handleDragStartInternal = (e) => {
+    didDragRef.current = true;
+    onDragStart?.(e);
+  };
+
+  const handleDragEndInternal = (e) => {
+    onDragEnd?.(e);
+    // Keep didDrag true for a split-second so the browser's subsequent click event is suppressed
+    setTimeout(() => {
+      didDragRef.current = false;
+    }, 60);
+  };
+
   return (
     <div
       className={[
-        "dock-item relative flex justify-center cursor-grab active:cursor-grabbing select-none",
+        "dock-item relative flex justify-center select-none cursor-pointer",
+        isDragging ? "is-dragging cursor-grabbing opacity-30" : "cursor-pointer",
         isOpen ? "dock-item-open" : "",
         isMinimized ? "dock-item-minimized" : "",
         isFocused ? "dock-item-focused" : "",
       ]
         .filter(Boolean)
         .join(" ")}
-      draggable={draggable}
-      onDragStart={onDragStart}
+      draggable={true}
+      data-app-id={id}
+      onDragStart={handleDragStartInternal}
       onDragOver={onDragOver}
-      onDragEnd={onDragEnd}
+      onDragEnd={handleDragEndInternal}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={(e) => {
+        // Handle clicks that hit dock-item outside the button
+        if (!e.target.closest(".dock-icon")) {
+          handleClick(e);
+        }
+      }}
       style={style}
     >
       <button
         type="button"
-        className="dock-icon relative flex justify-center items-center overflow-visible"
+        className="dock-icon relative flex justify-center items-center overflow-visible cursor-pointer"
         aria-label={statusLabel(name, state, canOpen)}
         aria-pressed={canOpen ? isOpen : undefined}
         disabled={!canOpen}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
+        onClick={handleClick}
       >
         {isHovered && !isDockDragging && (
           <span className="dock-tooltip-custom animate-tooltip">{name}</span>
