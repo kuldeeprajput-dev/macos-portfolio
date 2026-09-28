@@ -62,7 +62,13 @@ const Home = () => {
     const instances = Draggable.create(".folder, .desktop-shortcut", {
       bounds: "#home",
       allowContextMenu: true,
+      cursor: "pointer",
+      activeCursor: "grabbing",
+      onPress: function () {
+        document.body.classList.add("folder-dragging");
+      },
       onDragEnd: function () {
+        document.body.classList.remove("folder-dragging");
         const el = this.target;
         if (el.classList.contains("desktop-shortcut")) {
           const id = el.dataset.id;
@@ -73,9 +79,13 @@ const Home = () => {
           gsap.set(el, { x: 0, y: 0 });
         }
       },
+      onRelease: function () {
+        document.body.classList.remove("folder-dragging");
+      },
     });
 
     return () => {
+      document.body.classList.remove("folder-dragging");
       instances.forEach((instance) => instance.kill());
     };
   }, [desktopShortcuts]);

@@ -337,12 +337,41 @@
         @apply absolute select-none flex items-center flex-col;
         z-index: 1;
 
+        &.folder,
+        &.folder * {
+          cursor: pointer;
+        }
+
+        &.desktop-shortcut,
+        &.desktop-shortcut * {
+          cursor: pointer;
+        }
+
         p {
           @apply text-sm text-white text-center max-w-36 font-medium select-none mt-1;
           text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
         }
       }
     }
+  }
+
+  .folder,
+  .folder * {
+    cursor: pointer;
+  }
+
+  .folder:active,
+  .folder:active *,
+  .desktop-shortcut:active,
+  .desktop-shortcut:active * {
+    cursor: grabbing !important;
+    cursor: -webkit-grabbing !important;
+  }
+
+  body.folder-dragging,
+  body.folder-dragging * {
+    cursor: grabbing !important;
+    cursor: -webkit-grabbing !important;
   }
 
   /* ─── Pointer events & Performance Optimization ─── */

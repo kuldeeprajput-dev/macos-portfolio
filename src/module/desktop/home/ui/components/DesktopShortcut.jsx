@@ -58,7 +58,7 @@ const DesktopShortcut = ({ shortcut, onDoubleClick, onRemove }) => {
 
   return (
     <li
-      className="group desktop-shortcut absolute select-none flex items-center flex-col cursor-grab active:cursor-grabbing"
+      className="group desktop-shortcut absolute select-none flex items-center flex-col cursor-pointer active:cursor-grabbing"
       style={{
         left: `${shortcut.x}px`,
         top: `${shortcut.y}px`,
