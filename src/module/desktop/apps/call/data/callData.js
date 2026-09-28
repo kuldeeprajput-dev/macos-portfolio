@@ -6,7 +6,6 @@ export const CONTACTS = [
     available: true,
     avatar: "/contacts/avatars/Bhavesh.webp",
     avatarColor: "bg-gradient-to-tr from-indigo-500 to-purple-600",
-    callPreview: "/contacts/avatars/Bhavesh.webp",
   },
   {
     id: "kuldeep",
@@ -15,7 +14,6 @@ export const CONTACTS = [
     available: true,
     avatar: "/contacts/avatars/kuldeep.webp",
     avatarColor: "bg-gradient-to-tr from-blue-500 to-indigo-600",
-    callPreview: "/contacts/avatars/kuldeep.webp",
   },
   {
     id: "mahabub",
@@ -24,7 +22,6 @@ export const CONTACTS = [
     available: true,
     avatar: "/contacts/avatars/mahabub.webp",
     avatarColor: "bg-gradient-to-tr from-purple-500 to-pink-600",
-    callPreview: "/contacts/avatars/mahabub.webp",
   },
 ];
 

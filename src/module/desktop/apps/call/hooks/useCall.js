@@ -109,7 +109,6 @@ const useCall = () => {
         type,
         status: "ringing",
         avatar: contact?.avatar,
-        callPreview: contact?.callPreview,
       });
 
       if (/^[0-9*#+]+$/.test(name)) {

@@ -43,6 +43,10 @@ const CallInProgress = ({
         ? process.env.NEXT_PUBLIC_VIDEOCALL_MAHABUB
         : "";
   const showVideo = (isKuldeep || isBhavesh || isMahabub) && videoUrl && !videoError;
+  const showAvatar =
+    activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing" || !showVideo;
+  const videoUnavailable =
+    activeCall.status === "connected" && activeCall.type === "video" && !cameraMuted && !showVideo;
 
   return (
     <div className="absolute inset-0 bg-neutral-950 text-white z-40 flex flex-col justify-between overflow-hidden select-none h-full rounded-b-xl group">
@@ -103,7 +107,7 @@ const CallInProgress = ({
       </div>
 
       {/* Center Avatar Content (For audio calls or ringing/inactive cameras in video calls) */}
-      {(activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing") && (
+      {showAvatar && (
         <div className="z-10 flex-1 flex flex-col items-center justify-center">
           <div className="relative group flex items-center justify-center">
             {activeCall.status === "ringing" ? (
@@ -146,6 +150,9 @@ const CallInProgress = ({
               Camera Paused
             </span>
           )}
+          {videoUnavailable && (
+            <span className="mt-4 text-xs font-medium text-white/65">Video unavailable</span>
+          )}
 
           {/* Animated Gray Wave visualizer */}
           {activeCall.status === "connected" && !micMuted && (
@@ -166,9 +173,7 @@ const CallInProgress = ({
       )}
 
       {/* Spacer when remote video stream is full-screen */}
-      {!(activeCall.type === "audio" || cameraMuted || activeCall.status === "ringing") && (
-        <div className="flex-1" />
-      )}
+      {!showAvatar && <div className="flex-1" />}
 
       {/* Bottom Controls Panel */}
       <div

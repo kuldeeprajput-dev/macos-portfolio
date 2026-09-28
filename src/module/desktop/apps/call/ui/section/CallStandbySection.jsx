@@ -2,13 +2,13 @@ import { Video } from "lucide-react";
 
 const CallStandbySection = () => (
   <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-6 relative overflow-hidden h-full">
-    <div className="relative w-64 h-44 md:w-80 md:h-56 rounded-2xl shadow-2xl flex items-center justify-center border border-black/10 overflow-hidden group">
-      {/* Standby Camera Viewport Image */}
+    <div className="relative w-64 h-44 md:w-80 md:h-56 rounded-2xl shadow-2xl flex items-center justify-center border border-black/10 overflow-hidden bg-gradient-to-br from-slate-700 via-zinc-800 to-zinc-950">
       <img
         src="/contacts/previews/facetime_standby.webp"
-        alt="Camera Standby Preview"
-        className="absolute inset-0 w-full h-full object-cover brightness-[0.7] select-none pointer-events-none group-hover:scale-105 transition-transform duration-700 ease-out"
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover brightness-[0.7] pointer-events-none"
       />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_65%)] pointer-events-none" />
       <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-black/30 pointer-events-none" />
       <div className="absolute top-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-green-500/80 rounded-full animate-ping" />
       <div className="absolute top-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-green-500 rounded-full" />
