@@ -15,6 +15,7 @@ const useCall = () => {
   const [speakerMuted, setSpeakerMuted] = useState(false);
 
   const ringbackAudioRef = useRef(null);
+  const invalidNumberAudioRef = useRef(null);
   const timerIntervalRef = useRef(null);
   const ringTimeoutRef = useRef(null);
 
@@ -34,60 +35,30 @@ const useCall = () => {
   }, [windows]);
 
   const playDTMFTone = useCallback((digit) => {
-    try {
-      const dtmfFrequencies = {
-        1: [697, 1209],
-        2: [697, 1336],
-        3: [697, 1477],
-        4: [770, 1209],
-        5: [770, 1336],
-        6: [770, 1477],
-        7: [852, 1209],
-        8: [852, 1336],
-        9: [852, 1477],
-        "*": [941, 1209],
-        0: [941, 1336],
-        "#": [941, 1477],
-      };
-      const freqs = dtmfFrequencies[digit];
-      if (!freqs) return;
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc1 = ctx.createOscillator();
-      const osc2 = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc1.frequency.value = freqs[0];
-      osc2.frequency.value = freqs[1];
-      osc1.type = "sine";
-      osc2.type = "sine";
-      gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 0.01);
-      gain.gain.setValueAtTime(0.08, ctx.currentTime + 0.12);
-      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
-      osc1.connect(gain);
-      osc2.connect(gain);
-      gain.connect(ctx.destination);
-      osc1.start();
-      osc2.start();
-      osc1.stop(ctx.currentTime + 0.16);
-      osc2.stop(ctx.currentTime + 0.16);
-    } catch (e) {
-      console.error("DTMF Tone Error", e);
-    }
+    if (!/^[0-9*#]$/.test(digit)) return;
+    const key = digit === "*" ? "star" : digit === "#" ? "hash" : digit;
+    const audio = new Audio(`/system/audio/dialpad-${key}.wav`);
+    audio.play().catch((error) => {
+      if (error.name !== "AbortError") console.error("Dialpad audio error", error);
+    });
   }, []);
 
-  const startRingbackSound = useCallback(() => {
+  const startRingbackSound = useCallback((onEnded = null) => {
     const audio = ringbackAudioRef.current ?? new Audio("/system/audio/ringback.mp3");
     ringbackAudioRef.current = audio;
-    audio.loop = true;
+    audio.loop = !onEnded;
+    audio.onended = onEnded;
     audio.currentTime = 0;
     audio.play().catch((error) => {
       if (error.name !== "AbortError") console.error("Ringback error", error);
+      if (onEnded && audio.onended === onEnded) onEnded();
     });
   }, []);
 
   const stopRingbackSound = useCallback(() => {
     const audio = ringbackAudioRef.current;
     if (!audio) return;
+    audio.onended = null;
     audio.pause();
     audio.currentTime = 0;
   }, []);
@@ -104,39 +75,16 @@ const useCall = () => {
     setDialNumber((prev) => prev.slice(0, -1));
   }, []);
 
-  const initiateCall = useCallback(
-    (name, type = "video") => {
-      if (ringTimeoutRef.current) {
-        clearTimeout(ringTimeoutRef.current);
-        ringTimeoutRef.current = null;
-      }
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-        timerIntervalRef.current = null;
-      }
-      const contact = CONTACTS.find((c) => c.name.toLowerCase() === name.toLowerCase());
-      setActiveCall({
-        name,
-        type,
-        status: "ringing",
-        avatar: contact?.avatar,
-        callPreview: contact?.callPreview,
-      });
-      setCallTimer(0);
-      startRingbackSound();
-      ringTimeoutRef.current = setTimeout(() => {
-        stopRingbackSound();
-        setActiveCall((prev) => {
-          if (!prev || prev.status !== "ringing") return prev;
-          return { ...prev, status: "connected" };
-        });
-      }, 4500);
-    },
-    [startRingbackSound, stopRingbackSound],
-  );
-
   const endCall = useCallback(() => {
     stopRingbackSound();
+    const invalidNumberAudio = invalidNumberAudioRef.current;
+    if (invalidNumberAudio) {
+      invalidNumberAudio.onended = null;
+      invalidNumberAudio.onerror = null;
+      invalidNumberAudio.pause();
+      invalidNumberAudio.currentTime = 0;
+      invalidNumberAudioRef.current = null;
+    }
     if (ringTimeoutRef.current) {
       clearTimeout(ringTimeoutRef.current);
       ringTimeoutRef.current = null;
@@ -151,6 +99,49 @@ const useCall = () => {
     setCameraMuted(false);
     setSpeakerMuted(false);
   }, [stopRingbackSound]);
+
+  const initiateCall = useCallback(
+    (name, type = "video") => {
+      endCall();
+      const contact = CONTACTS.find((c) => c.name.toLowerCase() === name.toLowerCase());
+      setActiveCall({
+        name,
+        type,
+        status: "ringing",
+        avatar: contact?.avatar,
+        callPreview: contact?.callPreview,
+      });
+
+      if (/^[0-9*#+]+$/.test(name)) {
+        startRingbackSound(() => {
+          stopRingbackSound();
+          const audio = new Audio("/system/audio/invalid-number.mp3");
+          invalidNumberAudioRef.current = audio;
+          const finishCall = () => {
+            if (invalidNumberAudioRef.current === audio) endCall();
+          };
+          audio.onended = finishCall;
+          audio.onerror = finishCall;
+          audio.play().catch((error) => {
+            if (invalidNumberAudioRef.current !== audio) return;
+            if (error.name !== "AbortError") console.error("Invalid number audio error", error);
+            endCall();
+          });
+        });
+        return;
+      }
+
+      startRingbackSound();
+      ringTimeoutRef.current = setTimeout(() => {
+        stopRingbackSound();
+        setActiveCall((prev) => {
+          if (!prev || prev.status !== "ringing") return prev;
+          return { ...prev, status: "connected" };
+        });
+      }, 4500);
+    },
+    [endCall, startRingbackSound, stopRingbackSound],
+  );
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -205,6 +196,13 @@ const useCall = () => {
   useEffect(() => {
     return () => {
       stopRingbackSound();
+      const audio = invalidNumberAudioRef.current;
+      if (audio) {
+        audio.onended = null;
+        audio.onerror = null;
+        audio.pause();
+        invalidNumberAudioRef.current = null;
+      }
     };
   }, [stopRingbackSound]);
 
