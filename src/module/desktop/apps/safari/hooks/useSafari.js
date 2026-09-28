@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useWindowsStore from "@store/window";
-import { DEFAULT_BOOKMARKS, WALLPAPERS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } from "../data";
+import { DEFAULT_BOOKMARKS, IFRAME_COMPATIBLE_SITES, MOCK_HISTORY } from "../data";
 import { PROJECT_1_URL, PROJECT_2_URL, PROJECT_3_URL } from "@constants";
 
 const isIframeable = (url) => {
@@ -38,12 +38,10 @@ const useSafari = () => {
   const [searchEngine, setSearchEngine] = useState("Google");
   const [showDownloads, setShowDownloads] = useState(false);
   const [showTabOverview, setShowTabOverview] = useState(false);
-  const [backgroundImage, setBackgroundImage] = useState(WALLPAPERS[0].value);
   const [enabledSections, setEnabledSections] = useState({
     favorites: true,
     privacyReport: true,
     readingList: true,
-    background: true,
   });
   const [bookmarks, setBookmarks] = useState(DEFAULT_BOOKMARKS);
   const [historyList, setHistoryList] = useState(MOCK_HISTORY);
@@ -451,8 +449,6 @@ const useSafari = () => {
     setShowDownloads,
     showTabOverview,
     setShowTabOverview,
-    backgroundImage,
-    setBackgroundImage,
     enabledSections,
     setEnabledSections,
     bookmarks,

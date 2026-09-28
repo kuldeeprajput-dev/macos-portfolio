@@ -71,8 +71,6 @@ const SafariSection = () => {
           setBookmarks={safari.setBookmarks}
           projects={projects}
           socials={socials}
-          backgroundImage={safari.backgroundImage}
-          setBackgroundImage={safari.setBackgroundImage}
           enabledSections={safari.enabledSections}
           setEnabledSections={safari.setEnabledSections}
           isIframeable={safari.isIframeable}
@@ -168,8 +166,6 @@ const SafariSection = () => {
           setBookmarks={safari.setBookmarks}
           projects={projects}
           socials={socials}
-          backgroundImage={safari.backgroundImage}
-          setBackgroundImage={safari.setBackgroundImage}
           enabledSections={safari.enabledSections}
           setEnabledSections={safari.setEnabledSections}
           isIframeable={safari.isIframeable}

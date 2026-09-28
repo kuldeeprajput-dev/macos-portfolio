@@ -3,7 +3,6 @@ import {
   ShieldHalf,
   ChevronRight,
   ExternalLink,
-  SlidersHorizontal,
   X,
   Star,
   Trash2,
@@ -14,7 +13,7 @@ import {
   Minimize2,
   Search,
 } from "lucide-react";
-import { TRACKERS, WALLPAPERS } from "../../data";
+import { TRACKERS } from "../../data";
 
 const SafariContentView = ({
   activeTab,
@@ -30,8 +29,6 @@ const SafariContentView = ({
   _setBookmarks,
   projects = [],
   _socials = [],
-  backgroundImage,
-  setBackgroundImage,
   enabledSections = {},
   _setEnabledSections,
   isIframeable,
@@ -252,30 +249,17 @@ const SafariContentView = ({
 
   // 1. Start Page (safari://start)
   if (activeTab.url === "safari://start") {
-    const isLightBg =
-      backgroundImage === "#ffffff" ||
-      backgroundImage.includes("#ffffff") ||
-      backgroundImage.includes("glass") ||
-      backgroundImage.includes("#ece9e6");
-    const textClass = isLightBg ? "text-gray-800" : "text-white";
-    const subTextClass = isLightBg ? "text-gray-500" : "text-white/70";
-    const shadowClass = isLightBg ? "" : "drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]";
-    const cardClass = isLightBg
-      ? "bg-white/80 backdrop-blur-md border border-[#c8cbd0]/50 shadow-sm"
-      : "bg-black/40 backdrop-blur-md border border-white/10 shadow-lg text-white";
+    const textClass = "text-gray-800";
+    const subTextClass = "text-gray-500";
+    const cardClass = "bg-white/80 backdrop-blur-md border border-[#c8cbd0]/50 shadow-sm";
 
     return (
       <div className="flex-1 relative min-h-0 flex flex-col">
-        <div
-          className="flex-1 overflow-y-auto transition-all duration-300 select-none pb-16"
-          style={{ background: backgroundImage }}
-        >
+        <div className="flex-1 overflow-y-auto bg-white select-none pb-16">
           <div className="relative z-10 max-w-4xl mx-auto px-8 py-14">
             {/* Header */}
             <div className="text-center mb-8">
-              <h1 className={`text-4xl font-extrabold ${textClass} ${shadowClass} tracking-wide`}>
-                Safari
-              </h1>
+              <h1 className={`text-4xl font-extrabold ${textClass} tracking-wide`}>Safari</h1>
             </div>
 
             {/* Central Search Bar */}
@@ -304,9 +288,7 @@ const SafariContentView = ({
               {/* Favorites / Bookmarks Section */}
               {enabledSections.favorites && (
                 <section>
-                  <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
-                    Favorites
-                  </h2>
+                  <h2 className={`text-lg font-bold ${textClass} mb-4`}>Favorites</h2>
                   <div className="flex flex-wrap gap-6">
                     {bookmarks.map((fav) => (
                       <div
@@ -329,14 +311,11 @@ const SafariContentView = ({
                               }}
                             />
                           ) : (
-                            <Globe
-                              size={20}
-                              className={isLightBg ? "text-gray-600" : "text-white"}
-                            />
+                            <Globe size={20} className="text-gray-600" />
                           )}
                         </div>
                         <span
-                          className={`text-[10px] font-semibold text-center ${isLightBg ? "text-gray-600" : "text-white/90"} group-hover:underline`}
+                          className="text-[10px] font-semibold text-center text-gray-600 group-hover:underline"
                           style={{ maxWidth: "72px" }}
                         >
                           {fav.title}
@@ -380,9 +359,7 @@ const SafariContentView = ({
 
               {/* Featured Projects Section */}
               <section>
-                <h2 className={`text-lg font-bold ${textClass} ${shadowClass} mb-4`}>
-                  Featured Projects
-                </h2>
+                <h2 className={`text-lg font-bold ${textClass} mb-4`}>Featured Projects</h2>
                 <div className="grid grid-cols-1 @2xl:grid-cols-2 gap-6">
                   {projects.map((project) => (
                     <div
@@ -422,7 +399,7 @@ const SafariContentView = ({
                               e.preventDefault();
                               setRedirectProject(project);
                             }}
-                            className={`flex items-center gap-1.5 text-xs font-bold ${isLightBg ? "text-gray-600 hover:text-black" : "text-white/80 hover:text-white"} transition-colors`}
+                            className="flex items-center gap-1.5 text-xs font-bold text-gray-600 hover:text-black transition-colors"
                           >
                             Source
                           </a>
@@ -432,40 +409,6 @@ const SafariContentView = ({
                   ))}
                 </div>
               </section>
-
-              {/* Wallpaper Selection Section */}
-              {enabledSections.background && (
-                <section>
-                  <div className="flex items-center gap-1.5 mb-4">
-                    <SlidersHorizontal
-                      size={14}
-                      className={isLightBg ? "text-gray-600" : "text-white"}
-                    />
-                    <h2 className={`text-sm font-bold ${textClass} ${shadowClass}`}>
-                      Customize Start Page
-                    </h2>
-                  </div>
-                  <div
-                    className="flex flex-wrap gap-3.5"
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onPointerDown={(e) => e.stopPropagation()}
-                  >
-                    {WALLPAPERS.map((wp) => (
-                      <button
-                        key={wp.id}
-                        onClick={() => setBackgroundImage(wp.value)}
-                        className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-105 active:scale-95 ${
-                          backgroundImage === wp.value
-                            ? "border-blue-500 ring-2 ring-blue-500/25 scale-105"
-                            : "border-transparent shadow-sm"
-                        }`}
-                        style={{ background: wp.value }}
-                        title={wp.name}
-                      />
-                    ))}
-                  </div>
-                </section>
-              )}
             </div>
           </div>
         </div>
