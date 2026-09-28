@@ -14,7 +14,7 @@ export async function POST(req) {
     if (!formData.has("prompt")) {
       formData.append(
         "prompt",
-        "Hello Siri, how can I help you today? Open Music app. Show my projects. Open NewTube. Tell me about Snsta. Open Docs Editor GitHub. Show Resume ATS preview. Turn on dark mode. Set brightness to 70 percent. Pause music. Close all windows. Bye Siri.",
+        "Hello Siri, how can I help you today? Open Music app. Show my projects. Open NewTube. Tell me about Coursenva. Open Docs Editor GitHub. Show Resume ATS preview. Turn on dark mode. Set brightness to 70 percent. Pause music. Close all windows. Bye Siri.",
       );
     }
 

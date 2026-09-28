@@ -21,9 +21,9 @@ export const DEFAULT_BOOKMARKS = [
   },
   {
     id: 4,
-    title: "Insta Downloader",
+    title: "Coursenva",
     url: PROJECT_2_URL,
-    img: "/brands/insta-downloader.webp",
+    img: "/projects/desktop/coursenva.webp",
   },
   {
     id: 5,

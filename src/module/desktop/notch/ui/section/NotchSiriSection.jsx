@@ -283,7 +283,7 @@ Rules:
 - Guide users to apps: Music, Weather, Safari, Finder, VSCode, Terminal, Resume.
 - Kuldeep's Projects Context:
   1. Newtube: A feature-rich YouTube clone built with React.
-  2. Snsta: An Instagram media downloader tool for downloading posts, reels, etc.
+  2. Coursenva: An AI-powered free course finder and learning roadmap generator.
   3. Resume ATS Scanner: An ATS (Applicant Tracking System) parser that analyzes and scores resumes.
   4. Docs Editor: A collaborative real-time rich-text document editor.
   Explain these projects briefly and enthusiastically if the user asks about them.`,

@@ -17,7 +17,7 @@ const OWNER_NAME = "Kuldeep Rajput";
 
 const FALLBACK_PROJECT_LINKS = {
   newtube: PROJECT_1_URL,
-  insta: PROJECT_2_URL,
+  coursenva: PROJECT_2_URL,
   resume: PROJECT_3_URL,
   docs: PROJECT_4_URL,
 };
@@ -35,15 +35,15 @@ const PROJECT_META = {
     aliases: ["newtube", "new tube", "youtube clone", "video streaming", "video app"],
   },
   2: {
-    key: "insta",
+    key: "coursenva",
     aliases: [
-      "snsta",
-      "insta things download",
-      "instagram downloader",
-      "insta downloader",
-      "reels downloader",
-      "free course finder",
+      "coursenva",
+      "ai course finder",
       "course finder",
+      "course search",
+      "free course finder",
+      "learning roadmaps",
+      "courses",
     ],
   },
   3: {

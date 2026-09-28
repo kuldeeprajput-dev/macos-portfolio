@@ -53,7 +53,7 @@ export default function useSafari() {
     if (lowerQuery.includes("youtube") || lowerQuery.includes("newtube")) {
       targetUrl = PROJECT_1_URL;
       isRedirected = true;
-    } else if (lowerQuery.includes("insta") || lowerQuery.includes("snsta")) {
+    } else if (lowerQuery.includes("course") || lowerQuery.includes("coursenva")) {
       targetUrl = PROJECT_2_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("resume")) {

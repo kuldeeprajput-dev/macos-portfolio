@@ -20,7 +20,6 @@ const resolveIcon = (icon) => {
     "x.webp",
     "chrome.webp",
     "openstreetmap.webp",
-    "insta-downloader.webp",
     "resume-ats.webp",
   ];
   if (brands.includes(icon)) return `/brands/${icon}`;

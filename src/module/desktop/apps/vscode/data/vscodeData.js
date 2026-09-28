@@ -88,10 +88,10 @@ const SELECTED_PROJECTS = [
     rating: "4.9"
   },
   {
-    title: "FREE COURSE",
-    desc: "AI-powered learning discovery platform that finds free courses across the web.",
+    title: "COURSENVA",
+    desc: "AI-powered learning discovery platform that finds free courses and generates custom roadmaps.",
     tech: ["Next.js", "AI Search Engine", "Tailwind CSS"],
-    rating: "4.7"
+    rating: "4.9"
   }
 ];
 

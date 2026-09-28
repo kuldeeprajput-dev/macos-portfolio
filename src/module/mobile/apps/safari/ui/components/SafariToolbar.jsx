@@ -666,11 +666,11 @@ const SafariMobileHeader = ({ projects }) => {
                           />
                         );
                       }
-                      if (urlLower.includes("insta") || urlLower.includes("snsta")) {
+                      if (urlLower.includes("course") || urlLower.includes("coursenva")) {
                         return (
                           <img
-                            src="/projects/desktop/snsta.webp"
-                            alt="Insta Downloader"
+                            src="/projects/desktop/coursenva.webp"
+                            alt="Coursenva"
                             className="w-full h-full object-cover object-top"
                           />
                         );

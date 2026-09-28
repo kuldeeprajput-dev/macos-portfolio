@@ -171,7 +171,7 @@ const useSafari = () => {
     if (lowerQuery.includes("youtube")) {
       targetUrl = PROJECT_1_URL;
       isRedirected = true;
-    } else if (lowerQuery.includes("insta")) {
+    } else if (lowerQuery.includes("course") || lowerQuery.includes("coursenva")) {
       targetUrl = PROJECT_2_URL;
       isRedirected = true;
     } else if (lowerQuery.includes("resume")) {
@@ -239,7 +239,7 @@ const useSafari = () => {
           } else if (targetUrl === PROJECT_1_URL) {
             newTitle = "NewTube";
           } else if (targetUrl === PROJECT_2_URL) {
-            newTitle = "Insta Downloader";
+            newTitle = "Coursenva";
           } else if (targetUrl === PROJECT_3_URL) {
             newTitle = "Resume ATS";
           } else if (targetUrl === "https://en.wikipedia.org") {
@@ -361,7 +361,7 @@ const useSafari = () => {
     if (url === "safari://history") return "History";
     if (url === "safari://bookmarks") return "Bookmarks";
     if (url === PROJECT_1_URL) return "NewTube";
-    if (url === PROJECT_2_URL) return "Insta Downloader";
+    if (url === PROJECT_2_URL) return "Coursenva";
     if (url === PROJECT_3_URL) return "Resume ATS";
     if (url === "https://en.wikipedia.org") return "Wikipedia";
     if (url === "https://openstreetmap.org") return "OpenStreetMap";

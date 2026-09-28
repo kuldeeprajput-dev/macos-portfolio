@@ -69,7 +69,7 @@ const WORK_LOCATION = {
     },
     {
       id: 6,
-      name: "Snsta",
+      name: "Coursenva",
       icon: "/system/icons/files/folder.webp",
       kind: "folder",
       position: "top-52 right-80",
@@ -77,20 +77,20 @@ const WORK_LOCATION = {
       children: [
         {
           id: 1,
-          name: "Snsta Project.txt",
+          name: "Coursenva Project.txt",
           icon: "/system/icons/files/txt.webp",
           kind: "file",
           fileType: "txt",
           position: "top-5 right-10",
           description: [
-            "Download photos, videos, and reels from Instagram easily with a fast, user-friendly web app.",
-            "Simply paste the link and get high-quality content instantly without any login or hassle. ",
-            "Designed for speed, reliability, and convenience, this tool lets you save your favorite Instagram media anytime, anywhere, in just a few quick clicks.",
+            "Coursenva is an AI-powered course finder and custom roadmap generator designed to discover high-quality free online courses from Coursera, edX, MIT OCW, YouTube, and Khan Academy.",
+            "Using search grounding and intelligent course curation, it allows learners to build personalized career roadmaps and chat with an AI learning assistant to master new skills effortlessly.",
+            "Built with Next.js, Tailwind CSS, and AI search integration, ensuring a fast, clean, and highly responsive learning space for students and developers worldwide.",
           ],
         },
         {
           id: 2,
-          name: "snsta.com",
+          name: "coursenva.com",
           icon: "/apps/safari.webp",
           kind: "file",
           fileType: "url",
@@ -99,13 +99,13 @@ const WORK_LOCATION = {
         },
         {
           id: 4,
-          name: "snsta.png",
+          name: "coursenva.png",
           icon: "/system/icons/files/image.webp",
           kind: "file",
           fileType: "img",
           position: "top-52 left-80",
-          imageUrl: "/projects/desktop/snsta.webp",
-          imageMobUrl: "/projects/mobile/snsta-mob.webp",
+          imageUrl: "/projects/desktop/coursenva.webp",
+          imageMobUrl: "/projects/mobile/coursenva-mob.webp",
         },
         {
           id: 5,

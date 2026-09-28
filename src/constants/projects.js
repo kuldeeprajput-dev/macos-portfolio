@@ -21,10 +21,10 @@ export const projects = [
   },
   {
     id: 2,
-    title: "Insta Things Download",
+    title: "Coursenva",
     description:
-      "Download photos, videos, and reels from Instagram easily with a fast, user-friendly web app.",
-    image: "/projects/desktop/snsta.webp",
+      "AI-powered free course finder and custom learning roadmap generator discovering top courses across the web.",
+    image: "/projects/desktop/coursenva.webp",
     link: PROJECT_2_URL,
     github: PROJECT_2_GITHUB,
   },
