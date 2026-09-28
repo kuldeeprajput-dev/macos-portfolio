@@ -83,7 +83,7 @@
     }
 
     .dock-icon {
-      @apply size-14 3xl:size-20 cursor-pointer overflow-visible;
+      @apply size-14 3xl:size-20 cursor-default overflow-visible;
 
       img {
         @apply w-full h-full object-contain;
@@ -339,12 +339,12 @@
 
         &.folder,
         &.folder * {
-          cursor: pointer;
+          cursor: default;
         }
 
         &.desktop-shortcut,
         &.desktop-shortcut * {
-          cursor: pointer;
+          cursor: default;
         }
 
         p {
@@ -367,7 +367,7 @@
 
   .folder,
   .folder * {
-    cursor: pointer;
+    cursor: default;
   }
 
   .folder:active,

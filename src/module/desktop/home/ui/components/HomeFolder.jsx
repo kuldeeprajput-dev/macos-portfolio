@@ -8,7 +8,7 @@ const HomeFolder = ({ project, displayName, isEditing, onRename, onClick, onCont
 
   return (
     <li
-      className={clsx("folder cursor-pointer", project.windowPosition)}
+      className={clsx("folder cursor-default", project.windowPosition)}
       onClick={isEditing ? undefined : onClick}
       onContextMenu={(e) => {
         if (onContextMenu) {

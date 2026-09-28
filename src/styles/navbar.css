@@ -24,7 +24,7 @@
     }
 
     .apple-logo {
-      @apply h-[19px] sm:h-[18px] sm:mr-1 sm:pl-0 sm:pr-1 cursor-pointer;
+      @apply h-[19px] sm:h-[18px] sm:mr-1 sm:pl-0 sm:pr-1 cursor-default;
       filter: brightness(0) invert(1);
     }
 
@@ -32,7 +32,7 @@
       @apply flex items-center h-full gap-1;
 
       li {
-        @apply px-3 h-full flex items-center text-[13.5px] font-[600] tracking-normal rounded cursor-pointer transition-colors;
+        @apply px-3 h-full flex items-center text-[13.5px] font-[600] tracking-normal rounded cursor-default transition-colors;
         color: #ffffff;
       }
       li.font-bold {
@@ -44,11 +44,11 @@
       @apply flex items-center gap-1 h-full;
 
       li {
-        @apply h-full flex items-center px-[7px] cursor-pointer transition-colors rounded-sm;
+        @apply h-full flex items-center px-[7px] cursor-default transition-colors rounded-sm;
       }
 
       .icon-hover {
-        @apply h-3.5 cursor-pointer transition-colors;
+        @apply h-3.5 cursor-default transition-colors;
         filter: brightness(0) invert(1);
       }
     }
@@ -69,7 +69,7 @@
     }
 
     .battery-indicator {
-      @apply flex items-center gap-1.5 px-1 py-0.5 rounded cursor-pointer transition-colors;
+      @apply flex items-center gap-1.5 px-1 py-0.5 rounded cursor-default transition-colors;
 
       .battery-text {
         @apply text-[12px] font-[500] tracking-normal;

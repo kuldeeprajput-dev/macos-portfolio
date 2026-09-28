@@ -21,6 +21,7 @@ const Dock = () => {
   const [hoveredAppId, setHoveredAppId] = useState(null);
   const [draggedAppId, setDraggedAppId] = useState(null);
   const draggedAppIdRef = useRef(null);
+  const dragStartTimerRef = useRef(null);
   const dockRef = useDock();
 
   const resetAllIcons = () => {
@@ -128,8 +129,11 @@ const Dock = () => {
     }
 
     // Timeout ensures the browser has successfully captured the drag image before we hide it in the DOM
-    setTimeout(() => {
-      setDraggedAppId(id);
+    dragStartTimerRef.current = setTimeout(() => {
+      if (draggedAppIdRef.current === id) {
+        setDraggedAppId(id);
+      }
+      dragStartTimerRef.current = null;
     }, 0);
   };
 
@@ -167,6 +171,8 @@ const Dock = () => {
   };
 
   const handleDragEnd = useCallback(() => {
+    clearTimeout(dragStartTimerRef.current);
+    dragStartTimerRef.current = null;
     draggedAppIdRef.current = null;
     setDraggedAppId(null);
     setHoveredAppId(null);
@@ -181,8 +187,11 @@ const Dock = () => {
       }
     };
     window.addEventListener("dragend", handleGlobalDragEnd);
+    window.addEventListener("drop", handleGlobalDragEnd, true);
     return () => {
       window.removeEventListener("dragend", handleGlobalDragEnd);
+      window.removeEventListener("drop", handleGlobalDragEnd, true);
+      clearTimeout(dragStartTimerRef.current);
     };
   }, [handleDragEnd]);
 

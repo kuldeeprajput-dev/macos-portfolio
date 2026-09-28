@@ -77,8 +77,8 @@ const DockIcon = ({
   return (
     <div
       className={[
-        "dock-item relative flex justify-center select-none cursor-pointer",
-        isDragging ? "is-dragging cursor-grabbing opacity-30" : "cursor-pointer",
+        "dock-item relative flex justify-center select-none cursor-default",
+        isDragging ? "is-dragging cursor-grabbing opacity-30" : "cursor-default",
         isOpen ? "dock-item-open" : "",
         isMinimized ? "dock-item-minimized" : "",
         isFocused ? "dock-item-focused" : "",
@@ -102,7 +102,7 @@ const DockIcon = ({
     >
       <button
         type="button"
-        className="dock-icon relative flex justify-center items-center overflow-visible cursor-pointer"
+        className="dock-icon relative flex justify-center items-center overflow-visible cursor-default"
         aria-label={statusLabel(name, state, canOpen)}
         aria-pressed={canOpen ? isOpen : undefined}
         disabled={!canOpen}

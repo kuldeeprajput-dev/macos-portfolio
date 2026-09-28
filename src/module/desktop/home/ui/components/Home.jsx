@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { locations } from "@constants";
 import useLocationStore from "@store/location";
 import useWindowsStore from "@store/window";
@@ -34,6 +34,7 @@ const Home = () => {
   const [wallpaperIndex, setWallpaperIndex] = useState(0);
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [renamedProjects, setRenamedProjects] = useState({});
+  const suppressCustomFolderClickRef = useRef(null);
 
   const visibleProjects = projects.filter((project) => !deletedFolderIds.includes(project.id));
 
@@ -101,7 +102,7 @@ const Home = () => {
     const instances = Draggable.create(".folder, .desktop-shortcut", {
       bounds: "#home",
       allowContextMenu: true,
-      cursor: "pointer",
+      cursor: "default",
       activeCursor: "grabbing",
       onPress: function () {
         document.body.classList.add("folder-dragging");
@@ -118,6 +119,7 @@ const Home = () => {
           gsap.set(el, { x: 0, y: 0 });
         } else if (el.dataset.custom === "true") {
           const id = el.dataset.id;
+          suppressCustomFolderClickRef.current = id;
           setCustomFolders((prev) =>
             prev.map((f) => {
               if (f.id === id) {
@@ -324,12 +326,19 @@ const Home = () => {
               key={folder.id}
               data-id={folder.id}
               data-custom="true"
-              className="folder cursor-pointer absolute select-none flex items-center flex-col"
+              className="folder cursor-default absolute select-none flex items-center flex-col"
               style={{
                 left: `${folder.x}px`,
                 top: `${folder.y}px`,
               }}
+              onPointerDown={() => {
+                suppressCustomFolderClickRef.current = null;
+              }}
               onClick={() => {
+                if (suppressCustomFolderClickRef.current === folder.id) {
+                  suppressCustomFolderClickRef.current = null;
+                  return;
+                }
                 if (!isEditing) openWindow("finder");
               }}
               onContextMenu={(e) => handleFolderContextMenu(e, folder)}
@@ -350,9 +359,7 @@ const Home = () => {
                   onCancel={() => setEditingFolderId(null)}
                 />
               ) : (
-                <p className="text-sm text-white text-center max-w-36 font-medium select-none mt-1 [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
-                  {folder.name}
-                </p>
+                <p>{folder.name}</p>
               )}
             </li>
           );

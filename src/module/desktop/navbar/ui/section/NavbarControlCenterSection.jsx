@@ -352,7 +352,7 @@ const NavbarControlCenterSection = ({
         {visibleIcons.map(({ id, img, type }) => (
           <li
             key={id}
-            className={`h-full flex items-center relative cursor-pointer transition-colors ${
+            className={`h-full flex items-center relative cursor-default transition-colors ${
               activeMenu === type ? "bg-white/20" : "hover:bg-white/10"
             }`}
             onClick={(e) => toggleMenu(type, e)}
@@ -831,7 +831,7 @@ const NavbarControlCenterSection = ({
 
         {/* Battery Dropdown */}
         <li
-          className={`h-full flex items-center relative cursor-pointer transition-colors ${
+          className={`h-full flex items-center relative cursor-default transition-colors ${
             activeMenu === "battery" ? "bg-white/20" : "hover:bg-white/10"
           }`}
           onClick={(e) => toggleMenu("battery", e)}
