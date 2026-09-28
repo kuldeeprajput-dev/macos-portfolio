@@ -187,14 +187,11 @@ const useWindowsStore = create(
       }),
     addDesktopShortcut: (appId, x, y) =>
       set((state) => {
-        const exists = state.desktopShortcuts.some((s) => s.appId === appId);
-        if (exists) return;
-
         const app = dockApps.find((a) => a.id === appId);
         if (!app) return;
 
         state.desktopShortcuts.push({
-          id: `shortcut-${appId}-${Date.now()}`,
+          id: `shortcut-${appId}-${crypto.randomUUID()}`,
           appId,
           name: app.name,
           icon: app.icon,
