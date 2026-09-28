@@ -19,9 +19,9 @@ const Calculator = () => {
   }, [windows.calculator?.data?.openAbout, windows.calculator?.data, setWindowData]);
 
   const {
-    value,
     displayValue,
     operator,
+    expression,
     clearAll,
     clearDisplay,
     toggleSign,
@@ -37,19 +37,21 @@ const Calculator = () => {
         <div id="window-header" className="shrink-0 pt-3 px-4 pb-2 flex items-center relative z-10">
           <WindowControls target="calculator" />
         </div>
-        <div className="flex-1 flex flex-col p-4 pt-2 relative">
-          <CalculatorDisplay value={value} operator={operator} displayValue={displayValue} />
-          <CalculatorKeypad
-            displayValue={displayValue}
-            operator={operator}
-            clearAll={clearAll}
-            clearDisplay={clearDisplay}
-            toggleSign={toggleSign}
-            inputPercent={inputPercent}
-            inputDigit={inputDigit}
-            inputDot={inputDot}
-            performOperation={performOperation}
-          />
+        <div className="relative flex min-h-0 flex-1 items-center justify-center p-4 pt-2">
+          <div className="flex w-full max-w-[340px] flex-col">
+            <CalculatorDisplay expression={expression} displayValue={displayValue} />
+            <CalculatorKeypad
+              displayValue={displayValue}
+              operator={operator}
+              clearAll={clearAll}
+              clearDisplay={clearDisplay}
+              toggleSign={toggleSign}
+              inputPercent={inputPercent}
+              inputDigit={inputDigit}
+              inputDot={inputDot}
+              performOperation={performOperation}
+            />
+          </div>
         </div>
       </div>
       <CalculatorAboutModal show={showAbout} onClose={() => setShowAbout(false)} />

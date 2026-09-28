@@ -6,9 +6,9 @@ import CalculatorKeypad from "./CalculatorKeypad";
 
 const Calculator = () => {
   const {
-    value,
     displayValue,
     operator,
+    expression,
     clearAll,
     clearDisplay,
     toggleSign,
@@ -24,7 +24,7 @@ const Calculator = () => {
         <WindowControls target="calculator" />
       </div>
       <div className="flex-1 flex flex-col justify-end p-4 pt-2 relative">
-        <CalculatorDisplay value={value} operator={operator} displayValue={displayValue} />
+        <CalculatorDisplay expression={expression} displayValue={displayValue} />
         <CalculatorKeypad
           displayValue={displayValue}
           operator={operator}

@@ -1,5 +1,5 @@
 const btnStyle =
-  "flex items-center justify-center text-2xl font-normal rounded-full transition-colors active:opacity-70 focus:outline-none";
+  "flex h-12 w-full items-center justify-center text-2xl font-normal rounded-full transition-colors active:scale-[0.96] active:opacity-70 focus:outline-none";
 
 const CalculatorKeypad = ({
   displayValue,
@@ -14,7 +14,7 @@ const CalculatorKeypad = ({
 }) => {
   const clearText = displayValue !== "0" ? "C" : "AC";
   return (
-    <div className="grid grid-cols-4 gap-3 flex-1">
+    <div className="grid w-full grid-cols-4 gap-2">
       <button
         className={`${btnStyle} bg-[#a5a5a5] text-black hover:bg-[#d4d4d2]`}
         onClick={() => (displayValue !== "0" ? clearDisplay() : clearAll())}
