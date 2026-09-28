@@ -73,7 +73,7 @@ const useMessages = () => {
   useEffect(() => {
     if (callState.isOpen && callState.status === "ringing") {
       if (!ringtoneRef.current) {
-        ringtoneRef.current = new Audio("/system/audio/callertune.mp3");
+        ringtoneRef.current = new Audio("/system/audio/ringback.mp3");
         ringtoneRef.current.loop = true;
       }
       ringtoneRef.current

@@ -141,7 +141,7 @@ const useTelegram = () => {
     if (ringingTimeoutRef.current) clearTimeout(ringingTimeoutRef.current);
 
     try {
-      const audio = new Audio("/system/audio/callertune.mp3");
+      const audio = new Audio("/system/audio/ringback.mp3");
       audio.loop = true;
       audio.play().catch((err) => console.log("Audio play blocked by browser:", err));
       callAudioRef.current = audio;

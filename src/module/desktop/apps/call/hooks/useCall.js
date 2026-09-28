@@ -14,8 +14,7 @@ const useCall = () => {
   const [cameraMuted, setCameraMuted] = useState(false);
   const [speakerMuted, setSpeakerMuted] = useState(false);
 
-  const ringbackAudioCtxRef = useRef(null);
-  const ringIntervalRef = useRef(null);
+  const ringbackAudioRef = useRef(null);
   const timerIntervalRef = useRef(null);
   const ringTimeoutRef = useRef(null);
 
@@ -77,50 +76,20 @@ const useCall = () => {
   }, []);
 
   const startRingbackSound = useCallback(() => {
-    try {
-      ringbackAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
-      const playRingCycle = () => {
-        const ctx = ringbackAudioCtxRef.current;
-        if (!ctx || ctx.state === "closed") return;
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc1.frequency.value = 440;
-        osc2.frequency.value = 480;
-        osc1.type = "sine";
-        osc2.type = "sine";
-        gain.gain.setValueAtTime(0, ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.05);
-        gain.gain.setValueAtTime(0.05, ctx.currentTime + 1.5);
-        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.6);
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(ctx.destination);
-        osc1.start();
-        osc2.start();
-        osc1.stop(ctx.currentTime + 1.7);
-        osc2.stop(ctx.currentTime + 1.7);
-      };
-      playRingCycle();
-      ringIntervalRef.current = setInterval(playRingCycle, 4000);
-    } catch (e) {
-      console.error("Ringback error", e);
-    }
+    const audio = ringbackAudioRef.current ?? new Audio("/system/audio/ringback.mp3");
+    ringbackAudioRef.current = audio;
+    audio.loop = true;
+    audio.currentTime = 0;
+    audio.play().catch((error) => {
+      if (error.name !== "AbortError") console.error("Ringback error", error);
+    });
   }, []);
 
   const stopRingbackSound = useCallback(() => {
-    if (ringIntervalRef.current) {
-      clearInterval(ringIntervalRef.current);
-      ringIntervalRef.current = null;
-    }
-    if (ringbackAudioCtxRef.current) {
-      try {
-        ringbackAudioCtxRef.current.close();
-      } catch {
-        /* ignore */
-      }
-      ringbackAudioCtxRef.current = null;
-    }
+    const audio = ringbackAudioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
   }, []);
 
   const handleDialPress = useCallback(
