@@ -26,6 +26,26 @@ import {
   FileText,
 } from "lucide-react";
 
+const getCameraErrorMessage = (error) => {
+  switch (error?.name) {
+    case "NotReadableError":
+    case "TrackStartError":
+      return "Camera is busy. Close Chrome's camera preview or another camera app, then retry.";
+    case "NotAllowedError":
+    case "PermissionDeniedError":
+      return "Camera was blocked by the browser or system. Check your device's camera privacy settings, then retry.";
+    case "NotFoundError":
+    case "DevicesNotFoundError":
+      return "No camera was found. Connect your camera, then retry.";
+    case "SecurityError":
+      return "Camera access is blocked in this page. Open it on HTTPS or localhost, then retry.";
+    case "AbortError":
+      return "Camera start was interrupted. Please retry.";
+    default:
+      return `Camera could not start (${error?.name || "unknown error"}). Please retry.`;
+  }
+};
+
 const Notch = () => {
   const {
     music,
@@ -59,6 +79,9 @@ const Notch = () => {
   const [cameraError, setCameraError] = useState("");
   const videoRef = useRef(null);
   const [cameraStream, setCameraStream] = useState(null);
+  const cameraStreamRef = useRef(null);
+  const cameraRequestIdRef = useRef(0);
+  const isCameraOpenRef = useRef(false);
   const [activeFilter, setActiveFilter] = useState("none");
   const [isDemoMode, setIsDemoMode] = useState(false);
 
@@ -562,15 +585,28 @@ const Notch = () => {
   };
 
   const openCamera = async (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
+    const requestId = ++cameraRequestIdRef.current;
+    isCameraOpenRef.current = true;
+    cameraStreamRef.current?.getTracks().forEach((track) => track.stop());
+    cameraStreamRef.current = null;
+    setCameraStream(null);
     setCameraError("");
     setIsDemoMode(false);
     setIsCameraOpen(true);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      if (requestId !== cameraRequestIdRef.current || !isCameraOpenRef.current) {
+        stream.getTracks().forEach((track) => track.stop());
+        return;
+      }
+      cameraStreamRef.current = stream;
       setCameraStream(stream);
-    } catch {
-      setCameraError("Camera access denied. Please allow camera permission.");
+    } catch (error) {
+      if (requestId === cameraRequestIdRef.current && isCameraOpenRef.current) {
+        const errorCode = error?.name ? ` (${error.name})` : "";
+        setCameraError(`${getCameraErrorMessage(error)}${errorCode}`);
+      }
     }
   };
 
@@ -584,10 +620,11 @@ const Notch = () => {
 
   const closeCamera = (e) => {
     if (e) e.stopPropagation();
-    if (cameraStream) {
-      cameraStream.getTracks().forEach((t) => t.stop());
-      setCameraStream(null);
-    }
+    isCameraOpenRef.current = false;
+    cameraRequestIdRef.current += 1;
+    cameraStreamRef.current?.getTracks().forEach((track) => track.stop());
+    cameraStreamRef.current = null;
+    setCameraStream(null);
     setIsCameraOpen(false);
     setIsDemoMode(false);
     setCameraError("");
@@ -713,6 +750,14 @@ const Notch = () => {
   useEffect(() => {
     if (!isMusicExpanded) closeCamera(null);
   }, [isMusicExpanded]);
+
+  useEffect(
+    () => () => {
+      cameraRequestIdRef.current += 1;
+      cameraStreamRef.current?.getTracks().forEach((track) => track.stop());
+    },
+    [],
+  );
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -937,6 +982,12 @@ const Notch = () => {
                         onClick={closeCamera}
                       >
                         Close
+                      </button>
+                      <button
+                        className="px-4 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-white text-[11px] font-semibold rounded-full transition-all"
+                        onClick={openCamera}
+                      >
+                        Retry Camera
                       </button>
                       <button
                         className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-semibold rounded-full transition-all"
