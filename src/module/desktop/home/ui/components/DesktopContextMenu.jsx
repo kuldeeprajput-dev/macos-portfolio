@@ -6,13 +6,13 @@ const DesktopContextMenu = ({
   onNewFolder,
   onGetInfo,
   onChangeWallpaper,
-  onEditWidgets,
-  useStacks,
-  onToggleStacks,
-  onCleanUp,
-  onSortBy,
+  onOpenProjects,
+  onOpenProject,
+  projects = [],
+  onOpenApp,
   onOpenTerminal,
-  onShowViewOptions,
+  onOpenSettings,
+  onCleanUp,
   onOpenFolder,
   onRenameFolder,
   onDeleteFolder,
@@ -21,7 +21,7 @@ const DesktopContextMenu = ({
   onDeleteShortcut,
 }) => {
   const menuRef = useRef(null);
-  const [activeSubmenu, setActiveSubmenu] = useState(null); // "sortBy" | "cleanUpBy" | null
+  const [activeSubmenu, setActiveSubmenu] = useState(null);
   const [copied, setCopied] = useState(false);
 
   // Close when clicking outside or pressing Escape / shortcut key
@@ -152,36 +152,31 @@ const DesktopContextMenu = ({
             <span>Change Wallpaper...</span>
           </button>
 
-          {/* Edit Widgets */}
+          {/* Contacts */}
           <button
             onClick={() => {
-              onEditWidgets();
+              onOpenApp("contact");
               onClose();
             }}
             className="group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
           >
-            <span>Edit Widgets...</span>
+            <span>Contacts</span>
           </button>
 
           <div className="my-1 h-[0.5px] bg-white/12 mx-1" />
 
-          {/* Use Stacks */}
+          {/* Browse Projects */}
           <button
             onClick={() => {
-              onToggleStacks();
+              onOpenProjects();
               onClose();
             }}
             className="group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
           >
-            <span>Use Stacks</span>
-            {useStacks && (
-              <span className="text-[13px] font-semibold text-white/90 group-hover:text-white">
-                ✓
-              </span>
-            )}
+            <span>Browse Projects</span>
           </button>
 
-          {/* Sort By (Submenu) */}
+          {/* Choose a Project (Submenu) */}
           <div
             className="relative"
             onMouseEnter={() => setActiveSubmenu("sortBy")}
@@ -194,7 +189,7 @@ const DesktopContextMenu = ({
                   : "hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white"
               }`}
             >
-              <span>Sort By</span>
+              <span>Choose a Project</span>
               <svg
                 className="h-3 w-3 text-white/50 group-hover:text-white"
                 viewBox="0 0 24 24"
@@ -209,7 +204,7 @@ const DesktopContextMenu = ({
             {activeSubmenu === "sortBy" && (
               <div
                 className={`absolute top-0 z-[100000] w-[180px] rounded-[10px] p-1 font-sans text-[13px] text-[#f5f5f7] shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset] animate-in fade-in zoom-in-95 duration-100 ${
-                  openSubmenuLeft ? "right-[calc(100%+4px)]" : "left-[calc(100%+4px)]"
+                  openSubmenuLeft ? "right-full" : "left-full"
                 }`}
                 style={{
                   background: "rgba(30, 30, 30, 0.85)",
@@ -218,23 +213,26 @@ const DesktopContextMenu = ({
                   border: "1px solid rgba(255, 255, 255, 0.16)",
                 }}
               >
-                {["None", "Name", "Kind", "Date Modified"].map((item) => (
+                {projects.map((project) => (
                   <button
-                    key={item}
+                    key={project.id}
                     onClick={() => {
-                      onSortBy(item);
+                      onOpenProject(project);
                       onClose();
                     }}
                     className="flex h-[26px] w-full items-center rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
                   >
-                    {item}
+                    <span className="truncate">{project.name}</span>
                   </button>
                 ))}
+                {projects.length === 0 && (
+                  <span className="px-2.5 py-1.5 text-xs text-white/50">No projects available</span>
+                )}
               </div>
             )}
           </div>
 
-          {/* Clean Up */}
+          {/* Reset Folder Positions */}
           <button
             onClick={() => {
               onCleanUp();
@@ -242,10 +240,10 @@ const DesktopContextMenu = ({
             }}
             className="group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
           >
-            <span>Clean Up</span>
+            <span>Reset Folder Positions</span>
           </button>
 
-          {/* Clean Up By (Submenu) */}
+          {/* Quick Open (Submenu) */}
           <div
             className="relative"
             onMouseEnter={() => setActiveSubmenu("cleanUpBy")}
@@ -258,7 +256,7 @@ const DesktopContextMenu = ({
                   : "hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white"
               }`}
             >
-              <span>Clean Up By</span>
+              <span>Quick Open</span>
               <svg
                 className="h-3 w-3 text-white/50 group-hover:text-white"
                 viewBox="0 0 24 24"
@@ -273,7 +271,7 @@ const DesktopContextMenu = ({
             {activeSubmenu === "cleanUpBy" && (
               <div
                 className={`absolute top-0 z-[100000] w-[180px] rounded-[10px] p-1 font-sans text-[13px] text-[#f5f5f7] shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset] animate-in fade-in zoom-in-95 duration-100 ${
-                  openSubmenuLeft ? "right-[calc(100%+4px)]" : "left-[calc(100%+4px)]"
+                  openSubmenuLeft ? "right-full" : "left-full"
                 }`}
                 style={{
                   background: "rgba(30, 30, 30, 0.85)",
@@ -282,16 +280,20 @@ const DesktopContextMenu = ({
                   border: "1px solid rgba(255, 255, 255, 0.16)",
                 }}
               >
-                {["Name", "Kind", "Date Modified"].map((item) => (
+                {[
+                  { label: "Projects", action: onOpenProjects },
+                  { label: "Contact", action: () => onOpenApp("contact") },
+                  { label: "Resume", action: () => onOpenApp("resume") },
+                ].map(({ label, action }) => (
                   <button
-                    key={item}
+                    key={label}
                     onClick={() => {
-                      onSortBy(item);
+                      action();
                       onClose();
                     }}
                     className="flex h-[26px] w-full items-center rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
                   >
-                    {item}
+                    {label}
                   </button>
                 ))}
               </div>
@@ -314,15 +316,15 @@ const DesktopContextMenu = ({
             </span>
           </button>
 
-          {/* Show View Options */}
+          {/* Open Settings */}
           <button
             onClick={() => {
-              onShowViewOptions();
+              onOpenSettings();
               onClose();
             }}
             className="group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
           >
-            <span>Show View Options</span>
+            <span>Open Settings...</span>
             <span className="text-[12px] text-white/40 tracking-wider group-hover:text-white">
               ⌘J
             </span>

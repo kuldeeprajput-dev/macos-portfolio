@@ -30,7 +30,6 @@ const Home = () => {
   const [contextMenu, setContextMenu] = useState(null);
   const [customFolders, setCustomFolders] = useState([]);
   const [deletedFolderIds, setDeletedFolderIds] = useState([]);
-  const [useStacks, setUseStacks] = useState(false);
   const [wallpaperIndex, setWallpaperIndex] = useState(0);
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [renamedProjects, setRenamedProjects] = useState({});
@@ -220,35 +219,10 @@ const Home = () => {
     openWindow("settings");
   };
 
-  const handleEditWidgets = () => {
-    const widgets = document.querySelectorAll(".widget-card-frameless");
-    if (widgets.length) {
-      gsap.fromTo(
-        widgets,
-        { scale: 0.96, opacity: 0.8 },
-        { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.7)", stagger: 0.1 },
-      );
-    }
-  };
-
-  const handleToggleStacks = () => {
-    const nextStacks = !useStacks;
-    setUseStacks(nextStacks);
-    if (nextStacks) {
-      gsap.to(".folder", {
-        scale: 0.95,
-        duration: 0.3,
-        stagger: 0.05,
-        ease: "power2.out",
-      });
-    } else {
-      gsap.to(".folder", {
-        scale: 1,
-        duration: 0.3,
-        stagger: 0.05,
-        ease: "power2.out",
-      });
-    }
+  const handleOpenProjects = () => {
+    if (!locations.work) return;
+    setActiveLocation(locations.work);
+    openWindow("finder");
   };
 
   const handleCleanUp = () => {
@@ -261,17 +235,8 @@ const Home = () => {
     });
   };
 
-  const handleSortBy = () => {
-    handleCleanUp();
-  };
-
-  const handleOpenTerminal = () => {
-    openWindow("terminal");
-  };
-
-  const handleShowViewOptions = () => {
-    openWindow("settings");
-  };
+  const handleOpenTerminal = () => openWindow("terminal");
+  const handleOpenSettings = () => openWindow("settings");
 
   const handleDeleteFolder = (target) => {
     if (!target) return;
@@ -383,13 +348,13 @@ const Home = () => {
         onNewFolder={handleNewFolder}
         onGetInfo={handleGetInfo}
         onChangeWallpaper={handleChangeWallpaper}
-        onEditWidgets={handleEditWidgets}
-        useStacks={useStacks}
-        onToggleStacks={handleToggleStacks}
+        onOpenProjects={handleOpenProjects}
+        onOpenProject={handleOpenProjectFinder}
+        projects={visibleProjects}
+        onOpenApp={handleOpenApp}
         onCleanUp={handleCleanUp}
-        onSortBy={handleSortBy}
         onOpenTerminal={handleOpenTerminal}
-        onShowViewOptions={handleShowViewOptions}
+        onOpenSettings={handleOpenSettings}
         onOpenFolder={handleOpenProjectFinder}
         onRenameFolder={handleRenameFolder}
         onDeleteFolder={handleDeleteFolder}
