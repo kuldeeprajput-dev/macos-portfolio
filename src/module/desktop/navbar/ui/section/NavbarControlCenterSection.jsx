@@ -1,10 +1,11 @@
-import { navIcons, GITHUB_USERNAME, GITHUB_PROFILE } from "@constants";
+import { navIcons, GITHUB_USERNAME, GITHUB_PROFILE, locations } from "@constants";
 import NavbarBatteryMenu from "../components/NavbarBatteryMenu";
 import NavbarDateTime from "../components/NavbarDateTime";
 import NavbarControlCenter from "../components/NavbarControlCenter";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import useWindowsStore from "@store/window";
+import useLocationStore from "@store/location";
 import { User, Cloud, ShoppingBag, Users, Lock, Settings } from "lucide-react";
 
 const CalendarIcon = ({ sizeClass = "w-[26px] h-[26px] rounded-[5px]" }) => {
@@ -38,6 +39,7 @@ const NavbarControlCenterSection = ({
   setIsAsleep,
 }) => {
   const { updateSystemSetting } = useWindowsStore();
+  const setActiveLocation = useLocationStore((state) => state.setActiveLocation);
   const [mounted, setMounted] = useState(false);
 
   const [profile, setProfile] = useState({
@@ -299,6 +301,27 @@ const NavbarControlCenterSection = ({
       icon: "📝",
       desc: "Quick Notes Manager",
     },
+    {
+      name: "FaceTime",
+      key: "call",
+      image: "call.webp",
+      icon: "📹",
+      desc: "Video and audio calls",
+    },
+    {
+      name: "Messages",
+      key: "messages",
+      image: "message.webp",
+      icon: "💬",
+      desc: "Text messages and conversations",
+    },
+    {
+      name: "Trash",
+      key: "trash",
+      image: "/system/icons/dock/trash.webp",
+      icon: "🗑️",
+      desc: "Deleted files and folders",
+    },
   ];
 
   const filteredApps = spotlightQuery.trim()
@@ -311,6 +334,11 @@ const NavbarControlCenterSection = ({
 
   const handleLaunchApp = (appKey, data = null) => {
     setActiveMenu(null);
+    if (appKey === "trash") {
+      setActiveLocation(locations.trash);
+      openWindow("finder");
+      return;
+    }
     openWindow(appKey, data);
   };
 
