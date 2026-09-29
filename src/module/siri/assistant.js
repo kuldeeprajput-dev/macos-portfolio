@@ -3,6 +3,8 @@ import {
   locations,
   projects,
   socials,
+  techStack,
+  EMAIL,
   PROJECT_1_URL,
   PROJECT_2_URL,
   PROJECT_3_URL,
@@ -457,24 +459,26 @@ const handleProjectCommand = (query, actions) => {
 const handleLocationCommand = (query, actions) => {
   if (hasAny(query, ["about portfolio", "portfolio info", "about this portfolio"])) {
     return makeResult(
-      "This is a simulated macOS desktop environment built with React and Next.js. It features interactive windows, widgets, a terminal, dynamic apps, and Siri voice integration to showcase my developer portfolio.",
+      "This is Kuldeep Rajput's interactive macOS-style portfolio, built with React and Next.js. Visitors can explore his projects, apps, and developer profile.",
       { listenAfter: true },
     );
   }
 
-  // Queries asking about the user ("me")
+  if (hasAny(query, ["who am i", "tell me about myself"])) {
+    return makeResult(
+      "I can't identify visitors, but I can tell you about Kuldeep Rajput and his work.",
+      { listenAfter: true },
+    );
+  }
+
   if (
-    hasAny(query, [
-      "tell me about me",
-      "tell about me",
-      "tell aboue me",
-      "about me",
-      "say about me",
-      "who am i",
-    ]) &&
+    hasAny(query, ["tell me about me", "tell about me", "about me", "say about me"]) &&
     !hasAny(query, OPEN_INTENTS)
   ) {
-    return makeResult("I am designed only responsive about Kuldeep Rajput.", { listenAfter: true });
+    return makeResult(
+      `On this portfolio, About Me introduces ${OWNER_NAME}. He builds interactive web experiences with JavaScript, React, and Next.js.`,
+      { listenAfter: true },
+    );
   }
 
   // Informational queries about Kuldeep
@@ -594,7 +598,7 @@ const handleUtilityQuestion = (query) => {
 
   if (hasAny(query, ["who are you", "what are you"])) {
     return makeResult(
-      `I am Siri inside ${OWNER_NAME}'s macOS Portfolio. I can navigate the portfolio, open apps, and answer project questions.`,
+      `I'm ${OWNER_NAME}'s portfolio assistant. I can show visitors his projects, open apps, and answer questions about his work.`,
       { listenAfter: true },
     );
   }
@@ -658,19 +662,28 @@ export const executeSiriCommand = (text, actions = {}) => {
   );
 };
 
-export const getSiriSystemPrompt = () => {
-  const projectDetails = getProjectRecords()
-    .map((project) => `- ${project.title}: ${project.description}`)
-    .join("\n");
-  const appNames = getAppTargets()
-    .map((app) => app.name)
-    .filter((name, index, list) => list.indexOf(name) === index)
-    .join(", ");
+export const getSiriSystemPrompt = (query = "") => {
+  const question = normalizeText(query);
+  const isPortfolioQuestion = /project|portfolio|work|build|create|kuldeep|developer/.test(
+    question,
+  );
+  const projects = isPortfolioQuestion
+    ? getProjectRecords()
+    : getProjectRecords().filter((project) =>
+        project.aliases.some((alias) => containsTerm(question, alias)),
+      );
+  const projectDetails = projects
+    .map(
+      (project) =>
+        `${project.title}: ${project.description.split(/(?<=[.!?])\s+/)[0].slice(0, 120)}`,
+    )
+    .join("; ");
+  const skillDetails = /skill|stack|technology|technologies|expertise/.test(question)
+    ? techStack.map((group) => `${group.category}: ${group.items.join(", ")}`).join("; ")
+    : "";
+  const contactDetails = /contact|email|reach|hire|collaborat/.test(question)
+    ? ` Visitors can contact Kuldeep at ${EMAIL}.`
+    : "";
 
-  return `You are Siri inside ${OWNER_NAME}'s macOS and iOS portfolio simulator. Respond strictly in English, keep answers conversational and concise, and stay under three sentences unless the user asks for detail.
-
-Portfolio context:
-${projectDetails}
-
-Available local apps and actions include: ${appNames}. The UI can open and close apps, open project folders, launch live project links, open GitHub/LinkedIn/Twitter, control music playback, adjust Wi-Fi/Bluetooth/dark mode/focus/night light/brightness/volume, and answer portfolio questions. If the user asks for an action that was not already handled, explain what you can do in this simulator instead of pretending to access the real operating system.`;
+  return `You are ${OWNER_NAME}'s portfolio assistant for site visitors. You are not Kuldeep, and the visitor is not assumed to be Kuldeep. Speak about his work in third person. Answer visitors naturally in English, usually in one or two short sentences. For claims about Kuldeep, use only the portfolio facts provided here; say when a detail is unknown. You may answer general questions too. Never claim to control the visitor's real device or to have completed an action. Local app commands are handled separately. Kuldeep builds web apps with JavaScript, React, and Next.js.${projectDetails ? ` His projects: ${projectDetails}.` : ""}${skillDetails ? ` His skills: ${skillDetails}.` : ""}${contactDetails}`;
 };

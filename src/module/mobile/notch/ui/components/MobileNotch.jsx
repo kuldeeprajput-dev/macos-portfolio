@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { executeSiriCommand, getSiriSystemPrompt } from "@module/siri/assistant";
+import { executeSiriCommand } from "@module/siri/assistant";
+import {
+  getRecordingFilename,
+  isGroqVoiceEnabled,
+  playGroqSpeech,
+  readSiriApiError,
+  readSiriReply,
+} from "@module/siri/groq-client";
 import useLocationStore from "@store/location";
 import useWindowsStore from "@store/window";
 import { Play, Pause, SkipForward, SkipBack, Mic, Send, X } from "lucide-react";
@@ -44,6 +51,8 @@ const MobileNotch = () => {
   const synthRef = useRef(typeof window !== "undefined" ? window.speechSynthesis : null);
   const utteranceRef = useRef(null);
   const audioPlaybackRef = useRef(typeof window !== "undefined" ? new Audio() : null);
+  const audioUrlRef = useRef(null);
+  const requestRef = useRef(null);
   const messagesEndRef = useRef(null);
 
   const isSiriOpenRef = useRef(isSiriOpen);
@@ -106,6 +115,10 @@ const MobileNotch = () => {
         console.error("Error stopping audio:", e);
       }
     }
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
   };
 
   const stopRecording = () => {
@@ -137,6 +150,7 @@ const MobileNotch = () => {
 
   const startRecording = async () => {
     try {
+      requestRef.current?.abort();
       stopAudio();
       if (synthRef.current) synthRef.current.cancel();
       setIsSpeaking(false);
@@ -174,15 +188,19 @@ const MobileNotch = () => {
         }
       };
 
+      let heardSpeech = false;
+      let voicedFrames = 0;
       mediaRecorder.onstop = async () => {
         if (!isSiriOpenRef.current) return;
         const audioBlob = new Blob(audioChunksRef.current, {
-          type: recorderMimeType || "audio/webm",
+          type: mediaRecorder.mimeType || recorderMimeType || "audio/webm",
         });
-        if (audioBlob.size > 450) {
+        if (heardSpeech && audioBlob.size > 450) {
           transcribeAudio(audioBlob);
         } else {
           setIsListening(false);
+          setUserQuestion("");
+          setSiriResponse("I didn't hear anything. Please try again.");
           setSiriStatus("IDLE");
         }
       };
@@ -199,7 +217,6 @@ const MobileNotch = () => {
       const dataArray = new Uint8Array(bufferLength);
 
       const listenStartedAt = new Date().getTime();
-      let heardSpeech = false;
       let lastVoiceTime = listenStartedAt;
       setIsListening(true);
       setSiriStatus("LISTENING");
@@ -216,12 +233,15 @@ const MobileNotch = () => {
         const now = new Date().getTime();
 
         if (averageVolume > 10) {
-          heardSpeech = true;
+          voicedFrames += 1;
+          if (voicedFrames >= 4) heardSpeech = true;
           lastVoiceTime = now;
+        } else {
+          voicedFrames = 0;
         }
 
         const initialGraceElapsed = now - listenStartedAt > 5500;
-        const userStoppedSpeaking = heardSpeech && now - lastVoiceTime > 1200;
+        const userStoppedSpeaking = heardSpeech && now - lastVoiceTime > 1100;
         const maxListenReached = now - listenStartedAt > 12000;
 
         if ((initialGraceElapsed && !heardSpeech) || userStoppedSpeaking || maxListenReached) {
@@ -233,12 +253,16 @@ const MobileNotch = () => {
 
       mediaRecorder.start();
       requestAnimationFrame(checkSilence);
-    } catch {
-      console.error("Error accessing microphone");
+    } catch (error) {
+      console.error("Error accessing microphone:", error);
       setIsListening(false);
       setUserQuestion("");
       setSiriResponse(
-        "Microphone access denied. Please allow microphone permission in your browser settings.",
+        error.name === "NotAllowedError"
+          ? "Microphone access was denied. Allow microphone permission in your browser."
+          : error.name === "NotFoundError"
+            ? "No microphone was found. Connect one and try again."
+            : "Microphone is unavailable. Try a supported browser over HTTPS.",
       );
       setSiriStatus("IDLE");
     }
@@ -247,21 +271,25 @@ const MobileNotch = () => {
   // ─── Whisper transcription (same as desktop) ───
 
   const transcribeAudio = async (audioBlob) => {
+    const controller = new AbortController();
+    requestRef.current = controller;
     try {
       if (!isSiriOpenRef.current) return;
 
       setSiriStatus("TRANSCRIBING");
+      setUserQuestion("");
 
       const formData = new FormData();
-      formData.append("file", audioBlob, "recording.webm");
+      formData.append("file", audioBlob, getRecordingFilename(audioBlob.type));
 
       const response = await fetch("/api/groq/transcribe", {
         method: "POST",
         body: formData,
+        signal: controller.signal,
       });
 
       if (!response.ok) {
-        throw new Error(`Whisper API error: ${response.statusText}`);
+        throw await readSiriApiError(response);
       }
 
       const data = await response.json();
@@ -277,7 +305,9 @@ const MobileNotch = () => {
         setSiriStatus("IDLE");
       }
     } catch (err) {
+      if (controller.signal.aborted || !isSiriOpenRef.current) return;
       console.error("Transcription error:", err);
+      setSiriResponse(err.message);
       setSiriStatus("IDLE");
     }
   };
@@ -297,7 +327,12 @@ const MobileNotch = () => {
   // ─── TTS: Groq TTS with fallback to Web Speech API (same as desktop) ───
 
   const fallbackSpeakText = (text, shouldStartRecordingAfter = false) => {
-    if (!synthRef.current) return;
+    if (!synthRef.current) {
+      setIsSpeaking(false);
+      if (shouldStartRecordingAfter && isSiriOpenRef.current) startRecording();
+      else setSiriStatus("IDLE");
+      return;
+    }
     synthRef.current.cancel();
 
     setIsSpeaking(true);
@@ -351,43 +386,38 @@ const MobileNotch = () => {
   };
 
   const speakText = async (text, shouldStartRecordingAfter = false) => {
+    if (!isGroqVoiceEnabled) {
+      fallbackSpeakText(text, shouldStartRecordingAfter);
+      return;
+    }
     stopAudio();
     setIsSpeaking(true);
+    const controller = new AbortController();
+    requestRef.current = controller;
 
     try {
-      const response = await fetch("/api/groq/speech", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: text, voice: "hannah" }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Groq TTS API error: ${response.statusText}`);
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-      audioPlaybackRef.current = audio;
-
-      audio.onended = () => {
-        setIsSpeaking(false);
-        if (shouldStartRecordingAfter && isSiriOpenRef.current) {
-          startRecording();
-        } else {
-          setSiriStatus("IDLE");
-        }
-      };
-
-      audio.onerror = () => {
-        setIsSpeaking(false);
-        setSiriStatus("IDLE");
-      };
-
-      await audio.play();
+      await playGroqSpeech(
+        text,
+        controller.signal,
+        (audio, audioUrl) => {
+          audioPlaybackRef.current = audio;
+          audioUrlRef.current = audioUrl;
+        },
+        (audio) => {
+          if (audioPlaybackRef.current === audio) {
+            audioPlaybackRef.current = null;
+            audioUrlRef.current = null;
+          }
+        },
+      );
+      if (controller.signal.aborted || !isSiriOpenRef.current) return;
+      setIsSpeaking(false);
+      if (shouldStartRecordingAfter) startRecording();
+      else setSiriStatus("IDLE");
     } catch (err) {
+      if (controller.signal.aborted || !isSiriOpenRef.current) return;
       console.error("Groq TTS failed, falling back to Web Speech API:", err);
-      fallbackSpeakText(text, shouldStartRecordingAfter);
+      fallbackSpeakText(err.remainingText || text, shouldStartRecordingAfter);
     }
   };
 
@@ -408,6 +438,7 @@ const MobileNotch = () => {
       }, 300);
       return () => clearTimeout(timer);
     } else {
+      requestRef.current?.abort();
       stopRecording();
       if (synthRef.current) synthRef.current.cancel();
       setIsListening(false);
@@ -439,18 +470,21 @@ const MobileNotch = () => {
   // ─── Groq LLM chat (same as desktop) ───
 
   const handleSendToGroq = async (text) => {
-    setMessages((prev) => [...prev, { role: "user", content: text }]);
+    const history = messages.slice(-4);
+    setMessages((prev) => [...prev.slice(-4), { role: "user", content: text }]);
 
     const systemCommand = parseSystemCommands(text);
     if (systemCommand) {
       const systemResponse = systemCommand.response;
       setSiriResponse(systemResponse);
-      setMessages((prev) => [...prev, { role: "assistant", content: systemResponse }]);
+      setMessages((prev) => [...prev.slice(-4), { role: "assistant", content: systemResponse }]);
       setSiriStatus("SPEAKING");
       speakText(systemResponse, systemCommand.listenAfter);
       return;
     }
 
+    const controller = new AbortController();
+    requestRef.current = controller;
     try {
       setSiriStatus("THINKING");
 
@@ -458,34 +492,30 @@ const MobileNotch = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          max_tokens: 90,
-          temperature: 0.35,
-          messages: [
-            {
-              role: "system",
-              content: getSiriSystemPrompt(),
-            },
-            ...messages.slice(-4),
-            { role: "user", content: text },
-          ],
+          input: text,
+          history,
         }),
+        signal: controller.signal,
       });
 
-      const data = await response.json();
-      const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't process that.";
+      if (!response.ok) throw await readSiriApiError(response);
+      const reply =
+        (await readSiriReply(response, (partial) => {
+          if (isSiriOpenRef.current) setSiriResponse(partial);
+        })) || "Sorry, I couldn't process that.";
 
       if (!isSiriOpenRef.current) return;
 
       setSiriResponse(reply);
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      setMessages((prev) => [...prev.slice(-4), { role: "assistant", content: reply }]);
       setSiriStatus("SPEAKING");
       speakText(reply, true); // Auto-listen after speaking
     } catch (err) {
+      if (controller.signal.aborted || !isSiriOpenRef.current) return;
       console.error(err);
-      const errMsg = "Sorry, I am having trouble connecting.";
+      const errMsg = err.message || "Sorry, I am having trouble connecting.";
       setSiriResponse(errMsg);
-      setSiriStatus("SPEAKING");
-      speakText(errMsg, false);
+      setSiriStatus("IDLE");
     }
   };
 

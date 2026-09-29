@@ -1,18 +1,33 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  if (process.env.NEXT_PUBLIC_GROQ_TTS_ENABLED !== "true") {
+    return NextResponse.json(
+      { error: "Groq voice is disabled until the Orpheus terms are accepted." },
+      { status: 503 },
+    );
+  }
+
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ error: "Siri is not configured yet." }, { status: 503 });
+  }
+
   try {
-    const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ error: "Groq API Key is missing." }, { status: 500 });
+    const body = await req.json();
+    const input = typeof body.input === "string" ? body.input.trim() : "";
+    if (!input || input.length > 200) {
+      return NextResponse.json(
+        { error: "Speech text must be 1 to 200 characters." },
+        { status: 400 },
+      );
     }
 
-    const body = await req.json();
     const payload = {
-      model: body.model || "canopylabs/orpheus-v1-english",
-      input: body.input,
-      voice: body.voice || "hannah",
-      response_format: body.response_format || "wav",
+      model: "canopylabs/orpheus-v1-english",
+      input,
+      voice: "hannah",
+      response_format: "wav",
     };
 
     const response = await fetch("https://api.groq.com/openai/v1/audio/speech", {
@@ -22,26 +37,26 @@ export async function POST(req) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error("Groq TTS API error details:", errorData);
       return NextResponse.json(
-        { error: `Groq TTS API Error: ${errorData}` },
+        {
+          error:
+            response.status === 429
+              ? "Siri voice has reached the Groq free plan limit."
+              : "Siri voice is temporarily unavailable.",
+        },
         { status: response.status },
       );
     }
 
-    // Return the raw audio blob/stream
-    const audioBlob = await response.blob();
-    return new NextResponse(audioBlob, {
-      headers: {
-        "Content-Type": "audio/wav",
-      },
+    return new NextResponse(response.body, {
+      headers: { "Content-Type": "audio/wav", "Cache-Control": "no-store" },
     });
   } catch (error) {
-    console.error("TTS API error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    console.error("Siri speech request failed:", error);
+    return NextResponse.json({ error: "Siri voice could not connect to Groq." }, { status: 502 });
   }
 }

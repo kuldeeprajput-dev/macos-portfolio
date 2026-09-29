@@ -354,6 +354,8 @@
     overflow-y: auto;
     max-height: 80px;
     padding-right: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   .notch-siri-user-question {
@@ -372,11 +374,7 @@
   }
 
   .notch-siri-text::-webkit-scrollbar {
-    width: 4px;
-  }
-  .notch-siri-text::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
+    display: none;
   }
 
   .notch-siri-footer {
