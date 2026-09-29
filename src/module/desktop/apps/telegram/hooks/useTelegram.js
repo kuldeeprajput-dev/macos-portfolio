@@ -34,8 +34,8 @@ const useTelegram = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [showProfileDrawer, setShowProfileDrawer] = useState(false);
   const [nightMode, setNightMode] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-  const [drawerSection, setDrawerSection] = useState("settings");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerSection, setDrawerSection] = useState("menu");
 
   const [userProfile, setUserProfile] = useState({
     name: "Kuldeep Rajput",

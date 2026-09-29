@@ -101,49 +101,49 @@ const TelegramSidebarDrawer = ({
                 onClick={() => setDrawerSection("profile")}
                 className="w-full p-2.5 rounded-lg flex items-center gap-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850"
               >
-                <User className="w-4.5 h-4.5 text-gray-400" />
+                <User className="w-4.5 h-4.5 text-[#2AABEE]" />
                 <span>My Profile</span>
               </button>
               <button
                 onClick={() => setDrawerSection("new_group")}
                 className="w-full p-2.5 rounded-lg flex items-center gap-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850"
               >
-                <Users className="w-4.5 h-4.5 text-gray-400" />
+                <Users className="w-4.5 h-4.5 text-[#2AABEE]" />
                 <span>New Group</span>
               </button>
               <button
                 onClick={() => setDrawerSection("new_channel")}
                 className="w-full p-2.5 rounded-lg flex items-center gap-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850"
               >
-                <Megaphone className="w-4.5 h-4.5 text-gray-400" />
+                <Megaphone className="w-4.5 h-4.5 text-[#2AABEE]" />
                 <span>New Channel</span>
               </button>
               <button
                 onClick={() => setDrawerSection("contacts")}
                 className="w-full p-2.5 rounded-lg flex items-center gap-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850"
               >
-                <User className="w-4.5 h-4.5 text-gray-400" />
+                <User className="w-4.5 h-4.5 text-[#2AABEE]" />
                 <span>Contacts</span>
               </button>
               <button
                 onClick={() => setDrawerSection("calls")}
                 className="w-full p-2.5 rounded-lg flex items-center gap-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850"
               >
-                <Phone className="w-4.5 h-4.5 text-gray-400" />
+                <Phone className="w-4.5 h-4.5 text-[#2AABEE]" />
                 <span>Calls</span>
               </button>
               <button
                 onClick={openSavedMessages}
                 className="w-full p-2.5 rounded-lg flex items-center gap-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850"
               >
-                <Bookmark className="w-4.5 h-4.5 text-gray-400" />
+                <Bookmark className="w-4.5 h-4.5 text-[#2AABEE]" />
                 <span>Saved Messages</span>
               </button>
               <button
                 onClick={() => setDrawerSection("settings")}
                 className="w-full p-2.5 rounded-lg flex items-center gap-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850"
               >
-                <SettingsIcon className="w-4.5 h-4.5 text-gray-400" />
+                <SettingsIcon className="w-4.5 h-4.5 text-[#2AABEE]" />
                 <span>Settings</span>
               </button>
 
@@ -153,7 +153,7 @@ const TelegramSidebarDrawer = ({
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <Moon className="w-4.5 h-4.5 text-gray-400" />
+                  <Moon className="w-4.5 h-4.5 text-[#2AABEE]" />
                   <span>Night Mode</span>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -341,21 +341,21 @@ const TelegramSidebarDrawer = ({
               {
                 name: "Kuldeep Rajput",
                 role: "@kuldeeprajput_dev",
-                color: "bg-blue-500",
+                color: "bg-[#2AABEE]",
                 initial: "K",
                 id: "kuldeep",
               },
               {
                 name: "Amit Kumar",
                 role: "@amit_kumar",
-                color: "bg-teal-500",
+                color: "bg-[#2AABEE]",
                 initial: "A",
                 id: "react_group",
               },
               {
                 name: "Sneha Reddy",
                 role: "@sneha_dev",
-                color: "bg-emerald-500",
+                color: "bg-[#2AABEE]",
                 initial: "S",
                 id: "react_group",
               },
@@ -366,7 +366,9 @@ const TelegramSidebarDrawer = ({
                   setActiveChatId(cont.id);
                   setIsDrawerOpen(false);
                 }}
-                className="p-2 flex items-center gap-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-850 cursor-pointer"
+                className={`p-2 flex items-center gap-3 rounded-lg transition-colors cursor-pointer ${
+                  nightMode ? "hover:bg-zinc-800" : "hover:bg-[#e8f5fd]"
+                }`}
               >
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-white ${cont.color}`}
@@ -374,7 +376,9 @@ const TelegramSidebarDrawer = ({
                   {cont.initial}
                 </div>
                 <div>
-                  <h5 className="font-semibold text-gray-900 dark:text-white">{cont.name}</h5>
+                  <h5 className={`font-semibold ${nightMode ? "text-white" : "text-gray-900"}`}>
+                    {cont.name}
+                  </h5>
                   <span className="text-[10px] text-gray-400 block">{cont.role}</span>
                 </div>
               </div>

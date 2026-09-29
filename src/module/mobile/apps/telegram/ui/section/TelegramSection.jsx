@@ -184,7 +184,7 @@ const TelegramSection = ({
       id: "kuldeep",
       initials: "K",
       status: "online",
-      color: "bg-gradient-to-tr from-blue-500 to-indigo-600",
+      color: "bg-[#2AABEE]",
       avatar: "/contacts/avatars/kuldeep.webp",
     },
     {
@@ -192,14 +192,14 @@ const TelegramSection = ({
       id: "saved",
       initials: "🔖",
       status: "cloud",
-      color: "bg-gradient-to-tr from-blue-600 to-sky-700",
+      color: "bg-[#2AABEE]",
     },
     {
       name: "Telegram Assistant Bot",
       id: "bot",
       initials: "TB",
       status: "bot",
-      color: "bg-gradient-to-tr from-cyan-400 to-sky-600",
+      color: "bg-[#2AABEE]",
       avatar: "/telegram/bot.webp",
     },
     {
@@ -207,14 +207,14 @@ const TelegramSection = ({
       id: "amit",
       initials: "AS",
       status: "offline",
-      color: "bg-gradient-to-tr from-emerald-450 to-teal-500",
+      color: "bg-[#2AABEE]",
     },
     {
       name: "Sneha Patel",
       id: "sneha",
       initials: "SP",
       status: "online",
-      color: "bg-gradient-to-tr from-pink-500 to-rose-500",
+      color: "bg-[#2AABEE]",
     },
   ];
 
