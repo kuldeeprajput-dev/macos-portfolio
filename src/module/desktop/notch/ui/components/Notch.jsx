@@ -22,6 +22,8 @@ import {
   Cloud,
   Settings,
   Camera,
+  Maximize2,
+  Minimize2,
   Trash2,
   FileText,
 } from "lucide-react";
@@ -78,7 +80,9 @@ const Notch = () => {
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [cameraError, setCameraError] = useState("");
   const videoRef = useRef(null);
+  const cameraOverlayRef = useRef(null);
   const [cameraStream, setCameraStream] = useState(null);
+  const [isCameraFullscreen, setIsCameraFullscreen] = useState(false);
   const cameraStreamRef = useRef(null);
   const cameraRequestIdRef = useRef(0);
   const isCameraOpenRef = useRef(false);
@@ -618,14 +622,43 @@ const Notch = () => {
     }
   }, [isCameraOpen, cameraStream]);
 
+  useEffect(() => {
+    if (!isCameraOpen) return;
+    const handleFullscreenChange = () => {
+      setIsCameraFullscreen(document.fullscreenElement === cameraOverlayRef.current);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, [isCameraOpen]);
+
+  const toggleCameraFullscreen = async (e) => {
+    e.stopPropagation();
+    const overlay = cameraOverlayRef.current;
+    if (!overlay?.requestFullscreen) return;
+
+    try {
+      if (document.fullscreenElement === overlay) {
+        await document.exitFullscreen();
+      } else {
+        await overlay.requestFullscreen();
+      }
+    } catch (error) {
+      console.warn("Could not toggle camera fullscreen:", error);
+    }
+  };
+
   const closeCamera = (e) => {
     if (e) e.stopPropagation();
+    if (document.fullscreenElement === cameraOverlayRef.current) {
+      document.exitFullscreen().catch(() => {});
+    }
     isCameraOpenRef.current = false;
     cameraRequestIdRef.current += 1;
     cameraStreamRef.current?.getTracks().forEach((track) => track.stop());
     cameraStreamRef.current = null;
     setCameraStream(null);
     setIsCameraOpen(false);
+    setIsCameraFullscreen(false);
     setIsDemoMode(false);
     setCameraError("");
   };
@@ -971,7 +1004,7 @@ const Notch = () => {
 
             {/* Camera Live Feed Overlay */}
             {isCameraOpen && (
-              <div className="notch-camera-live-overlay">
+              <div ref={cameraOverlayRef} className="notch-camera-live-overlay">
                 {cameraError && !isDemoMode ? (
                   <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center px-6">
                     <Camera size={24} className="text-zinc-500" />
@@ -1113,9 +1146,17 @@ const Notch = () => {
                       >
                         <div className="w-7 h-7 rounded-full bg-white group-active:scale-95 transition-all" />
                       </button>
-                      <span className="text-[11px] text-zinc-500 w-14 text-right font-medium">
-                        Capture
-                      </span>
+                      <button
+                        className="flex items-center justify-end gap-1.5 text-zinc-400 hover:text-white transition-colors"
+                        onClick={toggleCameraFullscreen}
+                        aria-label={
+                          isCameraFullscreen ? "Exit fullscreen preview" : "View camera fullscreen"
+                        }
+                        title={isCameraFullscreen ? "Exit Fullscreen" : "Fullscreen Preview"}
+                      >
+                        {isCameraFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+                        <span className="text-[11px] font-medium">Capture</span>
+                      </button>
                     </div>
                   </>
                 )}
