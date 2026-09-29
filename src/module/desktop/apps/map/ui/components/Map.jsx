@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import WindowControls from "@components/WindowControls";
 import windowWrapper from "@hoc/windowWrapper";
 import useWindowsStore from "@store/window";
-import { Compass, PanelLeft, MapPin } from "lucide-react";
+import { Compass, PanelLeft, Navigation, LocateFixed, Layers } from "lucide-react";
 import useMap from "../../hooks/useMap";
 import MapSection from "../section/MapSection";
 import MapAboutModal from "./MapAboutModal";
@@ -14,7 +14,6 @@ const Map = () => {
 
   const containerRef = useRef(null);
   const [isNarrow, setIsNarrow] = useState(false);
-  const [isVeryNarrow, setIsVeryNarrow] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ const Map = () => {
       for (const entry of entries) {
         const width = entry.contentRect.width;
         setIsNarrow(width < 680);
-        setIsVeryNarrow(width < 500);
       }
     });
     observer.observe(containerRef.current);
@@ -53,42 +51,58 @@ const Map = () => {
       >
         <div
           id="window-header"
-          className="shrink-0 bg-[#f3f3f3] border-b border-zinc-200 px-4 py-2 flex items-center justify-between text-xs text-gray-600 relative z-40 select-none cursor-default"
+          className="shrink-0 h-12 bg-[#f6f6f7] border-b border-zinc-200/80 px-4 flex items-center justify-between text-xs text-gray-700 relative z-40 select-none cursor-default"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <WindowControls target="map" />
             {isNarrow && (
               <button
+                type="button"
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
-                className="p-1 rounded hover:bg-zinc-200 transition-colors ml-1 cursor-pointer text-gray-700 flex items-center justify-center active:scale-95"
-                title="Toggle Sidebar"
+                className="ml-1 flex items-center justify-center rounded-md p-1 text-gray-700 transition-colors hover:bg-zinc-200 cursor-pointer"
+                aria-label="Toggle sidebar"
+                aria-expanded={isSidebarOpen}
               >
-                <PanelLeft className="w-4 h-4" />
+                <PanelLeft size={16} />
               </button>
             )}
-            {!isNarrow && (
-              <div className="font-semibold pl-4 flex items-center gap-1.5 select-none">
-                <Compass size={14} className="text-blue-500 shrink-0" />
-                <span>Maps</span>
-              </div>
-            )}
+            <div className="flex items-center gap-1.5 font-semibold text-[13px]">
+              <Compass size={15} className="text-[#2678ee]" strokeWidth={2} />
+              <span>Maps</span>
+            </div>
           </div>
-
-          <button
-            onClick={() => props.handleLocateMe()}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-zinc-200/60 transition-colors cursor-pointer"
-            title="Find My Location"
-          >
-            <MapPin size={14} className="text-red-500 shrink-0 fill-red-500/20" />
-            <span className="font-bold text-gray-700 text-xs">
-              {props.currentCity?.name || "Current Location"}
-            </span>
-          </button>
-
-          <div className="w-16 flex justify-end">
-            <span className="text-[10px] bg-blue-500 text-white px-2 py-0.5 rounded font-bold">
-              MAPS
-            </span>
+          <div className="flex items-center gap-1 text-[#2377eb]">
+            <button
+              type="button"
+              onClick={() => {
+                props.setActiveTab("directions");
+                setIsSidebarOpen(true);
+              }}
+              className="flex h-8 items-center gap-1.5 rounded-md px-2 hover:bg-zinc-200/70 cursor-pointer"
+              aria-label="Show directions"
+            >
+              <Navigation size={15} strokeWidth={2} />
+            </button>
+            <button
+              type="button"
+              onClick={props.handleLocateMe}
+              className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-zinc-200/70 cursor-pointer"
+              aria-label="Find my location"
+            >
+              <LocateFixed size={17} strokeWidth={2} />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                props.setMapStyle((style) => (style === "standard" ? "satellite" : "standard"))
+              }
+              className={`flex h-8 w-8 items-center justify-center rounded-md hover:bg-zinc-200/70 cursor-pointer ${props.mapStyle === "satellite" ? "bg-blue-100" : ""}`}
+              aria-label={
+                props.mapStyle === "standard" ? "Show satellite map" : "Show standard map"
+              }
+            >
+              <Layers size={17} strokeWidth={2} />
+            </button>
           </div>
         </div>
 
@@ -96,7 +110,6 @@ const Map = () => {
           <MapSection
             {...props}
             isNarrow={isNarrow}
-            isVeryNarrow={isVeryNarrow}
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
           />

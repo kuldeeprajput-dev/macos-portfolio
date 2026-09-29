@@ -3,18 +3,7 @@ import MapCanvas from "../components/MapCanvas";
 
 const MapViewSection = forwardRef(
   (
-    {
-      mapRef,
-      _markers,
-      _selectedLocation,
-      onMapClick,
-      _center,
-      _zoom,
-      mapStyle,
-      handleZoom,
-      currentCity,
-      iframeSrc,
-    },
+    { mapRef, _markers, _selectedLocation, onMapClick, _center, _zoom, currentCity, iframeSrc },
     ref,
   ) => (
     <div
@@ -22,7 +11,7 @@ const MapViewSection = forwardRef(
       className="flex-1 flex flex-col min-w-0 bg-zinc-200 relative"
       onClick={onMapClick}
     >
-      <MapCanvas currentCity={currentCity} mapStyle={mapStyle} iframeSrc={iframeSrc} />
+      <MapCanvas currentCity={currentCity} iframeSrc={iframeSrc} />
     </div>
   ),
 );

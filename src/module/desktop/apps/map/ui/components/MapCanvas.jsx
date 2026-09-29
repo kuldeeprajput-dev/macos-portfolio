@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { Compass } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import useWindowsStore from "@store/window";
 
-const MapCanvas = ({ currentCity, mapStyle, iframeSrc }) => {
+const MapCanvas = ({ currentCity, iframeSrc }) => {
   const isOpen = useWindowsStore((state) => state.windows.map?.isOpen);
 
   if (!isOpen) {
@@ -11,25 +11,26 @@ const MapCanvas = ({ currentCity, mapStyle, iframeSrc }) => {
 
   return (
     <div className="w-full h-full overflow-hidden relative bg-[#f4f3f0] flex items-center justify-center">
-      {/* Beautiful map grid background behind the iframe */}
-      <div
-        className="absolute inset-0 opacity-20 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(to right, #ccc 1px, transparent 1px), linear-gradient(to bottom, #ccc 1px, transparent 1px)`,
-          backgroundSize: "20px 20px",
-        }}
-      />
-      <div className="flex flex-col items-center gap-3 text-zinc-400 select-none">
-        <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-        <span className="text-xs font-semibold font-sans tracking-wide">Syncing Telemetry...</span>
+      <div className="flex flex-col items-center gap-3 text-zinc-500 select-none">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#2678ee] border-t-transparent" />
+        <span className="text-[12px]">Loading map...</span>
       </div>
 
       <iframe
         src={iframeSrc}
         title={`Map showing ${currentCity.name}`}
-        className="absolute inset-0 w-full h-full border-none bg-white z-0"
+        className="absolute inset-x-0 bottom-0 z-0 w-full border-none bg-white"
+        style={{ top: "-44px", height: "calc(100% + 44px)" }}
         sandbox="allow-scripts allow-same-origin allow-popups"
       />
+      <a
+        href={`https://www.google.com/maps/search/?api=1&query=${currentCity.lat},${currentCity.lon}`}
+        target="_blank"
+        rel="noreferrer"
+        className="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-lg border border-black/10 bg-white/95 px-3 py-2 text-[12px] font-medium text-[#2678ee] shadow-md backdrop-blur-md hover:bg-white"
+      >
+        Open in Maps <ExternalLink size={13} />
+      </a>
     </div>
   );
 };
