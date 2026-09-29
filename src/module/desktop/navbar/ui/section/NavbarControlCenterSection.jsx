@@ -867,7 +867,11 @@ const NavbarControlCenterSection = ({
           <NavbarBatteryMenu battery={battery} />
 
           {activeMenu === "battery" && (
-            <div className="mac-dropdown left-auto right-0 w-[240px] text-white" role="menu">
+            <div
+              className="mac-dropdown left-auto right-0 w-[240px] text-white"
+              role="menu"
+              onClick={(event) => event.stopPropagation()}
+            >
               <div className="apple-menu-section px-3 py-1">
                 <span className="font-semibold text-white/90">Battery</span>
               </div>

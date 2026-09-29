@@ -287,7 +287,10 @@ const NavbarAppMenu = ({ activeAppName, openWindow, isAppleMenuOpen, setIsAppleM
                 className="apple-menu-item"
                 disabled={item.disabled}
                 key={item.label}
-                onClick={() => handleAction(item.onClick)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleAction(item.onClick);
+                }}
                 role="menuitem"
               >
                 <span>{item.label}</span>
