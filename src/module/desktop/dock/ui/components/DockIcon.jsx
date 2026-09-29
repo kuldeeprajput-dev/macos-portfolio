@@ -17,7 +17,7 @@ const CalendarIcon = () => {
       <div className="w-full bg-[#ff3b30] text-white text-[8px] sm:text-[9px] font-extrabold py-0.5 text-center leading-none tracking-wider uppercase">
         {days[today.getDay()]}
       </div>
-      <div className="flex-1 flex items-center justify-center text-[#1d1d1f] font-bold text-lg sm:text-2xl leading-none font-sans -mt-0.5">
+      <div className="flex-1 flex items-center justify-center text-[#1d1d1f] font-bold text-[17px] sm:text-[22px] leading-none font-sans -mt-0.5">
         {today.getDate()}
       </div>
     </div>
