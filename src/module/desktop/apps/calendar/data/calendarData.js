@@ -5,7 +5,7 @@ const CATEGORIES = [
     color: "bg-blue-500",
     border: "border-blue-500",
     text: "text-blue-600",
-    dot: "🔴",
+    swatchColor: "#ff453a",
   },
   {
     id: "work",
@@ -13,7 +13,7 @@ const CATEGORIES = [
     color: "bg-green-500",
     border: "border-green-500",
     text: "text-green-600",
-    dot: "🟢",
+    swatchColor: "#34c759",
   },
   {
     id: "birthdays",
@@ -21,7 +21,7 @@ const CATEGORIES = [
     color: "bg-amber-500",
     border: "border-amber-500",
     text: "text-amber-600",
-    dot: "🟡",
+    swatchColor: "#ffb800",
   },
   {
     id: "holidays",
@@ -29,7 +29,7 @@ const CATEGORIES = [
     color: "bg-purple-500",
     border: "border-purple-500",
     text: "text-purple-600",
-    dot: "🟣",
+    swatchColor: "#bf5af2",
   },
 ];
 

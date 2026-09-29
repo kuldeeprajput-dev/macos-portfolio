@@ -1,4 +1,4 @@
-import { Calendar as CalendarIcon, X, Clock, Tag, AlignLeft } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Tag, AlignLeft } from "lucide-react";
 import { CATEGORIES } from "../../data/calendarData";
 
 const CalendarEventModal = ({
@@ -30,18 +30,11 @@ const CalendarEventModal = ({
         onSubmit={handleAddEvent}
         className="w-full max-w-[380px] max-h-[92%] bg-white rounded-2xl shadow-2xl border border-black/10 flex flex-col overflow-hidden animate-fade-in"
       >
-        <div className="bg-gray-50 border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <div className="bg-gray-50 border-b border-gray-200 px-4 py-3 flex items-center">
           <h3 className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
             <CalendarIcon className="w-4 h-4 text-blue-500" />
             New Event
           </h3>
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(false)}
-            className="text-gray-400 hover:text-gray-600 rounded p-0.5 cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
 
         <div
