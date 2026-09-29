@@ -1,9 +1,8 @@
-import { Film, FolderHeart, Play, Search, ShoppingBag, Tv } from "lucide-react";
+import { Film, FolderHeart, Play, Search, ShoppingBag } from "lucide-react";
 import { GITHUB_USERNAME } from "@constants";
 
 const appleTvItems = [
-  { id: "watchNow", label: "Watch Now", icon: Play, color: "text-orange-500 fill-orange-500" },
-  { id: "tvPlus", label: "Apple TV+", icon: Tv, color: "text-gray-800" },
+  { id: "watchNow", label: "Apple TV+", icon: Play, color: "text-orange-500 fill-orange-500" },
   { id: "store", label: "Store", icon: ShoppingBag, color: "text-blue-500" },
 ];
 

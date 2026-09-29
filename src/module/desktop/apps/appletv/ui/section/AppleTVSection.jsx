@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SidebarNavigation from "../components/SidebarNavigation";
 import FavoritesSection from "./FavoritesSection";
 import LibrarySection from "./LibrarySection";
 import StoreSection from "./StoreSection";
-import TVPlusSection from "./TVPlusSection";
 import WatchNowSection from "./WatchNowSection";
 import MovieCard from "../components/MovieCard";
 import StoreMovieCard from "../components/StoreMovieCard";
@@ -30,67 +29,127 @@ const AppleTVSection = ({
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const searchRequestLock = useRef(false);
+  const searchAbortController = useRef(null);
+  const trendingRequestLock = useRef(false);
+  const mainRef = useRef(null);
+  const loadMoreRef = useRef(null);
 
   const [watchNowMovies, setWatchNowMovies] = useState([]);
   const [popularShows, setPopularShows] = useState([]);
+  const [relatedShows, setRelatedShows] = useState([]);
   const [watchNowPage, setWatchNowPage] = useState(1);
+  const [isTrendingLoading, setIsTrendingLoading] = useState(false);
+  const [hasMoreTrending, setHasMoreTrending] = useState(true);
 
-  // Fetch Watch Now trending movies & popular shows
+  // Fetch the featured show's recommendations and popular shows once.
   useEffect(() => {
-    const fetchWatchNowData = async () => {
-      try {
-        const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-        if (!apiKey) return;
-
-        // Trending Movies
-        const resMovies = await fetch(
-          `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${watchNowPage}`,
-        );
-        const dataMovies = await resMovies.json();
-        if (dataMovies.results) {
-          const formatted = dataMovies.results.map((item) => ({
-            id: `trending_${item.id}`,
-            title: item.title,
-            category: `${item.vote_average.toFixed(1)} ★ • Movie`,
-            duration: "Movie",
-            tmdbId: item.id.toString(),
-            type: "movie",
-            poster: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
-          }));
-
-          setWatchNowMovies((prev) => {
-            const existingIds = new Set(prev.map((p) => p.tmdbId));
-            const uniques = formatted.filter((f) => !existingIds.has(f.tmdbId));
-            return [...prev, ...uniques];
-          });
-        }
-
-        // Popular TV Shows
-        const resShows = await fetch(
-          `https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}&page=1`,
-        );
-        const dataShows = await resShows.json();
-        if (dataShows.results) {
-          const formattedShows = dataShows.results
-            .filter((item) => item.id !== 87096)
-            .map((item) => ({
-              id: `show_${item.id}`,
-              title: item.name,
-              category: `${item.vote_average.toFixed(1)} ★ • TV Show`,
-              duration: "TV Show",
-              tmdbId: item.id.toString(),
-              type: "tv",
-              poster: item.poster_path
-                ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-                : null,
-            }));
-          setPopularShows(formattedShows);
-        }
-      } catch (err) {
-        console.error("Error fetching watch now data in AppleTVSection:", err);
-      }
+    const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+    if (!apiKey) return;
+    const controller = new AbortController();
+    const fetchPageOne = async (path) => {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/${path}?api_key=${apiKey}&page=1`,
+        {
+          signal: controller.signal,
+        },
+      );
+      if (!response.ok) throw new Error(`TMDB request failed: ${response.status}`);
+      return response.json();
     };
-    fetchWatchNowData();
+    const formatShows = (items, prefix) =>
+      items.map((item) => ({
+        id: `${prefix}_${item.id}`,
+        title: item.name,
+        category: `${Number(item.vote_average || 0).toFixed(1)} ★ • TV Show`,
+        duration: "TV Show",
+        tmdbId: String(item.id),
+        type: "tv",
+        posterUrl: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+      }));
+
+    Promise.allSettled([
+      fetchPageOne("tv/popular"),
+      fetchPageOne(`tv/${FEATURED_SHOW.tmdbId}/recommendations`),
+    ]).then(([popularResult, relatedResult]) => {
+      if (controller.signal.aborted) return;
+      const popular = popularResult.status === "fulfilled" ? popularResult.value.results || [] : [];
+      const related = relatedResult.status === "fulfilled" ? relatedResult.value.results || [] : [];
+      setPopularShows(
+        formatShows(
+          popular.filter((item) => item.id !== 87096),
+          "show",
+        ),
+      );
+
+      const alreadyShown = new Set([
+        FEATURED_SHOW.tmdbId,
+        ...MOVIES.map((movie) => movie.tmdbId),
+        ...popular.map((item) => String(item.id)),
+      ]);
+      setRelatedShows(
+        formatShows(
+          related.filter((item) => !alreadyShown.has(String(item.id))),
+          "related",
+        ),
+      );
+    });
+
+    return () => controller.abort();
+  }, []);
+
+  // Trending movies load one page at a time without reloading the show shelves.
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+    if (!apiKey) {
+      setHasMoreTrending(false);
+      return;
+    }
+    const controller = new AbortController();
+    trendingRequestLock.current = true;
+    setIsTrendingLoading(true);
+
+    fetch(
+      `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${watchNowPage}`,
+      {
+        signal: controller.signal,
+      },
+    )
+      .then((response) => {
+        if (!response.ok) throw new Error(`TMDB request failed: ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        if (controller.signal.aborted) return;
+        const formatted = (data.results || []).map((item) => ({
+          id: `trending_${item.id}`,
+          title: item.title,
+          category: `${Number(item.vote_average || 0).toFixed(1)} ★ • Movie`,
+          duration: "Movie",
+          tmdbId: String(item.id),
+          type: "movie",
+          posterUrl: item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : null,
+        }));
+        setWatchNowMovies((previous) => {
+          const existingIds = new Set(previous.map((movie) => movie.tmdbId));
+          return [...previous, ...formatted.filter((movie) => !existingIds.has(movie.tmdbId))];
+        });
+        setHasMoreTrending(watchNowPage < Math.min(data.total_pages || 500, 500));
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted) {
+          console.error("Error fetching trending movies from TMDB:", error);
+          setHasMoreTrending(false);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          trendingRequestLock.current = false;
+          setIsTrendingLoading(false);
+        }
+      });
+
+    return () => controller.abort();
   }, [watchNowPage]);
 
   // Reset page and results when search query changes
@@ -98,6 +157,9 @@ const AppleTVSection = ({
     setSearchResults([]);
     setPage(1);
     setHasMore(true);
+    setIsLoading(false);
+    searchRequestLock.current = false;
+    searchAbortController.current?.abort();
   }, [searchQuery]);
 
   useEffect(() => {
@@ -107,63 +169,95 @@ const AppleTVSection = ({
       return;
     }
 
+    const controller = new AbortController();
+    searchAbortController.current = controller;
     const fetchMovies = async () => {
+      searchRequestLock.current = true;
       setIsLoading(true);
       try {
         const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-        if (!apiKey) return;
+        if (!apiKey) {
+          setHasMore(false);
+          return;
+        }
         const res = await fetch(
           `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(query)}&page=${page}`,
+          { signal: controller.signal },
         );
+        if (!res.ok) throw new Error(`TMDB search failed: ${res.status}`);
         const data = await res.json();
-        if (data.results) {
-          const filtered = data.results.filter(
-            (item) => item.media_type === "movie" || item.media_type === "tv",
+        if (controller.signal.aborted) return;
+        const filtered = (data.results || []).filter(
+          (item) => item.media_type === "movie" || item.media_type === "tv",
+        );
+        setSearchResults((previous) => {
+          const existingIds = new Set(previous.map((item) => `${item.media_type}:${item.id}`));
+          const uniqueResults = filtered.filter(
+            (item) => !existingIds.has(`${item.media_type}:${item.id}`),
           );
-
-          if (page === 1) {
-            setSearchResults(filtered);
-          } else {
-            setSearchResults((prev) => {
-              const existingIds = new Set(prev.map((p) => p.id));
-              const uniques = filtered.filter((f) => !existingIds.has(f.id));
-              return [...prev, ...uniques];
-            });
-          }
-
-          if (data.page >= data.total_pages) {
-            setHasMore(false);
-          }
-        } else {
+          return page === 1 ? uniqueResults : [...previous, ...uniqueResults];
+        });
+        setHasMore(data.page < Math.min(data.total_pages || data.page, 500));
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          console.error("Error fetching movies from TMDB:", err);
           setHasMore(false);
         }
-      } catch (err) {
-        console.error("Error fetching movies from TMDB:", err);
       } finally {
-        setIsLoading(false);
+        if (!controller.signal.aborted) {
+          searchRequestLock.current = false;
+          setIsLoading(false);
+        }
       }
     };
 
     if (page === 1) {
-      const delayDebounceFn = setTimeout(fetchMovies, 500);
-      return () => clearTimeout(delayDebounceFn);
+      const debounceTimer = setTimeout(fetchMovies, 350);
+      return () => {
+        clearTimeout(debounceTimer);
+        controller.abort();
+      };
     } else {
       fetchMovies();
+      return () => controller.abort();
     }
   }, [searchQuery, page]);
 
-  const handleScroll = (e) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.target;
-    if (scrollHeight - scrollTop - clientHeight < 150) {
-      if (searchQuery.trim()) {
-        if (!isLoading && hasMore) {
-          setPage((prev) => prev + 1);
+  useEffect(() => {
+    const root = mainRef.current;
+    const target = loadMoreRef.current;
+    if (!root || !target || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        if (searchQuery.trim()) {
+          if (!searchResults.length || isLoading || !hasMore || searchRequestLock.current) return;
+          searchRequestLock.current = true;
+          setPage((currentPage) => currentPage + 1);
+        } else if (
+          activeTab === "watchNow" &&
+          !isTrendingLoading &&
+          hasMoreTrending &&
+          !trendingRequestLock.current
+        ) {
+          trendingRequestLock.current = true;
+          setWatchNowPage((currentPage) => currentPage + 1);
         }
-      } else if (activeTab === "watchNow") {
-        setWatchNowPage((prev) => prev + 1);
-      }
-    }
-  };
+      },
+      { root, rootMargin: "360px 0px", threshold: 0 },
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [
+    activeTab,
+    hasMore,
+    hasMoreTrending,
+    isLoading,
+    isTrendingLoading,
+    searchQuery,
+    searchResults.length,
+  ]);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const matchedMovies = MOVIES.filter((m) => m.title.toLowerCase().includes(normalizedQuery));
@@ -196,7 +290,7 @@ const AppleTVSection = ({
         onProfileClick={onProfileClick}
       />
       <main
-        onScroll={handleScroll}
+        ref={mainRef}
         className="flex-1 bg-white overflow-y-auto thin-scrollbar p-6 space-y-8 select-none text-gray-800 h-full min-h-0"
       >
         {searchQuery.trim() ? (
@@ -407,15 +501,7 @@ const AppleTVSection = ({
                 onToggleUpNext={onToggleUpNext}
                 watchNowMovies={watchNowMovies}
                 popularShows={popularShows}
-                isCompact={isCompact}
-              />
-            )}
-            {activeTab === "tvPlus" && (
-              <TVPlusSection
-                onPlayFeatured={onPlayFeatured}
-                onPlayMovie={onPlayMovie}
-                upNext={upNext}
-                onToggleUpNext={onToggleUpNext}
+                relatedShows={relatedShows}
                 isCompact={isCompact}
               />
             )}
@@ -427,6 +513,16 @@ const AppleTVSection = ({
               <FavoritesSection upNext={upNext} onPlayMovie={onPlayMovie} isCompact={isCompact} />
             )}
           </>
+        )}
+        {(searchQuery.trim()
+          ? hasMore && searchResults.length > 0
+          : activeTab === "watchNow" && hasMoreTrending) && (
+          <div ref={loadMoreRef} className="h-1 w-full" aria-hidden="true" />
+        )}
+        {(searchQuery.trim() ? isLoading : activeTab === "watchNow" && isTrendingLoading) && (
+          <div className="flex justify-center py-2 text-gray-400" aria-live="polite">
+            <Loader2 className="h-4 w-4 animate-spin" />
+          </div>
         )}
       </main>
     </div>

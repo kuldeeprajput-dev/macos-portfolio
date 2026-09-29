@@ -15,7 +15,7 @@ const AppleTVView = () => {
   const [activeTab, setActiveTab] = useState("watchNow");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeVideo, setActiveVideo] = useState(null);
-  const [upNext, setUpNext] = useState(["ted_lasso", "foundation", "severance"]);
+  const [upNext, setUpNext] = useState(["ted_lasso", "mythic_quest", "severance"]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -28,6 +28,10 @@ const AppleTVView = () => {
 
   const videoRef = useRef(null);
   const controlsTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    setUpNext((items) => items.map((id) => (id === "foundation" ? "mythic_quest" : id)));
+  }, []);
 
   useEffect(() => {
     if (windows.appletv?.data?.openAbout) {

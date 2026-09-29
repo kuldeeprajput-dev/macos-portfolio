@@ -8,11 +8,17 @@ const MovieCard = ({
   onToggleUpNext,
   showToggle = false,
   compactMeta = false,
+  preferBackdrop = false,
 }) => {
-  const [posterUrl, setPosterUrl] = useState(null);
+  const [posterUrl, setPosterUrl] = useState(movie.posterUrl || null);
 
   useEffect(() => {
+    if (Object.hasOwn(movie, "posterUrl")) {
+      setPosterUrl(movie.posterUrl || null);
+      return;
+    }
     if (!movie.tmdbId) return;
+    const controller = new AbortController();
     const fetchPoster = async () => {
       try {
         const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -20,19 +26,23 @@ const MovieCard = ({
         const type = movie.type || "movie";
         const res = await fetch(
           `https://api.themoviedb.org/3/${type}/${movie.tmdbId}?api_key=${apiKey}`,
+          { signal: controller.signal },
         );
+        if (!res.ok) return;
         const data = await res.json();
-        if (data.poster_path) {
-          setPosterUrl(`https://image.tmdb.org/t/p/w500${data.poster_path}`);
-        } else if (data.backdrop_path) {
-          setPosterUrl(`https://image.tmdb.org/t/p/w500${data.backdrop_path}`);
+        const imagePath = preferBackdrop
+          ? data.backdrop_path || data.poster_path
+          : data.poster_path || data.backdrop_path;
+        if (!controller.signal.aborted && imagePath) {
+          setPosterUrl(`https://image.tmdb.org/t/p/w780${imagePath}`);
         }
       } catch (err) {
-        console.error("Error fetching TMDB poster:", err);
+        if (!controller.signal.aborted) console.error("Error fetching TMDB poster:", err);
       }
     };
     fetchPoster();
-  }, [movie.tmdbId, movie.type]);
+    return () => controller.abort();
+  }, [movie.posterUrl, movie.tmdbId, movie.type, preferBackdrop]);
 
   return (
     <div className="group cursor-pointer space-y-2" onClick={onPlay}>
@@ -45,6 +55,7 @@ const MovieCard = ({
             alt={movie.title}
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors" />
