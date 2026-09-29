@@ -52,7 +52,7 @@ const Launchpad = () => {
   return (
     <div
       onClick={handleClose}
-      className="fixed inset-0 w-screen h-screen z-9999 backdrop-blur-3xl bg-black/15 flex flex-col items-center pt-16 pb-10 px-12 sm:px-20 md:px-32 lg:px-44 animate-fade-in select-none"
+      className="fixed inset-0 w-screen h-screen z-[9980] backdrop-blur-3xl bg-black/15 flex flex-col items-center pt-16 pb-10 px-12 sm:px-20 md:px-32 lg:px-44 animate-fade-in select-none"
     >
       <LaunchpadSearch
         inputRef={inputRef}

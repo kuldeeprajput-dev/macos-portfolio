@@ -8,11 +8,11 @@ const LaunchpadGrid = ({ apps, onLaunch, searchQuery }) => (
             e.stopPropagation();
             onLaunch(app.id);
           }}
-          className="flex flex-col items-center gap-2.5 group focus:outline-none cursor-pointer w-20"
+          className="flex flex-col items-center gap-2.5 group focus:outline-none cursor-default w-20"
         >
-          <div className="w-[80px] h-[80px] rounded-[18px] bg-transparent transition-transform duration-200 ease-out group-hover:scale-105 group-active:scale-95 flex items-center justify-center relative select-none">
+          <div className="w-[72px] h-[72px] rounded-[18px] bg-transparent transition-transform duration-200 ease-out group-hover:scale-105 group-active:scale-95 flex items-center justify-center relative select-none">
             {app.id === "calendar" ? (
-              <div className="w-full h-full bg-white rounded-[18px] border border-black/10 shadow-md overflow-hidden flex flex-col items-center select-none aspect-square scale-[0.81]">
+              <div className="w-full h-full bg-white rounded-[18px] border border-black/10 shadow-md overflow-hidden flex flex-col items-center select-none aspect-square">
                 <div className="w-full bg-[#ff3b30] text-white text-[10px] font-extrabold py-0.5 md:py-1 text-center leading-none tracking-wider uppercase">
                   {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"][new Date().getDay()]}
                 </div>
