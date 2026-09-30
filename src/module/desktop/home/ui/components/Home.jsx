@@ -10,6 +10,7 @@ import HomeFolder from "./HomeFolder";
 import DesktopShortcut from "./DesktopShortcut";
 import DesktopContextMenu from "./DesktopContextMenu";
 import FolderRenameInput from "./FolderRenameInput";
+import useWidgetsStore from "@store/widgets";
 
 const projects = locations.work?.children ?? [];
 const desktopWallpapers = [
@@ -42,6 +43,8 @@ const Home = () => {
   const [editingFolderId, setEditingFolderId] = useState(null);
   const [renamedProjects, setRenamedProjects] = useState({});
   const suppressCustomFolderClickRef = useRef(null);
+  const activeWidgets = useWidgetsStore((state) => state.widgets);
+  const toggleWidget = useWidgetsStore((state) => state.toggleWidget);
 
   const visibleProjects = projects.filter((project) => !deletedFolderIds.includes(project.id));
 
@@ -358,6 +361,8 @@ const Home = () => {
         onChangeWallpaper={handleChangeWallpaper}
         wallpapers={desktopWallpapers}
         activeWallpaperIndex={wallpaperIndex}
+        activeWidgets={activeWidgets}
+        onToggleWidget={toggleWidget}
         onOpenProjects={handleOpenProjects}
         onOpenProject={handleOpenProjectFinder}
         projects={visibleProjects}

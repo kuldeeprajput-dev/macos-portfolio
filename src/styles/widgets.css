@@ -18,6 +18,38 @@
   box-sizing: border-box;
 }
 
+.widget-container,
+.widget-container * {
+  cursor: default;
+}
+
+body.widget-dragging,
+body.widget-dragging * {
+  cursor: grabbing !important;
+  cursor: -webkit-grabbing !important;
+}
+
+.widget-menu-item {
+  display: flex;
+  width: 100%;
+  height: 26px;
+  align-items: center;
+  border-radius: 5px;
+  padding: 0 10px;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  cursor: default;
+  transition:
+    color 100ms ease,
+    background 100ms ease;
+}
+
+.widget-menu-item:hover,
+.widget-menu-item[aria-pressed="true"] {
+  color: #fff;
+  background: linear-gradient(180deg, #1687ff, #0071e3);
+}
+
 .widget-card-frameless {
   width: 100%;
   height: 100%;

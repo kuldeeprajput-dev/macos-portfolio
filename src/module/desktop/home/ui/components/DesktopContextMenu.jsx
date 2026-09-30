@@ -1,5 +1,104 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { WIDGET_OPTIONS } from "@store/widgets";
+import useTimeStore from "@store/time";
+import WEATHER_DATA from "@module/desktop/apps/weather/data/weatherData";
+import AnalogClockFace from "@module/desktop/widgets/ui/components/AnalogClockFace";
+
+const WidgetPreview = ({ type }) => {
+  const time = useTimeStore((state) => state.time);
+  const timeLabel = `${String(time.getHours()).padStart(2, "0")}:${String(time.getMinutes()).padStart(2, "0")}`;
+  const day = time.getDate();
+  const monthStart = new Date(time.getFullYear(), time.getMonth(), 1).getDay();
+  const monthLength = new Date(time.getFullYear(), time.getMonth() + 1, 0).getDate();
+  const monthDays = [
+    ...Array(monthStart).fill(null),
+    ...Array.from({ length: monthLength }, (_, index) => index + 1),
+  ];
+
+  if (type === "battery") {
+    return (
+      <div className="flex h-full w-full items-center gap-2.5 bg-black/20 px-3 text-white">
+        <div className="relative h-6 w-11 rounded-[5px] border border-white/70 p-[2px]">
+          <span className="block h-full w-3/4 rounded-[2px] bg-green-400" />
+          <span className="absolute -right-1 top-1.5 h-2 w-1 rounded-r-sm bg-white/70" />
+        </div>
+        <div>
+          <span className="block text-[11px] font-medium">Battery</span>
+          <span className="text-[9px] text-white/60">Power status</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "notes") {
+    return (
+      <div className="flex h-full w-full flex-col justify-center bg-gradient-to-br from-amber-100 to-yellow-200 px-3 text-zinc-700">
+        <span className="text-[10px] font-semibold">Quick Note</span>
+        <span className="mt-1 text-[8px] leading-tight text-zinc-500">
+          Ideas, reminders, and things to remember.
+        </span>
+      </div>
+    );
+  }
+
+  if (type === "weather") {
+    return (
+      <>
+        <img
+          src="/weather/sunny-sky.webp"
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <span className="absolute inset-0 bg-gradient-to-b from-sky-950/20 via-transparent to-sky-950/70" />
+        <span className="absolute left-3 top-2 text-[9px] font-medium text-white/90">Delhi</span>
+        <span className="absolute bottom-2 left-3 text-3xl font-light text-white">
+          {WEATHER_DATA.delhi.tempC}°
+        </span>
+        <span className="absolute bottom-3 right-3 text-[9px] text-white/90">
+          {WEATHER_DATA.delhi.condition}
+        </span>
+      </>
+    );
+  }
+
+  if (type === "clock") {
+    return (
+      <div className="flex h-full w-full flex-col items-center justify-center bg-black/20 text-white">
+        <span className="text-[32px] font-light tracking-tight">{timeLabel}</span>
+        <span className="text-[9px] text-white/70">
+          {time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
+        </span>
+      </div>
+    );
+  }
+
+  if (type === "analog-clock") {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-black/20">
+        <AnalogClockFace time={time} className="h-[52px] w-[52px] drop-shadow-md" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-full w-full items-center gap-2 bg-black/20 px-2.5 text-white">
+      <div className="min-w-0 flex-1">
+        <span className="block truncate text-[7px] font-medium text-white/70">
+          {time.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
+        </span>
+        <span className="mt-0.5 block text-[19px] font-light tracking-tight">{timeLabel}</span>
+      </div>
+      <div className="grid w-[54px] shrink-0 grid-cols-7 gap-x-0.5 gap-y-0.5 text-center text-[6px] text-white/65">
+        {["S", "M", "T", "W", "T", "F", "S", ...monthDays.slice(0, 14)].map((date, index) => (
+          <span key={index} className={date === day ? "rounded-full bg-blue-500 text-white" : ""}>
+            {date}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const DesktopContextMenu = ({
   menu,
@@ -9,6 +108,8 @@ const DesktopContextMenu = ({
   onChangeWallpaper,
   wallpapers = [],
   activeWallpaperIndex = 0,
+  activeWidgets = [],
+  onToggleWidget,
   onOpenProjects,
   onOpenProject,
   projects = [],
@@ -91,6 +192,16 @@ const DesktopContextMenu = ({
   const wallpaperSubmenuTop = Math.max(8, Math.min(top + 64, window.innerHeight - menuHeight - 8));
   const wallpaperSubmenuOffsetLeft = wallpaperSubmenuLeft - left - 4;
   const wallpaperSubmenuOffsetTop = wallpaperSubmenuTop - top - 64;
+  const widgetSubmenuWidth = 264;
+  const openWidgetSubmenuLeft = left + menuWidth + widgetSubmenuWidth > window.innerWidth - 8;
+  const widgetSubmenuLeft = Math.max(
+    8,
+    Math.min(
+      openWidgetSubmenuLeft ? left - widgetSubmenuWidth : left + menuWidth,
+      window.innerWidth - widgetSubmenuWidth - 8,
+    ),
+  );
+  const widgetSubmenuOffsetLeft = widgetSubmenuLeft - left - 4;
 
   const handleCopy = (text) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -253,16 +364,98 @@ const DesktopContextMenu = ({
             )}
           </div>
 
-          {/* Contacts */}
-          <button
-            onClick={() => {
-              onOpenApp("contact");
-              onClose();
-            }}
-            className="group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
+          {/* Add Widgets */}
+          <div
+            className="relative"
+            onMouseEnter={() => setActiveSubmenu("widgets")}
+            onMouseLeave={() => setActiveSubmenu(null)}
           >
-            <span>Contacts</span>
-          </button>
+            {activeSubmenu === "widgets" && (
+              <span
+                aria-hidden="true"
+                className={`pointer-events-auto absolute top-0 z-[99999] h-full w-1 ${
+                  openWidgetSubmenuLeft ? "right-full" : "left-full"
+                }`}
+              />
+            )}
+            <button
+              onClick={() =>
+                setActiveSubmenu((current) => (current === "widgets" ? null : "widgets"))
+              }
+              aria-haspopup="true"
+              aria-expanded={activeSubmenu === "widgets"}
+              className={`group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors cursor-default ${
+                activeSubmenu === "widgets"
+                  ? "bg-gradient-to-b from-[#1687ff] to-[#0071e3] text-white"
+                  : "hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white"
+              }`}
+            >
+              <span>Add Widgets</span>
+              <svg
+                className="h-3 w-3 text-white/50 group-hover:text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+
+            {activeSubmenu === "widgets" && (
+              <div
+                className="absolute z-[100000] w-[264px] max-w-[calc(100vw-16px)] rounded-[10px] p-2 font-sans text-[13px] text-[#f5f5f7] shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset] animate-in fade-in zoom-in-95 duration-100"
+                style={{
+                  left: `${widgetSubmenuOffsetLeft}px`,
+                  top: "0px",
+                  maxHeight: "calc(100vh - 16px)",
+                  overflowY: "auto",
+                  background: "rgba(30, 30, 30, 0.85)",
+                  backdropFilter: "blur(40px) saturate(210%)",
+                  WebkitBackdropFilter: "blur(40px) saturate(210%)",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                }}
+              >
+                <p className="px-1 pb-2 text-[11px] font-medium text-white/55">Add Widgets</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {WIDGET_OPTIONS.map((widget) => {
+                    const isActive = activeWidgets.includes(widget.type);
+                    return (
+                      <button
+                        key={widget.type}
+                        type="button"
+                        aria-pressed={isActive}
+                        onClick={() => onToggleWidget?.(widget.type)}
+                        className="group min-w-0 rounded-md p-1 text-left text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1687ff]"
+                      >
+                        <span
+                          className={`relative block aspect-[2/1] overflow-hidden rounded-[6px] border ${
+                            isActive
+                              ? "border-[#62aaff]"
+                              : "border-white/15 group-hover:border-white/40"
+                          }`}
+                        >
+                          <WidgetPreview type={widget.type} />
+                          <span
+                            className={`absolute right-1 top-1 flex h-[18px] w-[18px] items-center justify-center rounded-full text-[12px] leading-none text-white shadow ${
+                              isActive
+                                ? "bg-[#1687ff]"
+                                : "bg-black/45 opacity-0 transition-opacity group-hover:opacity-100"
+                            }`}
+                          >
+                            {isActive ? "✓" : "+"}
+                          </span>
+                        </span>
+                        <span className="mt-1 block truncate px-0.5 text-[11px] font-medium">
+                          {widget.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="my-1 h-[0.5px] bg-white/12 mx-1" />
 
