@@ -250,7 +250,7 @@ const LoginScreen = ({ onLogin, isMobile }) => {
       <div
         className="fixed inset-0 z-50 flex flex-col items-center justify-between text-white select-none overflow-hidden"
         style={{
-          backgroundImage: "url('/wallpapers/mobile-wallpaper.webp')",
+          backgroundImage: "url('/wallpapers/mobile/mobile-wallpaper.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

@@ -6,6 +6,8 @@ const DesktopContextMenu = ({
   onNewFolder,
   onGetInfo,
   onChangeWallpaper,
+  wallpapers = [],
+  activeWallpaperIndex = 0,
   onOpenProjects,
   onOpenProject,
   projects = [],
@@ -75,7 +77,19 @@ const DesktopContextMenu = ({
   const menuHeight = menu.type === "desktop" ? 340 : 180;
   const left = Math.max(10, Math.min(menu.x, window.innerWidth - menuWidth - 10));
   const top = Math.max(40, Math.min(menu.y, window.innerHeight - menuHeight - 10));
-  const openSubmenuLeft = left + menuWidth + 180 > window.innerWidth;
+  const openSubmenuLeft = left + menuWidth + 4 + 180 > window.innerWidth - 8;
+  const wallpaperSubmenuWidth = 264;
+  const openWallpaperSubmenuLeft = left + menuWidth + wallpaperSubmenuWidth > window.innerWidth - 8;
+  const wallpaperSubmenuLeft = Math.max(
+    8,
+    Math.min(
+      openWallpaperSubmenuLeft ? left - wallpaperSubmenuWidth : left + menuWidth,
+      window.innerWidth - wallpaperSubmenuWidth - 8,
+    ),
+  );
+  const wallpaperSubmenuTop = Math.max(8, Math.min(top + 64, window.innerHeight - menuHeight - 8));
+  const wallpaperSubmenuOffsetLeft = wallpaperSubmenuLeft - left - 4;
+  const wallpaperSubmenuOffsetTop = wallpaperSubmenuTop - top - 64;
 
   const handleCopy = (text) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -142,15 +156,102 @@ const DesktopContextMenu = ({
           </button>
 
           {/* Change Wallpaper */}
-          <button
-            onClick={() => {
-              onChangeWallpaper();
-              onClose();
-            }}
-            className="group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white cursor-default"
+          <div
+            className="relative"
+            onMouseEnter={() => setActiveSubmenu("wallpaper")}
+            onMouseLeave={() => setActiveSubmenu(null)}
           >
-            <span>Change Wallpaper...</span>
-          </button>
+            {activeSubmenu === "wallpaper" && (
+              <span
+                aria-hidden="true"
+                className={`pointer-events-auto absolute top-0 z-[99999] h-full w-1 ${
+                  openWallpaperSubmenuLeft ? "right-full" : "left-full"
+                }`}
+              />
+            )}
+            <button
+              onClick={() =>
+                setActiveSubmenu((current) => (current === "wallpaper" ? null : "wallpaper"))
+              }
+              aria-haspopup="true"
+              aria-expanded={activeSubmenu === "wallpaper"}
+              className={`group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors cursor-default ${
+                activeSubmenu === "wallpaper"
+                  ? "bg-gradient-to-b from-[#1687ff] to-[#0071e3] text-white"
+                  : "hover:bg-gradient-to-b hover:from-[#1687ff] hover:to-[#0071e3] hover:text-white"
+              }`}
+            >
+              <span>Change Wallpaper...</span>
+              <svg
+                className="h-3 w-3 text-white/50 group-hover:text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+
+            {activeSubmenu === "wallpaper" && (
+              <div
+                className="absolute z-[100000] w-[264px] max-w-[calc(100vw-16px)] rounded-[10px] p-2 font-sans text-[13px] text-[#f5f5f7] shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset] animate-in fade-in zoom-in-95 duration-100"
+                style={{
+                  left: `${wallpaperSubmenuOffsetLeft}px`,
+                  top: `${wallpaperSubmenuOffsetTop}px`,
+                  height: `${menuHeight}px`,
+                  maxHeight: "calc(100vh - 16px)",
+                  overflowY: "auto",
+                  background: "rgba(30, 30, 30, 0.85)",
+                  backdropFilter: "blur(40px) saturate(210%)",
+                  WebkitBackdropFilter: "blur(40px) saturate(210%)",
+                  border: "1px solid rgba(255, 255, 255, 0.16)",
+                }}
+              >
+                <p className="px-1 pb-2 text-[11px] font-medium text-white/55">
+                  Choose a Wallpaper
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {wallpapers.map((wallpaper, index) => (
+                    <button
+                      key={wallpaper.id}
+                      type="button"
+                      aria-label={`Set ${wallpaper.label}`}
+                      aria-pressed={activeWallpaperIndex === index}
+                      onClick={() => {
+                        onChangeWallpaper(wallpaper);
+                        onClose();
+                      }}
+                      className="group min-w-0 rounded-md p-1 text-left text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1687ff]"
+                    >
+                      <span
+                        className={`relative block overflow-hidden rounded-[5px] border ${
+                          activeWallpaperIndex === index
+                            ? "border-[#62aaff]"
+                            : "border-white/15 group-hover:border-white/40"
+                        }`}
+                      >
+                        <img
+                          src={wallpaper.src}
+                          alt=""
+                          loading="eager"
+                          className="aspect-[2/1] w-full object-cover"
+                        />
+                        {activeWallpaperIndex === index && (
+                          <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#1687ff] text-[10px] text-white">
+                            ✓
+                          </span>
+                        )}
+                      </span>
+                      <span className="mt-1 block truncate px-0.5 text-[11px]">
+                        {wallpaper.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Contacts */}
           <button
@@ -182,6 +283,14 @@ const DesktopContextMenu = ({
             onMouseEnter={() => setActiveSubmenu("sortBy")}
             onMouseLeave={() => setActiveSubmenu(null)}
           >
+            {activeSubmenu === "sortBy" && (
+              <span
+                aria-hidden="true"
+                className={`pointer-events-auto absolute top-0 z-[99999] h-full w-1 ${
+                  openSubmenuLeft ? "right-full" : "left-full"
+                }`}
+              />
+            )}
             <button
               className={`group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors cursor-default ${
                 activeSubmenu === "sortBy"
@@ -204,7 +313,7 @@ const DesktopContextMenu = ({
             {activeSubmenu === "sortBy" && (
               <div
                 className={`absolute top-0 z-[100000] w-[180px] rounded-[10px] p-1 font-sans text-[13px] text-[#f5f5f7] shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset] animate-in fade-in zoom-in-95 duration-100 ${
-                  openSubmenuLeft ? "right-full" : "left-full"
+                  openSubmenuLeft ? "right-full -translate-x-1" : "left-full translate-x-1"
                 }`}
                 style={{
                   background: "rgba(30, 30, 30, 0.85)",
@@ -249,6 +358,14 @@ const DesktopContextMenu = ({
             onMouseEnter={() => setActiveSubmenu("cleanUpBy")}
             onMouseLeave={() => setActiveSubmenu(null)}
           >
+            {activeSubmenu === "cleanUpBy" && (
+              <span
+                aria-hidden="true"
+                className={`pointer-events-auto absolute top-0 z-[99999] h-full w-1 ${
+                  openSubmenuLeft ? "right-full" : "left-full"
+                }`}
+              />
+            )}
             <button
               className={`group flex h-[26px] w-full items-center justify-between rounded-[5px] px-2.5 text-left text-white/90 transition-colors cursor-default ${
                 activeSubmenu === "cleanUpBy"
@@ -271,7 +388,7 @@ const DesktopContextMenu = ({
             {activeSubmenu === "cleanUpBy" && (
               <div
                 className={`absolute top-0 z-[100000] w-[180px] rounded-[10px] p-1 font-sans text-[13px] text-[#f5f5f7] shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset] animate-in fade-in zoom-in-95 duration-100 ${
-                  openSubmenuLeft ? "right-full" : "left-full"
+                  openSubmenuLeft ? "right-full -translate-x-1" : "left-full translate-x-1"
                 }`}
                 style={{
                   background: "rgba(30, 30, 30, 0.85)",

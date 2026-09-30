@@ -12,6 +12,14 @@ import DesktopContextMenu from "./DesktopContextMenu";
 import FolderRenameInput from "./FolderRenameInput";
 
 const projects = locations.work?.children ?? [];
+const desktopWallpapers = [
+  { id: "wallpaper", label: "Wallpaper 1", src: "/wallpapers/wallpaper.webp" },
+  { id: "wallpaper2", label: "Wallpaper 2", src: "/wallpapers/wallpaper2.webp" },
+  { id: "wallpaper3", label: "Wallpaper 3", src: "/wallpapers/wallpaper3.webp" },
+  { id: "wallpaper4", label: "Wallpaper 4", src: "/wallpapers/wallpaper4.webp" },
+  { id: "wallpaper5", label: "Wallpaper 5", src: "/wallpapers/wallpaper5.webp" },
+  { id: "wallpaper6", label: "Wallpaper 6", src: "/wallpapers/wallpaper6.webp" },
+];
 
 const Home = () => {
   const { setActiveLocation } = useLocationStore();
@@ -211,12 +219,12 @@ const Home = () => {
     }
   };
 
-  const handleChangeWallpaper = () => {
-    const wallpapers = ["/wallpapers/wallpaper.webp", "/wallpapers/wallpaper2.webp"];
-    const nextIdx = (wallpaperIndex + 1) % wallpapers.length;
+  const handleChangeWallpaper = (wallpaper) => {
+    const nextIdx = desktopWallpapers.findIndex((item) => item.id === wallpaper.id);
+    if (nextIdx === -1) return;
+
     setWallpaperIndex(nextIdx);
-    document.body.style.backgroundImage = `url("${wallpapers[nextIdx]}")`;
-    openWindow("settings");
+    document.body.style.backgroundImage = `url("${wallpaper.src}")`;
   };
 
   const handleOpenProjects = () => {
@@ -348,6 +356,8 @@ const Home = () => {
         onNewFolder={handleNewFolder}
         onGetInfo={handleGetInfo}
         onChangeWallpaper={handleChangeWallpaper}
+        wallpapers={desktopWallpapers}
+        activeWallpaperIndex={wallpaperIndex}
         onOpenProjects={handleOpenProjects}
         onOpenProject={handleOpenProjectFinder}
         projects={visibleProjects}
