@@ -1,21 +1,13 @@
 import "../styles/index.css";
+import { EMAIL, GITHUB_PROFILE, LINKEDIN_URL, PORTFOLIO_URL, TWITTER_URL } from "@constants/env";
 
 const trimTrailingSlash = (value) => value?.replace(/\/+$/, "");
-const SITE_URL = trimTrailingSlash(
-  process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://macos-kuldeeprajput.vercel.app",
-);
+const SITE_URL = trimTrailingSlash(PORTFOLIO_URL);
 const OWNER_NAME = "Kuldeep Rajput";
 const SITE_NAME = `${OWNER_NAME} - macOS Portfolio`;
 const SITE_DESCRIPTION =
   "An interactive macOS-inspired developer portfolio featuring functional apps, an AI-powered Siri assistant, music player, terminal, weather, maps, resume preview, and project showcases built with Next.js, React, and GSAP.";
 const OG_IMAGE = "/readme/desktop.png";
-const GITHUB_PROFILE =
-  process.env.NEXT_PUBLIC_GITHUB_PROFILE || "https://github.com/kuldeeprajput-dev";
-const LINKEDIN_URL =
-  process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://www.linkedin.com/in/kuldeepdotcom/";
-const TWITTER_URL = process.env.NEXT_PUBLIC_TWITTER_URL || "https://x.com/kuldeepdotcom";
-const EMAIL = process.env.NEXT_PUBLIC_EMAIL || "contact.kuldeeprajput@gmail.com";
-
 const getTwitterHandle = (url) => {
   try {
     const handle = new URL(url).pathname.split("/").filter(Boolean)[0];

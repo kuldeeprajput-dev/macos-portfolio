@@ -220,50 +220,10 @@ NEXT_PUBLIC_OPENSTREETMAP_URL=https://www.openstreetmap.org
 NEXT_PUBLIC_GITHUB_API_URL=https://api.github.com
 
 # ──────────────────────────────────────────────────────────
-# 🗂️ PROJECT URLs (Your Portfolio Projects)
+# 🔗 Portfolio links
 # ──────────────────────────────────────────────────────────
-# Each project has a live URL and a GitHub repository URL.
-# These appear in the Finder app and Projects Folder.
-
-# Project 1
-NEXT_PUBLIC_PROJECT_1_URL=https://your-project-1.vercel.app
-NEXT_PUBLIC_PROJECT_1_GITHUB=https://github.com/your-username/project-1
-
-# Project 2
-NEXT_PUBLIC_PROJECT_2_URL=https://your-project-2.vercel.app
-NEXT_PUBLIC_PROJECT_2_GITHUB=https://github.com/your-username/project-2
-
-# Project 3: Resuvee
-NEXT_PUBLIC_RESUVEE_URL=https://resuvee.vercel.app/
-NEXT_PUBLIC_RESUVEE_GITHUB=https://github.com/kuldeeprajput-dev/resuvee
-
-# Project 4
-NEXT_PUBLIC_PROJECT_4_URL=https://your-project-4.vercel.app
-NEXT_PUBLIC_PROJECT_4_GITHUB=https://github.com/your-username/project-4
-
-# ──────────────────────────────────────────────────────────
-# 👤 SOCIAL & PERSONAL URLs
-# ──────────────────────────────────────────────────────────
-# Your GitHub profile URL (username is auto-extracted from this)
-NEXT_PUBLIC_GITHUB_PROFILE=https://github.com/your-username
-
-# Your Twitter/X profile URL
-NEXT_PUBLIC_TWITTER_URL=https://x.com/your-twitter-handle
-
-# Your LinkedIn profile URL
-NEXT_PUBLIC_LINKEDIN_URL=https://www.linkedin.com/in/your-linkedin-slug/
-
-# Your portfolio domain (primary)
-NEXT_PUBLIC_PORTFOLIO_URL=https://yourdomain.com
-
-# Your portfolio domain (alternate / Vercel deployment)
-NEXT_PUBLIC_PORTFOLIO_ALT_URL=https://your-name.vercel.app/
-
-# Your contact email address
-NEXT_PUBLIC_EMAIL=your-email@gmail.com
-
-# Your phone number (use quotes if it contains spaces or +)
-NEXT_PUBLIC_PHONE="+1 000-000-0000"
+# Social, contact, portfolio, and project links are configured in
+# src/constants/env.js rather than in this environment file.
 
 # ──────────────────────────────────────────────────────────
 # 🤖 AI — Groq API Key (Powers the Siri Assistant)
@@ -288,35 +248,17 @@ NEXT_PUBLIC_PICSUM_API_URL=https://picsum.photos
 
 ## 🎭 Make It Yours
 
-This portfolio is designed to be fully personalized through environment variables and a few config files. Follow this complete checklist to replace **everything** with your own identity:
+This portfolio is personalized through a mix of environment variables and source configuration. Update the public links in `src/constants/env.js`, and keep API keys and service settings in `.env`.
 
-### Step 1 — Environment Variables (`.env`)
+### Step 1 — Public portfolio links
 
-Open your `.env` file and replace every personal value:
+Edit `src/constants/env.js` to update the social profiles, contact details, site domains, and project URLs. These values are public site content and are included in the client bundle.
 
-| Variable | What to Put | Example |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_GITHUB_PROFILE` | Your full GitHub profile URL | `https://github.com/johndoe-dev` |
-| `NEXT_PUBLIC_TWITTER_URL` | Your Twitter/X profile URL | `https://x.com/johndoe` |
-| `NEXT_PUBLIC_LINKEDIN_URL` | Your LinkedIn profile URL | `https://www.linkedin.com/in/johndoe/` |
-| `NEXT_PUBLIC_PORTFOLIO_URL` | Your primary portfolio domain | `https://johndoe.dev` |
-| `NEXT_PUBLIC_PORTFOLIO_ALT_URL` | Your Vercel/alternate portfolio URL | `https://johndoe-portfolio.vercel.app/` |
-| `NEXT_PUBLIC_EMAIL` | Your contact email address | `john@gmail.com` |
-| `NEXT_PUBLIC_PHONE` | Your phone number (in quotes if using + or spaces) | `"+1 555-123-4567"` |
-| `NEXT_PUBLIC_PROJECT_1_URL` | Live URL of your 1st project | `https://my-app.vercel.app` |
-| `NEXT_PUBLIC_PROJECT_1_GITHUB` | GitHub repo URL of your 1st project | `https://github.com/johndoe-dev/my-app` |
-| `NEXT_PUBLIC_PROJECT_2_URL` | Live URL of your 2nd project | _(same pattern)_ |
-| `NEXT_PUBLIC_PROJECT_2_GITHUB` | GitHub repo URL of your 2nd project | _(same pattern)_ |
-| `NEXT_PUBLIC_RESUVEE_URL` | Resuvee live URL | `https://resuvee.vercel.app/` |
-| `NEXT_PUBLIC_RESUVEE_GITHUB` | Resuvee GitHub repo | `https://github.com/kuldeeprajput-dev/resuvee` |
-| `NEXT_PUBLIC_PROJECT_4_URL` | Live URL of your 4th project | _(same pattern)_ |
-| `NEXT_PUBLIC_PROJECT_4_GITHUB` | GitHub repo URL of your 4th project | _(same pattern)_ |
-| `GROQ_API_KEY` | Your Groq API key for Siri AI | Get free at [console.groq.com/keys](https://console.groq.com/keys) |
-| `NEXT_PUBLIC_TMDB_API_KEY` | Your TMDB API key for Apple TV app | Get free at [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api) |
+### Step 2 — API settings (`.env`)
 
-> **Note:** The `GITHUB_USERNAME` is **automatically extracted** from your `NEXT_PUBLIC_GITHUB_PROFILE` URL. You do not need to set it separately.
+Keep API keys and service configuration in `.env`. Add `GROQ_API_KEY` for Siri AI and `NEXT_PUBLIC_TMDB_API_KEY` for the Apple TV app. The other public API base URLs are optional and have defaults in the app.
 
-### Step 2 — Projects Configuration
+### Step 3 — Projects Configuration
 
 Edit **`src/constants/projects.js`** to update your project titles, descriptions, and thumbnail images:
 

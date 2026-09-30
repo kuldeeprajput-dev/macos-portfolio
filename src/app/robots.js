@@ -1,7 +1,7 @@
+import { PORTFOLIO_URL } from "@constants/env";
+
 const trimTrailingSlash = (value) => value?.replace(/\/+$/, "");
-const SITE_URL = trimTrailingSlash(
-  process.env.NEXT_PUBLIC_PORTFOLIO_URL || "https://macos-kuldeeprajput.vercel.app",
-);
+const SITE_URL = trimTrailingSlash(PORTFOLIO_URL);
 
 export default function robots() {
   return {

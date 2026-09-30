@@ -1,27 +1,34 @@
 import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig, globalIgnores } from "eslint/config";
+import reactHooks from "eslint-plugin-react-hooks";
+import globals from "globals";
+
+const sourceFiles = ["**/*.{js,jsx}"];
 
 export default defineConfig([
-  globalIgnores(["dist", ".next", "node_modules", "public/**"]),
+  globalIgnores(["dist/", ".next/", "node_modules/", "public/**"]),
   {
-    files: ["**/*.{js,jsx}"],
+    files: sourceFiles,
     extends: [js.configs.recommended, reactHooks.configs.flat.recommended],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: "latest",
+      sourceType: "module",
       globals: {
         ...globals.browser,
         process: "readonly",
       },
       parserOptions: {
-        ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
-        sourceType: "module",
       },
     },
     rules: {
-      "no-unused-vars": ["warn", { varsIgnorePattern: "^[A-Z_]", argsIgnorePattern: "^_" }],
+      "no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^[A-Z_]",
+        },
+      ],
       "react-hooks/set-state-in-effect": "off",
     },
   },

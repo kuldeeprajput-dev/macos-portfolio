@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "macos-portfolio",
   "private": true,
   "license": "MIT",
   "version": "0.0.0",
@@ -10,8 +10,8 @@
     "start": "next start",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\" && eslint src",
-    "validate": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\" && eslint src && next build",
+    "check": "npm run format:check && npm run lint",
+    "validate": "npm run check && npm run build",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,scss,json}\"",
     "prepare": "husky"
