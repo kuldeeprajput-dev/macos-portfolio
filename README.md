@@ -26,15 +26,11 @@
 
 Explore Kuldeep's work through project folders, app windows, a dock, and desktop widgets. The interface includes a mobile layout while keeping the feel of a macOS desktop.
 
-## Preview
-
-<p align="center">
-  <img src="./public/og-image/og-image.png" alt="macOS Portfolio desktop preview" width="85%" />
-</p>
-
 ## Video Walkthrough
 
 <!-- Upload the video to GitHub and paste its generated link here. -->
+
+https://github.com/user-attachments/assets/905d6356-7435-469f-bf9e-114680374458
 
 ## Features
 
@@ -101,3 +97,9 @@ npm run lint      # Check the source with ESLint
 ## License
 
 This project is available under the [MIT License](./LICENSE).
+
+---
+
+## Support & Feedback
+
+If you find this project helpful, please consider giving it a ⭐ star on [GitHub](https://github.com/kuldeeprajput-dev/resuvee)!
