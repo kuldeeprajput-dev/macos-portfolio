@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "🔍 Running pre-commit checks..."
+echo " Running pre-commit checks..."
 
 # Check for merge conflict markers
 if git diff --cached --name-only | xargs grep -rn "^<<<<<<<" >/dev/null 2>&1; then

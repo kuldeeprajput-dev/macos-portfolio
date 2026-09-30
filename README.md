@@ -152,26 +152,24 @@
 ### Installation
 
 ```bash
-# 1. Fork the repository (required by license — see License section)
-
-# 2. Clone your fork
-git clone https://github.com/<your-github-username>/MacOS-portfolio.git
+# 1. Clone the repository (or fork it first if you plan to contribute)
+git clone https://github.com/Kuldeep23345/MacOS-portfolio.git
 cd MacOS-portfolio
 
-# 3. Install dependencies
+# 2. Install dependencies
 npm install
 # or
 bun install
 
-# 4. Create your environment file
+# 3. Create your environment file
 cp .env.example .env
 
-# 5. Edit .env with your personal details (see Environment Variables section below)
+# 4. Edit .env with your personal details (see Environment Variables section below)
 
-# 6. Add your resume
+# 5. Add your resume
 # Replace the file at public/files/resume.pdf with your own resume
 
-# 7. Start the development server
+# 6. Start the development server
 npm run dev
 # or
 bun dev
@@ -496,7 +494,7 @@ MacOS-portfolio/
 ├── postcss.config.mjs           # PostCSS configuration
 ├── jsconfig.json                # Path aliases (@module, @store, etc.)
 ├── package.json                 # Dependencies & scripts
-├── LICENSE                      # Custom MIT License
+├── LICENSE                      # MIT License
 └── README.md                    # This file
 ```
 
@@ -506,7 +504,7 @@ MacOS-portfolio/
 
 ### Deploy on Vercel (Recommended)
 
-1. Push your fork to GitHub
+1. Push your repository to GitHub
 2. Go to [vercel.com](https://vercel.com) and import your repository
 3. Add all environment variables from your `.env` file in the Vercel dashboard under **Settings → Environment Variables**
 4. Deploy — Vercel auto-detects Next.js and handles the build
@@ -554,14 +552,10 @@ Please ensure your code passes linting (`npm run lint`) and formatting (`npm run
 
 ## 📄 License
 
-This project is licensed under a **Custom MIT License** with additional conditions:
-
-- ✅ **Personal & Educational Use** — Fully permitted
-- ✅ **Forking** — You **must fork** the original repo (not re-upload as a new repo)
-- ✅ **Attribution** — You **must credit** the original author if showcasing publicly
-- ❌ **Exact Replicas** — You may **not** publish identical copies without significant modifications
-
-See the [LICENSE](LICENSE) file for full details.
+This project is licensed under the **MIT License**. You may use, modify, distribute,
+and sell the software, including in your own portfolio, provided that copies or
+substantial portions retain the copyright and license notice. See [LICENSE](LICENSE)
+for the full terms.
 
 ---
 
