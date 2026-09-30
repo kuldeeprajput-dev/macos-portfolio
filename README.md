@@ -102,4 +102,4 @@ This project is available under the [MIT License](./LICENSE).
 
 ## Support & Feedback
 
-If you find this project helpful, please consider giving it a ⭐ star on [GitHub](https://github.com/kuldeeprajput-dev/resuvee)!
+If you find this project helpful, please consider giving it a ⭐ star on [GitHub](https://github.com/kuldeeprajput-dev/macos-portfolio)!
