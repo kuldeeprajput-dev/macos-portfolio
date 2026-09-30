@@ -174,11 +174,13 @@ const DesktopContextMenu = ({
 
   if (!menu) return null;
 
-  // Viewport clamping
+  // Keep the menu and its side panels clear of the dock.
   const menuWidth = 240;
-  const menuHeight = menu.type === "desktop" ? 340 : 180;
+  const menuHeight = menu.type === "desktop" ? 300 : 180;
+  const dockTop = document.querySelector("#dock:not(.dock-hidden)")?.getBoundingClientRect().top;
+  const menuBottom = Math.min(window.innerHeight - 10, (dockTop ?? window.innerHeight) - 8);
   const left = Math.max(10, Math.min(menu.x, window.innerWidth - menuWidth - 10));
-  const top = Math.max(40, Math.min(menu.y, window.innerHeight - menuHeight - 10));
+  const top = Math.max(8, Math.min(menu.y, menuBottom - menuHeight));
   const openSubmenuLeft = left + menuWidth + 4 + 180 > window.innerWidth - 8;
   const wallpaperSubmenuWidth = 264;
   const openWallpaperSubmenuLeft = left + menuWidth + wallpaperSubmenuWidth > window.innerWidth - 8;
@@ -189,7 +191,8 @@ const DesktopContextMenu = ({
       window.innerWidth - wallpaperSubmenuWidth - 8,
     ),
   );
-  const wallpaperSubmenuTop = Math.max(8, Math.min(top + 64, window.innerHeight - menuHeight - 8));
+  const sidePanelHeight = 310;
+  const wallpaperSubmenuTop = Math.max(8, Math.min(top + 64, menuBottom - sidePanelHeight));
   const wallpaperSubmenuOffsetLeft = wallpaperSubmenuLeft - left - 4;
   const wallpaperSubmenuOffsetTop = wallpaperSubmenuTop - top - 64;
   const widgetSubmenuWidth = 264;
@@ -202,6 +205,8 @@ const DesktopContextMenu = ({
     ),
   );
   const widgetSubmenuOffsetLeft = widgetSubmenuLeft - left - 4;
+  const widgetSubmenuTop = Math.max(8, Math.min(top + 86, menuBottom - sidePanelHeight));
+  const widgetSubmenuOffsetTop = widgetSubmenuTop - top - 86;
 
   const handleCopy = (text) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -311,7 +316,7 @@ const DesktopContextMenu = ({
                 style={{
                   left: `${wallpaperSubmenuOffsetLeft}px`,
                   top: `${wallpaperSubmenuOffsetTop}px`,
-                  maxHeight: "calc(100vh - 16px)",
+                  maxHeight: `${Math.max(0, menuBottom - wallpaperSubmenuTop)}px`,
                   overflowY: "auto",
                   background: "rgba(30, 30, 30, 0.85)",
                   backdropFilter: "blur(40px) saturate(210%)",
@@ -407,8 +412,8 @@ const DesktopContextMenu = ({
                 className="absolute z-[100000] w-[264px] max-w-[calc(100vw-16px)] rounded-[10px] p-2 font-sans text-[13px] text-[#f5f5f7] shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset] animate-in fade-in zoom-in-95 duration-100"
                 style={{
                   left: `${widgetSubmenuOffsetLeft}px`,
-                  top: "0px",
-                  maxHeight: "calc(100vh - 16px)",
+                  top: `${widgetSubmenuOffsetTop}px`,
+                  maxHeight: `${Math.max(0, menuBottom - widgetSubmenuTop)}px`,
                   overflowY: "auto",
                   background: "rgba(30, 30, 30, 0.85)",
                   backdropFilter: "blur(40px) saturate(210%)",
