@@ -11,9 +11,9 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![GSAP](https://img.shields.io/badge/GSAP-3-88CE02?logo=greensock&logoColor=black)](https://gsap.com/)
 [![Zustand](https://img.shields.io/badge/Zustand-5-433E38)](https://zustand.docs.pmnd.rs/)
-<br />
 [![Immer](https://img.shields.io/badge/Immer-11-00E7C3)](https://immerjs.github.io/immer/)
 [![Lucide](https://img.shields.io/badge/Lucide-Icons-F56565)](https://lucide.dev/)
+<br />
 [![React PDF](https://img.shields.io/badge/React_PDF-10-CC3E3E)](https://github.com/wojtekmaj/react-pdf)
 [![xterm.js](https://img.shields.io/badge/xterm.js-5-222222)](https://xtermjs.org/)
 [![Groq](https://img.shields.io/badge/Groq-AI-F55036)](https://groq.com/)
