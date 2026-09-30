@@ -44,9 +44,13 @@ export const metadata = {
   classification: "Portfolio",
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
-    apple: "/favicon.png",
+    icon: [
+      { url: "/favicon/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    shortcut: "/favicon/favicon.ico",
+    apple: [{ url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   appleWebApp: {
     capable: true,
@@ -85,7 +89,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
-        <link rel="icon" type="image/png" href="/favicon.png" />
         <link rel="preconnect" href="https://api.github.com" />
         <link rel="preconnect" href="https://api.jamendo.com" />
         <link rel="preconnect" href="https://prod-1.storage.jamendo.com" crossOrigin="anonymous" />
