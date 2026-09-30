@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 const DesktopContextMenu = ({
   menu,
@@ -104,7 +105,7 @@ const DesktopContextMenu = ({
     }
   };
 
-  return (
+  return createPortal(
     <div
       ref={menuRef}
       className="fixed z-[99999] w-[240px] select-none rounded-[10px] p-1 font-sans text-[13px] leading-tight text-[#f5f5f7] animate-in fade-in zoom-in-95 duration-100 ease-out shadow-[0_18px_40px_rgba(0,0,0,0.55),0_0_0_1px_rgba(255,255,255,0.12)_inset]"
@@ -199,7 +200,6 @@ const DesktopContextMenu = ({
                 style={{
                   left: `${wallpaperSubmenuOffsetLeft}px`,
                   top: `${wallpaperSubmenuOffsetTop}px`,
-                  height: `${menuHeight}px`,
                   maxHeight: "calc(100vh - 16px)",
                   overflowY: "auto",
                   background: "rgba(30, 30, 30, 0.85)",
@@ -574,7 +574,8 @@ const DesktopContextMenu = ({
           </button>
         </div>
       )}
-    </div>
+    </div>,
+    document.body,
   );
 };
 
