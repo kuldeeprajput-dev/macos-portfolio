@@ -201,6 +201,10 @@ cp .env.example .env
 Below is the full `.env` file with explanations for every variable:
 
 ```env
+# Preferred URL for this macOS site. Set this in the Production environment.
+# If omitted, Vercel's production URL is used automatically.
+SITE_URL=
+
 # ──────────────────────────────────────────────────────────
 # 🌐 API BASE URLs (Public Services — No API Key Needed)
 # ──────────────────────────────────────────────────────────
@@ -252,13 +256,17 @@ This portfolio is personalized through a mix of environment variables and source
 
 ### Step 1 — Public portfolio links
 
-Edit `src/constants/env.js` to update the social profiles, contact details, site domains, and project URLs. These values are public site content and are included in the client bundle.
+Edit `src/constants/env.js` to update the social profiles, contact details, main portfolio link, and project URLs. These values are public site content and are included in the client bundle.
 
 ### Step 2 — API settings (`.env`)
 
 Keep API keys and service configuration in `.env`. Add `GROQ_API_KEY` for Siri AI and `NEXT_PUBLIC_TMDB_API_KEY` for the Apple TV app. The other public API base URLs are optional and have defaults in the app.
 
-### Step 3 — Projects Configuration
+### Step 3 — macOS site URL
+
+Set `SITE_URL` to the preferred HTTPS origin in the Production deployment, for example `https://macos.kuldeeprajput.in`. This value controls canonical URLs, social previews, structured data, `robots.txt`, and the sitemap. It does not change the main portfolio link in `src/constants/env.js`. If unset, the site uses Vercel's production URL, then its deployment URL, and finally localhost for local development.
+
+### Step 4 — Projects Configuration
 
 Edit **`src/constants/projects.js`** to update your project titles, descriptions, and thumbnail images:
 
@@ -450,6 +458,9 @@ MacOS-portfolio/
 2. Go to [vercel.com](https://vercel.com) and import your repository
 3. Add all environment variables from your `.env` file in the Vercel dashboard under **Settings → Environment Variables**
 4. Deploy — Vercel auto-detects Next.js and handles the build
+5. Add `macos.kuldeeprajput.in` under **Settings → Domains**. Create the `macos` CNAME record with the exact target Vercel shows for this project.
+6. Set `SITE_URL=https://macos.kuldeeprajput.in` for the **Production** environment and redeploy. Keep the production `vercel.app` address publicly accessible as a backup; both addresses will point search engines to the custom domain through canonical metadata.
+7. Verify the domain in Google Search Console and submit `https://macos.kuldeeprajput.in/sitemap.xml`.
 
 ### Deploy on Other Platforms
 

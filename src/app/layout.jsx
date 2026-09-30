@@ -1,40 +1,26 @@
 import "../styles/index.css";
-import { EMAIL, GITHUB_PROFILE, LINKEDIN_URL, PORTFOLIO_URL, TWITTER_URL } from "@constants/env";
-
-const trimTrailingSlash = (value) => value?.replace(/\/+$/, "");
-const SITE_URL = trimTrailingSlash(PORTFOLIO_URL);
-const OWNER_NAME = "Kuldeep Rajput";
-const SITE_NAME = `${OWNER_NAME} - macOS Portfolio`;
-const SITE_DESCRIPTION =
-  "An interactive macOS-inspired developer portfolio featuring functional apps, an AI-powered Siri assistant, music player, terminal, weather, maps, resume preview, and project showcases built with Next.js, React, and GSAP.";
-const OG_IMAGE = "/readme/desktop.png";
-const getTwitterHandle = (url) => {
-  try {
-    const handle = new URL(url).pathname.split("/").filter(Boolean)[0];
-    return handle ? `@${handle}` : undefined;
-  } catch {
-    return undefined;
-  }
-};
+import { EMAIL, GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL } from "@constants/env";
+import { OWNER_NAME, SITE_DESCRIPTION, SITE_NAME, pageMetadata } from "../lib/seo";
+import { absoluteSiteUrl, isPreviewDeployment, siteUrl } from "../lib/site-url";
 
 const sameAs = [GITHUB_PROFILE, LINKEDIN_URL, TWITTER_URL].filter(Boolean);
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${SITE_URL}/#website`,
+    "@id": absoluteSiteUrl("/#website"),
     name: SITE_NAME,
-    url: SITE_URL,
+    url: siteUrl,
     description: SITE_DESCRIPTION,
     inLanguage: "en",
-    author: { "@id": `${SITE_URL}/#person` },
+    author: { "@id": absoluteSiteUrl("/#person") },
   },
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": `${SITE_URL}/#person`,
+    "@id": absoluteSiteUrl("/#person"),
     name: OWNER_NAME,
-    url: SITE_URL,
+    url: siteUrl,
     email: `mailto:${EMAIL}`,
     jobTitle: "Full Stack Developer",
     sameAs,
@@ -42,7 +28,8 @@ const jsonLd = [
 ];
 
 export const metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl),
+  ...pageMetadata({}),
   applicationName: SITE_NAME,
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
@@ -50,54 +37,12 @@ export const metadata = {
     default: SITE_NAME,
     template: `%s | ${OWNER_NAME}`,
   },
-  description: SITE_DESCRIPTION,
-  keywords: [
-    OWNER_NAME,
-    "portfolio",
-    "macOS portfolio",
-    "iOS portfolio",
-    "developer portfolio",
-    "interactive portfolio",
-    "Next.js portfolio",
-    "React portfolio",
-    "AI portfolio",
-    "frontend developer",
-    "full stack developer",
-    "web developer",
-    "software engineer portfolio",
-  ],
-  authors: [{ name: OWNER_NAME, url: SITE_URL }],
+  authors: [{ name: OWNER_NAME, url: siteUrl }],
   creator: OWNER_NAME,
   publisher: OWNER_NAME,
   category: "technology",
   classification: "Portfolio",
   manifest: "/manifest.webmanifest",
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "/",
-    siteName: SITE_NAME,
-    title: SITE_NAME,
-    description: SITE_DESCRIPTION,
-    images: [
-      {
-        url: OG_IMAGE,
-        width: 1920,
-        height: 1080,
-        alt: `${SITE_NAME} desktop preview`,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_NAME,
-    description: SITE_DESCRIPTION,
-    images: [OG_IMAGE],
-    creator: getTwitterHandle(TWITTER_URL),
-  },
   icons: {
     icon: "/favicon.png",
     shortcut: "/favicon.png",
@@ -114,11 +59,11 @@ export const metadata = {
     telephone: false,
   },
   robots: {
-    index: true,
-    follow: true,
+    index: !isPreviewDeployment,
+    follow: !isPreviewDeployment,
     googleBot: {
-      index: true,
-      follow: true,
+      index: !isPreviewDeployment,
+      follow: !isPreviewDeployment,
       "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,

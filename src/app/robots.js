@@ -1,7 +1,4 @@
-import { PORTFOLIO_URL } from "@constants/env";
-
-const trimTrailingSlash = (value) => value?.replace(/\/+$/, "");
-const SITE_URL = trimTrailingSlash(PORTFOLIO_URL);
+import { absoluteSiteUrl, siteUrl } from "../lib/site-url";
 
 export default function robots() {
   return {
@@ -12,7 +9,7 @@ export default function robots() {
         disallow: ["/api/"],
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    sitemap: absoluteSiteUrl("/sitemap.xml"),
+    host: siteUrl,
   };
 }
